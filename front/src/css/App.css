@@ -150,6 +150,11 @@
   .menu {
     flex-direction: column;
     align-items: center;
+    visibility: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #57caff;
   }
 }
 .menu .item {
@@ -172,6 +177,35 @@
   left: 0;
   z-index: -1;
   border-radius: 30px;
+}
+
+.fold {
+  background-color: aquamarine;
+  width: 100%;
+  text-align: center;
+  visibility: collapse;
+}
+@media (max-width: 650px) {
+  .fold {
+    visibility: visible;
+  }
+}
+
+@media (max-width: 650px) {
+  .visible {
+    visibility: visible;
+  }
+}
+#backmenu {
+  background-color: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  visibility: hidden;
+  background-color: #111;
+  opacity: 0.2;
 }
 
 /*# sourceMappingURL=App.css.map */
