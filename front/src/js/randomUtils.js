@@ -1,4 +1,17 @@
 import { useState, useEffect } from "react";
+import constants from './constants.js'
+
+function getConfig(){
+  let { data, error, loading } = LoadData("http://localhost:3000/config.json")
+
+  if (!loading){
+    if (!error){
+      return data
+    } else {
+      return null
+    }
+  }
+}
 
 const useWindowDimensions = () => {
   const [dimensions, setDimensions] = useState({
@@ -73,9 +86,11 @@ function TDSelection({ allTDs, userTDs }) {
     // Function to save selection to the backend
     const saveSelection = async () => {
       try {
-        const response = await fetch('/param/', {
+        const response = await fetch(constants.API_URL+'/api/save_tds', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            mode:"cors",
+            credentials:'include',
             body: JSON.stringify({ selected_tds: Array.from(selectedTDs) }),
         });
         const data = await response.json();
@@ -99,9 +114,9 @@ function TDSelection({ allTDs, userTDs }) {
                     </label>
                 </li>
             ))}
-            <div class= "validate">
-            <button class='button_validate' onClick={saveSelection}>Sauvegarder</button>
-            <p1>{statusMessage}</p1>
+            <div className= "validate">
+            <button className='button_validate' onClick={saveSelection}>Sauvegarder</button>
+            <p>{statusMessage}</p>
             </div>
         </div>
     );

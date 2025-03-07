@@ -9,23 +9,24 @@ import About from './components/about.js';
 import Day from './js/dateUtils.js';
 import constants from './js/constants.js';
 import { useWindowDimensions } from './js/randomUtils.js';
-import { array } from 'prop-types';
 
 function App() {
   let burger="menu"
+  
   function unfold() {
     var menu = document.getElementsByClassName(burger)
     for (let i = 0; i < menu.length; i++) {
       menu.item(i).classList.add("visible")
     }
   }
+  
   function fold() {
     var menu = document.getElementsByClassName(burger)
     for (let i = 0; i < menu.length; i++) {
       menu.item(i).classList.remove("visible")
     }
 
-}
+  }
 
   const current_date = new Date()
   let first_day = new Day(current_date)
@@ -40,7 +41,7 @@ function App() {
     <div className="App">
       <div id="backmenu" className={burger} onClick={fold}></div>
       <NavBar.NavBar items={NavBar.items}/>
-      <div class="fold" id="folder" onClick={unfold}>Menu</div>
+      <div className="fold" id="folder" onClick={unfold}>Menu</div>
       <AuthProvider>
           <Routes> 
             <Route exact path='' element={<ProtectedRoute><Calendar start={day} data_path={data}/></ProtectedRoute>}></Route >
