@@ -67,3 +67,5 @@ def root():
     sectors = EnumSector.query.all()
     return render_template('admin.html', colors=colors, types=types, sectors=sectors)
 
+
+

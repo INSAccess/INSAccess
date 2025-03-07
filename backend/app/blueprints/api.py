@@ -34,20 +34,23 @@ Notes:
 import datetime
 
 from sqlalchemy.orm import joinedload
-from flask import Blueprint, jsonify, redirect, render_template, url_for
+from flask import Blueprint, jsonify, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, logout_user
 from flask_cors import CORS
 
 from ..utils.db_insertion import insert_list_record
 from ..utils.fetch import fetch_entire_year
-from ..models import EnumColor, EnumSector, EnumType, GroupTD, InsaClass, UserLinkTD, ClassLinkTD, db
+from ..models import ClassLinkDepart, EnumColor, EnumSector, EnumType, GroupTD, InsaClass, UserLinkTD, ClassLinkTD, db
 
 
 api = Blueprint('api', __name__, url_prefix = '/api/')
 CORS(api, origins = ["http://localhost:3000", "http://172.18.26.13:3000"], supports_credentials=True)
 
 
-#//////////// API FOR CLASS FETCHING //////////////#
+#--------------------------------------------#
+#              CLASS FETCHING ROUTES         #
+#--------------------------------------------#
+
 @api.route('get_day/<string:day>',methods =["GET"])
 @login_required
 def get_day(day):
@@ -63,7 +66,7 @@ def get_day(day):
         .all()
     )
 
-    return get_json_output(insa_classes)
+    return get_class_json_output(insa_classes)
 
 @api.route('get_week/<string:day>',methods =["GET"])
 @login_required
@@ -84,7 +87,7 @@ def get_week(day):
         .all()
     )
 
-    return get_json_output(insa_classes)
+    return get_class_json_output(insa_classes)
 
 @api.route('get_month/<string:day>',methods =["GET"])
 @login_required
@@ -107,7 +110,7 @@ def get_month(day):
         .all()
     )
 
-    return get_json_output(insa_classes)
+    return get_class_json_output(insa_classes)
 
 @api.route('get_year/<string:day>',methods =["GET"])
 @login_required
@@ -130,7 +133,7 @@ def get_year(day):
         .all()
     )
 
-    return get_json_output(insa_classes)
+    return get_class_json_output(insa_classes)
 
 def get_joined_class_subquery():
     """ return the joined table subquery """
@@ -150,7 +153,7 @@ def get_class_of_user():
     return db.session.query(ClassLinkTD.class_id)\
                     .filter(ClassLinkTD.td_id.in_(tags_subquery)).subquery()
 
-def get_json_output(insa_classes):
+def get_class_json_output(insa_classes):
     """transform the insa_class object in insa_class into a json for the front"""
     return jsonify([
         {
@@ -165,8 +168,9 @@ def get_json_output(insa_classes):
         for insa_class in insa_classes  
     ])
 
-#//////////// API FOR PARAMETERS //////////////#
-
+#--------------------------------------------#
+#         PARAMETERS UTILS ROUTES            #
+#--------------------------------------------#
 
 @api.route('/get_tds', methods=['GET'])
 @login_required
@@ -176,11 +180,46 @@ def manage_td():
 
     return jsonify({ "user_tds" : user_tds, "all_tds" : all_tds})
 
-#//////////// API FOR CONNECTION //////////////#
+@api.route('/get_tds/<string:departement>', methods=['GET'])
+@login_required
+def manage_td_selected(departement):
+    user_tds = [link.name_td for link in current_user.link_td]
+    
+    all_tds = db.session.query(InsaClass).options(
+            joinedload(InsaClass.link_td),
+            joinedload(InsaClass.link_depart)).filter(
+            ClassLinkDepart.depart_id == departement 
+        ).all()
+    
 
-@api.route('is_connected',methods =["GET"])
+    return jsonify({ "user_tds" : user_tds, "all_tds" : all_tds})
+
+
+@api.route('/save_tds', methods=['POST'])
+@login_required
+def manage_td_post():
+    # Parse the submitted TD names
+    selected_tds = request.json.get('selected_tds', [])
+
+    # Clear existing links for the user
+    UserLinkTD.query.filter_by(user_id=current_user.id).delete()
+
+    # Add the new selected TDs
+    for td_name in selected_tds:
+        link = UserLinkTD(user_id=current_user.id, name_td=td_name)
+        db.session.add(link)
+    db.session.commit()
+    return jsonify({'status': 'success', 'message': 'Selections updated successfully.'})
+
+#--------------------------------------------#
+#         CONNECTION UTILS ROUTES            #
+#--------------------------------------------#
+
+@api.route('/is_connected',methods =["GET"])
 @login_required
 def get_is_connected():
     """return a json bool for front"""
     return jsonify({"is_connected":current_user.is_authenticated});
+
+
 
