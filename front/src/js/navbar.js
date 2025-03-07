@@ -1,42 +1,13 @@
 import React from 'react'
 import { gsap } from 'gsap'
-import PropTypes from 'prop-types';
 
 const { useRef, useState, useEffect, createRef } = React
-
-/*--------------------
-Items
---------------------*/
-const items = [
-{
-  name: "Home",
-  color: "#FED9EA",
-  href: "/" },
-
-{
-  name: "Associative events",
-  color: "#CFD6EF",
-  href: "/associations" },
-
-{
-  name: "Settings",
-  color: "#70D1F9",
-  href: "/settings" },
-
-{
-  name: "About",
-  color: "#40cefe",
-  href: "/about" }
-];
-
-
-
 
 /*--------------------
 Menu
 --------------------*/
 
-const NavBar = ({ items }) => {
+const NavBar = ({ setPage, items }) => {
   const $root = useRef();
   const $indicator1 = useRef();
   const $indicator2 = useRef();
@@ -77,27 +48,25 @@ const NavBar = ({ items }) => {
     };
   }, [active]);
 
-  return /*#__PURE__*/(
+  return (
     React.createElement("div", {
       ref: $root,
       className: "menu" },
 
-    items.map((item, index) => /*#__PURE__*/
+    items.map((item, index) => 
     React.createElement("a", {
       key: item.name,
       ref: $items.current[index],
       className: `item ${active === index ? 'active' : ''}`,
-      onMouseEnter: () => {
-        setActive(index);
-      },
-      href: item.href },
+      onClick: () => {setPage(item.href); setActive(index)}
+    },
 
-    item.name)), /*#__PURE__*/
+    item.name)), 
 
 
     React.createElement("div", {
       ref: $indicator1,
-      className: "indicator" }), /*#__PURE__*/
+      className: "indicator" }),
 
     React.createElement("div", {
       ref: $indicator2,
@@ -107,6 +76,4 @@ const NavBar = ({ items }) => {
 
 };
 
-NavBar.propTypes = PropTypes.string.isRequired;
-
-export default { NavBar, items };
+export { NavBar };

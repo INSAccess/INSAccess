@@ -5,5 +5,26 @@ const minWidth = 850;
 const monthList = [ "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"];
 const baseEventWidth = 93
 const API_URL = process.env.REACT_APP_API_URL;
+const items = [
+    {
+      name: "Home",
+      color: "#FED9EA",
+      href: "home" },
+    
+    {
+      name: "Associative events",
+      color: "#CFD6EF",
+      href: "associations" },
+    
+    {
+      name: "Settings",
+      color: "#70D1F9",
+      href: "settings" },
+    
+    {
+      name: "About",
+      color: "#40cefe",
+      href: "about" }
+    ];
 
-export default { hours_timeline, dayList, minWidth, nbDaysPerMonth, monthList, baseEventWidth, API_URL };
+export default { hours_timeline, dayList, minWidth, nbDaysPerMonth, monthList, baseEventWidth, API_URL, items };

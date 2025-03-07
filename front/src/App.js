@@ -1,8 +1,8 @@
 import './css/App.css';
-import NavBar from './js/navbar.js'
+import { NavBar } from './js/navbar.js'
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { Routes, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Settings from './components/settings.js';
 import Calendar from './components/calendar.js';
 import About from './components/about.js';
@@ -12,6 +12,16 @@ import { useWindowDimensions } from './js/randomUtils.js';
 
 function App() {
   let burger="menu"
+  const current_date = new Date()
+  let first_day = new Day(current_date)
+  let dimensions = useWindowDimensions();
+
+  const data = constants.API_URL+'/api/get_year/'+first_day.getDate();
+  const data_asso = 'http://localhost:3000/data_asso.json'
+
+  let day = (constants.minWidth < dimensions.width) ? first_day.getDate() : first_day.startOfWeek().getDate()
+  
+  let [page, setPage] = useState("")
   
   function unfold() {
     var menu = document.getElementsByClassName(burger)
@@ -28,30 +38,26 @@ function App() {
 
   }
 
-  const current_date = new Date()
-  let first_day = new Day(current_date)
-  let dimensions = useWindowDimensions();
+  function currentPage(pageName, day, data, data_asso){
+    switch (pageName){
+      case "home" || "" : return <Calendar start={day} data_path={data}/>;
+      case "about" : return <About />;
+      case "settings" : return <Settings />;
+      case "associations" : return <Calendar start={day} data_path={data_asso}/>;
+      default: return <Calendar start={day} data_path={data}/>;
+    }
+  }
 
-  const data = constants.API_URL+'/api/get_year/'+first_day.getDate();
-  const data_asso = 'http://localhost:3000/data_asso.json'
-
-  let day = (constants.minWidth < dimensions.width) ? first_day.getDate() : first_day.startOfWeek().getDate()
-  
-  return (
-    <div className="App">
-      <div id="backmenu" className={burger} onClick={fold}></div>
-      <NavBar.NavBar items={NavBar.items}/>
-      <div className="fold" id="folder" onClick={unfold}>Menu</div>
-      <AuthProvider>
-          <Routes> 
-            <Route exact path='' element={<ProtectedRoute><Calendar start={day} data_path={data}/></ProtectedRoute>}></Route >
-            <Route exact path='/about' element={<ProtectedRoute><About /></ProtectedRoute>}></Route>
-            <Route exact path='/settings' element={<ProtectedRoute><Settings /></ProtectedRoute>}></Route>
-            <Route exact path='/associations' element={<ProtectedRoute><Calendar start={day} data_path={data_asso}/></ProtectedRoute>}></Route>
-          </Routes>
-      </AuthProvider>
-    </div>
-  );
+    return (
+      <div className="App">
+        <div id="backmenu" className={burger} onClick={fold}></div>
+        <NavBar setPage={setPage} items={constants.items}/>
+        <div className="fold" id="folder" onClick={unfold}>Menu</div>
+        <AuthProvider>
+            <ProtectedRoute>{currentPage(page, day, data, data_asso)}</ProtectedRoute>
+        </AuthProvider>
+      </div>
+    );
 }
 
 export default App;
