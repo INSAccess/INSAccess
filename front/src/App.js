@@ -8,7 +8,7 @@ import Calendar from './components/calendar.js';
 import About from './components/about.js';
 import Day from './js/dateUtils.js';
 import { API_URL, minWidth, items } from './js/constants.js';
-import { useWindowDimensions, LoadData } from './js/randomUtils.js';
+import { useWindowDimensions } from './js/randomUtils.js';
 
 function App() {
   let burger="menu"
@@ -21,7 +21,7 @@ function App() {
 
   let day = (minWidth < dimensions.width) ? first_day.getDate() : first_day.startOfWeek().getDate()
   
-  const [page, setPage] = useState("")
+  const [page, setPage] = useState("home")
   
   function unfold() {
     var menu = document.getElementsByClassName(burger)
@@ -44,7 +44,6 @@ function App() {
       case "about" : return <About />;
       case "settings" : return <Settings />;
       case "associations" : return <Calendar start={day} data_path={data_asso}/>;
-      default: return <div>toto</div>;
     }
   }
 
