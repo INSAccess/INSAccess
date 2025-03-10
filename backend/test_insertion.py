@@ -30,10 +30,10 @@ Notes:
 """
 from werkzeug.security import generate_password_hash
 
-from .app.models import User
-from .app import db, create_app
-from .app.utils.db_insertion import insert_list_record
-from .app.utils.fetch import fetch_entire_year
+from app.models import User
+from app import db, create_app
+from app.utils.db_insertion import insert_list_record
+from app.utils.fetch import fetch_entire_year
 
 
 with create_app().app_context():

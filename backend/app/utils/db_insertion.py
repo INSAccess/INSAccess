@@ -55,7 +55,7 @@ def insert_list_record(session, list_of_records):
 
 def insert_record_in_db(session, record):
     """
-    ###insert_record_in_db :
+    ### insert_record_in_db :
     Insert a single record in the given session
     following the pattern : \n
     (date, start_hour, end_hour, description, room_list,
@@ -68,21 +68,17 @@ def insert_record_in_db(session, record):
     """
     date, start_hour, end_hour, desc = record[:4]
     room_list, teacher_list, td_list, depart_list = record[4:]
+    
+    list_name_tables = [(room_list, Room), (teacher_list, Teacher), (td_list, GroupTD), (depart_list, Department)]
 
     new_class = insert_class_in_db(session, date, start_hour, end_hour, desc)
 
     # SHOULD PROBABLY ONLY BE DONE ONCE IN A WHILE, NOT AT EVERY FETCH
-    for name in teacher_list:
-        insert_teacher_in_db(session, name)
 
-    for name in room_list:
-        insert_room_in_db(session, name)
+    for list_table, table in list_name_tables:
+        for name in list_table:
+            insert_single_name_in_db(session, name, table)
 
-    for name in depart_list:
-        insert_depart_in_db(session, name)
-
-    for name in td_list:
-        insert_grouptd_in_db(session, name)
 
     # Insert ClassLink records to link InsaClass with associated entities
     for name in teacher_list:
@@ -127,49 +123,18 @@ def insert_class_in_db(session, date, start_hour, end_hour, desc):
         return new_class
     return InsaClass()
 
-def insert_room_in_db(session, name):
-    """ function for inserting record in room table"""
-    exists = session.query(Room).filter_by(
-        name=name,
+def insert_enum_color_in_db(session, value, user_value):
+    """ function for inserting record in color of association table"""
+    exists = session.query(EnumColor).filter_by(
+        value=value,
     ).first()
 
-    new_class = Room(
-        name=name,
+    new_class = EnumColor(
+        value=value,
+        user_friendly_value = user_value
     )
     insert_generic_in_db(session, exists, new_class)
-
-def insert_depart_in_db(session, name):
-    """ function for inserting record in department table"""
-    exists = session.query(Department).filter_by(
-        name=name,
-    ).first()
-
-    new_class = Department(
-        name=name,
-    )
-    insert_generic_in_db(session, exists, new_class)
-
-def insert_teacher_in_db(session, name):
-    """ function for inserting record in teacher table"""
-    exists = session.query(Teacher).filter_by(
-        name=name,
-    ).first()
-
-    new_class = Teacher(
-        name=name,
-    )
-    insert_generic_in_db(session, exists, new_class)
-
-def insert_grouptd_in_db(session, name):
-    """ function for inserting record in groupTD table"""
-    exists = session.query(GroupTD).filter_by(
-        name=name,
-    ).first()
-
-    new_class = GroupTD(
-        name=name,
-    )
-    insert_generic_in_db(session, exists, new_class)
+    
 
 def insert_classlink_depart_in_db(session, insa_class_object, name):
     """ function for inserting link in link table between department and class tables"""
@@ -247,40 +212,7 @@ def insert_classlink_teacher_in_db(session, insa_class_object, name):
     else :
         print(f"Couldnt create link because {name} if not found in Teacher")
 
-def insert_enum_sector_in_db(session, name):
-    """ function for inserting record in sector of association table"""
-    exists = session.query(EnumSector).filter_by(
-        name=name,
-    ).first()
 
-    new_class = EnumSector(
-        name=name,
-    )
-    insert_generic_in_db(session, exists, new_class)
-
-def insert_enum_type_in_db(session, name):
-    """ function for inserting record in type of associationtable"""
-    exists = session.query(EnumType).filter_by(
-        name=name,
-    ).first()
-
-    new_class = EnumType(
-        name=name,
-    )
-    insert_generic_in_db(session, exists, new_class)
-    
-
-def insert_enum_color_in_db(session, value):
-    """ function for inserting record in color of association table"""
-    exists = session.query(EnumColor).filter_by(
-        value=value,
-    ).first()
-
-    new_class = EnumColor(
-        value=value,
-    )
-    insert_generic_in_db(session, exists, new_class)
-    
 
 def insert_generic_in_db(session, exists, new_class):
     """
@@ -336,3 +268,12 @@ def insert_association_in_db(name, user_email, color_value, type, sector):
     else:
         flash("Invalid foreign key reference!", "danger")
 
+def insert_single_name_in_db(session, name, table):
+    exists = session.query(table).filter_by(
+        name=name,
+    ).first()
+
+    new_class = table(
+        name=name,
+    )
+    insert_generic_in_db(session, exists, new_class)
