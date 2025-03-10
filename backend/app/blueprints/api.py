@@ -40,7 +40,7 @@ from flask_cors import CORS
 
 from ..utils.db_insertion import insert_list_record
 from ..utils.fetch import fetch_entire_year
-from ..models import ClassLinkDepart, EnumColor, EnumSector, EnumType, GroupTD, InsaClass, UserLinkTD, ClassLinkTD, db
+from ..models import Association, ClassLinkDepart, EnumColor, EnumSector, EnumType, GroupTD, InsaClass, User, UserLinkTD, ClassLinkTD, db
 
 
 api = Blueprint('api', __name__, url_prefix = '/api/')
@@ -222,4 +222,13 @@ def get_is_connected():
     return jsonify({"is_connected":current_user.is_authenticated});
 
 
+@api.route("/is_assos", methods = ["GET"])
+@login_required
+def get_is_assos():
+    """return a json bool for front"""
+    user_email = User.query.with_entities(User.email)\
+        .filter_by(id=current_user.id).scalar()
 
+    email_assos = [email for email in Association.query.with_entities(Association.user_email).distinct().all()[0]]
+    
+    return jsonify(user_email in email_assos)
