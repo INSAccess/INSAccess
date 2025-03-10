@@ -1,15 +1,23 @@
 import { LoadData, TDSelection } from '../js/randomUtils.js'
 import { useEffect, useState } from 'react';
-import constants from '../js/constants.js'
+import { API_URL } from '../js/constants.js'
 import { Error, Loading } from './templates.js'
-
-const API_URL = constants.API_URL
+import { EventCreator } from './EventCreator.js';
 
 const Settings = () => {
 
     let {data, error, loading} = LoadData(API_URL+"/api/get_tds");
-    let [user_tds, setUserTD] = useState(null);
-    let [all_tds, setAllTD] = useState(null);
+    const [user_tds, setUserTD] = useState(null);
+    const [all_tds, setAllTD] = useState(null);
+    const [view, setView] = useState("TDs");
+
+    function displayView(view){
+        switch (view){
+            case "TDs" : return (<TDSelection allTDs={all_tds} userTDs={user_tds} />);
+            case "create" : return (<EventCreator/>);
+            case "infos" : return (<></>);
+        }
+    }
 
     useEffect(() => {
         if (data){
@@ -20,10 +28,7 @@ const Settings = () => {
 
     if (loading) {
         return (
-            <div>
-                <h1>Settings</h1>
-                <Loading />
-            </div>
+            <Loading />
         );
     }
 
@@ -31,11 +36,14 @@ const Settings = () => {
         return <Error message={"Erreur lors du fetch des settings"}/>
     }
 
-    if (all_tds && user_tds){
+    if (user_tds && all_tds){
         return (
             <div>
                 <h1>Settings</h1>
-                <TDSelection allTDs={all_tds} userTDs={user_tds} />
+                <button onClick={() => {setView("TDs")}}>TD List</button>
+                <button onClick={() => {setView("create")}}>Create Event</button>
+                <button onClick={() => {setView("infos")}}>Informations</button>
+                <>{displayView(view)}</>
             </div>
         );  
     }

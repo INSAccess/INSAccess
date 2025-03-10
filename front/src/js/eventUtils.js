@@ -1,5 +1,5 @@
 import Day from './dateUtils.js'
-import constantes from './constants.js'
+import { minWidth, hours_timeline, baseEventWidth } from './constants.js'
 import { useWindowDimensions, LoadData } from './randomUtils.js'
 import {NavLink} from 'react-router-dom'
 import { useState } from 'react'
@@ -42,8 +42,8 @@ const SingleEvent = (props) => {
 const TimeBar = () => {
   const hours = [];
   hours.push(<div key={-1} className="spacer"></div>);
-  for (let i = 0; i < constantes.hours_timeline.length; i++){
-    hours.push(<div key={i} className="time-marker">{constantes.hours_timeline[i]}</div>)
+  for (let i = 0; i < hours_timeline.length; i++){
+    hours.push(<div key={i} className="time-marker">{hours_timeline[i]}</div>)
   }
   return (
     <div className="timeline">
@@ -90,7 +90,7 @@ const EventsOfDay = ({date, data}) => {
     const nb_overlap = getOverlappingEvents(element, events_of_day, i);
     const object = events_of_day[element]
     events_list.push(
-      <SingleEvent key={i} start_time={object.start} end_time={object.end} label={object.desc} teacher={object.teacher} room={object.room} link={object.link} width={constantes.baseEventWidth/(nb_overlap+1)} left={100-100/(nb_overlap+1)} />
+      <SingleEvent key={i} start_time={object.start} end_time={object.end} label={object.desc} teacher={object.teacher} room={object.room} link={object.link} width={baseEventWidth/(nb_overlap+1)} left={100-100/(nb_overlap+1)} />
     );
     i += 1;
   } 
@@ -130,7 +130,6 @@ const AllEvents = ({start, data_path}) => {
   }
   
   let list_days = []
-  let minWidth = constantes.minWidth;
   let nb_days =  ((minWidth < dimensions.width) ? 5 : 1);
   let current_day = (nb_days == 5) ? first_day.copy().startOfWeek() : first_day.copy();
 

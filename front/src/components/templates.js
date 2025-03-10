@@ -3,7 +3,7 @@ import coincoin from '../images/coincoin.png'
 const Error = ({ message }) => {
     return (
         <div>
-            <p>{{message}}</p>
+            <p>{message}</p>
         </div>
     );
 }

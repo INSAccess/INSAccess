@@ -27,4 +27,4 @@ const items = [
       href: "about" }
     ];
 
-export default { hours_timeline, dayList, minWidth, nbDaysPerMonth, monthList, baseEventWidth, API_URL, items };
+export { hours_timeline, dayList, minWidth, nbDaysPerMonth, monthList, baseEventWidth, API_URL, items };

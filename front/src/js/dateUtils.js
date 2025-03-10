@@ -1,4 +1,4 @@
-import constantes from './constants.js'
+import { nbDaysPerMonth, dayList, monthList } from './constants.js'
 
 const Day = class Day{
 
@@ -44,7 +44,7 @@ const Day = class Day{
     let day = this.day+nb_jours
     let month = this.month;
     let year = this.year;
-    let nbDays = constantes.nbDaysPerMonth[this.month-1]
+    let nbDays = nbDaysPerMonth[this.month-1]
     if (day > nbDays){
       day -= nbDays
       month += 1
@@ -62,7 +62,7 @@ const Day = class Day{
     let day = this.day-nb_jours
     let month = this.month;
     let year = this.year;
-    let nbDays = constantes.nbDaysPerMonth[(this.month+10)%12]
+    let nbDays = nbDaysPerMonth[(this.month+10)%12]
     if (day < 1){
       day += nbDays
       month -= 1
@@ -82,7 +82,7 @@ const Day = class Day{
 
   startOfWeek(){
     let day = this.copy();
-    while (day.getDayOfWeek() !== constantes.dayList[1]){
+    while (day.getDayOfWeek() !== dayList[1]){
       day = day.prev(1);
     }
     return day;
@@ -94,11 +94,11 @@ const Day = class Day{
 
   getDayOfWeek(){
     let date = new Date(this.date)
-    return constantes.dayList[date.getDay()]
+    return dayList[date.getDay()]
   }
 
   getMonthOfYear(){
-    return constantes.monthList[this.month-1]
+    return monthList[this.month-1]
   }
 
   getDay(){

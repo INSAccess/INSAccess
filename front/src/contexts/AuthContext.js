@@ -1,10 +1,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { fetchData } from '../js/randomUtils.js'
-import constants from '../js/constants.js'
+import { API_URL } from '../js/constants.js'
 
 const AuthContext = createContext();
-
-const API_URL = constants.API_URL;
 
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(false);
@@ -15,7 +13,7 @@ export const AuthProvider = ({ children }) => {
         const loadData = async () => {
           const result = await fetchData(API_URL+"/api/is_connected");
           if (result.data){
-            setToken(result.data.is_connected);
+            setToken(result.data);
           }
           setError(result.error);
           setLoading(false);
