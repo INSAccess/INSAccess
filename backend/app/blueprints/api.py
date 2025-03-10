@@ -185,13 +185,14 @@ def manage_td():
 def manage_td_selected(departement):
     user_tds = [link.name_td for link in current_user.link_td]
     
-    all_tds = db.session.query(InsaClass).options(
-            joinedload(InsaClass.link_td),
-            joinedload(InsaClass.link_depart)).filter(
-            ClassLinkDepart.depart_id == departement 
-        ).all()
-    
+    all_tds = db.session.query(GroupTD.name).\
+        join(ClassLinkTD, ClassLinkTD.td_id == GroupTD.name).\
+        join(InsaClass, InsaClass.id == ClassLinkTD.class_id).\
+        join(ClassLinkDepart, ClassLinkDepart.class_id == InsaClass.id).\
+        filter(ClassLinkDepart.depart_id == departement).\
+        distinct().all()
 
+    all_tds = [td[0] for td in all_tds]
     return jsonify({ "user_tds" : user_tds, "all_tds" : all_tds})
 
 
@@ -231,4 +232,4 @@ def get_is_assos():
 
     email_assos = [email for email in Association.query.with_entities(Association.user_email).distinct().all()[0]]
     
-    return jsonify(user_email in email_assos)
+    return jsonify(user_email in email_assos if len(email_assos)>0 else False)
