@@ -15,7 +15,6 @@ const Settings = () => {
         switch (view){
             case "TDs" : return (<TDSelection allTDs={all_tds} userTDs={user_tds} />);
             case "create" : return (<EventCreator/>);
-            case "infos" : return (<></>);
         }
     }
 
@@ -42,7 +41,6 @@ const Settings = () => {
                 <h1>Settings</h1>
                 <button onClick={() => {setView("TDs")}}>TD List</button>
                 <button onClick={() => {setView("create")}}>Create Event</button>
-                <button onClick={() => {setView("infos")}}>Informations</button>
                 <>{displayView(view)}</>
             </div>
         );  

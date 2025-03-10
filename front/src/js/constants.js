@@ -26,5 +26,7 @@ const items = [
       color: "#40cefe",
       href: "about" }
     ];
+const PATH_CALENDAR = API_URL+'/api/get_year/'
+const PATH_ASSO = 'http://localhost:3000/data_asso.json'
 
-export { hours_timeline, dayList, minWidth, nbDaysPerMonth, monthList, baseEventWidth, API_URL, items };
+export { hours_timeline, dayList, minWidth, nbDaysPerMonth, monthList, baseEventWidth, API_URL, items, PATH_ASSO, PATH_CALENDAR };

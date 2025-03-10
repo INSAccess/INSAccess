@@ -33,13 +33,11 @@ const EventCreator = () => {
         return <Error message={"Verification de l'identité impossible"}/>
     }
 
-    console.log()
-
     if (!isAsso){
         return (
             <div>
                 <p>Vous n'êtes pas une association</p>
-                <button href={url_login}>Se connecter</button>
+                <button href={url_login}>Se connecter en tant qu'association</button>
             </div>
         );
     } else {
