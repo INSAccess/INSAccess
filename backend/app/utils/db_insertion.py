@@ -269,6 +269,8 @@ def insert_association_in_db(name, user_email, color_value, type, sector):
         flash("Invalid foreign key reference!", "danger")
 
 def insert_single_name_in_db(session, name, table):
+    """ small generic function for inserting into tables that only have
+    one field named 'name' """
     exists = session.query(table).filter_by(
         name=name,
     ).first()
