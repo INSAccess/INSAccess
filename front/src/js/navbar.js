@@ -58,7 +58,7 @@ const NavBar = ({ setPage, items }) => {
       key: item.name,
       ref: $items.current[index],
       className: `item ${active === index ? 'active' : ''}`,
-      onClick: () => {setPage(item.href); setActive(index); console.log(item.href)}
+      onClick: () => {setPage(item.href); setActive(index)}
     },
 
     item.name)), 
