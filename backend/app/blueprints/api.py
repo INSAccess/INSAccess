@@ -231,6 +231,6 @@ def get_is_assos():
         .filter_by(id=current_user.id).scalar()
 
     temp = Association.query.with_entities(Association.user_email).distinct().all()
-    email_assos = [email for email in temp[0]] if len(temp)>0 else []
+    email_assos = [email[0] for email in temp] if len(temp)>0 else []
     
     return jsonify(user_email in email_assos)
