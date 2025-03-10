@@ -92,6 +92,22 @@
 
     <div id="admin3" class="content">
         <h2>3</h2>
+        <form action="{{url_for('admin.add_type')}}" method="POST">
+            <div>
+                <label for="name" class="form-label">New Type</label>
+                <input type="text" class="form-control" id="type_name" name="type_name" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Type</button>
+        </form>
+        <form action="{{url_for('admin.add_sector')}}" method="POST">
+            <div>
+                <label for="name" class="form-label">New Sector</label>
+                <input type="text" class="form-control" id="sector_name" name="sector_name" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Sector</button>
+        </form>
+
+        
 
     </div>
 

@@ -34,7 +34,7 @@ Notes:
 import datetime
 
 from sqlalchemy.orm import joinedload
-from flask import Blueprint, jsonify, redirect, render_template, request, url_for
+from flask import Blueprint, flash, jsonify, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, logout_user
 from flask_cors import CORS
 
@@ -211,6 +211,10 @@ def manage_td_post():
         db.session.add(link)
     db.session.commit()
     return jsonify({'status': 'success', 'message': 'Selections updated successfully.'})
+
+
+
+
 
 #--------------------------------------------#
 #         CONNECTION UTILS ROUTES            #

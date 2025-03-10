@@ -30,7 +30,7 @@ Notes:
     else where.
 
 """
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, jsonify, render_template, request, flash, redirect, url_for
 from flask_login import login_required
 
 from ..utils.db_insertion import insert_association_in_db
@@ -68,4 +68,38 @@ def root():
     return render_template('admin.html', colors=colors, types=types, sectors=sectors)
 
 
+@admin.route('/add_type',methods =["POST"])
+@login_required
+@admin_required
+def add_type():
+    name = request.form.get('type_name')
+    
+    exist = EnumType.query.filter_by(name = name).first()
+    
+    if not exist:
+        type = EnumType(name = name)
+        db.session.add(type)
+        db.session.commit()
+    else :
+        flash("already exist")
+        return redirect(url_for('admin.root'))
+    flash("added successfully")
+    return redirect(url_for('admin.root'))
 
+@admin.route('/add_sector',methods =["POST"])
+@login_required
+@admin_required
+def add_sector():
+    name = request.form.get('sector_name')
+    
+    exist = EnumSector.query.filter_by(name = name).first()
+    
+    if not exist:
+        type = EnumSector(name = name)
+        db.session.add(type)
+        db.session.commit()
+    else :
+        flash("already exist")
+        return redirect(url_for('admin.root'))
+    flash("added successfully")
+    return redirect(url_for('admin.root'))
