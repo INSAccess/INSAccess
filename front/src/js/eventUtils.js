@@ -22,9 +22,9 @@ const SingleEvent = (props) => {
 
   const eventStyle = {
     height: `${eventHeight}%`,
-    width: "93%",//`${props.width}%`,
+    width: `${props.width}%`, //"93%",
     top: `${eventPosY}%`,
-    left: "0%",//`${props.left}%`,
+    left: `${props.left}%`, //"0%",
     userSelect: "none"
   };
 
@@ -54,18 +54,14 @@ const TimeBar = () => {
 
 function getOverlappingEvents(event, events){
   let nb_overlap = 0;
-  for (let element in events){
-    let case1 = events[element].end >= events[event].start && events[element].end <= events[event].end
-    let case2 = events[element].start >= events[event].start && events[element].start <= events[event].end
+  for (let element of events){
+    let case1 = element.end >= event.start && element.end <= event.end
+    let case2 = element.start >= event.start && element.start <= event.end
     if ((case1 || case2)  && (element != event)){
       nb_overlap++;
     }
   }
   return nb_overlap;
-}
-
-function getEventColumns(){
-
 }
 
 function getEventsOfDay(date, data){
@@ -85,13 +81,15 @@ const EventsOfDay = ({date, data}) => {
   const events_of_day = getEventsOfDay(date, data);
   let day = new Day(date);
   const infos = day.getDateInfo();
+  const placed = []
 
-  for (let element in events_of_day){
-    const nb_overlap = getOverlappingEvents(element, events_of_day, i);
-    const object = events_of_day[element]
+  for (let element of events_of_day){
+    const nb_overlap_total = getOverlappingEvents(element, events_of_day);
+    const nb_overlap_placed = getOverlappingEvents(element, placed);
     events_list.push(
-      <SingleEvent key={i} start_time={object.start} end_time={object.end} label={object.desc} teacher={object.teacher} room={object.room} link={object.link} width={baseEventWidth/(nb_overlap+1)} left={100-100/(nb_overlap+1)} />
+      <SingleEvent key={i} start_time={element.start} end_time={element.end} label={element.desc} teacher={element.teacher} room={element.room} link={element.link} width={baseEventWidth/(nb_overlap_total+1)} left={baseEventWidth*(1-1/(nb_overlap_placed+1))} />
     );
+    placed.push(element)
     i += 1;
   } 
 
