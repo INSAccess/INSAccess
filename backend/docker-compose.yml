@@ -1,4 +1,3 @@
-
 services:
   db:
     image: docker.io/library/postgres:latest
@@ -26,6 +25,5 @@ services:
       - DB_PASSWORD=toto123
       - DJANGO_SETTINGS_MODULE=config.settings
       - PYTHONPATH=/backend
-
 volumes:
   postgres_data:
