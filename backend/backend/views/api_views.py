@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_GET, require_POST
+from django.contrib.auth.decorators import login_required
 
 from backend.utils import db_insertion, fetch
 from backend.models import * 
 
 
 @require_GET
+@login_required
 def get_tds(request):
     tds = GroupTD.objects.all()
     list_tds = [str(e.name) for e in tds]
