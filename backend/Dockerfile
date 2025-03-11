@@ -2,10 +2,10 @@
 FROM python:3.11
 
 # Step 2: Set the working directory in the container
-WORKDIR /app
+WORKDIR /backend
 
-# Step 3: Copy the current directory contents into the container at /app
-COPY . /app/
+# Step 3: Copy the current directory contents into the container at /backend
+COPY . /backend//
 
 # Step 4: Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
