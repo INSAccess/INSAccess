@@ -1,6 +1,6 @@
 import Day from './dateUtils.js'
 import { minWidth, hours_timeline, baseEventWidth } from './constants.js'
-import { useWindowDimensions, LoadData } from './randomUtils.js'
+import { useWindowDimensions, LoadData, max } from './randomUtils.js'
 import {NavLink} from 'react-router-dom'
 import { useState } from 'react'
 import { Loading, Error } from '../components/templates.js'
@@ -24,8 +24,13 @@ const SingleEvent = (props) => {
     height: `${eventHeight}%`,
     width: `${props.width}%`, //"93%",
     top: `${eventPosY}%`,
+    flex: "93%",
+    display:"block",
+    position:"absolute",
     left: `${props.left}%`, //"0%",
-    userSelect: "none"
+    userSelect: "none",
+    marginLeft:"3.5%",
+    marginRight:"3.5%"
   };
 
   return (
@@ -52,16 +57,36 @@ const TimeBar = () => {
   );
 }
 
-function getOverlappingEvents(event, events){
-  let nb_overlap = 0;
+function getNbEventsAtHour(hour, events){
+  let nb_events = 0;
   for (let element of events){
-    let case1 = element.end >= event.start && element.end <= event.end
-    let case2 = element.start >= event.start && element.start <= event.end
-    if ((case1 || case2)  && (element != event)){
-      nb_overlap++;
+    if (element.start < hour && element.end > hour){
+      nb_events++;
     }
   }
-  return nb_overlap;
+  return nb_events;
+}
+
+function getHoursOfEvent(event){
+  let hours = []
+  for (let hour of hours_timeline){
+    if (hour >= event.start && hour <= event.end){
+      hours.push(hour);
+    }
+  }
+  return hours;
+}
+
+function getOverlappingEvents(event, events){
+
+  let max_overlap = 0;
+  let nb_overlap = 0;
+  let hours_of_event = getHoursOfEvent(event)
+  for (let hour of hours_of_event){
+    nb_overlap = getNbEventsAtHour(hour, events)
+    max_overlap = max(max_overlap, nb_overlap)
+  }
+  return max_overlap;
 }
 
 function getEventsOfDay(date, data){
@@ -87,7 +112,9 @@ const EventsOfDay = ({date, data}) => {
     const nb_overlap_total = getOverlappingEvents(element, events_of_day);
     const nb_overlap_placed = getOverlappingEvents(element, placed);
     events_list.push(
-      <SingleEvent key={i} start_time={element.start} end_time={element.end} label={element.desc} teacher={element.teacher} room={element.room} link={element.link} width={baseEventWidth/(nb_overlap_total+1)} left={baseEventWidth*(1-1/(nb_overlap_placed+1))} />
+      <SingleEvent key={i} start_time={element.start} end_time={element.end} 
+      label={element.desc} teacher={element.teacher} room={element.room} link={element.link} 
+      width={baseEventWidth/(nb_overlap_total)} left={baseEventWidth*(1-1/(nb_overlap_placed+1))} />
     );
     placed.push(element)
     i += 1;

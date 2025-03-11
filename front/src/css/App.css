@@ -2,9 +2,9 @@
   --numDays: 5;
   --numHours: 8;
   --dateHeight: 6vh;
-  --calBgColor: #efc2f8;
   --eventBorderColor: #445374;
-  --eventColor: #57caff;
+  --eventColor: #fce3c3;
+  --eventBgColor: #9bf5a7;
   --dateTextSize: max(3.8vh, 2.1vw);
   --rotateTime: 2s;
 }
@@ -63,7 +63,7 @@
   display: block;
   height: 90%;
   border-radius: 5px;
-  background: rgb(140, 201, 252);
+  background: var(--eventBgColor);
   position: relative;
 }
 
@@ -82,14 +82,11 @@
 }
 
 .event {
-  display: flex;
-  flex-direction: column;
   border: 1px solid var(--eventBorderColor);
   border-radius: 5px;
   padding: 0.1vw 0.5vw;
   margin: 0 0.5vw;
-  background: linear-gradient(180deg, #b0dbff, #ffb7ef);
-  position: absolute;
+  background: var(--eventColor);
 }
 
 .spacer {
@@ -162,14 +159,14 @@
   cursor: pointer;
   transition: color 0.3s ease-out;
   text-decoration: none;
-  color: #ffffff;
+  color: #000000;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   font-size: 12px;
   margin: 5px 0;
 }
 .menu .item.active {
-  color: #111;
+  color: #ffffff;
 }
 .menu .indicator {
   position: absolute;

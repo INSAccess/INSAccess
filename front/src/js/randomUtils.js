@@ -13,6 +13,10 @@ function getConfig(){
   }
 }
 
+function max(a, b){
+  return (a > b) ? a : b;
+}
+
 const useWindowDimensions = () => {
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
@@ -122,4 +126,4 @@ function TDSelection({ allTDs, userTDs }) {
     );
 }
 
-export { useWindowDimensions, fetchData, LoadData, TDSelection };
+export { useWindowDimensions, fetchData, LoadData, TDSelection, max };
