@@ -1,7 +1,7 @@
 import datetime
 from django.db import IntegrityError
 from tqdm import tqdm
-from models import *  # Import all your models
+from backend.models import *  # Import all your models
 
 def insert_list_record(list_of_records):
     """
@@ -35,6 +35,8 @@ def insert_record_in_db(record):
     list_name_tables = [(room_list, Room), (teacher_list, Teacher), (td_list, GroupTD), (depart_list, Department)]
 
     new_class = insert_class_in_db(date, start_hour, end_hour, desc)
+
+    new_class.save()
 
     for list_table, table in list_name_tables:
         for name in list_table:
@@ -83,8 +85,8 @@ def insert_classlink_depart_in_db(insa_class_object, name):
     linked_entity = Department.objects.filter(name=name).first()
     if linked_entity:
         exists = ClassLinkDepart.objects.filter(
-            class_id=insa_class_object.id,
-            depart_id=name
+            insa_class=insa_class_object.id,
+            depart=name
         ).first()
 
         class_link = ClassLinkDepart(
@@ -102,8 +104,8 @@ def insert_classlink_td_in_db(insa_class_object, name):
     linked_entity = GroupTD.objects.filter(name=name).first()
     if linked_entity:
         exists = ClassLinkTD.objects.filter(
-            class_id=insa_class_object.id,
-            td_id=name
+            insa_class=insa_class_object.id,
+            td=name
         ).first()
 
         class_link = ClassLinkTD(
@@ -121,8 +123,8 @@ def insert_classlink_room_in_db(insa_class_object, name):
     linked_entity = Room.objects.filter(name=name).first()
     if linked_entity:
         exists = ClassLinkRoom.objects.filter(
-            class_id=insa_class_object.id,
-            room_id=name
+            insa_class=insa_class_object.id,
+            room=name
         ).first()
 
         class_link = ClassLinkRoom(
@@ -140,7 +142,7 @@ def insert_classlink_teacher_in_db(insa_class_object, name):
     linked_entity = Teacher.objects.filter(name=name).first()
     if linked_entity:
         exists = ClassLinkTeacher.objects.filter(
-            class_id=insa_class_object.id,
+            insa_class=insa_class_object.id,
             teacher_id=name
         ).first()
 

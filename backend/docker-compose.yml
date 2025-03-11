@@ -3,9 +3,9 @@ services:
   db:
     image: docker.io/library/postgres:latest
     environment:
-      POSTGRES_DB: mydb
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: db.postgresql
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: toto123
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -21,10 +21,11 @@ services:
       - db
     environment:
       - DB_HOST=db
-      - DB_NAME=mydb
-      - DB_USER=myuser
-      - DB_PASSWORD=mypassword
+      - DB_NAME=db.postgresql
+      - DB_USER=root
+      - DB_PASSWORD=toto123
       - DJANGO_SETTINGS_MODULE=config.settings
+      - PYTHONPATH=/backend
 
 volumes:
   postgres_data:

@@ -2,3 +2,5 @@ django
 django-environ
 psycopg2-binary
 tqdm
+pytest
+requests
