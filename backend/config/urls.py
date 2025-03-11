@@ -17,10 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from backend import views
+from backend.views import api_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test',views.test),
-    path('get_tds',views.get_tds)
+    path('test',api_views.test),
+    path('get_tds',api_views.get_tds)
 ]

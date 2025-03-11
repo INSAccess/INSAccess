@@ -3,22 +3,18 @@ from django.db import models
 # Create your models here.
 from django.db import models
 import uuid
+from django.contrib.auth.models import User
 
 
-# User Model
-class User(models.Model):
+
+class UserProfile(models.Model):
     """User definition"""
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField(max_length=100, unique=True)
-    password = models.CharField(max_length=255)
-    name = models.CharField(max_length=100)
-    admin = models.BooleanField(default=False)
-
-    link_td = models.ManyToManyField('GroupTD', through='UserLinkTD', related_name='users')
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    link_td = models.ManyToManyField("GroupTD", through='UserLinkTD', related_name='users')
 
     def __str__(self):
-        return self.email
-
+        return str(self.user)
+    
 
 # Event Base Model
 class Event(models.Model):
@@ -59,10 +55,10 @@ class InsaEvenement(Event):
 class Association(models.Model):
     """Association profile for the club and association of INSA Rouen"""
     name = models.CharField(max_length=255, primary_key=True)
-    user_email = models.ForeignKey(User, on_delete=models.CASCADE)
-    unique_color = models.ForeignKey('EnumColor', on_delete=models.CASCADE)
-    type = models.ForeignKey('EnumType', on_delete=models.CASCADE)
-    sector = models.ForeignKey('EnumSector', on_delete=models.CASCADE)
+    user_email = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    unique_color = models.ForeignKey('EnumColor', on_delete=models.SET_NULL, null= True)
+    type = models.ForeignKey('EnumType', on_delete=models.SET_NULL, null= True)
+    sector = models.ForeignKey('EnumSector', on_delete=models.SET_NULL, null= True)
 
     def __str__(self):
         return self.name
@@ -144,8 +140,8 @@ class EvenementRoom(models.Model):
 # EvenementLinkEventRoom Model
 class EvenementLinkEventRoom(models.Model):
     """1 to Many link between InsaEvenement and EvenementRoom tables"""
-    evenement = models.ForeignKey(InsaEvenement, on_delete=models.CASCADE, related_name='evenement_link_evenement_room')
-    room = models.ForeignKey(EvenementRoom, on_delete=models.CASCADE)
+    evenement = models.ForeignKey(InsaEvenement, on_delete=models.CASCADE, related_name='evenement_link_evenement_room', db_index=True)
+    room = models.ForeignKey(EvenementRoom, on_delete=models.CASCADE, db_index=True)
 
     def __str__(self):
         return f"Link: {self.evenement} - {self.room}"
@@ -154,8 +150,8 @@ class EvenementLinkEventRoom(models.Model):
 # ClassLinkTD Model
 class ClassLinkTD(models.Model):
     """1 to Many link between InsaClass and GroupTD tables"""
-    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE)
-    td = models.ForeignKey(GroupTD, on_delete=models.CASCADE)
+    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE, db_index=True)
+    td = models.ForeignKey(GroupTD, on_delete=models.CASCADE, db_index=True)
 
     def __str__(self):
         return f"Class: {self.insa_class} - TD: {self.td}"
@@ -164,8 +160,8 @@ class ClassLinkTD(models.Model):
 # ClassLinkRoom Model
 class ClassLinkRoom(models.Model):
     """1 to Many link between InsaClass and Room tables"""
-    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE, db_index=True)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, db_index=True)
 
     def __str__(self):
         return f"Class: {self.insa_class} - Room: {self.room}"
@@ -174,8 +170,8 @@ class ClassLinkRoom(models.Model):
 # ClassLinkTeacher Model
 class ClassLinkTeacher(models.Model):
     """1 to Many link between InsaClass and Teacher tables"""
-    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE, db_index=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, db_index=True)
 
     def __str__(self):
         return f"Class: {self.insa_class} - Teacher: {self.teacher}"
@@ -184,8 +180,8 @@ class ClassLinkTeacher(models.Model):
 # ClassLinkDepart Model
 class ClassLinkDepart(models.Model):
     """1 to Many link between InsaClass and Department tables"""
-    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE)
-    depart = models.ForeignKey(Department, on_delete=models.CASCADE)
+    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE, db_index=True)
+    depart = models.ForeignKey(Department, on_delete=models.CASCADE, db_index=True)
 
     def __str__(self):
         return f"Class: {self.insa_class} - Department: {self.depart}"
@@ -194,8 +190,9 @@ class ClassLinkDepart(models.Model):
 # UserLinkTD Model
 class UserLinkTD(models.Model):
     """1 to Many link between User and GroupTD"""
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name_td = models.ForeignKey(GroupTD, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, db_index=True)
+    name_td = models.ForeignKey(GroupTD, on_delete=models.CASCADE, db_index=True)
 
     def __str__(self):
         return f"User: {self.user} - TD: {self.name_td}"
+
