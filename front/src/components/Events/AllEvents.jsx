@@ -1,0 +1,63 @@
+import EventsInDay from "./EventsInDay";
+import RandomUtils from "../../js/RandomUtils";
+import { Loading, Error } from "../templates";
+import { useState } from "react";
+
+const TimeBar = () => {
+    const hours = [];
+    hours.push(<div key={-1} className="spacer"></div>);
+    for (let i = 0; i < hours_timeline.length; i++){
+      hours.push(<div key={i} className="time-marker">{hours_timeline[i]}</div>)
+    }
+    return (
+      <div className="timeline">
+          {hours}
+      </div>
+    );
+  }
+
+const AllEvents = ({start, data_path}) => {
+    let dimensions = useWindowDimensions();
+    let day = new Day(start);
+    const [first_day, setDay] = useState(day);
+  
+    let {data, error, loading} = RandomUtils.LoadData(data_path);
+  
+    if (loading) return <Loading />;
+    if (error) {
+      return <Error message={"Erreur lors de la récupération des cours, vérifiez que vous êtes bien connectés. Si le problème persiste, envoyez nous un message."}/>;
+    }
+  
+    function handleDay(direction, value){
+      if (direction === "prev"){
+        setDay(first_day => first_day.prev(value))
+      } else if (direction === "next"){
+        setDay(first_day => first_day.next(value))
+      }
+    }
+    
+    let list_days = []
+    let nb_days =  ((minWidth < dimensions.width) ? 5 : 1);
+    let current_day = (nb_days == 5) ? first_day.copy().startOfWeek() : first_day.copy();
+  
+    for (let i = 0; i < nb_days; i++){
+      list_days.push(<EventsInDay key={i} date={current_day.getDate()} data={data}/>);
+      current_day = current_day.next(1);
+    }
+  
+    let skipDays = (nb_days == 1) ? 1 : 7;
+  
+    return (
+      <div className="calendar">
+        <button type="button" className="arrow-left" onClick={() => {handleDay("prev", skipDays)}}></button>
+        <TimeBar />
+        <div className="days">
+          {list_days}
+        </div>
+        <button type="button" className="arrow-right turned" onClick={() => {handleDay("next", skipDays)}}></button>
+    </div>
+        
+    );
+  }
+  
+  export default AllEvents;

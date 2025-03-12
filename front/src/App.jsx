@@ -1,21 +1,21 @@
 import './css/App.css';
-import { NavBar } from './js/navbar.js'
-import { AuthProvider } from "./contexts/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute";
+import NavBar from './components/navbar.jsx'
+import AuthProvider from "./contexts/AuthContext.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { useState } from 'react';
-import Settings from './components/settings.js';
-import Calendar from './components/calendar.js';
-import Associations from './components/associations.js';
-import About from './components/about.js';
-import Day from './js/dateUtils.js';
+import Settings from './components/Pages/settings.jsx';
+import Calendar from './components/Pages/calendar.jsx';
+import Associations from './components/Pages/associations.jsx';
+import About from './components/Pages/about.jsx';
+import Day from './js/Day.jsx';
 import { minWidth, items } from './js/constants.js';
-import { useWindowDimensions } from './js/randomUtils.js';
+import RandomUtils from './js/RandomUtils.jsx';
 
 function App() {
   let burger="menu"
   const current_date = new Date()
   let first_day = new Day(current_date)
-  let dimensions = useWindowDimensions();
+  let dimensions = RandomUtils.useWindowDimensions();
 
   let day = (minWidth < dimensions.width) ? first_day.getDate() : first_day.startOfWeek().getDate()
   

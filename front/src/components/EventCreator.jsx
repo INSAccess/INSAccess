@@ -1,6 +1,6 @@
 import { API_URL } from '../js/constants.js'
 import { Error, Loading } from './templates.js'
-import { fetchData } from '../js/randomUtils.js'
+import RandomUtils from '../js/RandomUtils.js'
 import { useState, useEffect } from 'react'
 
 const EventCreator = () => {
@@ -11,7 +11,7 @@ const EventCreator = () => {
 
     useEffect(() => {
         const loadData = async () => {
-          const result = await fetchData(API_URL+"/api/is_assos");
+          const result = await RandomUtils.fetchData(API_URL+"/api/is_assos");
           if (result.data){
             setAsso(result.data);
           }
@@ -46,4 +46,4 @@ const EventCreator = () => {
     }  
 }
 
-export { EventCreator };
+export default EventCreator;

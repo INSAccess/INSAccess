@@ -1,4 +1,4 @@
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext.js";
 import { API_URL } from '../js/constants.js'
 import { Error, Loading } from './templates.js'
 
