@@ -5,17 +5,27 @@
         "end":"1815",
         "room":["Amphi TILLON, Hall Magellan"],
         "teacher":["AMIR, INS'à Table"],
-        "date":"2025-03-05",
+        "date":"2025-03-11",
         "link":"https://linktr.ee/amirinsarouen"
 
     },
     {
-        "label":"CONCERT DE MAI",
-        "start_time":"1520",
-        "end_time":"1815",
+        "desc":"CONCERT DE MAI",
+        "start":"1420",
+        "end":"1715",
         "room":["Amphi TILLON"],
         "teacher":["AMIR"],
-        "date":"2025-01-30",
+        "date":"2025-03-11",
+        "link":"https://linktr.ee/amirinsarouen"
+
+    },
+    {
+        "desc":"CONCERT DE MARS",
+        "start":"1645",
+        "end":"1915",
+        "room":["Amphi TILLON"],
+        "teacher":["AMIR"],
+        "date":"2025-03-11",
         "link":"https://linktr.ee/amirinsarouen"
 
     }

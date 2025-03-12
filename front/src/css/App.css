@@ -5,7 +5,7 @@
   --eventBorderColor: #445374;
   --eventColor: #fce3c3;
   --eventBgColor: #9bf5a7;
-  --dateTextSize: max(3.8vh, 2.1vw);
+  --dateTextSize: max(3.4vh, 2.1vw);
   --rotateTime: 2s;
 }
 
@@ -26,6 +26,10 @@
   height: 100%;
   justify-self: right;
   grid-template-rows: calc(var(--dateHeight) + 2vh) repeat(calc(var(--numHours) - 1), 1fr);
+}
+
+.time-marker {
+  justify-self: right;
 }
 
 .arrow-left {
@@ -70,8 +74,7 @@
 .title {
   font-weight: 600;
   margin-bottom: 0.1vw;
-  font-size: max(0.9vw, 1.5vh);
-  justify-self: left;
+  font-size: 0.7vw;
 }
 
 .time, .teacher, .room {
@@ -85,8 +88,8 @@
   border: 1px solid var(--eventBorderColor);
   border-radius: 5px;
   padding: 0.1vw 0.5vw;
-  margin: 0 0.5vw;
   background: var(--eventColor);
+  justify-content: left;
 }
 
 .spacer {

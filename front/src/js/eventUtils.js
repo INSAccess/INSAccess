@@ -28,6 +28,7 @@ const SingleEvent = (props) => {
     display:"block",
     position:"absolute",
     left: `${props.left}%`, //"0%",
+    justifyContent:"left",
     userSelect: "none",
     marginLeft:"3.5%",
     marginRight:"3.5%"
@@ -36,7 +37,7 @@ const SingleEvent = (props) => {
   return (
     <NavLink to={props.link}>
       <button type="button" className="event" style={eventStyle}>
-        <p className="title">{props.label}</p>
+        <p className="title" style={{fontSize:`${0.8-0.1*(props.label.length>=30)}vw`}}>{props.label}</p>
         <p className="room">{props.room}</p>
         <p className="teacher">{props.teacher}</p>
       </button>
@@ -69,7 +70,8 @@ function getNbEventsAtHour(hour, events){
 
 function getHoursOfEvent(event){
   let hours = []
-  for (let hour of hours_timeline){
+  const hours_events = Day.createHours();
+  for (let hour of hours_events){
     if (hour >= event.start && hour <= event.end){
       hours.push(hour);
     }
@@ -114,7 +116,7 @@ const EventsOfDay = ({date, data}) => {
     events_list.push(
       <SingleEvent key={i} start_time={element.start} end_time={element.end} 
       label={element.desc} teacher={element.teacher} room={element.room} link={element.link} 
-      width={baseEventWidth/(nb_overlap_total)} left={baseEventWidth*(1-1/(nb_overlap_placed+1))} />
+      width={baseEventWidth/(nb_overlap_total)} left={baseEventWidth*(1-(nb_overlap_placed+1)/nb_overlap_total)} />
     );
     placed.push(element)
     i += 1;
