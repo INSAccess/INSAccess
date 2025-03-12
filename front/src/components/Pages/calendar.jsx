@@ -1,4 +1,4 @@
-import AllEvents from '../../js/EventUtils.jsx'
+import AllEvents from '../Events/AllEvents.jsx'
 import { PATH_CALENDAR } from '../../js/constants.jsx'
 
 const Calendar = ({start}) => {

@@ -1,4 +1,4 @@
-import AllEvents from '../../js/EventUtils.jsx'
+import AllEvents from '../Events/AllEvents.jsx'
 import { PATH_ASSO } from '../../js/constants.jsx'
 
 const Associations = ({start}) => {

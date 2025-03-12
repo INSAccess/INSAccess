@@ -1,6 +1,6 @@
-import { API_URL } from '../js/constants.js'
-import { Error, Loading } from './templates.js'
-import RandomUtils from '../js/RandomUtils.js'
+import { API_URL } from '../js/constants.jsx'
+import { Error, Loading } from './templates.jsx'
+import RandomUtils from '../js/RandomUtils.jsx'
 import { useState, useEffect } from 'react'
 
 const EventCreator = () => {

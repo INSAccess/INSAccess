@@ -2,6 +2,8 @@ import EventsInDay from "./EventsInDay";
 import RandomUtils from "../../js/RandomUtils";
 import { Loading, Error } from "../templates";
 import { useState } from "react";
+import { hours_timeline, minWidth } from "../../js/constants";
+import Day from "../../js/Day"
 
 const TimeBar = () => {
     const hours = [];
@@ -17,7 +19,7 @@ const TimeBar = () => {
   }
 
 const AllEvents = ({start, data_path}) => {
-    let dimensions = useWindowDimensions();
+    let dimensions = RandomUtils.useWindowDimensions();
     let day = new Day(start);
     const [first_day, setDay] = useState(day);
   

@@ -1,6 +1,6 @@
-import { useAuth } from "../contexts/AuthContext.js";
-import { API_URL } from '../js/constants.js'
-import { Error, Loading } from './templates.js'
+import { useAuth } from "../contexts/AuthContext.jsx";
+import { API_URL } from '../js/constants.jsx'
+import { Error, Loading } from './templates.jsx'
 
 const ProtectedRoute = ({ children }) => {
     const { token, loading, error } = useAuth();

@@ -76,4 +76,4 @@ const NavBar = ({ setPage, items }) => {
 
 };
 
-export { NavBar };
+export default NavBar;

@@ -1,5 +1,7 @@
 import EventUtils from "../../js/EventUtils";
 import Day from "../../js/Day";
+import SingleEvent from "./SingleEvent"
+import { baseEventWidth } from "../../js/constants";
 
 const EventsInDay = ({date, data}) => {
     const events_list = [];

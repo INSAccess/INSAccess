@@ -1,4 +1,4 @@
-import coincoin from '../images/coincoin.png'
+import coincoin from '../../images/coincoin.png'
 
 const MainAbout = () => {
     return (

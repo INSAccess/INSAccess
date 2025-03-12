@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_URL } from '../js/constants'
 
 function TDSelection({ allTDs, userTDs }) {
     const [selectedTDs, setSelectedTDs] = useState(new Set(userTDs));
@@ -28,6 +29,7 @@ function TDSelection({ allTDs, userTDs }) {
         const data = await response.json();
         setStatusMessage(data.message);
       } catch (error) {
+        console.error(error)
           setStatusMessage("An error occurred while saving your selection.");
       }
     };

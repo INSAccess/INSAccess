@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 class RandomUtils{
   static getConfig(){
-    let { data, error, loading } = LoadData("http://localhost:3000/config.json")
+    let { data, error, loading } = RandomUtils.LoadData("http://localhost:3000/config.json")
   
     if (!loading){
       if (!error){
@@ -60,7 +60,7 @@ class RandomUtils{
   
     useEffect(() => {
       const loadData = async () => {
-        const result = await fetchData(data_path);
+        const result = await RandomUtils.fetchData(data_path);
         setData(result.data);
         setError(result.error);
         setLoading(false);

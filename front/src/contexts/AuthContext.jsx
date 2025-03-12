@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import RandomUtils from '../js/RandomUtils.js'
-import { API_URL } from '../js/constants.js'
+import RandomUtils from '../js/RandomUtils.jsx'
+import { API_URL } from '../js/constants.jsx'
 
 const AuthContext = createContext();
 
@@ -29,4 +29,4 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
-export default useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext);

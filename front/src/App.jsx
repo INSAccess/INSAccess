@@ -1,6 +1,6 @@
 import './css/App.css';
-import NavBar from './components/navbar.jsx'
-import AuthProvider from "./contexts/AuthContext.jsx";
+import NavBar from './components/NavBar.jsx'
+import { AuthProvider } from "./contexts/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { useState } from 'react';
 import Settings from './components/Pages/settings.jsx';
@@ -8,7 +8,7 @@ import Calendar from './components/Pages/calendar.jsx';
 import Associations from './components/Pages/associations.jsx';
 import About from './components/Pages/about.jsx';
 import Day from './js/Day.jsx';
-import { minWidth, items } from './js/constants.js';
+import { minWidth, items } from './js/constants.jsx';
 import RandomUtils from './js/RandomUtils.jsx';
 
 function App() {
