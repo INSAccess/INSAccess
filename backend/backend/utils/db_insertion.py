@@ -126,8 +126,8 @@ def insert_classlink_room_in_db(insa_class_object, name):
         ).first()
 
         class_link = ClassLinkRoom(
-            insa_class=insa_class_object,
-            room=linked_entity
+            insa_class = insa_class_object,
+            room = linked_entity
         )
 
         insert_generic_in_db(exists, class_link)
@@ -140,13 +140,13 @@ def insert_classlink_teacher_in_db(insa_class_object, name):
     linked_entity = Teacher.objects.filter(name=name).first()
     if linked_entity:
         exists = ClassLinkTeacher.objects.filter(
-            insa_class=insa_class_object.uid,
-            teacher_id=name
+            insa_class = insa_class_object.uid,
+            teacher_id = name
         ).first()
 
         class_link = ClassLinkTeacher(
-            insa_class=insa_class_object,
-            teacher=linked_entity
+            insa_class = insa_class_object,
+            teacher = linked_entity
         )
 
         insert_generic_in_db(exists, class_link)
@@ -184,11 +184,11 @@ def insert_association_in_db(name, user_email, color_value, type, sector):
         if not exists:
             if not exists_user:
                 new_association = Association(
-                    name=name,
-                    user_email=user_email,
-                    unique_color=color_value,
-                    type=type,
-                    sector=sector
+                    name = name,
+                    user_email = user_email,
+                    unique_color = color_value,
+                    type = type,
+                    sector = sector
                 )
                 new_association.save()
                 print("Association created successfully!")
@@ -205,6 +205,6 @@ def insert_single_name_in_db(name, table):
     exists = table.objects.filter(name=name).first()
 
     new_instance = table(
-        name=name,
+        name = name,
     )
     insert_generic_in_db(exists, new_instance)
