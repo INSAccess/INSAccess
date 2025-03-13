@@ -10,10 +10,6 @@
 
     "misc_item_in_description" : ["examens"],
 
-    "day" : "day",
-
-    "week" : "week",
-
-    "month" : "month"
+    "periods_list" : ["day", "week", "month"]
 
 }
