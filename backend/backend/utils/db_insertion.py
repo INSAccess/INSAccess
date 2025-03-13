@@ -1,7 +1,7 @@
 import datetime
 from django.db import IntegrityError
 from tqdm import tqdm
-from backend.models import *  # Import all your models
+from backend.models import *
 
 def insert_list_record(list_of_records):
     """
@@ -63,15 +63,15 @@ def insert_class_in_db(uid, date, start_hour, end_hour, desc):
     converted_end_hour = list(map(lambda x: int(x), end_hour.split(':')))
 
     exists = InsaClass.objects.filter(
-        uid = uuid
+        uid = uid
     ).first()
 
     new_class = InsaClass(
         uid = uid,
-        date=datetime.date(converted_date[0], converted_date[1], converted_date[2]),
-        start_hour=datetime.time(converted_start_hour[0], converted_start_hour[1], converted_start_hour[2]),
-        end_hour=datetime.time(converted_end_hour[0], converted_end_hour[1], converted_end_hour[2]),
-        desc=desc
+        date = datetime.date(converted_date[0], converted_date[1], converted_date[2]),
+        start_hour = datetime.time(converted_start_hour[0], converted_start_hour[1], converted_start_hour[2]),
+        end_hour = datetime.time(converted_end_hour[0], converted_end_hour[1], converted_end_hour[2]),
+        desc = desc
     )
 
     insert_generic_in_db(exists, new_class)
@@ -83,13 +83,13 @@ def insert_classlink_depart_in_db(insa_class_object, name):
     linked_entity = Department.objects.filter(name=name).first()
     if linked_entity:
         exists = ClassLinkDepart.objects.filter(
-            insa_class=insa_class_object.uid,
-            depart=name
+            insa_class = insa_class_object.uid,
+            depart = name
         ).first()
 
         class_link = ClassLinkDepart(
-            insa_class=insa_class_object,
-            depart=linked_entity
+            insa_class = insa_class_object,
+            depart = linked_entity
         )
 
         insert_generic_in_db(exists, class_link)
@@ -102,13 +102,13 @@ def insert_classlink_td_in_db(insa_class_object, name):
     linked_entity = GroupTD.objects.filter(name=name).first()
     if linked_entity:
         exists = ClassLinkTD.objects.filter(
-            insa_class=insa_class_object.uid,
-            td=name
+            insa_class = insa_class_object.uid,
+            td = name
         ).first()
 
         class_link = ClassLinkTD(
-            insa_class=insa_class_object,
-            td=linked_entity
+            insa_class = insa_class_object,
+            td = linked_entity
         )
 
         insert_generic_in_db(exists, class_link)
@@ -121,8 +121,8 @@ def insert_classlink_room_in_db(insa_class_object, name):
     linked_entity = Room.objects.filter(name=name).first()
     if linked_entity:
         exists = ClassLinkRoom.objects.filter(
-            insa_class=insa_class_object.uid,
-            room=name
+            insa_class = insa_class_object.uid,
+            room = name
         ).first()
 
         class_link = ClassLinkRoom(

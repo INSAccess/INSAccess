@@ -1,8 +1,5 @@
-from django.db import models
 
-# Create your models here.
 from django.db import models
-import uuid
 from django.contrib.auth.models import User
 
 
@@ -16,7 +13,6 @@ class UserProfile(models.Model):
         return str(self.user)
     
 
-# Event Base Model
 class Event(models.Model):
     """Generic Class for defining events in the calendar"""
     uid = models.CharField(primary_key = True, editable = False)
@@ -29,7 +25,6 @@ class Event(models.Model):
         abstract = True
 
 
-# INSA Class Model
 class InsaClass(Event):
     """INSA Class definition"""
     link_room = models.ManyToManyField('Room', through='ClassLinkRoom')
@@ -38,10 +33,9 @@ class InsaClass(Event):
     link_depart = models.ManyToManyField('Department', through='ClassLinkDepart')
 
     def __str__(self):
-        return f"Insa Class {self.desc}"
+        return f"Insa Class : {self.desc}"
 
 
-# INSA Event Model
 class InsaEvenement(Event):
     """INSA Event definition"""
     associated_link = models.CharField(max_length=510)
@@ -49,10 +43,9 @@ class InsaEvenement(Event):
     evenement_link_event_room = models.ManyToManyField('EvenementRoom', through='EvenementLinkEventRoom')
 
     def __str__(self):
-        return f"Insa Event {self.desc}"
+        return f"Insa Event : {self.desc}"
 
 
-# Association Model
 class Association(models.Model):
     """Association profile for the club and association of INSA Rouen"""
     name = models.CharField(max_length=255, primary_key=True)
@@ -65,7 +58,6 @@ class Association(models.Model):
         return self.name
 
 
-# EnumType Model
 class EnumType(models.Model):
     """Possible values for the type in association"""
     name = models.CharField(max_length=255, primary_key=True)
@@ -74,7 +66,6 @@ class EnumType(models.Model):
         return self.name
 
 
-# EnumSector Model
 class EnumSector(models.Model):
     """Possible values for the sector (e.g., sport, music, etc.)"""
     name = models.CharField(max_length=255, primary_key=True)
@@ -83,7 +74,6 @@ class EnumSector(models.Model):
         return self.name
 
 
-# EnumColor Model
 class EnumColor(models.Model):
     """Possible values for the color of the association"""
     value = models.CharField(max_length=255, primary_key=True)
@@ -93,7 +83,6 @@ class EnumColor(models.Model):
         return self.value
 
 
-# GroupTD Model
 class GroupTD(models.Model):
     """GroupTD definition"""
     name = models.CharField(max_length=100, primary_key=True)
@@ -102,7 +91,6 @@ class GroupTD(models.Model):
         return self.name
 
 
-# Department Model
 class Department(models.Model):
     """Department definition"""
     name = models.CharField(max_length=100, primary_key=True)
@@ -111,16 +99,13 @@ class Department(models.Model):
         return self.name
 
 
-# Teacher Model
 class Teacher(models.Model):
-    """Teacher definition"""
     name = models.CharField(max_length=255, primary_key=True)
 
     def __str__(self):
         return self.name
 
 
-# Room Model
 class Room(models.Model):
     """Room definition"""
     name = models.CharField(max_length=100, primary_key=True)
@@ -129,7 +114,6 @@ class Room(models.Model):
         return self.name
 
 
-# EvenementRoom Model
 class EvenementRoom(models.Model):
     """Special room for event definition"""
     name = models.CharField(max_length=100, primary_key=True)
@@ -138,7 +122,6 @@ class EvenementRoom(models.Model):
         return self.name
 
 
-# EvenementLinkEventRoom Model
 class EvenementLinkEventRoom(models.Model):
     """1 to Many link between InsaEvenement and EvenementRoom tables"""
     evenement = models.ForeignKey(InsaEvenement, on_delete=models.CASCADE, related_name='evenement_link_evenement_room', db_index=True)
@@ -148,7 +131,6 @@ class EvenementLinkEventRoom(models.Model):
         return f"Link: {self.evenement} - {self.room}"
 
 
-# ClassLinkTD Model
 class ClassLinkTD(models.Model):
     """1 to Many link between InsaClass and GroupTD tables"""
     insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE, db_index=True)
@@ -158,7 +140,6 @@ class ClassLinkTD(models.Model):
         return f"Class: {self.insa_class} - TD: {self.td}"
 
 
-# ClassLinkRoom Model
 class ClassLinkRoom(models.Model):
     """1 to Many link between InsaClass and Room tables"""
     insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE, db_index=True)
@@ -168,7 +149,6 @@ class ClassLinkRoom(models.Model):
         return f"Class: {self.insa_class} - Room: {self.room}"
 
 
-# ClassLinkTeacher Model
 class ClassLinkTeacher(models.Model):
     """1 to Many link between InsaClass and Teacher tables"""
     insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE, db_index=True)
@@ -178,7 +158,6 @@ class ClassLinkTeacher(models.Model):
         return f"Class: {self.insa_class} - Teacher: {self.teacher}"
 
 
-# ClassLinkDepart Model
 class ClassLinkDepart(models.Model):
     """1 to Many link between InsaClass and Department tables"""
     insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE, db_index=True)
@@ -188,7 +167,6 @@ class ClassLinkDepart(models.Model):
         return f"Class: {self.insa_class} - Department: {self.depart}"
 
 
-# UserLinkTD Model
 class UserLinkTD(models.Model):
     """1 to Many link between User and GroupTD"""
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, db_index=True)
