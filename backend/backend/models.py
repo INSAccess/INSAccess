@@ -19,6 +19,7 @@ class UserProfile(models.Model):
 # Event Base Model
 class Event(models.Model):
     """Generic Class for defining events in the calendar"""
+    uid = models.CharField(primary_key = True, editable = False)
     date = models.DateField()
     start_hour = models.TimeField()
     end_hour = models.TimeField()
@@ -37,7 +38,7 @@ class InsaClass(Event):
     link_depart = models.ManyToManyField('Department', through='ClassLinkDepart')
 
     def __str__(self):
-        return f"Insa Class {self.id}"
+        return f"Insa Class {self.desc}"
 
 
 # INSA Event Model
@@ -48,7 +49,7 @@ class InsaEvenement(Event):
     evenement_link_event_room = models.ManyToManyField('EvenementRoom', through='EvenementLinkEventRoom')
 
     def __str__(self):
-        return f"Insa Event {self.id}"
+        return f"Insa Event {self.desc}"
 
 
 # Association Model

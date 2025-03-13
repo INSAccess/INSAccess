@@ -132,26 +132,26 @@ def xml_to_list(url : str) -> list:
             print(f"XML parsing error: {err}")
             return []
 
-        root = ElementTree.fromstring(xml_data)
-
         namespaces = {
             "ev": "http://purl.org/rss/1.0/modules/event/"
         }
         output = []
 
         for item in root.findall("./channel/item"):
+            uid = item_to_string(item.find("guid"))
             title = item_to_string(item.find("title"))
             date, start_hour = item_to_string(item.find("ev:startdate", namespaces)).split('T')
             _, end_hour = item_to_string(item.find("ev:enddate", namespaces)).split('T')
             description = item_to_string(item.find("description"))
             locations = item_to_string(item.find("ev:location", namespaces)).split('%2C')
 
+            uid = uid_parsing(uid)
             title = title_parsing(title)
 
 
             group_td, teacher_list, group_depart =  description_parsing(description)
 
-            output.append((date, start_hour, end_hour, title, locations,\
+            output.append((uid, date, start_hour, end_hour, title, locations,\
                             teacher_list, group_td, group_depart))
 
         return output
@@ -200,6 +200,15 @@ def get_calendar_data(current_year :str, department : str ,\
     return []
 
 
+def uid_parsing(uid):
+    pattern = r'.*uid=(.*)'
+    try : 
+        parsed_uid = re.findall(pattern, uid)[0]
+    except IndexError as err :
+        print(f"List Index error when regex:{err}")
+        return ''
+    return parsed_uid
+
 def title_parsing(title):
     """ parse the title of the fetched xml"""
 
@@ -218,7 +227,7 @@ def description_parsing(description):
     try :
         desc_string = re.findall(pattern_for_parsing, description )[0]
     except IndexError as err:
-        print(f"List Index error: {err}")
+        print(f"List Index error when regex: {err}")
         return [],get_default_name() ,[]
 
     desc_item_list = desc_string.split(r'<br/>')[1:-2]

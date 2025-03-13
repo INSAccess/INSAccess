@@ -29,12 +29,12 @@ def insert_record_in_db(record):
     It is done by checking the existence of the record in the database and inserting it if necessary
     :param record: The record to be inserted
     """
-    date, start_hour, end_hour, desc = record[:4]
-    room_list, teacher_list, td_list, depart_list = record[4:]
+    uid, date, start_hour, end_hour, desc = record[:5]
+    room_list, teacher_list, td_list, depart_list = record[5:]
     
     list_name_tables = [(room_list, Room), (teacher_list, Teacher), (td_list, GroupTD), (depart_list, Department)]
 
-    new_class = insert_class_in_db(date, start_hour, end_hour, desc)
+    new_class = insert_class_in_db(uid, date, start_hour, end_hour, desc)
 
     new_class.save()
 
@@ -56,20 +56,18 @@ def insert_record_in_db(record):
         insert_classlink_td_in_db(new_class, name)
 
 
-def insert_class_in_db(date, start_hour, end_hour, desc):
+def insert_class_in_db(uid, date, start_hour, end_hour, desc):
     """ Insert a class record into the database """
     converted_date = list(map(lambda x: int(x), date.split('-')))
     converted_start_hour = list(map(lambda x: int(x), start_hour.split(':')))
     converted_end_hour = list(map(lambda x: int(x), end_hour.split(':')))
 
     exists = InsaClass.objects.filter(
-        date=datetime.date(converted_date[0], converted_date[1], converted_date[2]),
-        start_hour=datetime.time(converted_start_hour[0], converted_start_hour[1], converted_start_hour[2]),
-        end_hour=datetime.time(converted_end_hour[0], converted_end_hour[1], converted_end_hour[2]),
-        desc=desc
+        uid = uuid
     ).first()
 
     new_class = InsaClass(
+        uid = uid,
         date=datetime.date(converted_date[0], converted_date[1], converted_date[2]),
         start_hour=datetime.time(converted_start_hour[0], converted_start_hour[1], converted_start_hour[2]),
         end_hour=datetime.time(converted_end_hour[0], converted_end_hour[1], converted_end_hour[2]),
@@ -85,7 +83,7 @@ def insert_classlink_depart_in_db(insa_class_object, name):
     linked_entity = Department.objects.filter(name=name).first()
     if linked_entity:
         exists = ClassLinkDepart.objects.filter(
-            insa_class=insa_class_object.id,
+            insa_class=insa_class_object.uid,
             depart=name
         ).first()
 
@@ -104,7 +102,7 @@ def insert_classlink_td_in_db(insa_class_object, name):
     linked_entity = GroupTD.objects.filter(name=name).first()
     if linked_entity:
         exists = ClassLinkTD.objects.filter(
-            insa_class=insa_class_object.id,
+            insa_class=insa_class_object.uid,
             td=name
         ).first()
 
@@ -123,7 +121,7 @@ def insert_classlink_room_in_db(insa_class_object, name):
     linked_entity = Room.objects.filter(name=name).first()
     if linked_entity:
         exists = ClassLinkRoom.objects.filter(
-            insa_class=insa_class_object.id,
+            insa_class=insa_class_object.uid,
             room=name
         ).first()
 
@@ -142,7 +140,7 @@ def insert_classlink_teacher_in_db(insa_class_object, name):
     linked_entity = Teacher.objects.filter(name=name).first()
     if linked_entity:
         exists = ClassLinkTeacher.objects.filter(
-            insa_class=insa_class_object.id,
+            insa_class=insa_class_object.uid,
             teacher_id=name
         ).first()
 
