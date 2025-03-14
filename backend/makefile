@@ -32,11 +32,14 @@ changepassword:
 	docker-compose exec web python manage.py changepassword $(USER)
 
 # Shell Access
-shell:
+pyshell:
 	docker-compose exec web python manage.py shell
 
 dbshell:
 	docker-compose exec db psql -U root -d db.postgresql
+
+shell:
+	docker-compose exec web sh
 
 # Static Files
 collectstatic:
