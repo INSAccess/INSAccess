@@ -18,7 +18,7 @@ const TimeBar = () => {
     );
   }
 
-const AllEvents = ({start, data_path}) => {
+const AllEvents = ({start, data_path, asso}) => {
     let dimensions = RandomUtils.useWindowDimensions();
     let day = new Day(start);
     const [first_day, setDay] = useState(day);
@@ -43,7 +43,7 @@ const AllEvents = ({start, data_path}) => {
     let current_day = (nb_days == 5) ? first_day.copy().startOfWeek() : first_day.copy();
   
     for (let i = 0; i < nb_days; i++){
-      list_days.push(<EventsInDay key={i} date={current_day.getDate()} data={data}/>);
+      list_days.push(<EventsInDay key={i} date={current_day.getDate()} data={data} asso={asso}/>);
       current_day = current_day.next(1);
     }
   

@@ -3,7 +3,7 @@ import Day from "../../js/Day";
 import SingleEvent from "./SingleEvent"
 import { baseEventWidth } from "../../js/constants";
 
-const EventsInDay = ({date, data}) => {
+const EventsInDay = ({date, data, asso}) => {
     const events_list = [];
     
     let i = 0;
@@ -18,7 +18,8 @@ const EventsInDay = ({date, data}) => {
       events_list.push(
         <SingleEvent key={i} start_time={element.start} end_time={element.end} 
         label={element.desc} teacher={element.teacher} room={element.room} link={element.link} 
-        width={baseEventWidth/(nb_overlap_total)} left={baseEventWidth*(1-(nb_overlap_placed+1)/nb_overlap_total)} />
+        width={baseEventWidth/(nb_overlap_total)} left={baseEventWidth*(1-(nb_overlap_placed+1)/nb_overlap_total)}
+        desc={''} asso={asso}/>
       );
       placed.push(element)
       i += 1;

@@ -1,6 +1,31 @@
 import { NavLink } from 'react-router-dom';
 import Day from '../../js/Day';
 import EventUtils from '../../js/EventUtils';
+import { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+
+const FollowLink = ({asso, link}) => {
+  if (asso) {
+    return (
+      <NavLink to={link}>
+        <Button>
+          En savoir plus
+        </Button>
+      </NavLink>
+    )
+  } else {
+    return <></>
+  }
+}
+
+const Description = ({asso, desc}) => {
+  if (asso){ 
+    return <div><strong>Description : </strong><br/>{desc}</div> 
+  } else { 
+    return <></>
+  }
+}
 
 const SingleEvent = (props) => {
     const hours_events = Day.createHours();
@@ -22,15 +47,38 @@ const SingleEvent = (props) => {
       marginLeft:"3.5%",
       marginRight:"3.5%"
     };
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
   
     return (
-      <NavLink to={props.link}>
-        <button type="button" className="event" style={eventStyle}>
+      <>
+        <button type="button" className="event" style={eventStyle} onClick={handleShow}>
           <p className="title" style={{fontSize:`${0.8-0.1*(props.label.length>=30)}vw`}}>{props.label}</p>
           <p className="room">{props.room}</p>
-          <p className="teacher">{props.teacher}</p>
         </button>
-      </NavLink>
+
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>{props.label}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div><strong>Heure de début : </strong>{Day.presentableHour(props.start_time)}</div>
+            <div><strong>Heure de fin : </strong>{Day.presentableHour(props.end_time)}</div>
+            <div><strong>{(props.asso) ? "Associations" : "Profs"} : </strong>{props.teacher}</div>
+            <Description asso={props.asso} desc={props.desc}/>
+            <br/>
+            <FollowLink asso={props.asso} link={props.link}/>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={handleClose}>
+              Fermer
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
     );
 } 
 
