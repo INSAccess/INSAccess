@@ -1,8 +1,8 @@
 const hours_timeline = ["8h00", "9h45", "11h30", "13h15", "15h00", "16h45", "18h30", "20h15"];
-const dayList = [ "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+const dayList = [ "Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
 const nbDaysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 const minWidth = 850;
-const monthList = [ "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"];
+const monthList = [ "Jan", "Févr", "Mars", "Avril", "Mai", "Juin", "Juil", "Aout", "Sept", "Oct", "Nov", "Déc"];
 const baseEventWidth = 93
 const API_URL = process.env.REACT_APP_API_URL;
 const items = [
@@ -26,5 +26,7 @@ const items = [
       color: "#40cefe",
       href: "about" }
     ];
+const PATH_CALENDAR = API_URL+'/api/get_year/'
+const PATH_ASSO = 'http://localhost:3000/data_asso.json'
 
-export { hours_timeline, dayList, minWidth, nbDaysPerMonth, monthList, baseEventWidth, API_URL, items };
+export { hours_timeline, dayList, minWidth, nbDaysPerMonth, monthList, baseEventWidth, API_URL, items, PATH_ASSO, PATH_CALENDAR };

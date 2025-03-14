@@ -1,72 +1,5 @@
-import { useState, useEffect } from "react";
-import { API_URL } from './constants.js'
-
-function getConfig(){
-  let { data, error, loading } = LoadData("http://localhost:3000/config.json")
-
-  if (!loading){
-    if (!error){
-      return data
-    } else {
-      return null
-    }
-  }
-}
-
-const useWindowDimensions = () => {
-  const [dimensions, setDimensions] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  useEffect(() => {
-    const handleResize = () => {
-      setDimensions({ width: window.innerWidth, height: window.innerHeight });
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  return dimensions;
-};
-
-const fetchData = async (data_path) => {
-  const initConfig = {
-    method:'GET',
-    headers:{'Content-Type':'application/json', 'Accept':'application/json'},
-    mode:'cors',
-    credentials:'include'
-  }
-  try {
-    const response = await fetch(data_path, initConfig);
-    if (!response.ok) {
-      throw new Error("Erreur lors du fetch");
-    }
-    const json = await response.json();
-    return { data: json, error: null };
-  } catch (error) {
-    return { data: null, error: error.message };
-  }
-};
-
-function LoadData(data_path){
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const loadData = async () => {
-      const result = await fetchData(data_path);
-      setData(result.data);
-      setError(result.error);
-      setLoading(false);
-    };
-
-    loadData();
-  }, []);
-
-  return {data, error, loading}
-}
+import { useState } from "react";
+import { API_URL } from '../js/constants'
 
 function TDSelection({ allTDs, userTDs }) {
     const [selectedTDs, setSelectedTDs] = useState(new Set(userTDs));
@@ -96,6 +29,7 @@ function TDSelection({ allTDs, userTDs }) {
         const data = await response.json();
         setStatusMessage(data.message);
       } catch (error) {
+        console.error(error)
           setStatusMessage("An error occurred while saving your selection.");
       }
     };
@@ -122,4 +56,4 @@ function TDSelection({ allTDs, userTDs }) {
     );
 }
 
-export { useWindowDimensions, fetchData, LoadData, TDSelection };
+export default TDSelection;

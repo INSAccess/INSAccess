@@ -1,23 +1,21 @@
 import './css/App.css';
-import { NavBar } from './js/navbar.js'
-import { AuthProvider } from "./contexts/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute";
+import NavBar from './components/NavBar.jsx'
+import { AuthProvider } from "./contexts/AuthContext.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { useState } from 'react';
-import Settings from './components/settings.js';
-import Calendar from './components/calendar.js';
-import About from './components/about.js';
-import Day from './js/dateUtils.js';
-import { API_URL, minWidth, items } from './js/constants.js';
-import { useWindowDimensions } from './js/randomUtils.js';
+import Settings from './components/Pages/settings.jsx';
+import Calendar from './components/Pages/calendar.jsx';
+import Associations from './components/Pages/associations.jsx';
+import About from './components/Pages/about.jsx';
+import Day from './js/Day.jsx';
+import { minWidth, items } from './js/constants.jsx';
+import RandomUtils from './js/RandomUtils.jsx';
 
 function App() {
   let burger="menu"
   const current_date = new Date()
   let first_day = new Day(current_date)
-  let dimensions = useWindowDimensions();
-
-  const data = API_URL+'/api/get_year/'+first_day.getDate();
-  const data_asso = 'http://localhost:3000/data_asso.json'
+  let dimensions = RandomUtils.useWindowDimensions();
 
   let day = (minWidth < dimensions.width) ? first_day.getDate() : first_day.startOfWeek().getDate()
   
@@ -43,7 +41,7 @@ function App() {
       case "home" : return <Calendar start={day} data_path={data}/>;
       case "about" : return <About />;
       case "settings" : return <Settings />;
-      case "associations" : return <Calendar start={day} data_path={data_asso}/>;
+      case "associations" : return <Associations start={day} data_path={data_asso}/>;
     }
   }
 
@@ -53,7 +51,7 @@ function App() {
       <NavBar setPage={setPage} items={items}/>
       <div className="fold" id="folder" onClick={unfold}>Menu</div>
       <AuthProvider>
-          <ProtectedRoute>{currentPage(page, day, data, data_asso)}</ProtectedRoute>
+          <ProtectedRoute>{currentPage(page, day)}</ProtectedRoute>
       </AuthProvider>
     </div>
   );

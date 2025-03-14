@@ -1,6 +1,6 @@
-import { API_URL } from '../js/constants.js'
-import { Error, Loading } from './templates.js'
-import { fetchData } from '../js/randomUtils.js'
+import { API_URL } from '../js/constants.jsx'
+import { Error, Loading } from './templates.jsx'
+import RandomUtils from '../js/RandomUtils.jsx'
 import { useState, useEffect } from 'react'
 
 const EventCreator = () => {
@@ -11,7 +11,7 @@ const EventCreator = () => {
 
     useEffect(() => {
         const loadData = async () => {
-          const result = await fetchData(API_URL+"/api/is_assos");
+          const result = await RandomUtils.fetchData(API_URL+"/api/is_assos");
           if (result.data){
             setAsso(result.data);
           }
@@ -33,13 +33,11 @@ const EventCreator = () => {
         return <Error message={"Verification de l'identité impossible"}/>
     }
 
-    console.log()
-
     if (!isAsso){
         return (
             <div>
                 <p>Vous n'êtes pas une association</p>
-                <button href={url_login}>Se connecter</button>
+                <button href={url_login}>Se connecter en tant qu'association</button>
             </div>
         );
     } else {
@@ -48,4 +46,4 @@ const EventCreator = () => {
     }  
 }
 
-export { EventCreator };
+export default EventCreator;

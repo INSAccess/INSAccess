@@ -1,4 +1,4 @@
-import { nbDaysPerMonth, dayList, monthList } from './constants.js'
+import { nbDaysPerMonth, dayList, monthList } from './constants.jsx'
 
 const Day = class Day{
 
