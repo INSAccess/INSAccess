@@ -38,7 +38,6 @@ const SingleEvent = (props) => {
       height: `${eventHeight}%`,
       width: `${props.width}%`, //"93%",
       top: `${eventPosY}%`,
-      flex: "93%",
       display:"block",
       position:"absolute",
       left: `${props.left}%`, //"0%",
@@ -56,8 +55,8 @@ const SingleEvent = (props) => {
     return (
       <>
         <button type="button" className="event" style={eventStyle} onClick={handleShow}>
-          <p className="title" style={{fontSize:`${0.8-0.1*(props.label.length>=30)}vw`}}>{props.label}</p>
-          <p className="room">{props.room}</p>
+          <p className="title">{props.label}</p>
+          <p className="room">{props.room.join(', ')}</p>
         </button>
 
         <Modal show={show} onHide={handleClose}>
