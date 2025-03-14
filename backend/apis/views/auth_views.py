@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from backend.models import UserProfile
+from apis.models import UserProfile
 
 def register(request):
     if request.method == 'POST':

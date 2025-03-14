@@ -1,4 +1,4 @@
-from backend.views import auth_views
+from apis.views import auth_views
 from django.urls import include, path
 
 urlpatterns = [

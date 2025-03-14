@@ -1,7 +1,7 @@
 import datetime
 from django.db import IntegrityError
 from tqdm import tqdm
-from backend.models import *
+from apis.models import *
 
 def insert_list_record(list_of_records):
     """

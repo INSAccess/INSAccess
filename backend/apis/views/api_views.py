@@ -3,8 +3,8 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required
 
-from backend.utils import db_insertion, fetch
-from backend.models import * 
+from apis.utils import db_insertion, fetch
+from apis.models import * 
 
 
 @require_GET

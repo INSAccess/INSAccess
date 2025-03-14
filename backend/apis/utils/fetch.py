@@ -286,6 +286,7 @@ def get_clean_xml(xml_data :str ) -> str :
     '&Eacute;': 'É',
     '&agrave;': 'à',
     '&Agrave;': 'À',
+    '&ecirc' : 'ê',
     '&ocirc;': 'ô',
     '&ucirc;': 'û',
     '&icirc;': 'î',

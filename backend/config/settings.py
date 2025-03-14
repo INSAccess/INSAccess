@@ -34,8 +34,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'backend',
+    'apis',
     'corsheaders',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -81,7 +82,6 @@ CORS_ALLOWED_ORIGINS = [
 CORS_URLS_REGEX = r'^/api/.*'
 
 LOGIN_URL = "authentification/login/"
-
 
 WSGI_APPLICATION = 'config.wsgi.application'
 

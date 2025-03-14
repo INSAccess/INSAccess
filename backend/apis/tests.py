@@ -1,6 +1,6 @@
 from django.test import TestCase
-from backend.utils import db_insertion, fetch
-from backend.models import InsaClass
+from apis.utils import db_insertion, fetch
+from apis.models import InsaClass
 
 class TestInsertion(TestCase):
 

@@ -1,4 +1,4 @@
-from backend.views import api_views
+from apis.views import api_views
 from django.urls import include, path
 
 urlpatterns = [
