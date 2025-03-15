@@ -2,25 +2,31 @@ import EventUtils from "../../js/EventUtils";
 import Day from "../../js/Day";
 import SingleEvent from "./SingleEvent"
 import { baseEventWidth } from "../../js/constants";
+import './EventsInDay.scss'
 
 const EventsInDay = ({date, data, asso}) => {
     const events_list = [];
+    const placed = [];
     
     let i = 0;
-    const events_of_day = EventUtils.getEventsOfDay(date, data);
     let day = new Day(date);
     const infos = day.getDateInfo();
-    const placed = []
+    const events_of_day = EventUtils.getEventsOfDay(date, data);
   
     for (let element of events_of_day){
       const nb_overlap_total = EventUtils.getOverlappingEvents(element, events_of_day);
       const nb_overlap_placed = EventUtils.getOverlappingEvents(element, placed);
+
+      const width = baseEventWidth/nb_overlap_total
+      const left = baseEventWidth*(1-(nb_overlap_placed+1)/nb_overlap_total)
+
       events_list.push(
         <SingleEvent key={i} start_time={element.start} end_time={element.end} 
         label={element.desc} teacher={element.teacher} room={element.room} link={element.link} 
-        width={baseEventWidth/(nb_overlap_total)} left={baseEventWidth*(1-(nb_overlap_placed+1)/nb_overlap_total)}
+        width={width} left={left}
         desc={''} asso={asso}/>
       );
+
       placed.push(element)
       i += 1;
     } 

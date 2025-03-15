@@ -1,5 +1,6 @@
 import React from 'react'
 import { gsap } from 'gsap'
+import './NavBar.scss'
 
 const { useRef, useState, useEffect, createRef } = React
 
