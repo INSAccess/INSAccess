@@ -1,3 +1,4 @@
+from django.forms import DateTimeField
 from rest_framework import serializers
 from .models import InsaClass, GroupTD, Teacher, Room, Department
 
@@ -26,6 +27,9 @@ class InsaClassSerializer(serializers.ModelSerializer):
     link_teacher = TeacherSerializer(many=True, read_only=True)
     link_room = RoomSerializer(many=True, read_only=True)
     link_depart = DepartmentSerializer(many=True, read_only=True)
+    start_hour = DateTimeField(format="%H%M", read_only=True)
+    end_hour = DateTimeField(format="%H%M", read_only=True)
+
 
     class Meta:
         model = InsaClass
