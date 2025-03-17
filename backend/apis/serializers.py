@@ -1,4 +1,4 @@
-from django.forms import DateTimeField
+from django.forms import DateTimeField, TimeField
 from rest_framework import serializers
 from .models import InsaClass, GroupTD, Teacher, Room, Department
 
@@ -27,10 +27,15 @@ class InsaClassSerializer(serializers.ModelSerializer):
     link_teacher = TeacherSerializer(many=True, read_only=True)
     link_room = RoomSerializer(many=True, read_only=True)
     link_depart = DepartmentSerializer(many=True, read_only=True)
-    start_hour = DateTimeField(format="%H%M", read_only=True)
-    end_hour = DateTimeField(format="%H%M", read_only=True)
-
 
     class Meta:
         model = InsaClass
         fields = ["uid", "date", "start_hour", "end_hour", "desc", "link_td", "link_teacher", "link_room", "link_depart"]
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # Format start_hour and end_hour to HHMM format fir the frontend
+        representation['start_hour'] = instance.start_hour.strftime("%H%M")
+        representation['end_hour'] = instance.end_hour.strftime("%H%M")
+        
+        return representation
