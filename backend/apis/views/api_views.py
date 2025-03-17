@@ -29,8 +29,8 @@ class GetDayAPIView(APIView):
             return Response({"error": "Invalid date format"}, status = 400)
 
         user_tds = request.user.userprofile.link_td.all()
-        if not user_tds:
-            return Response({"error": "there is no user_tds associated with the user"}, status = 400)
+        # if not user_tds:
+        #     return Response({"error": "there is no user_tds associated with the user"}, status = 400)
         
         classes = InsaClass.objects.filter(link_td__in=user_tds, date = day_date).distinct()
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
@@ -53,8 +53,8 @@ class GetWeekAPIView(APIView):
 
 
         user_tds = request.user.userprofile.link_td.all()
-        if not user_tds:
-            return Response({"error": "there is no user_tds associated with the user"}, status = 400)
+        # if not user_tds:
+        #     return Response({"error": "there is no user_tds associated with the user"}, status = 400)
         
         classes = InsaClass.objects.filter(link_td__in=user_tds, date__range =[start_of_week, end_of_week]).distinct()
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
@@ -78,8 +78,8 @@ class GetMonthAPIView(APIView):
 
 
         user_tds = request.user.userprofile.link_td.all()
-        if not user_tds:
-            return Response({"error": "there is no user_tds associated with the user"}, status = 400)
+        # if not user_tds:
+        #     return Response({"error": "there is no user_tds associated with the user"}, status = 400)
         
         classes = InsaClass.objects.filter(link_td__in=user_tds, date__range =[start_of_month, end_of_month]).distinct()
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
@@ -103,8 +103,8 @@ class GetYearAPIView(APIView):
 
 
         user_tds = request.user.userprofile.link_td.all()
-        if not user_tds:
-            return Response({"error": "there is no user_tds associated with the user"}, status = 400)
+        # if not user_tds:
+        #     return Response({"warning": "there is no user_tds associated with the user"}, status = 400)
         
         classes = InsaClass.objects.filter(link_td__in=user_tds, date__range =[start_of_year, end_of_year]).distinct()
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
