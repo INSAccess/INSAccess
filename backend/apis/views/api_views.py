@@ -148,7 +148,7 @@ class PostTdsAPIView(APIView):
         """
         selected_tds = request.data.get('selected_tds', [])
 
-        UserLinkTD.objects.filter(user=request.user).delete()#remove previous selection
+        UserLinkTD.objects.filter(user=request.user.userprofile).delete()#remove previous selection
 
         user_link_tds = []
         
