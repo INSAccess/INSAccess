@@ -1,0 +1,30 @@
+.events {
+    display: block;
+    height: 90%;
+    border-radius: 5px;
+    background: var(--eventBgColor);
+    position: relative;
+  }
+  
+  .date {
+    height: var(--dateHeight);
+    display: flex;
+    justify-content: center;
+    align-items: center center;
+    margin: 1vh;
+    gap: 0.5vw;
+  }
+  
+  .date-num, .date-day, .date-month {
+    font-size: var(--dateTextSize);
+    display:flex;
+    container-name: date
+  }
+  
+  .date-num {
+    font-weight: 600;
+  }
+  
+  .date-day, .date-month {
+    font-weight: 100;
+  }

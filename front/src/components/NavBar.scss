@@ -1,0 +1,76 @@
+.menu {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+    padding: 10px;
+    max-width: 800px;
+    margin: 0 auto;
+    border-bottom: 1px solid #eee;
+    
+    @media (max-width: 650px) {
+      flex-direction: column;
+      align-items: center;
+      visibility: hidden;
+      position: absolute;
+      right: 0;
+      top: 0;
+      background-color: #57caff;
+    }
+    
+    .item {
+      padding: 18px 28px;
+      cursor: pointer;
+      transition: color .3s ease-out;
+      text-decoration: none;
+      color: #000000;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-size: 12px;
+      margin: 5px 0;
+      
+      &.active {
+        color: #ffffff;
+      }
+    }
+    
+    .indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      border-radius: 30px;
+    }
+  }
+  
+  .fold
+  {
+    background-color: aquamarine;
+    width: 100%;
+    text-align: center;
+    visibility: collapse;
+    @media (max-width: 650px) {
+      visibility: visible;
+    }
+  }
+  
+  @media (max-width: 650px)
+  {
+    .visible
+    {
+      visibility: visible;
+    }
+  }
+  
+  #backmenu
+  {
+    background-color: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    visibility: hidden;
+    background-color: #111;
+    opacity: 0.2;
+  }

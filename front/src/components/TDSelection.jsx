@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { API_URL } from '../js/constants'
+import './TDSelection.scss'
 
 function TDSelection({ allTDs, userTDs }) {
     const [selectedTDs, setSelectedTDs] = useState(new Set(userTDs));

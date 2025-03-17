@@ -4,6 +4,7 @@ import EventUtils from '../../js/EventUtils';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import './SingleEvent.scss';
 
 const FollowLink = ({asso, link}) => {
   if (asso) {
