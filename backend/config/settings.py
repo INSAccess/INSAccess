@@ -63,6 +63,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://172.18.26.13:3000",
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://172.18.26.13:3000",
+]
+
 CORS_URLS_REGEX = r'^/api/.*'
 
 LOGIN_URL = "authentification/login/"
