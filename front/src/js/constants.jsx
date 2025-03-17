@@ -28,5 +28,7 @@ const items = [
     ];
 const PATH_CALENDAR = API_URL+'/api/get_year/'
 const PATH_ASSO = 'http://localhost:3000/data_asso.json'
+const API_LOGIN = API_URL+'/authentification/login'
+const API_AUTH = API_URL+'/api/is_connected?format=json'
 
-export { hours_timeline, dayList, minWidth, nbDaysPerMonth, monthList, baseEventWidth, API_URL, items, PATH_ASSO, PATH_CALENDAR };
+export { hours_timeline, dayList, minWidth, nbDaysPerMonth, monthList, baseEventWidth, API_URL, items, PATH_ASSO, PATH_CALENDAR, API_LOGIN, API_AUTH };

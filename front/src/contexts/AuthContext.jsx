@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import RandomUtils from '../js/RandomUtils.jsx'
-import { API_URL } from '../js/constants.jsx'
+import { API_AUTH } from '../js/constants.jsx'
 
 const AuthContext = createContext();
 
@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const loadData = async () => {
-          const result = await RandomUtils.fetchData(API_URL+"/api/is_connected");
+          const result = await RandomUtils.fetchData(API_AUTH);
           if (result.data){
             setToken(result.data);
           }
