@@ -120,8 +120,8 @@ class GetTdsAPIView(APIView):
         
         """
         user_tds = request.user.userprofile.link_td.all()
-        if not user_tds:
-            return Response({"error": "there is no user_tds associated with the user"}, status = 400)
+        # if not user_tds:
+        #     return Response({"error": "there is no user_tds associated with the user"}, status = 400)
         
         serializer_user_tds= GroupTDSerializer(user_tds, many = True)
 
