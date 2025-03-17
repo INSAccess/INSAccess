@@ -155,7 +155,7 @@ class PostTdsAPIView(APIView):
         for td_name in selected_tds:
             try:
                 td = GroupTD.objects.get(name=td_name)
-                user_link_tds.append(UserLinkTD(user=request.user, name_td=td))
+                user_link_tds.append(UserLinkTD(user=request.user.userprofile, name_td=td))
             except GroupTD.DoesNotExist:
                 continue  # Skip if GroupTD with this name doesn't exist
 
