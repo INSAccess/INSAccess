@@ -1,4 +1,4 @@
-import './css/App.css';
+import './App.scss';
 import NavBar from './components/NavBar.jsx'
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -13,13 +13,14 @@ import RandomUtils from './js/RandomUtils.jsx';
 
 function App() {
   let burger="menu"
+  let dimensions = RandomUtils.useWindowDimensions();
+  const [page, setPage] = useState("home")
+
   const current_date = new Date()
   let first_day = new Day(current_date)
-  let dimensions = RandomUtils.useWindowDimensions();
 
   let day = (minWidth < dimensions.width) ? first_day.getDate() : first_day.startOfWeek().getDate()
   
-  const [page, setPage] = useState("home")
   
   function unfold() {
     var menu = document.getElementsByClassName(burger)
@@ -33,7 +34,6 @@ function App() {
     for (let i = 0; i < menu.length; i++) {
       menu.item(i).classList.remove("visible")
     }
-
   }
 
   function currentPage(pageName, day, data, data_asso){

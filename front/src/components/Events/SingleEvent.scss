@@ -1,0 +1,20 @@
+.event {
+    border: 1px solid var(--eventBorderColor);
+    border-radius: 5px;
+    padding: 0.1vw 0.5vw;
+    background: var(--eventColor);
+    justify-content: left;
+}
+
+.title{
+  font-weight: 600;
+  margin-bottom: 0.1vw;
+  font-size: 1.8vh;
+}
+
+.time, .teacher, .room {
+  font-weight: 430;
+  margin-bottom: 0.1vw;
+  font-size: max(0.6vw, 1.7vh);
+  height: auto;
+}

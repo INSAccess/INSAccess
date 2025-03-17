@@ -1,0 +1,27 @@
+:root {
+  --numDays: 5;
+  --eventBorderColor: #445374;
+  --eventColor: #fce3c3;
+  --rotateTime: 2s;
+  --eventBgColor: #9bf5a7;
+  --dateTextSize: max(3.4vh, 2.1vw);
+  --dateHeight: 6vh;
+  --numHours: 8;
+}
+
+//---------------------------------------------------------------//
+//                           UTILS                                //
+//---------------------------------------------------------------//
+
+#rotating-logo {
+  animation: rotation var(--rotateTime) infinite linear
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
