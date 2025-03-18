@@ -98,6 +98,15 @@ class RandomUtils{
   
     return {data, error, loading}
   }
+
+  static Join(list){
+    let res = ""
+    for (let i = 0; i < list.length-1; i++){
+      res += list[i].name+', '
+    }
+    res += list[list.length-1].name
+    return res
+  }
 }
 
 export default RandomUtils;

@@ -35,7 +35,7 @@ class EventUtils {
   static getNbEventsAtHour(hour, events){
     let nb_events = 0;
     for (let element of events){
-      if (element.start < hour && element.end > hour){
+      if (element.start_hour < hour && element.end_hour > hour){
         nb_events++;
       }
     }
@@ -51,7 +51,7 @@ class EventUtils {
     let hours = []
     const hours_events = Day.createHours();
     for (let hour of hours_events){
-      if (hour >= event.start && hour <= event.end){
+      if (hour >= event.start_hour && hour <= event.end_hour){
         hours.push(hour);
       }
     }
@@ -88,7 +88,7 @@ class EventUtils {
         events.push(ev)
       }
     })
-      return events;
+    return events;
   }
 }
 

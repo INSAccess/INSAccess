@@ -2,12 +2,12 @@ import TDSelection from '../TDSelection.jsx';
 import RandomUtils from '../../js/RandomUtils.jsx';
 import { useEffect, useState } from 'react';
 import { API_URL } from '../../js/constants.jsx'
-import { Error, Loading } from '../templates.jsx'
+import { Loading } from '../templates.jsx'
 import EventCreator from '../EventCreator.jsx';
 
 const Settings = () => {
 
-    let {data, error, loading} = RandomUtils.LoadData(API_URL+"/api/get_tds");
+    let {data, error, loading} = RandomUtils.LoadData(API_URL+"/api/get_tds/ITI3?format=json");
     const [user_tds, setUserTD] = useState(null);
     const [all_tds, setAllTD] = useState(null);
     const [view, setView] = useState("TDs");
@@ -22,7 +22,7 @@ const Settings = () => {
     useEffect(() => {
         if (data){
             setUserTD(data.user_tds)
-            setAllTD(data.all_tds)
+            setAllTD(data.department_tds)
         }
     }, [data])
 
@@ -33,7 +33,11 @@ const Settings = () => {
     }
 
     if (error){
-        return <Error message={"Erreur lors du fetch des settings"}/>
+        console.error("Erreur lors du fetch des settings")
+        useEffect(() => {
+            setUserTD([])
+            setAllTD([])
+        }, [])
     }
 
     if (user_tds && all_tds){
@@ -44,8 +48,15 @@ const Settings = () => {
                 <button onClick={() => {setView("create")}}>Create Event</button>
                 <>{displayView(view)}</>
             </div>
-        );  
+        ); 
+    } else {
+        return (
+            <div>
+                <h1>Settings</h1>
+            </div>
+        )
     }
+
 }
 
 export default Settings;

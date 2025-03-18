@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import Day from '../../js/Day';
 import EventUtils from '../../js/EventUtils';
+import RandomUtils from '../../js/RandomUtils'
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -57,7 +58,7 @@ const SingleEvent = (props) => {
       <>
         <button type="button" className="event" style={eventStyle} onClick={handleShow}>
           <p className="title">{props.label}</p>
-          <p className="room">{props.room.join(', ')}</p>
+          <p className="room">{RandomUtils.Join(props.room)}</p>
         </button>
 
         <Modal show={show} onHide={handleClose}>
@@ -67,7 +68,7 @@ const SingleEvent = (props) => {
           <Modal.Body>
             <div><strong>Heure de début : </strong>{Day.presentableHour(props.start_time)}</div>
             <div><strong>Heure de fin : </strong>{Day.presentableHour(props.end_time)}</div>
-            <div><strong>{(props.asso) ? "Associations" : "Profs"} : </strong>{props.teacher}</div>
+            <div><strong>{(props.asso) ? "Associations" : "Profs"} : </strong>{RandomUtils.Join(props.teacher)}</div>
             <Description asso={props.asso} desc={props.desc}/>
             <br/>
             <FollowLink asso={props.asso} link={props.link}/>

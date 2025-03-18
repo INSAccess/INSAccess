@@ -11,8 +11,7 @@ const ProtectedRoute = ({ children }) => {
     if (loading) {
         return <Loading />
     } else if (!token){
-        //window.location.replace(url_login)
-        console.log(token)
+        window.location.replace(url_login)
     }
 
     if (token){

@@ -28,7 +28,7 @@ function TDSelection({ allTDs, userTDs }) {
             body: JSON.stringify({ selected_tds: Array.from(selectedTDs) }),
         });
         const data = await response.json();
-        setStatusMessage(data.message);
+        setStatusMessage(data.success);
       } catch (error) {
         console.error(error)
           setStatusMessage("An error occurred while saving your selection.");
@@ -38,14 +38,14 @@ function TDSelection({ allTDs, userTDs }) {
     return (
         <div>
             {allTDs.map(td => (
-                <li key={td}>
+                <li key={td.name}>
                     <label>
                         <input
                             type="checkbox"
-                            checked={selectedTDs.has(td)}
-                            onChange={() => toggleTD(td)}
+                            checked={selectedTDs.has(td.name)}
+                            onChange={() => toggleTD(td.name)}
                         />
-                        {td}
+                        {td.name}
                     </label>
                 </li>
             ))}

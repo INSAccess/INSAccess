@@ -62,13 +62,11 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://172.18.26.13:3000",
+    "http://localhost:3000"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://172.18.26.13:3000",
+    "http://localhost:3000"
 ]
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "172.18.26.13"]

@@ -1,6 +1,6 @@
 import EventsInDay from "./EventsInDay";
 import RandomUtils from "../../js/RandomUtils";
-import { Loading, Error } from "../templates";
+import { Loading } from "../templates";
 import { useState } from "react";
 import { hours_timeline, minWidth } from "../../js/constants";
 import Day from "../../js/Day"
@@ -36,7 +36,8 @@ const AllEvents = ({start, data_path, asso}) => {
   if (loading) return <Loading />;
 
   if (error) {
-    return <Error message={"Erreur lors de la récupération des cours, vérifiez que vous êtes bien connectés. Si le problème persiste, envoyez nous un message."}/>;
+    console.error("Erreur lors de la récupération des cours ou associations, vérifiez que vous êtes bien connectés. Si le problème persiste, envoyez nous un message.");
+    data = []
   }
 
   function handleDay(direction, value){
