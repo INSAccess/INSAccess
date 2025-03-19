@@ -1,5 +1,8 @@
 import environ
 from pathlib import Path
+from corsheaders.defaults import default_headers
+
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -65,9 +68,13 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000"
 ]
 
+CORS_ALLOW_HEADERS = default_headers
+
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000"
 ]
+
+
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "172.18.26.13"]
 
