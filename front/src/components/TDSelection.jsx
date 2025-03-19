@@ -2,6 +2,17 @@ import { useState } from "react";
 import { API_URL } from '../js/constants'
 import './TDSelection.scss'
 
+const getCSRFToken = () => {
+    const cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+        const [name, value] = cookie.split('=');
+        if (name === 'csrftoken') {
+            return value;
+        }
+    }
+    return null;
+};
+
 function TDSelection({ allTDs, userTDs }) {
     const [selectedTDs, setSelectedTDs] = useState(new Set(userTDs));
     const [statusMessage, setStatusMessage] = useState(" ");
@@ -22,7 +33,7 @@ function TDSelection({ allTDs, userTDs }) {
       try {
         const response = await fetch(API_URL+'/api/save_tds', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRFToken()},
             mode:"cors",
             credentials:'include',
             body: JSON.stringify({ selected_tds: Array.from(selectedTDs) }),
