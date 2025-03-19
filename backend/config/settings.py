@@ -23,6 +23,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'apis',
     'corsheaders',
+    'uniauth',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -80,7 +81,18 @@ ALLOWED_HOSTS = ["127.0.0.1", "localhost", "172.18.26.13"]
 
 CORS_URLS_REGEX = r'^/api/.*'
 
-LOGIN_URL = "authentification/login/"
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'uniauth.backends.CASBackend',
+]
+
+LOGIN_URL = "authentification/login/" #LOGIN_URL = "/accounts/login/" for CAS implementation
+
+UNIAUTH_LOGIN_DISPLAY_STANDARD = False
+UNIAUTH_LOGOUT_CAS_COMPLETELY = True
+
 
 WSGI_APPLICATION = 'config.wsgi.application'
 

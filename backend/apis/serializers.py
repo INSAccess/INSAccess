@@ -34,8 +34,14 @@ class InsaClassSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        # Format start_hour and end_hour to HHMM format fir the frontend
+        # Format start_hour and end_hour to HHMM format for the frontend
         representation['start_hour'] = instance.start_hour.strftime("%H%M")
         representation['end_hour'] = instance.end_hour.strftime("%H%M")
+        
+        representation["link_td"] = [element["name"] for element in representation["link_td"]]
+        representation["link_teacher"] = [element["name"] for element in representation["link_teacher"]]
+        representation["link_room"] = [element["name"] for element in representation["link_room"]]
+        representation["link_depart"] = [element["name"] for element in representation["link_depart"]]
+
         
         return representation

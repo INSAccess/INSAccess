@@ -123,21 +123,21 @@ class GetTdsAPIView(APIView):
         # if not user_tds:
         #     return Response({"error": "there is no user_tds associated with the user"}, status = 400)
         
-        serializer_user_tds= GroupTDSerializer(user_tds, many = True)
+        serialized_user_tds= [td.name for td in user_tds]
 
         department_obj = Department.objects.filter(name = department).first()
         if not department_obj:
             tds = GroupTD.objects.all()
-            serializer_tds= GroupTDSerializer(department_tds, many = True)
-            return Response({"user_tds" : serializer_user_tds.data, "all_tds" : serializer_tds.data})
+            serialized_tds= [td.name for td in department_tds]
+            return Response({"user_tds" : serialized_user_tds, "all_tds" : serialized_tds})
         
         department_tds = GroupTD.objects.filter(
             classlinktd__insa_class__link_depart=department_obj
         ).distinct()
                       
-        serializer_tds= GroupTDSerializer(department_tds, many = True)
+        serialized_tds= [td.name for td in department_tds]
         
-        return Response({"user_tds" : serializer_user_tds.data, "department_tds" : serializer_tds.data})
+        return Response({"user_tds" : serialized_user_tds, "department_tds" : serialized_tds})
         
 class PostTdsAPIView(APIView):
     permission_classes = [IsAuthenticated]
