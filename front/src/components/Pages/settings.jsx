@@ -6,18 +6,10 @@ import { Loading } from '../templates.jsx'
 import EventCreator from '../EventCreator.jsx';
 
 const Settings = () => {
-
-    let {data, error, loading} = RandomUtils.LoadData(API_URL+"/api/get_tds/ITI3?format=json");
     const [user_tds, setUserTD] = useState(null);
     const [all_tds, setAllTD] = useState(null);
     const [view, setView] = useState("TDs");
-
-    function displayView(view){
-        switch (view){
-            case "TDs" : return (<TDSelection allTDs={all_tds} userTDs={user_tds} />);
-            case "create" : return (<EventCreator/>);
-        }
-    }
+    let {data, error, loading} = RandomUtils.LoadData(API_URL+"/api/get_tds/ITI3?format=json");
 
     useEffect(() => {
         if (data){
@@ -38,9 +30,20 @@ const Settings = () => {
             setUserTD([])
             setAllTD([])
         }, [])
+        return (
+            <div>
+                <h1>Settings</h1>
+            </div>
+        )
     }
 
     if (user_tds && all_tds){
+        function displayView(view){
+            switch (view){
+                case "TDs" : return (<TDSelection allTDs={all_tds} userTDs={user_tds} />);
+                case "create" : return (<EventCreator/>);
+            }
+        }
         return (
             <div>
                 <h1>Settings</h1>

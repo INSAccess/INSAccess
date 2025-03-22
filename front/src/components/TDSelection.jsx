@@ -1,17 +1,7 @@
 import { useState } from "react";
 import { API_URL } from '../js/constants'
 import './TDSelection.scss'
-
-const getCSRFToken = () => {
-    const cookies = document.cookie.split('; ');
-    for (let cookie of cookies) {
-        const [name, value] = cookie.split('=');
-        if (name === 'csrftoken') {
-            return value;
-        }
-    }
-    return null;
-};
+import RandomUtils from '../js/RandomUtils'
 
 function TDSelection({ allTDs, userTDs }) {
     const [selectedTDs, setSelectedTDs] = useState(new Set(userTDs));
@@ -33,7 +23,7 @@ function TDSelection({ allTDs, userTDs }) {
       try {
         const response = await fetch(API_URL+'/api/save_tds', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRFToken()},
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': RandomUtils.getCSRFToken()},
             mode:"cors",
             credentials:'include',
             body: JSON.stringify({ selected_tds: Array.from(selectedTDs) }),
@@ -49,14 +39,14 @@ function TDSelection({ allTDs, userTDs }) {
     return (
         <div>
             {allTDs.map(td => (
-                <li key={td.name}>
+                <li key={td}>
                     <label>
                         <input
                             type="checkbox"
-                            checked={selectedTDs.has(td.name)}
-                            onChange={() => toggleTD(td.name)}
+                            checked={selectedTDs.has(td)}
+                            onChange={() => toggleTD(td)}
                         />
-                        {td.name}
+                        {td}
                     </label>
                 </li>
             ))}

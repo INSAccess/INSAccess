@@ -59,7 +59,7 @@ class RandomUtils{
   static async fetchData(data_path){
     const initConfig = {
       method:'GET',
-      headers:{'Content-Type':'application/json', 'Accept':'application/json'},
+      headers:{'Content-Type':'application/json', 'Accept':'application/json', 'X-CSRFToken':RandomUtils.getCSRFToken()},
       mode:'cors',
       credentials:'include'
     }
@@ -102,11 +102,22 @@ class RandomUtils{
   static Join(list){
     let res = ""
     for (let i = 0; i < list.length-1; i++){
-      res += list[i].name+', '
+      res += list[i]+', '
     }
-    res += list[list.length-1].name
+    res += list[list.length-1]
     return res
   }
+
+  static getCSRFToken(){
+    const cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+        const [name, value] = cookie.split('=');
+        if (name === 'csrftoken') {
+            return value;
+        }
+    }
+    return null;
+};
 }
 
 export default RandomUtils;
