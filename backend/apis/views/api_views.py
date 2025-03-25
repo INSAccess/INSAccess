@@ -1,22 +1,10 @@
-from django.http import HttpResponse
-from django.views.decorators.http import require_GET, require_POST
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 import datetime
 
-from apis.serializers import GroupTDSerializer, InsaClassSerializer
-from apis.utils import db_insertion, fetch
-from apis.models import * 
-
-
-@require_GET
-def test(request):
-    list_of_records = fetch.fetch_entire_year("2024", "ITI", "3")
-    db_insertion.insert_list_record(list_of_records)
-    
-    return HttpResponse("Hello, world. You're at the test page.")
-
+from apis.serializers import InsaClassSerializer
+from apis.models import InsaClass, Department, GroupTD, UserLinkTD
 
 class GetDayAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -103,9 +91,6 @@ class GetYearAPIView(APIView):
 
 
         user_tds = request.user.userprofile.link_td.all()
-        # if not user_tds:
-        #     return Response({"warning": "there is no user_tds associated with the user"}, status = 400)
-        
         classes = InsaClass.objects.filter(link_td__in=user_tds, date__range =[start_of_year, end_of_year]).distinct()
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
         return Response(serializer.data)
@@ -120,8 +105,6 @@ class GetTdsAPIView(APIView):
         
         """
         user_tds = request.user.userprofile.link_td.all()
-        # if not user_tds:
-        #     return Response({"error": "there is no user_tds associated with the user"}, status = 400)
         
         serialized_user_tds= [td.name for td in user_tds]
 
