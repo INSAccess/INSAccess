@@ -1,9 +1,9 @@
 import AllEvents from '../Events/AllEvents.jsx'
-import { PATH_CALENDAR } from '../../js/constants.jsx'
 
-const Calendar = ({start}) => {
+const Calendar = ({start, data}) => {
+
   return (
-    <AllEvents start={start} data_path={PATH_CALENDAR+start} asso={false}/>
+    <AllEvents start={start} data={data} asso={false}/>
   )
 }
 

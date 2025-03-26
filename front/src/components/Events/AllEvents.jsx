@@ -1,6 +1,5 @@
 import EventsInDay from "./EventsInDay";
 import RandomUtils from "../../js/RandomUtils";
-import { Loading } from "../templates";
 import { useState } from "react";
 import { hours_timeline, minWidth } from "../../js/constants";
 import Day from "../../js/Day"
@@ -22,7 +21,7 @@ const TimeBar = () => {
     );
   }
 
-const AllEvents = ({start, data_path, asso}) => {
+const AllEvents = ({start, data, asso}) => {
   let dimensions = RandomUtils.useWindowDimensions();
   let day = new Day(start);
 
@@ -30,15 +29,6 @@ const AllEvents = ({start, data_path, asso}) => {
   const [first_day, setDay] = useState(day);
   let nb_days =  ((minWidth < dimensions.width) ? 5 : 1);
   let current_day = (nb_days == 5) ? first_day.copy().startOfWeek() : first_day.copy();
-
-  let {data, error, loading} = RandomUtils.LoadData(data_path);
-
-  if (loading) return <Loading />;
-
-  if (error) {
-    console.error("Erreur lors de la récupération des cours ou associations, vérifiez que vous êtes bien connectés. Si le problème persiste, envoyez nous un message.");
-    data = []
-  }
 
   function handleDay(direction, value){
     if (direction === "prev"){

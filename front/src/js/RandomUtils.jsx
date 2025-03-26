@@ -117,7 +117,7 @@ class RandomUtils{
         }
     }
     return null;
-};
+  };
 }
 
 export default RandomUtils;

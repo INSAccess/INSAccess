@@ -37,13 +37,14 @@ const Settings = () => {
         )
     }
 
-    if (user_tds && all_tds){
-        function displayView(view){
-            switch (view){
-                case "TDs" : return (<TDSelection allTDs={all_tds} userTDs={user_tds} />);
-                case "create" : return (<EventCreator/>);
-            }
+    function displayView(view){
+        switch (view){
+            case "TDs" : return (<TDSelection allTDs={all_tds} userTDs={user_tds} />);
+            case "create" : return (<EventCreator/>);
         }
+    }
+
+    if (user_tds && all_tds){
         return (
             <div>
                 <h1>Settings</h1>
