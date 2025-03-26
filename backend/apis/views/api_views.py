@@ -1,14 +1,23 @@
+import datetime
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-import datetime
 
 from apis.serializers import InsaClassSerializer
 from apis.models import InsaClass, Department, GroupTD, UserLinkTD
 
 class GetDayAPIView(APIView):
+    """The api that returns the event class
+    of the request user for the day
+
+    Args:
+        APIView (class): the api class that is inherited by this route
+
+    Returns:
+        response: the serialized data
+    """
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request, day):
         """Returns the Json for the given day (of the format YYYY-MM-DD)"""
         try:
@@ -21,11 +30,19 @@ class GetDayAPIView(APIView):
         classes = InsaClass.objects.filter(link_td__in=user_tds, date = day_date).distinct()
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
         return Response(serializer.data)
-    
 
 class GetWeekAPIView(APIView):
+    """The api that returns the event class
+    of the request user for the week
+
+    Args:
+        APIView (class): the api class that is inherited by this route
+
+    Returns:
+        response: the serialized data
+    """
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request, day):
         """Returns the Json for the week of the given day
         (of the format YYYY-MM-DD)"""
@@ -40,14 +57,24 @@ class GetWeekAPIView(APIView):
 
         user_tds = request.user.userprofile.link_td.all()
 
-        classes = InsaClass.objects.filter(link_td__in=user_tds, date__range =[start_of_week, end_of_week]).distinct()
+        classes = InsaClass.objects.filter(link_td__in=user_tds,
+                                           date__range =[start_of_week, end_of_week]).distinct()
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
         return Response(serializer.data)
 
 
 class GetMonthAPIView(APIView):
+    """The api that returns the event class
+    of the request user for the month
+
+    Args:
+        APIView (class): the api class that is inherited by this route
+
+    Returns:
+        response: the serialized data
+    """
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request, day):
         """Returns the Json for the month of the given day
         (of the format YYYY-MM-DD)"""
@@ -63,14 +90,24 @@ class GetMonthAPIView(APIView):
 
         user_tds = request.user.userprofile.link_td.all()
 
-        classes = InsaClass.objects.filter(link_td__in=user_tds, date__range =[start_of_month, end_of_month]).distinct()
+        classes = InsaClass.objects.filter(link_td__in=user_tds,
+                                           date__range =[start_of_month, end_of_month]).distinct()
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
         return Response(serializer.data)
 
 
 class GetYearAPIView(APIView):
+    """The api that returns the event class
+    of the request user for the year
+
+    Args:
+        APIView (class): the api class that is inherited by this route
+
+    Returns:
+        response: the serialized data
+    """
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request, day):
         """Returns the Json for the year of the given day
         (of the format YYYY-MM-DD)"""
@@ -85,21 +122,37 @@ class GetYearAPIView(APIView):
 
 
         user_tds = request.user.userprofile.link_td.all()
-        classes = InsaClass.objects.filter(link_td__in=user_tds, date__range =[start_of_year, end_of_year]).distinct()
+        classes = InsaClass.objects.filter(link_td__in=user_tds,
+                                           date__range =[start_of_year, end_of_year]).distinct()
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
         return Response(serializer.data)
 
 
 class GetTdsAPIView(APIView):
+    """Returns the Json of the request user's td and the department td's 
+        (or all of them if no department is found)
+
+    Args:
+        APIView (class): the api class that is inherited by this route
+
+    Returns:
+        response: the serialized data
+    """
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request, department):
-        """Returns the Json of the user's td and the department td's 
-        (or all of them if no department)
-        
+        """provide the serialized tds of the given department
+        return all tds if the given department doesnt match our database's department
+
+        Args:
+            request : the request associated with the call of this api
+            department (String): the department given in the get method
+
+        Returns:
+        response: the serialized data
         """
         user_tds = request.user.userprofile.link_td.all()
-        
+
         serialized_user_tds= [td.name for td in user_tds]
 
         department_obj = Department.objects.filter(name = department).first()
@@ -107,28 +160,43 @@ class GetTdsAPIView(APIView):
             tds = GroupTD.objects.all()
             serialized_tds= [td.name for td in department_tds]
             return Response({"user_tds" : serialized_user_tds, "all_tds" : serialized_tds})
-        
+
         department_tds = GroupTD.objects.filter(
             classlinktd__insa_class__link_depart=department_obj
         ).distinct()
-                      
+
         serialized_tds= [td.name for td in department_tds]
-        
+
         return Response({"user_tds" : serialized_user_tds, "department_tds" : serialized_tds})
-        
+
 class PostTdsAPIView(APIView):
+    """the api route class for saving the selected tds
+    of the request user
+
+    Args:
+        APIView (class): the api class that is inherited by this route
+
+    Returns:
+        response: the serialized data
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        """
-        Save the selected tds into the database for the current user
+        """the post route for saving the selected tds
+        of the request user
+
+        Args:
+            request : the request associated with the call of this api
+
+        Returns:
+        response: the serialized success or failure
         """
         selected_tds = request.data.get('selected_tds', [])
 
         UserLinkTD.objects.filter(user=request.user.userprofile).delete()#remove previous selection
 
         user_link_tds = []
-        
+
         for td_name in selected_tds:
             try:
                 td = GroupTD.objects.get(name=td_name)
@@ -139,11 +207,19 @@ class PostTdsAPIView(APIView):
         UserLinkTD.objects.bulk_create(user_link_tds)
 
         return Response({"success": "Selections updated successfully."})
-    
 
 class GetIsConnectedAPIView(APIView):
+    """A small api route for the temporary solution
+    for knowing if the user is connected or not
+
+    Args:
+        APIView (class): the api class that is inherited by this route
+
+    Returns:
+        response: the serialized boolean
+    """
     permission_classes = [IsAuthenticated]
-    
+
     def get(self,request):
         """returns True if the user is authenticated else False"""
         return Response(request.user.is_authenticated)

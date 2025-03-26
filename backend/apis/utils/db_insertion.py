@@ -1,3 +1,34 @@
+"""
+Module Name: db_insertion.py
+
+Description:
+    The methods for inserting the given records into the 
+    database
+
+Author:
+    Raphael Senellart
+
+Date Created:
+    March 26, 2025
+
+Version:
+    1.0.0
+
+License:
+    No License
+
+Usage:
+
+
+Dependencies:
+
+
+Notes:
+    This tool is specialized for the agenda.insa-rouen.fr
+    website, but some methods are generic and can be implemented
+    else where.
+
+"""
 import datetime
 from django.db import IntegrityError
 from tqdm import tqdm

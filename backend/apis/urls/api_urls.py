@@ -1,5 +1,7 @@
 from django.urls import path
-from apis.views import *
+from apis.views import GetDayAPIView, GetWeekAPIView, GetMonthAPIView,\
+    GetYearAPIView, GetTdsAPIView, PostTdsAPIView, GetIsConnectedAPIView
+
 
 
 urlpatterns = [
@@ -11,4 +13,3 @@ urlpatterns = [
     path('save_tds',PostTdsAPIView.as_view(), name='save_tds'),
     path('is_connected', GetIsConnectedAPIView.as_view(), name='is_connected')
 ]
-
