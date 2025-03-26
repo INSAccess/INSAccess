@@ -6,6 +6,14 @@ import datetime
 from apis.models import InsaClass
 
 def generate_ics(request, user_id):
+    """The api route for obtaining the ics of the 
+    associated user of the given id
+    
+    Keyword arguments:
+    user_id -- the id of the user
+    Return: a ics file with all the event of the user
+    """
+    
     #user = User.objects.get(id=user_id)
     user = request.user
     start_of_year =  datetime.datetime.today().replace(month=1,day=1)  # First day of the year
@@ -32,31 +40,8 @@ def generate_ics(request, user_id):
         nl = "\n"
         e.description = f"{nl}{nl}{nl.join(final_description)}{nl}"
         cal.events.add(e)
-
-    # Générer le fichier ICS en tant que réponse HTTP
+        
     response = HttpResponse(str(cal), content_type="text/calendar")
-    response['Content-Disposition'] = f'attachment; filename="calendar_{user_id}.ics"'
+    response['Content-Disposition'] = 'inline; filename=calendar.ics'
     
     return response
-
-
-
-
-DESCRIPTION:\\n\\nITI32 AUTO TD 3\\nLAGHMARA HACHEMI Hind\\nITI3\\n
-DTEND:2025 02 25 T111500Z
-LOCATION:MA-G-RC-05
-DTSTART:20250225T094500Z
-SUMMARY:ITI32 AUTO TD 3
-UID:4e39606f-06f1-434c-986a-af69a46b1f55@4e39.org
-
-
-# DTSTAMP:2025 03 26 T073629Z
-# DTSTART:20250115T173000Z
-# DTEND:20250115T190000Z
-# SUMMARY:H-32-ALL-DEB1-TD-1
-# DESCRIPTION:\n\nH-32-ALLEMAND-DEB1-TD-01\nDEVIGNE Julie\nCGC3\nEP3\nGM3\n
-#  GPGR3\nITI3\nMECA3\n(Exporté le:26/03/2025 08:36)\n
-# UID:ADE60616e6e65652d323032342d323032352d373031382d302d30
-# CREATED:19700101T000000Z
-# LAST-MODIFIED:20250326T073629Z
-# SEQUENCE:2141699716
