@@ -21,15 +21,15 @@ def generate_ics(request, user_id):
     for event in classes:
         e = Event()
         e.name = event.desc
-        e.begin = event.start_hour.strftime("%Y%m%dT%H%M%SZ")
-        e.end = event.end_hour.strftime("%Y%m%dT%H%M%SZ")
+        e.begin = datetime.datetime.combine(event.date, event.start_hour).strftime("%Y%m%dT%H%M%SZ")
+        e.end = datetime.datetime.combine(event.date, event.end_hour).strftime("%Y%m%dT%H%M%SZ")
         rooms = [room.name for room in event.link_room.all()]
         e.location = ",".join(rooms)
         
         departments = [depart.name for depart in event.link_depart.all()]
         teachers = [teacher.name for teacher in event.link_teacher.all()]
         final_description = [event.desc] + teachers + departments
-        nl = r"\n"
+        nl = "\n"
         e.description = f"{nl}{nl}{nl.join(final_description)}{nl}"
         cal.events.add(e)
 
@@ -41,15 +41,16 @@ def generate_ics(request, user_id):
 
 
 
-# DESCRIPTION:\n\nITI32 OPTIM 1 TD 2\nGASSO Gilles\nITI3
-# DTEND:19000101T111500Z
-# DTSTART:19000101T094500Z
-# SUMMARY:ITI32 OPTIM 1 TD 2
-# UID:7b2a6f29-1067-4a57-9f6a-6636f971596b@7b2a.org
+
+DESCRIPTION:\\n\\nITI32 AUTO TD 3\\nLAGHMARA HACHEMI Hind\\nITI3\\n
+DTEND:2025 02 25 T111500Z
+LOCATION:MA-G-RC-05
+DTSTART:20250225T094500Z
+SUMMARY:ITI32 AUTO TD 3
+UID:4e39606f-06f1-434c-986a-af69a46b1f55@4e39.org
 
 
-
-# DTSTAMP:20250326T073629Z
+# DTSTAMP:2025 03 26 T073629Z
 # DTSTART:20250115T173000Z
 # DTEND:20250115T190000Z
 # SUMMARY:H-32-ALL-DEB1-TD-1
