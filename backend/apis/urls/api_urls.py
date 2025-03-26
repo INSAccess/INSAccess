@@ -1,11 +1,8 @@
-from django.urls import include, path
-
-from apis.views import api_views
+from django.urls import path
 from apis.views import *
 
 
 urlpatterns = [
-    path('test',api_views.test),
     path('get_day/<str:day>/', GetDayAPIView.as_view(), name='get_day'),
     path('get_week/<str:day>/', GetWeekAPIView.as_view(), name='get_week'),
     path('get_month/<str:day>/', GetMonthAPIView.as_view(), name='get_month'),
