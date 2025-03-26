@@ -6,8 +6,6 @@ pytest
 requests
 django-cors-headers
 djangorestframework
-sphinx
-sphinx_rtd_theme
-sphinxcontrib-httpdomain
 django-uniauth
 ics
+drf-yasg

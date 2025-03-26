@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'uniauth',
     'rest_framework',
+    'drf_yasg',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
