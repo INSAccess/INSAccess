@@ -10,7 +10,6 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return str(self.user)
-    
 
 class Event(models.Model):
     """Generic Class for defining events in the calendar"""
@@ -22,7 +21,6 @@ class Event(models.Model):
 
     class Meta:
         abstract = True
-
 
 class InsaClass(Event):
     """INSA Class definition"""
@@ -48,14 +46,18 @@ class InsaEvenement(Event):
 class Association(models.Model):
     """Association profile for the club and association of INSA Rouen"""
     name = models.CharField(max_length=255, primary_key=True)
-    user_email = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     unique_color = models.ForeignKey('EnumColor', on_delete=models.SET_NULL, null= True)
     type = models.ForeignKey('EnumType', on_delete=models.SET_NULL, null= True)
     sector = models.ForeignKey('EnumSector', on_delete=models.SET_NULL, null= True)
 
     def __str__(self):
         return self.name
-
+    
+class AssociationPublisher(models.Model):
+    """The user that can publish event of their association"""
+    assocation = models.ForeignKey('Association', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
 
 class EnumType(models.Model):
     """Possible values for the type in association"""
@@ -64,14 +66,13 @@ class EnumType(models.Model):
     def __str__(self):
         return self.name
 
-
 class EnumSector(models.Model):
     """Possible values for the sector (e.g., sport, music, etc.)"""
     name = models.CharField(max_length=255, primary_key=True)
 
     def __str__(self):
         return self.name
-
+    
 
 class EnumColor(models.Model):
     """Possible values for the color of the association"""
@@ -137,6 +138,7 @@ class ClassLinkTD(models.Model):
 
     def __str__(self):
         return f"Class: {self.insa_class} - TD: {self.td}"
+    
 
 
 class ClassLinkRoom(models.Model):
@@ -146,6 +148,7 @@ class ClassLinkRoom(models.Model):
 
     def __str__(self):
         return f"Class: {self.insa_class} - Room: {self.room}"
+
 
 
 class ClassLinkTeacher(models.Model):
@@ -173,4 +176,5 @@ class UserLinkTD(models.Model):
 
     def __str__(self):
         return f"User: {self.user} - TD: {self.name_td}"
+    
 
