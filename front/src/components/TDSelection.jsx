@@ -1,11 +1,17 @@
 import { useState } from "react";
-import { API_URL } from '../js/constants'
+import { API_URL, minWidth } from '../js/constants'
 import './TDSelection.scss'
 import RandomUtils from '../js/RandomUtils'
+import Day from '../js/Day'
 
-function TDSelection({ allTDs, userTDs }) {
+function TDSelection({ allTDs, userTDs, updateFunction }) {
     const [selectedTDs, setSelectedTDs] = useState(new Set(userTDs));
     const [statusMessage, setStatusMessage] = useState(" ");
+
+    let dimensions = RandomUtils.useWindowDimensions();
+    const current_date = new Date()
+    let first_day = new Day(current_date)
+    let day = (minWidth < dimensions.width) ? first_day.getDate() : first_day.startOfWeek().getDate()
 
     // Function to toggle selection of a TD
     const toggleTD = (tdName) => {
@@ -30,10 +36,11 @@ function TDSelection({ allTDs, userTDs }) {
         });
         const data = await response.json();
         setStatusMessage(data.success);
-      } catch (error) {
+        updateFunction()
+    } catch (error) {
         console.error(error)
-          setStatusMessage("An error occurred while saving your selection.");
-      }
+        setStatusMessage("An error occurred while saving your selection.");
+    }
     };
 
     return (

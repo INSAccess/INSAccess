@@ -14,12 +14,17 @@ import { Loading } from './components/templates.jsx'
 
 function App() {
 
-  const [page, setPage] = useState("home");
-  const [dataAsso, setDataAsso] = useState(null);
-  const [dataAgenda, setDataAgenda] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [errorAsso, setErrorAsso] = useState(null);
-  const [errorAgenda, setErrorAgenda] = useState(null);
+  const [page, setPage] = useState("home")
+  const [dataAsso, setDataAsso] = useState([])
+  const [dataAgenda, setDataAgenda] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [errorAsso, setErrorAsso] = useState(null)
+  const [errorAgenda, setErrorAgenda] = useState(null)
+  const [shouldUpdate, setUpdate] = useState(true)
+
+  function forceUpdate(){
+    setUpdate(true)
+  }
 
   let burger="menu"
   let dimensions = RandomUtils.useWindowDimensions();
@@ -28,28 +33,37 @@ function App() {
   let first_day = new Day(current_date)
   let day = (minWidth < dimensions.width) ? first_day.getDate() : first_day.startOfWeek().getDate()
 
+
   useEffect(() => {
     const loadData = async () => {
-      const resultAsso = await RandomUtils.fetchData(PATH_ASSO);
-      const resultAgenda = await RandomUtils.fetchData(PATH_CALENDAR+day);
-      setDataAsso(resultAsso.data);
-      setDataAgenda(resultAgenda.data);
-      setErrorAgenda(resultAgenda.error);
-      setErrorAsso(resultAsso.error);
-      setLoading(false);
+      if (!shouldUpdate || page != "home") return;
+
+      setLoading(true);
+      try {
+        const resultAsso = await RandomUtils.fetchData(PATH_ASSO);
+        const resultAgenda = await RandomUtils.fetchData(PATH_CALENDAR + day);
+
+        setDataAsso(resultAsso.data || []);
+        setDataAgenda(resultAgenda.data || []);
+        setErrorAsso(resultAsso.error);
+        setErrorAgenda(resultAgenda.error);
+      } catch (error) {
+        console.error("Erreur de chargement des données", error);
+      } finally {
+        setLoading(false);
+        setUpdate(false);
+      }
     };
 
     loadData();
-  }, []);
+  }, [shouldUpdate, day, page]);
 
   if (errorAgenda){
     console.error(errorAgenda)
-    setDataAgenda([])
   }
 
   if (errorAsso){
     console.error(errorAsso)
-    setDataAsso([])
   }
 
   if (loading) {
@@ -74,7 +88,7 @@ function App() {
     switch (pageName){
       case "home" : return <Calendar start={day} data={dataAgenda}/>;
       case "about" : return <About />;
-      case "settings" : return <Settings />;
+      case "settings" : return <Settings updateFunction={forceUpdate}/>;
       case "associations" : return <Associations start={day} data={dataAsso}/>;
     }
   }

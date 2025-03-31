@@ -5,7 +5,7 @@ import { API_URL } from '../../js/constants.jsx'
 import { Loading } from '../templates.jsx'
 import EventCreator from '../EventCreator.jsx';
 
-const Settings = () => {
+const Settings = ({setFunction, updateFunction}) => {
     const [user_tds, setUserTD] = useState(null);
     const [all_tds, setAllTD] = useState(null);
     const [view, setView] = useState("TDs");
@@ -39,7 +39,7 @@ const Settings = () => {
 
     function displayView(view){
         switch (view){
-            case "TDs" : return (<TDSelection allTDs={all_tds} userTDs={user_tds} />);
+            case "TDs" : return (<TDSelection allTDs={all_tds} userTDs={user_tds} updateFunction={updateFunction}/>);
             case "create" : return (<EventCreator/>);
         }
     }
