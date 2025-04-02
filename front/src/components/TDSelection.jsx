@@ -44,7 +44,7 @@ function TDSelection({ allTDs, userTDs, updateFunction }) {
     };
 
     return (
-        <div class='checkbox-list'>
+        <div className='checkbox-list'>
             {allTDs.map(td => (
                 <li key={td}>
                     <label>

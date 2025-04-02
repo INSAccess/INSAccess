@@ -1,6 +1,6 @@
 import EventsInDay from "./EventsInDay";
 import RandomUtils from "../../js/RandomUtils";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { hours_timeline, minWidth } from "../../js/constants";
 import Day from "../../js/Day"
 import './AllEvents.scss'
@@ -38,15 +38,53 @@ const AllEvents = ({start, data, asso}) => {
     }
   }
 
+const calendarRef = useRef(null);
+let skipDays = (nb_days == 1) ? 1 : 7;
+
+  useEffect(() => {
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const minDist = 75;
+
+    const handleTouchStart = (event) => {
+      touchStartX = event.touches[0].clientX;
+    };
+
+    const handleTouchEnd = (event) => {
+      touchEndX = event.changedTouches[0].clientX;
+      let swipeDistance = touchStartX - touchEndX;
+
+      if (swipeDistance > minDist) {
+        // Swiped left
+        handleDay("next", skipDays);
+      } else if (swipeDistance < -minDist) {
+        // Swiped right
+        handleDay("prev", skipDays);
+      }
+    };
+
+    if (calendarRef.current) {
+      calendarRef.current.addEventListener("touchstart", handleTouchStart);
+      calendarRef.current.addEventListener("touchend", handleTouchEnd);
+    }
+
+    return () => {
+      if (calendarRef.current) {
+        calendarRef.current.removeEventListener("touchstart", handleTouchStart);
+        calendarRef.current.removeEventListener("touchend", handleTouchEnd);
+      }
+    };
+  }, [nb_days]);
+
   for (let i = 0; i < nb_days; i++){
     list_days.push(<EventsInDay key={i} date={current_day.getDate()} data={data} asso={asso}/>);
     current_day = current_day.next(1);
   }
 
-  let skipDays = (nb_days == 1) ? 1 : 7;
+
 
   return (
-    <div className="calendar">
+    <div className="calendar" ref={calendarRef}>
       <button type="button" className="arrow-left" onClick={() => {handleDay("prev", skipDays)}}></button>
       <TimeBar />
       <div className="days">

@@ -70,7 +70,10 @@ function App() {
     return <Loading />;
   }
 
+  var isFolded = true;
+
   function unfold() {
+    isFolded = false;
     var menu = document.getElementsByClassName(burger)
     for (let i = 0; i < menu.length; i++) {
       menu.item(i).classList.add("visible")
@@ -78,9 +81,20 @@ function App() {
   }
   
   function fold() {
+    isFolded = true;
     var menu = document.getElementsByClassName(burger)
     for (let i = 0; i < menu.length; i++) {
       menu.item(i).classList.remove("visible")
+    }
+  }
+
+  function foldToggle() {
+    console.log("SUUUUH")
+    if (isFolded){
+      unfold();
+    }
+    else {
+      fold();
     }
   }
 
@@ -97,7 +111,7 @@ function App() {
     <div className="App">
       <div id="backmenu" className={burger} onClick={fold}></div>
       <NavBar setPage={setPage} items={items}/>
-      <div className="fold" id="folder" onClick={unfold}>☰</div>
+      <div className="fold" id="folder" onClick={foldToggle}>☰</div>
       <AuthProvider>
           <ProtectedRoute>{currentPage(page, day)}</ProtectedRoute>
       </AuthProvider>
