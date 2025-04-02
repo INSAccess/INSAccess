@@ -210,7 +210,7 @@ class PostTdsAPIView(APIView):
 
         UserLinkTD.objects.bulk_create(user_link_tds)
 
-        return Response({"success": "Selections updated successfully."})
+        return Response({"success": "Sélection actualisée !"})
 
 class GetIsConnectedAPIView(APIView):
     """A small api route for the temporary solution
