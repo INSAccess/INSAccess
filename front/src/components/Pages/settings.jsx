@@ -61,10 +61,10 @@ const Settings = ({updateFunction}) => {
         );
     }
 
-    const DropDownSelect = ({title, items, label}) => {
+    const DropDownSelect = ({title, items, label, fonction}) => {
         return (
             <div style={dropdown_style}>
-                <DropdownButton id="dropdown-item-button" title={title}>
+                <DropdownButton id="dropdown-item-button" title={title} onSelect={(eventKey) => fonction(eventKey)}>
                     <Dropdown.ItemText><strong>{label}</strong></Dropdown.ItemText>
                     {items}
                 </DropdownButton>
@@ -77,16 +77,16 @@ const Settings = ({updateFunction}) => {
         for (let i = 0; i < departementYears[departement].length; i++){
             if (year == departementYears[departement][i]){
                 button_list.push(
-                    <Dropdown.Item key={i} as="button" active>{departementYears[departement][i]}</Dropdown.Item>
+                    <Dropdown.Item key={i} eventKey={departementYears[departement][i]} as="button" active>{departementYears[departement][i]}</Dropdown.Item>
                 )
             } else {
                 button_list.push(
-                    <Dropdown.Item key={i} as="button">{departementYears[departement][i]}</Dropdown.Item>
+                    <Dropdown.Item key={i} eventKey={departementYears[departement][i]} as="button">{departementYears[departement][i]}</Dropdown.Item>
                 )
             }
         }
         return (
-            <DropDownSelect title={year} items={button_list} label="Année" />
+            <DropDownSelect title={year} items={button_list} label="Année" fonction={setYear}/>
         )
     }
 
@@ -96,17 +96,17 @@ const Settings = ({updateFunction}) => {
         for (let i = 0; i < departementNames.length; i++){
             if (departement == departementNames[i]){
                 button_list.push(
-                    <Dropdown.Item key={i} as="button" href="" active>{departementNames[i]}</Dropdown.Item>
+                    <Dropdown.Item key={i} eventKey={departementNames[i]} as="button" href="" active>{departementNames[i]}</Dropdown.Item>
                 )
             } else {
                 button_list.push(
-                    <Dropdown.Item key={i} as="button" href="">{departementNames[i]}</Dropdown.Item>
+                    <Dropdown.Item key={i} eventKey={departementNames[i]} as="button" href="">{departementNames[i]}</Dropdown.Item>
                 )
             }
         }
 
         return (
-            <DropDownSelect title={departement} items={button_list} label="Département" />
+            <DropDownSelect title={departement} items={button_list} label="Département" fonction={setDepartement}/>
         )
     }
 
