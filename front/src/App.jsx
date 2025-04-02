@@ -31,7 +31,7 @@ function App() {
 
   const current_date = new Date()
   let first_day = new Day(current_date)
-  let day = (minWidth < dimensions.width) ? first_day.getDate() : first_day.startOfWeek().getDate()
+  let day = (minWidth < dimensions.width) ? first_day.startOfWeek().getDate() : first_day.getDate()
 
 
   useEffect(() => {
