@@ -1,22 +1,59 @@
 import TDSelection from '../TDSelection.jsx';
 import RandomUtils from '../../js/RandomUtils.jsx';
 import { useEffect, useState } from 'react';
-import { API_URL } from '../../js/constants.jsx'
+import { API_URL, departementNames, departementYears } from '../../js/constants.jsx'
 import { Loading } from '../templates.jsx'
 import EventCreator from '../EventCreator.jsx';
+import Button from 'react-bootstrap/Button';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
-const Settings = ({setFunction, updateFunction}) => {
+const Settings = ({updateFunction}) => {
     const [user_tds, setUserTD] = useState(null);
     const [all_tds, setAllTD] = useState(null);
     const [view, setView] = useState("TDs");
-    let {data, error, loading} = RandomUtils.LoadData(API_URL+"/api/get_tds/ITI3?format=json");
+    const [departement, setDepartement] = useState(departementNames[0])
+    const [year, setYear] = useState(departementYears[departement][0])
+    const [semester, setSemester] = useState(1)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    const dropdown_style = {
+        "marginLeft":"5px",
+        "marginRight":"5px"
+    }
+
+    const view_style = {
+        "display":"block",
+        "position":"relative",
+        "left":"50%"
+    }
+
+    const dropdown_container = {
+        "display":"flex",
+        "margin":"2%"
+    }
 
     useEffect(() => {
-        if (data){
-            setUserTD(data.user_tds)
-            setAllTD(data.department_tds)
+        const loadData = async () => {
+          const result = await RandomUtils.fetchData(API_URL+"/api/get_tds/ITI3?format=json");
+          //const result = await RandomUtils.fetchData(API_URL+"/api/get_tds/"+departement+year+"?format=json");
+          if (result.data){
+            setUserTD(result.data.user_tds)
+            setAllTD(result.data.department_tds)
+          }
+          setError(result.error);
+          setLoading(false);
+        };
+
+        if (error){
+            console.error("Erreur lors du fetch des TDs")
+            setUserTD([])
+            setAllTD([])
         }
-    }, [data])
+    
+        loadData();
+    }, [departement, year]);
 
     if (loading) {
         return (
@@ -24,22 +61,66 @@ const Settings = ({setFunction, updateFunction}) => {
         );
     }
 
-    if (error){
-        console.error("Erreur lors du fetch des settings")
-        useEffect(() => {
-            setUserTD([])
-            setAllTD([])
-        }, [])
+    const DropDownSelect = ({title, items, label}) => {
         return (
-            <div>
-                <h1>Settings</h1>
+            <div style={dropdown_style}>
+                <DropdownButton id="dropdown-item-button" title={title}>
+                    <Dropdown.ItemText><strong>{label}</strong></Dropdown.ItemText>
+                    {items}
+                </DropdownButton>
             </div>
+        )
+    }
+
+    const DropDownYear = () => {
+        let button_list = []
+        for (let i = 0; i < departementYears[departement].length; i++){
+            if (year == departementYears[departement][i]){
+                button_list.push(
+                    <Dropdown.Item key={i} as="button" active>{departementYears[departement][i]}</Dropdown.Item>
+                )
+            } else {
+                button_list.push(
+                    <Dropdown.Item key={i} as="button">{departementYears[departement][i]}</Dropdown.Item>
+                )
+            }
+        }
+        return (
+            <DropDownSelect title={year} items={button_list} label="Année" />
+        )
+    }
+
+    const DropDownDepart = () => {
+
+        let button_list = []
+        for (let i = 0; i < departementNames.length; i++){
+            if (departement == departementNames[i]){
+                button_list.push(
+                    <Dropdown.Item key={i} as="button" href="" active>{departementNames[i]}</Dropdown.Item>
+                )
+            } else {
+                button_list.push(
+                    <Dropdown.Item key={i} as="button" href="">{departementNames[i]}</Dropdown.Item>
+                )
+            }
+        }
+
+        return (
+            <DropDownSelect title={departement} items={button_list} label="Département" />
         )
     }
 
     function displayView(view){
         switch (view){
-            case "TDs" : return (<TDSelection allTDs={all_tds} userTDs={user_tds} updateFunction={updateFunction}/>);
+            case "TDs" : return (
+                <>
+                    <div style={dropdown_container}>
+                        <DropDownDepart />
+                        <DropDownYear />
+                    </div>
+                    <TDSelection allTDs={all_tds} userTDs={user_tds} updateFunction={updateFunction}/>
+                </>
+            );
             case "create" : return (<EventCreator/>);
         }
     }
@@ -48,8 +129,10 @@ const Settings = ({setFunction, updateFunction}) => {
         return (
             <div>
                 <h1>Settings</h1>
-                <button onClick={() => {setView("TDs")}}>TD List</button>
-                <button onClick={() => {setView("create")}}>Create Event</button>
+                <div style={view_style}>
+                    <Button onClick={() => {setView("TDs")}}>TD List</Button>
+                    <Button onClick={() => {setView("create")}}>Create Event</Button>
+                </div>
                 <>{displayView(view)}</>
             </div>
         ); 
