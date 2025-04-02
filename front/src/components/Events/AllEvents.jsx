@@ -44,7 +44,7 @@ let skipDays = (nb_days == 1) ? 1 : 7;
   useEffect(() => {
     let touchStartX = 0;
     let touchEndX = 0;
-    const minDist = 75;
+    const minDist = 50;
 
     const handleTouchStart = (event) => {
       touchStartX = event.touches[0].clientX;

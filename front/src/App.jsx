@@ -35,6 +35,7 @@ function App() {
 
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const loadData = async () => {
       if (!shouldUpdate || page != "home") return;
 
@@ -106,6 +107,7 @@ function App() {
       case "associations" : return <Associations start={day} data={dataAsso}/>;
     }
   }
+
 
   return (
     <div className="App">

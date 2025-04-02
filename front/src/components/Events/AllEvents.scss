@@ -5,8 +5,8 @@
     background: url("../../images/fleche.png");
     background-size: contain;
     border: none;
-    height: 5vh;
-    width: 5vh;
+    height: 5svh;
+    width: 5svh;
 }
   
 .arrow-right {
@@ -16,8 +16,8 @@
     background: url("../../images/fleche.png");
     background-size: contain;
     border: none;
-    height: 5vh;
-    width: 5vh;
+    height: 5svh;
+    width: 5svh;
 }
 
 .days {
@@ -32,7 +32,7 @@
 .calendar {
     display: grid;
     gap: 10px;
-    grid-template-columns: 0 10vh 1fr 10vh;
+    grid-template-columns: 0 3svh 1fr 3svh;
     margin: 0.2rem 1rem;
     flex-grow: 1;
     grid-template-areas: 
@@ -57,7 +57,7 @@
     display: grid;
     height: 100%;
     justify-self: right;
-    grid-template-rows: calc(var(--dateHeight) + 2vh) repeat(calc(var(--numHours) - 1), 1fr);
+    grid-template-rows: calc(var(--dateHeight) + 2svh) repeat(calc(var(--numHours) - 1), 1fr);
   }
   
 .time-marker {
