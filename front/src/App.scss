@@ -1,9 +1,12 @@
 :root {
   --numDays: 5;
-  --eventBorderColor: #445374;
-  --eventColor: #fce3c3;
+  --eventBorderColor: #db342c;
+  --eventColor: #d44d44;
+  --eventTextColor :white;
+  --eventHoverColor: #ff6b6b;
+  --eventHoverBorderColor: #ff4b4b;
   --rotateTime: 2s;
-  --eventBgColor: #9bf5a7;
+  --eventBgColor: #f3eceb;
   --dateTextSize: max(3.4vh, 2.1vw);
   --dateHeight: 6vh;
   --numHours: 8;
@@ -23,5 +26,5 @@
   }
   to {
     transform: rotate(359deg);
-  }
+  } 
 }

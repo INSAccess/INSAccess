@@ -13,7 +13,10 @@ const MainAbout = () => {
                 <div className="col-12 col-xl-11">
                     <h2 className="mb-3">Qui sommes nous ?</h2>
                     <p className="lead fs-4 text-secondary mb-3">On est deux étudiants d'ITI 3, un peu tarés sur les bords, motivés pour faire des projets utiles aux étudiants </p>
-                    <p className="mb-5">Ce projet vise à créer un accès facile aux cours et surtout aux événements culturels de l'INSA aux étudiants. On a reçu l'aide de beaucoup de monde pendant ce projet, et en particulier ces quelques mentions honorables : Michel Vespier pour des conseils techniques sur l'apparence du site, ... et bien évidemment ChatGPT parce que Javascript c'est de la merde. Finalement, on voudrait remercier l'INSA pour nous avoir soutenu et avoir valorisé le projet.</p>
+                    <p className="mb-5">Ce projet a pour ambition de faciliter l'accès des étudiants aux cours et aux événements culturels de l'INSA. Tout au long de son développement,
+                                         nous avons bénéficié du soutien précieux de nombreuses personnes.
+                                          Nous tenons particulièrement à remercier Michel Vespier pour ses conseils techniques avisés concernant l'interface du site,
+                                           ainsi que l'INSA pour son soutien constant et pour avoir valorisé ce projet.</p>
                     <div className="row gy-4 gy-md-0 gx-xxl-5X">
                     <div className="col-12 col-md-6">
                         <div className="d-flex">

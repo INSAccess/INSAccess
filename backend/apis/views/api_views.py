@@ -166,8 +166,12 @@ class GetTdsAPIView(APIView):
         ).distinct()
 
         serialized_tds= [td.name for td in department_tds]
-
-        return Response({"user_tds" : serialized_user_tds, "department_tds" : serialized_tds})
+        department_tds = [tds for tds in serialized_tds if tds.startswith(department)]
+        other_tds = [tds for tds in serialized_tds if not tds.startswith(department)]
+        
+        department_tds.sort()
+        other_tds.sort()
+        return Response({"user_tds" : serialized_user_tds, "department_tds" : department_tds + other_tds})
 
 class PostTdsAPIView(APIView):
     """the api route class for saving the selected tds

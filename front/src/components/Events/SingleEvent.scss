@@ -1,9 +1,17 @@
 .event {
-    border: 1px solid var(--eventBorderColor);
-    border-radius: 5px;
-    padding: 0.1vw 0.5vw;
-    background: var(--eventColor);
-    justify-content: left;
+  border: none;
+  border-left: 8px solid var(--eventBorderColor);
+  border-radius: 8px;
+  background: var(--eventColor);
+  color: var(--eventTextColor);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+  transition: all 0.3s ease;
+}
+
+.event:hover {
+  background: var(--eventHoverColor); 
+  border-left: 8px solid var(--eventHoverBorderColor); 
+  transform: translateY(-3px); 
 }
 
 .title{

@@ -8,22 +8,22 @@ const API_URL = process.env.REACT_APP_API_URL;
 const items = [
     {
       name: "Home",
-      color: "#FED9EA",
+      color: "#757575",
       href: "home" },
     
     {
       name: "Associative events",
-      color: "#CFD6EF",
+      color: "#555555",
       href: "associations" },
     
     {
       name: "Settings",
-      color: "#70D1F9",
+      color: "#444444",
       href: "settings" },
     
     {
       name: "About",
-      color: "#40cefe",
+      color: "#333333",
       href: "about" }
     ];
 const PATH_CALENDAR = API_URL+'/api/get_year/'
