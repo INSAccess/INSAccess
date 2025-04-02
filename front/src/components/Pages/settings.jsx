@@ -61,6 +61,13 @@ const Settings = ({updateFunction}) => {
         );
     }
 
+    function handleSetDepartement(value){
+        if (!(departementYears[value].includes(year))){
+            setYear(departementYears[value][0])
+        }
+        setDepartement(value)
+    }
+
     const DropDownSelect = ({title, items, label, fonction}) => {
         return (
             <div style={dropdown_style}>
@@ -106,7 +113,7 @@ const Settings = ({updateFunction}) => {
         }
 
         return (
-            <DropDownSelect title={departement} items={button_list} label="Département" fonction={setDepartement}/>
+            <DropDownSelect title={departement} items={button_list} label="Département" fonction={handleSetDepartement}/>
         )
     }
 
