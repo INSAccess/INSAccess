@@ -90,7 +90,6 @@ function App() {
   }
 
   function foldToggle() {
-    console.log("SUUUUH")
     if (isFolded){
       unfold();
     }

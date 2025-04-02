@@ -31,14 +31,16 @@ $minWidth: 850px;
     }
     
     .item {
-      padding: 18px 28px;
+      padding: 16px 20px;
       cursor: pointer;
       transition: color .3s ease-out;
       text-decoration: none;
       color: #000000;
+      font-weight: 500;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      font-size: 12px;
+      text-align: center;
+      font-size: 15px;
       margin: 5px 0;
       @media (max-width: $minWidth) {
         color : white;
