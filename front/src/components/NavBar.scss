@@ -13,9 +13,17 @@
       align-items: center;
       visibility: hidden;
       position: absolute;
+      border: none;
+      border-left: solid;
+      border-width: 6px;
+      border-color: var(--burgerBackgroundBorderColor);
       right: 0;
       top: 0;
-      background-color: #57caff;
+      height: 100%;
+
+      justify-content:start;
+      background-color: var(--burgerBackgroundColor);
+
     }
     
     .item {
@@ -28,27 +36,48 @@
       text-transform: uppercase;
       font-size: 12px;
       margin: 5px 0;
-      
+      @media (max-width: 650px) {
+        color : white;
+      }
       &.active {
         color: #ffffff;
+        @media (max-width: 650px) {
+          background-color : var(--burgerButtonColor);
+          border-radius: 10px;
+        }
       }
     }
     
     .indicator {
       position: absolute;
+      background-color: #000000;
       top: 0;
       left: 0;
       z-index: -1;
       border-radius: 30px;
+      @media (max-width: 650px) {
+        visibility: hidden;
+      }
     }
   }
   
   .fold
   {
-    background-color: aquamarine;
-    width: 100%;
+    background-color: var(--burgerButtonColor);
+    width: 100px;
+    aspect-ratio: 1/1;
+    position: fixed;
+    border-radius: 25%;
+    right: 5px;
+    bottom: 5px;
+    color:white;
+    font-size: 33px;
+    z-index: 2;
     text-align: center;
     visibility: collapse;
+    display: flex;
+    justify-content: center; /* Horizontally center */
+    align-items: center;
     @media (max-width: 650px) {
       visibility: visible;
     }
@@ -73,4 +102,13 @@
     visibility: hidden;
     background-color: #111;
     opacity: 0.2;
+
+  }
+  
+  @media (min-width: 650px) {
+    #backmenu {
+      background-color: none;
+      visibility: hidden;
+      opacity: 0;
+    }
   }

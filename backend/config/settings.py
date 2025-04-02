@@ -86,7 +86,7 @@ CORS_URLS_REGEX = r'^/api/.*'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'uniauth.backends.CASBackend',
+    # 'uniauth.backends.CASBackend',
 ]
 
 LOGIN_URL = "authentification/login/" #LOGIN_URL = "/accounts/login/" for CAS implementation

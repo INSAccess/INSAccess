@@ -97,7 +97,7 @@ function App() {
     <div className="App">
       <div id="backmenu" className={burger} onClick={fold}></div>
       <NavBar setPage={setPage} items={items}/>
-      <div className="fold" id="folder" onClick={unfold}>Menu</div>
+      <div className="fold" id="folder" onClick={unfold}>☰</div>
       <AuthProvider>
           <ProtectedRoute>{currentPage(page, day)}</ProtectedRoute>
       </AuthProvider>

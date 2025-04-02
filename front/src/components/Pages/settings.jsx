@@ -24,14 +24,16 @@ const Settings = ({updateFunction}) => {
     }
 
     const view_style = {
-        "display":"block",
-        "position":"relative",
-        "left":"50%"
+        "display": "block",
+        "position": "relative",
+        "left": "50%",
+        "transform": "translateX(-50%)"
     }
 
     const dropdown_container = {
         "display":"flex",
-        "margin":"2%"
+        "margin":"2%",
+        "flexWrap": "wrap"
     }
 
     useEffect(() => {

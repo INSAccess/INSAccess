@@ -8,11 +8,14 @@
   transition: all 0.3s ease;
 }
 
-.event:hover {
-  background: var(--eventHoverColor); 
-  border-left: 8px solid var(--eventHoverBorderColor); 
-  transform: translateY(-3px); 
+@media (hover: hover) and (pointer: fine) {
+  .event:hover {
+    background: var(--eventHoverColor); 
+    border-left: 8px solid var(--eventHoverBorderColor); 
+    transform: translateY(-3px); 
+  }
 }
+
 
 .title{
   font-weight: 600;
