@@ -7,6 +7,7 @@ import EventCreator from '../EventCreator.jsx';
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import './settings.scss'
 
 const Settings = ({updateFunction}) => {
     const [user_tds, setUserTD] = useState(null);
@@ -68,11 +69,10 @@ const Settings = ({updateFunction}) => {
         setDepartement(value)
     }
 
-    const DropDownSelect = ({title, items, label, fonction}) => {
+    const DropDownSelect = ({title, items, fonction}) => {
         return (
             <div style={dropdown_style}>
-                <DropdownButton id="dropdown-item-button" title={title} onSelect={(eventKey) => fonction(eventKey)}>
-                    <Dropdown.ItemText><strong>{label}</strong></Dropdown.ItemText>
+                <DropdownButton id="dropdown-item-button" title={title} onSelect={(eventKey) => fonction(eventKey)} className="dropdown-select">
                     {items}
                 </DropdownButton>
             </div>
@@ -93,7 +93,7 @@ const Settings = ({updateFunction}) => {
             }
         }
         return (
-            <DropDownSelect title={year} items={button_list} label="Année" fonction={setYear}/>
+            <DropDownSelect title={"Année : "+year} items={button_list} fonction={setYear}/>
         )
     }
 
@@ -113,7 +113,7 @@ const Settings = ({updateFunction}) => {
         }
 
         return (
-            <DropDownSelect title={departement} items={button_list} label="Département" fonction={handleSetDepartement}/>
+            <DropDownSelect title={"Département : "+departement} items={button_list} fonction={handleSetDepartement}/>
         )
     }
 
