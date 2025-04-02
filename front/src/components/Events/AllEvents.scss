@@ -32,15 +32,22 @@
 .calendar {
     display: grid;
     gap: 10px;
-    grid-template-columns: 5vh 12vh 1fr 5vh;
+    grid-template-columns: 0 10vh 1fr 10vh;
     margin: 0.2rem 1rem;
     flex-grow: 1;
     grid-template-areas: 
     "arrow-left timeline days-events arrow-right";
 }
 
+.arrow-left, .timeline {
+    grid-column: 2; 
+}
 .turned {
     transform: rotate(180deg);
+}
+
+.arrow-right {
+    justify-self: right;
 }
 
 .timeline {
