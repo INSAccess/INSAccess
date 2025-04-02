@@ -14,7 +14,7 @@ const Settings = ({updateFunction}) => {
     const [view, setView] = useState("TDs");
     const [departement, setDepartement] = useState(departementNames[0])
     const [year, setYear] = useState(departementYears[departement][0])
-    const [semester, setSemester] = useState(1)
+    //const [semester, setSemester] = useState(1)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
@@ -62,7 +62,7 @@ const Settings = ({updateFunction}) => {
     }
 
     function handleSetDepartement(value){
-        if (!(departementYears[value].includes(year))){
+        if (!(departementYears[value].includes(parseInt(year)))){
             setYear(departementYears[value][0])
         }
         setDepartement(value)
