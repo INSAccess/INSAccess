@@ -7,6 +7,7 @@ import EventCreator from '../EventCreator.jsx';
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import './settings.scss'
 
 const Settings = ({updateFunction}) => {
     const [user_tds, setUserTD] = useState(null);
@@ -14,7 +15,7 @@ const Settings = ({updateFunction}) => {
     const [view, setView] = useState("TDs");
     const [departement, setDepartement] = useState(departementNames[0])
     const [year, setYear] = useState(departementYears[departement][0])
-    const [semester, setSemester] = useState(1)
+    //const [semester, setSemester] = useState(1)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
@@ -63,11 +64,17 @@ const Settings = ({updateFunction}) => {
         );
     }
 
-    const DropDownSelect = ({title, items, label}) => {
+    function handleSetDepartement(value){
+        if (!(departementYears[value].includes(parseInt(year)))){
+            setYear(departementYears[value][0])
+        }
+        setDepartement(value)
+    }
+
+    const DropDownSelect = ({title, items, fonction}) => {
         return (
             <div style={dropdown_style}>
-                <DropdownButton id="dropdown-item-button" title={title}>
-                    <Dropdown.ItemText><strong>{label}</strong></Dropdown.ItemText>
+                <DropdownButton id="dropdown-item-button" title={title} onSelect={(eventKey) => fonction(eventKey)} className="dropdown-select">
                     {items}
                 </DropdownButton>
             </div>
@@ -79,16 +86,16 @@ const Settings = ({updateFunction}) => {
         for (let i = 0; i < departementYears[departement].length; i++){
             if (year == departementYears[departement][i]){
                 button_list.push(
-                    <Dropdown.Item key={i} as="button" active>{departementYears[departement][i]}</Dropdown.Item>
+                    <Dropdown.Item key={i} eventKey={departementYears[departement][i]} as="button" active>{departementYears[departement][i]}</Dropdown.Item>
                 )
             } else {
                 button_list.push(
-                    <Dropdown.Item key={i} as="button">{departementYears[departement][i]}</Dropdown.Item>
+                    <Dropdown.Item key={i} eventKey={departementYears[departement][i]} as="button">{departementYears[departement][i]}</Dropdown.Item>
                 )
             }
         }
         return (
-            <DropDownSelect title={year} items={button_list} label="Année" />
+            <DropDownSelect title={"Année : "+year} items={button_list} fonction={setYear}/>
         )
     }
 
@@ -98,17 +105,17 @@ const Settings = ({updateFunction}) => {
         for (let i = 0; i < departementNames.length; i++){
             if (departement == departementNames[i]){
                 button_list.push(
-                    <Dropdown.Item key={i} as="button" href="" active>{departementNames[i]}</Dropdown.Item>
+                    <Dropdown.Item key={i} eventKey={departementNames[i]} as="button" href="" active>{departementNames[i]}</Dropdown.Item>
                 )
             } else {
                 button_list.push(
-                    <Dropdown.Item key={i} as="button" href="">{departementNames[i]}</Dropdown.Item>
+                    <Dropdown.Item key={i} eventKey={departementNames[i]} as="button" href="">{departementNames[i]}</Dropdown.Item>
                 )
             }
         }
 
         return (
-            <DropDownSelect title={departement} items={button_list} label="Département" />
+            <DropDownSelect title={"Département : "+departement} items={button_list} fonction={handleSetDepartement}/>
         )
     }
 

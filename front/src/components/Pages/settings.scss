@@ -1,0 +1,25 @@
+
+.dropdown-select button{
+    border:var(--eventBorderColor);
+    color: var(--eventTextColor);
+    background-color: var(--eventColor);
+
+    &:hover, &:active {
+        background-color:var(--eventHoverColor);
+        border-color:var(--eventHoverBorderColor);
+    }
+
+    &.active, &.show {
+        background-color: var(--eventColor);
+    }
+}
+
+.dropdown-select div {
+    background-color: var(--eventColor);
+
+    &.active, &:active {
+        background-color: var(--eventColor);
+    }
+}   
+
+ 
