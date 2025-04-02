@@ -105,7 +105,7 @@ This structure allows the backend and frontend to be developed and maintained in
 
 ## Utility Scripts<div id='util'/>
 - a short summary on how to use the different modules in `utils`
-	- for `fetch.py` simply `import` `get_data_calendar_data` or `fetch_entire_year` or use in cmd by following this command : `python3 fetch.py <current_year> <department> <department_year> <date> <period_of_time>` with :
+	- for `fetch.py` simply `import` `get_data_calendar_data` or `fetch_entire_year` or use in cmd by following this command : `python fetch.py <current_year> <department> <department_year> <date> <period_of_time>` with :
 		- **current_year** the year the scholar year started at (2024 for the year 2024-2025) 
 		- **department** the department ("ITI", "GM", "PERF-II"...)
 		- **department_year** the year in the department (i.e 1, 2, 3, 4, 5)
@@ -113,22 +113,42 @@ This structure allows the backend and frontend to be developed and maintained in
 		- **the period of time** the period you want to fetch (day, week, month)
 	> for day, simply put the day (ex : 20250123 for 2025/01/23), for week, must be the sunday previous to the week you wanna fetch (for the 12 to 16 then fetch at 11), for month, simply fetch at the first day of the month
 	- for `db_insertion.py` simply `import` `insert_list_records` or `insert_record_in_db`
-	- `query_analyser` is still a work in progress
-	
-## Static Files and Libraries<div id='static'/>
-`app/static` directory contains all the css, javascript libraries and static images. The global hmtl structure relies on bootstrap 5 and some javascript libraries used :
-- `jquery` https://jquery.com/
-- `flatpickr` https://flatpickr.js.org
 
 
+## Models <div id='models'/>
 
-# Models <div id='models'/>
-- the models are defined in `app/models.py`  and are created using SQLAlchemy ORM, the main differents models are :
-	- `User` for the authentification and for storing custom user preferences
-	- `InsaClass` for storing the various classes done at INSA as well as the custom event created by the clubs and associations
-	- `Teacher`,`Room`,`Department`,`GroupTD` for storing the names of the teacher, rooms, department and td groups.
-	- `...Link...` for storing the various one to many table links.
-	![models.svg](models.svg)
+The models are defined in `backend/apis/models.py` and are created using Django's ORM. Below are the key models:
+
+### User & Profile
+- **UserProfile**: Extends Django's built-in `User` model to store additional user-related information.
+- **UserLinkTD**: Defines a many-to-many relationship between users and TD groups.
+
+### Event Models
+These models define events that can be scheduled within the application:
+- **Event**: An abstract base model for events with common fields like `date`, `start_hour`, `end_hour`, and `desc`.
+- **InsaClass**: Represents INSA classes and custom events, linked to rooms, teachers, departments, and TD groups.
+- **InsaEvenement**: Represents events organized by associations, linked to rooms and associations.
+
+### Association Models
+- **Association**: Represents INSA associations with attributes like name, color, type, and sector.
+- **AssociationPublisher**: Defines which users can publish events for their associations.
+- **EnumType**, **EnumSector**, and **EnumColor**: Define the possible values for association attributes.
+
+### Entity Models
+- **GroupTD**: Represents TD groups.
+- **Department**: Represents academic departments.
+- **Teacher**: Stores teacher names.
+- **Room**: Represents classrooms.
+- **EvenementRoom**: Special rooms designated for events.
+
+### Relationship Models
+To establish many-to-many relationships between models, these intermediary models are used:
+- **EvenementLinkEventRoom**: Links `InsaEvenement` with `EvenementRoom`.
+- **ClassLinkTD**: Links `InsaClass` with `GroupTD`.
+- **ClassLinkRoom**: Links `InsaClass` with `Room`.
+- **ClassLinkTeacher**: Links `InsaClass` with `Teacher`.
+- **ClassLinkDepart**: Links `InsaClass` with `Department`.
+
 # Production<div id='prod'/>
 ## Front
 First run the command `npm run build` to create the production build. Then run `serve -s build` to launch the server.
