@@ -15,15 +15,14 @@ from .models import (
 
 # === Custom Admin Site === #
 class CustomAdminSite(AdminSite):
-    site_header = "INSA Admin Dashboard"
-    site_title = "INSA Admin"
-    index_title = "Welcome to INSA Admin Panel"
+    site_header = "INSAccess Admin Dashboard"
+    site_title = "INSAccess Admin"
+    index_title = "Welcome to INSAccess Admin Panel"
 
     def get_app_list(self, request):
         """Customize admin sections"""
         app_list = super().get_app_list(request)
 
-        # Create custom groups
         custom_order = [
             {"name": "Core Models", "models": [
                 "UserProfile", "InsaClass", "InsaEvenement",
@@ -36,7 +35,6 @@ class CustomAdminSite(AdminSite):
             ]}
         ]
 
-        # Modify the structure of admin sections
         new_app_list = []
         for section in custom_order:
             section_models = []
@@ -82,11 +80,11 @@ class EvenementLinkEventRoomInline(admin.TabularInline):
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user',)
-    search_fields = ('user__username',)
+    search_fields = ('user__email',)
 
 class InsaClassAdmin(admin.ModelAdmin):
     list_display = ('desc', 'date', 'start_hour', 'end_hour')
-    list_filter = ('date',)
+    list_filter = ('date','desc')
     search_fields = ('desc',)
     inlines = [ClassLinkTDInline, ClassLinkRoomInline, ClassLinkTeacherInline, ClassLinkDepartInline]
 
@@ -98,11 +96,11 @@ class InsaEvenementAdmin(admin.ModelAdmin):
 
 class AssociationAdmin(admin.ModelAdmin):
     list_display = ('name', 'unique_color', 'type', 'sector')
-    search_fields = ('name',)
+    search_fields = ('name','type','sector')
 
 class AssociationPublisherAdmin(admin.ModelAdmin):
     list_display = ('assocation', 'user')
-    search_fields = ('assocation__name', 'user__username')
+    search_fields = ('assocation__name', 'user__email')
 
 class DepartmentAdmin(admin.ModelAdmin):
     list_display = ('name',)

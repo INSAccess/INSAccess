@@ -1,9 +1,13 @@
 
 PROJECT_NAME := backend
 
+#Create the docker
+install:
+	docker-compose build
+
 # Start and Stop Services
 up:
-	docker-compose up -d
+	docker-compose up
 
 down:
 	docker-compose down
