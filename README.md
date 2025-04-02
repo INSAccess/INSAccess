@@ -11,16 +11,18 @@ This web app is designed for INSA Rouen Normandie, aiming to provide a simple cl
 - [Production](#prod)
 
 # Installation <div id='installation'/>
-- Set up the database (MariaDB is recommended, but other databases should work).
-- Create a `config.json` file for the flask app by using the  `config-template.json`
+
+### in the backend folder
+- Install docker-compose : https://docs.docker.com/compose/install/
 - Create a Python virtual environment and install dependencies:
 	```
 	python3 -m venv venv
 	source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
 	pip install -r requirements.txt
 	```
-- Launch the `test_insertion.py` file for initializing the app (this file is only temporary)
+- Launch the makefile : `make install`
 
+### in the frontend folder
 - In the front folder, run `npm install` to install locally all dependencies related to node and react
 
 # Development <div id='dev'/>
