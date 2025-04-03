@@ -1,5 +1,5 @@
 """
-Module Name: fetch.py
+Module Name: fetch_rss.py
 
 Description:
     The script for fetching and parsing the raw

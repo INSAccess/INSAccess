@@ -9,3 +9,4 @@ djangorestframework
 django-uniauth
 ics
 drf-yasg
+icalendar
