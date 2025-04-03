@@ -9,22 +9,27 @@ const baseEventWidth = 93
 const API_URL = process.env.REACT_APP_API_URL;
 const items = [
     {
-      name: "Home",
-      color: "#757575",
+      name: "Calendrier",
+      color: "#777777",
       href: "home" },
     
     {
-      name: "Associative events",
-      color: "#555555",
+      name: "Evenements",
+      color: "#666666",
       href: "associations" },
     
     {
-      name: "Settings",
-      color: "#444444",
+      name: "Parametres",
+      color: "#555555",
       href: "settings" },
     
     {
-      name: "About",
+        name: "Amis",
+        color: "#444444",
+        href: "settings" },
+    
+    {
+      name: "A propos",
       color: "#333333",
       href: "about" }
     ];

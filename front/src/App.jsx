@@ -111,7 +111,7 @@ function App() {
 
   return (
     <div className="App">
-      <img class="logo" src={logo}/>
+      <img className="logo" src={logo}/>
       <div id="backmenu" className={burger} onClick={fold}></div>
       <NavBar setPage={setPage} items={items}/>
       <div className="fold" id="folder" onClick={foldToggle}>☰</div>
