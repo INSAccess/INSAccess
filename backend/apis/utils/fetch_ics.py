@@ -1,4 +1,4 @@
-import requests, sys, os, json, itertools
+import requests, sys, os, json, itertools, logging
 from datetime import datetime
 from icalendar import Calendar
 
@@ -13,9 +13,18 @@ CONFIG = load_config()
 DEPARTMENTS = set(list(map(''.join, itertools.product(CONFIG["department_list"], CONFIG["years_for_department"]))) + 
                     list(map(''.join, itertools.product(CONFIG["prepa_name"], CONFIG["years_for_prepa"]))))
 
-def ics_to_list(url : str) -> list:
-    response = requests.get(url, timeout = 5)# in sec
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
+
+def ics_to_list(url : str) -> list:
+    """
+    Returns a list of dictionnary of each event
+    present in the ics file of the given url
+    """
+    
+    response = requests.get(url, timeout = 5)# in sec
+    logger.info(f"reponse trying to get ics : {response.status_code}")
     if response.status_code == 200: #request is successful
     
         ical = Calendar.from_ical(response.content)
@@ -39,8 +48,10 @@ def ics_to_list(url : str) -> list:
         return list_of_events
     return []
 
-
 def description_parsing(desc : str):
+    """parse the given description into 3 subsets :
+    the teachers names, the departments names and 
+    the td_tags"""
     elements = [e for e in desc.split('\n') if e and not (e.startswith('(') or e.isdigit() or e in CONFIG["misc_item_in_description"])]# remove empty elements and date of submission
     teachers, departments, td_tags = [], [], []
     
@@ -54,20 +65,13 @@ def description_parsing(desc : str):
     
     return teachers, departments, td_tags
 
-
-def list_print(list : list):
-    for e in list:
-        print(e)
-
-def dict_print(dict :dict):
-    for k,v in dict.items():
-        print(f"{k} : {v}")
-
-def fetch_department(department : str, year : str) -> list:
-    if department in CONFIG["department_list"] and year in CONFIG["years_for_department"] or \
-        department == CONFIG["prepa_name"] and year in CONFIG["years_for_prepa"]:
-        return ics_to_list(f"{CONFIG['ics_url_prefix']}{get_academic_year()}-{department}{year}")
-
+def fetch_department(department : str, depart_year : str) -> list:
+    """returns an array of dict of the components of each event,
+    take the department name ("EP","ITI","MECA"...)
+    and the department_year ("1","2","3","4","5"...)"""
+    if department in CONFIG["department_list"] and depart_year in CONFIG["years_for_department"] or \
+        department == CONFIG["prepa_name"] and depart_year in CONFIG["years_for_prepa"]:
+        return ics_to_list(f"{CONFIG['ics_url_prefix']}{get_academic_year()}-{department}{depart_year}")
 
 def get_academic_year():
     """returns the current academic year 
@@ -77,11 +81,7 @@ def get_academic_year():
     if current_date.month > 8:# if the summer vacations are over
         return current_date.year
     return current_date.year -1
-    
 
 if __name__ == '__main__':
     events = fetch_department(sys.argv[1], sys.argv[2])
-    set = set()
-    for e in events:
-         set.update(e.get("td_tags"))
-    print(set)
+    print(events)
