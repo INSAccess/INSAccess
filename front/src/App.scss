@@ -34,3 +34,14 @@
     transform: rotate(359deg);
   } 
 }
+.logo {
+  position: absolute;
+  top: 0;
+  left:40px;
+  visibility: visible;
+  width: 250px;
+  aspect-ratio: 3/1;
+  @media (max-width : 850px){
+    visibility: hidden;
+  }
+}

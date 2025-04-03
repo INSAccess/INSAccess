@@ -11,6 +11,7 @@ import Day from './js/Day.jsx';
 import { minWidth, items, PATH_CALENDAR, PATH_ASSO } from './js/constants.jsx';
 import RandomUtils from './js/RandomUtils.jsx';
 import { Loading } from './components/templates.jsx'
+import logo from './images/insa_logo.webp'
 
 function App() {
 
@@ -110,6 +111,7 @@ function App() {
 
   return (
     <div className="App">
+      <img class="logo" src={logo}/>
       <div id="backmenu" className={burger} onClick={fold}></div>
       <NavBar setPage={setPage} items={items}/>
       <div className="fold" id="folder" onClick={foldToggle}>☰</div>
