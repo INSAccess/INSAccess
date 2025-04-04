@@ -32,7 +32,7 @@ def ics_to_list(url : str) -> list:
         for event in ical.walk("VEVENT"):
             teachers, departments, td_tags = description_parsing(str(event.get("DESCRIPTION")))
             list_of_events.append({
-                        "time_stamp" : event.get("DTSTAMP").dt,
+                        "time_stamp" : event.get("DTSTAMP").dt,#.dt converts vdd to datetime
                         "time_start" : event.get("DTSTART").dt,
                         "time_end" : event.get("DTEND").dt,
                         "name" : event.get("SUMMARY"),
