@@ -14,9 +14,12 @@ class UserProfile(models.Model):
 class Event(models.Model):
     """Generic Class for defining events in the calendar"""
     uid = models.CharField(primary_key = True, editable = False)
-    date = models.DateField()
-    start_hour = models.TimeField()
-    end_hour = models.TimeField()
+    time_stamp = models.DateTimeField()
+    start_hour = models.DateTimeField()
+    end_hour = models.DateTimeField()
+    time_created = models.DateTimeField()
+    time_last_modified = models.DateTimeField()
+    sequence = models.IntegerField()
     desc = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
