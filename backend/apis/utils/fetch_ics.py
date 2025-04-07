@@ -41,6 +41,7 @@ def ics_to_list(url : str) -> list:
                         "departments" : departments,
                         "td_tags" : td_tags,
                         "uid" : event.get("UID"),
+                        "date" : event.get("DTSTART").dt.date(),
                         "time_created" : event.get("CREATED").dt,
                         "time_last_modified" : event.get("LAST-MODIFIED").dt,
                         "sequence" : event.get("SEQUENCE")

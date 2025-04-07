@@ -14,6 +14,7 @@ class UserProfile(models.Model):
 class Event(models.Model):
     """Generic Class for defining events in the calendar"""
     uid = models.CharField(primary_key = True, editable = False)
+    date = models.DateField()
     time_stamp = models.DateTimeField()
     start_hour = models.DateTimeField()
     end_hour = models.DateTimeField()

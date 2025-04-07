@@ -61,12 +61,13 @@ def insert_list_record(list_of_records):
                 time_stamp = record["time_stamp"],
                 start_hour = record["time_start"],
                 end_hour = record["time_end"],
+                date = record["date"],
                 desc = record["desc"],
                 time_created = record["time_created"],
                 time_last_modified = record["time_last_modified"],
                 sequence = record["sequence"]
                 )
-        name_mappings = [(record["room_list"], Room), (record["teachers"], Teacher), (record["td_tags"], GroupTD),
+        name_mappings = [(record["locations"], Room), (record["teachers"], Teacher), (record["td_tags"], GroupTD),
                         (record["departments"], Department)]
         if not existing_class or existing_class.sequence != record["sequence"]:
             if existing_class:
@@ -75,6 +76,18 @@ def insert_list_record(list_of_records):
             for names_list, model_class in name_mappings:
                 for name in names_list:
                     insert_single_name_in_db(name, model_class)
+                # Insert ClassLink records to link InsaClass with associated entities
+                for name in record["teachers"]:
+                    insert_classlink_teacher_in_db(new_class, name)
+
+                for name in record["locations"]:
+                    insert_classlink_room_in_db(new_class, name)
+
+                for name in record["departments"]:
+                    insert_classlink_depart_in_db(new_class, name)
+
+                for name in record["td_tags"]:
+                    insert_classlink_td_in_db(new_class, name)
 
         # third case is that there is no change then when dont do anything
 
@@ -113,4 +126,45 @@ def insert_association_in_db(name, user_email, color_value, type, sector):
     else:
         print("Invalid foreign key reference!")
 
+
+
+def insert_classlink_depart_in_db(insa_class_object, name):
+    """ Insert a link in ClassLinkDepart between Department and InsaClass """
+    linked_entity = Department.objects.filter(name=name).first()
+    class_link = ClassLinkDepart(
+        insa_class = insa_class_object,
+        depart = linked_entity
+    )
+
+    class_link.save()
+
+def insert_classlink_td_in_db(insa_class_object, name):
+    """ Insert a link in ClassLinkTD between GroupTD and InsaClass """
+    linked_entity = GroupTD.objects.filter(name=name).first()
+
+    class_link = ClassLinkTD(
+        insa_class = insa_class_object,
+        td = linked_entity
+    )
+    class_link.save()
+
+def insert_classlink_room_in_db(insa_class_object, name):
+    """ Insert a link in ClassLinkRoom between Room and InsaClass """
+    linked_entity = Room.objects.filter(name=name).first()
+
+    class_link = ClassLinkRoom(
+        insa_class = insa_class_object,
+        room = linked_entity
+    )
+    class_link.save()
+
+
+def insert_classlink_teacher_in_db(insa_class_object, name):
+    """ Insert a link in ClassLinkTeacher between Teacher and InsaClass """
+    linked_entity = Teacher.objects.filter(name=name).first()
+    class_link = ClassLinkTeacher(
+        insa_class = insa_class_object,
+        teacher = linked_entity
+    )
+    class_link.save()
 
