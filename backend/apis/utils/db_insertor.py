@@ -9,7 +9,7 @@ Author:
     Raphael Senellart
 
 Date Created:
-    March 26, 2025
+    April 6, 2025
 
 Version:
     1.0.0
@@ -29,171 +29,59 @@ Notes:
     else where.
 
 """
-import datetime
 from django.db import IntegrityError
 from tqdm import tqdm
 from apis.models import *
+from django.db import transaction
 
+@transaction.atomic
 def insert_list_record(list_of_records):
     """
-    ### insert_list_record :
-    Insert the list of records (in this case fetched from insa.agenda)
-    following the pattern:
-    [(date, start_hour, end_hour, description, room_list, teacher_list,
-      tdgroup_list, department_list), (...), ...]
-
-    It is done by checking the existence of the record in the database and inserting it if necessary
-    :param list_of_records: The list of record to be inserted
-    """
-    for record in tqdm(list_of_records):
-        insert_record_in_db(record)
-
-
-def insert_record_in_db(record):
-    """
-    ### insert_record_in_db :
-    Insert a single record in the database
-    following the pattern: 
-    (date, start_hour, end_hour, description, room_list,
-      teacher_list, tdgroup_list, department_list)
-
-    It is done by checking the existence of the record in the database and inserting it if necessary
-    :param record: The record to be inserted
-    """
-    room_list, teacher_list, td_list, depart_list = record[5:]
+    Inserts or updates InsaClass records from a given list.
     
-    list_name_tables = [(room_list, Room), (teacher_list, Teacher), (td_list, GroupTD), (depart_list, Department)]
-
-    new_class = insert_class_in_db(record)
-
-    new_class.save()
-
-    for list_table, table in list_name_tables:
-        for name in list_table:
-            insert_single_name_in_db(name, table)
-
-    # Insert ClassLink records to link InsaClass with associated entities
-    for name in teacher_list:
-        insert_classlink_teacher_in_db(new_class, name)
-
-    for name in room_list:
-        insert_classlink_room_in_db(new_class, name)
-
-    for name in depart_list:
-        insert_classlink_depart_in_db(new_class, name)
-
-    for name in td_list:
-        insert_classlink_td_in_db(new_class, name)
-
-
-def insert_class_in_db(record : dict):
-    """ Insert a class record into the database """
-    exists = InsaClass.objects.filter(
-        uid = uid
-    ).first()
-
-    new_class = InsaClass(
-        uid = uid,
-        date = datetime.date(converted_date[0], converted_date[1], converted_date[2]),
-        start_hour = datetime.time(converted_start_hour[0], converted_start_hour[1], converted_start_hour[2]),
-        end_hour = datetime.time(converted_end_hour[0], converted_end_hour[1], converted_end_hour[2]),
-        desc = desc
-    )
-
-    insert_generic_in_db(exists, new_class)
-    return new_class
-
-
-def insert_classlink_depart_in_db(insa_class_object, name):
-    """ Insert a link in ClassLinkDepart between Department and InsaClass """
-    linked_entity = Department.objects.filter(name=name).first()
-    if linked_entity:
-        exists = ClassLinkDepart.objects.filter(
-            insa_class = insa_class_object.uid,
-            depart = name
-        ).first()
-
-        class_link = ClassLinkDepart(
-            insa_class = insa_class_object,
-            depart = linked_entity
-        )
-
-        insert_generic_in_db(exists, class_link)
-    else:
-        print(f"Could not create link because {name} is not found in Department")
-
-
-def insert_classlink_td_in_db(insa_class_object, name):
-    """ Insert a link in ClassLinkTD between GroupTD and InsaClass """
-    linked_entity = GroupTD.objects.filter(name=name).first()
-    if linked_entity:
-        exists = ClassLinkTD.objects.filter(
-            insa_class = insa_class_object.uid,
-            td = name
-        ).first()
-
-        class_link = ClassLinkTD(
-            insa_class = insa_class_object,
-            td = linked_entity
-        )
-
-        insert_generic_in_db(exists, class_link)
-    else:
-        print(f"Could not create link because {name} is not found in GroupTD")
-
-
-def insert_classlink_room_in_db(insa_class_object, name):
-    """ Insert a link in ClassLinkRoom between Room and InsaClass """
-    linked_entity = Room.objects.filter(name=name).first()
-    if linked_entity:
-        exists = ClassLinkRoom.objects.filter(
-            insa_class = insa_class_object.uid,
-            room = name
-        ).first()
-
-        class_link = ClassLinkRoom(
-            insa_class = insa_class_object,
-            room = linked_entity
-        )
-
-        insert_generic_in_db(exists, class_link)
-    else:
-        print(f"Could not create link because {name} is not found in Room")
-
-
-def insert_classlink_teacher_in_db(insa_class_object, name):
-    """ Insert a link in ClassLinkTeacher between Teacher and InsaClass """
-    linked_entity = Teacher.objects.filter(name=name).first()
-    if linked_entity:
-        exists = ClassLinkTeacher.objects.filter(
-            insa_class = insa_class_object.uid,
-            teacher_id = name
-        ).first()
-
-        class_link = ClassLinkTeacher(
-            insa_class = insa_class_object,
-            teacher = linked_entity
-        )
-
-        insert_generic_in_db(exists, class_link)
-    else:
-        print(f"Could not create link because {name} is not found in Teacher")
-
-
-def insert_generic_in_db(exists, new_class):
+    - Deletes records that no longer exist in the source.
+    - Updates records if the sequence number has changed.
+    - Inserts new records.
+    
+    Parameters:
+        list_of_records (list of dict): Each dict should contain keys:
+            uid, time_stamp, time_start, time_end, desc, time_created,
+            time_last_modified, sequence, room_list, teachers, td_tags, departments.
     """
-    Insert a record into the database if it does not already exist
-    :param exists: A boolean (typically a query to check if the record already exists)
-    :param new_class: The instance to be inserted into the database
-    """
-    if not exists:
-        try:
+
+    #1 delete every event that does not exist anymore:
+    valid_uids = [record["uid"] for record in list_of_records]
+    InsaClass.objects.exclude(uid__in=valid_uids).delete()
+    
+    #2 we update every event that has a different sequence number than the original
+    for record in tqdm(list_of_records):
+        existing_class = InsaClass.objects.filter(uid = record["uid"]).first()
+        new_class = InsaClass(
+                uid = record["uid"],
+                time_stamp = record["time_stamp"],
+                start_hour = record["time_start"],
+                end_hour = record["time_end"],
+                desc = record["desc"],
+                time_created = record["time_created"],
+                time_last_modified = record["time_last_modified"],
+                sequence = record["sequence"]
+                )
+        name_mappings = [(record["room_list"], Room), (record["teachers"], Teacher), (record["td_tags"], GroupTD),
+                        (record["departments"], Department)]
+        if not existing_class or existing_class.sequence != record["sequence"]:
+            if existing_class:
+                existing_class.delete()
             new_class.save()
-        except IntegrityError:
-            print("Failed to insert due to integrity constraints.")
-            return False
+            for names_list, model_class in name_mappings:
+                for name in names_list:
+                    insert_single_name_in_db(name, model_class)
 
-    return True
+        # third case is that there is no change then when dont do anything
+
+def insert_single_name_in_db(name, table):
+    """ Insert into tables that have only a 'name' field """
+    new_instance = table(name = name,)
+    new_instance.save()
 
 
 def insert_association_in_db(name, user_email, color_value, type, sector):
@@ -226,11 +114,3 @@ def insert_association_in_db(name, user_email, color_value, type, sector):
         print("Invalid foreign key reference!")
 
 
-def insert_single_name_in_db(name, table):
-    """ Insert into tables that have only a 'name' field """
-    exists = table.objects.filter(name=name).first()
-
-    new_instance = table(
-        name = name,
-    )
-    insert_generic_in_db(exists, new_instance)

@@ -227,3 +227,4 @@ class GetIsConnectedAPIView(APIView):
     def get(self,request):
         """returns True if the user is authenticated else False"""
         return Response(request.user.is_authenticated)
+
