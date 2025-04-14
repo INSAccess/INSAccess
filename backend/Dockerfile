@@ -1,8 +1,8 @@
 FROM python:3.11
 
-WORKDIR /apis
+WORKDIR /core
 
-COPY . /apis//
+COPY . /core//
 
 RUN pip install --no-cache-dir -r requirements.txt
 

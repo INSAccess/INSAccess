@@ -21,7 +21,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'apis',
+    'core',
     'corsheaders',
     'uniauth',
     'rest_framework',

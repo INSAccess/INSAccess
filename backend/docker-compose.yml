@@ -11,9 +11,9 @@ services:
   web:
     build: .
     command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-    working_dir: /apis
+    working_dir: /core
     volumes:
-      - .:/apis
+      - .:/core
     ports:
       - "8000:8000"
     depends_on:
@@ -24,6 +24,6 @@ services:
       - DB_USER=root
       - DB_PASSWORD=toto123
       - DJANGO_SETTINGS_MODULE=config.settings
-      - PYTHONPATH=/apis
+      - PYTHONPATH=/core
 volumes:
   postgres_data:

@@ -52,7 +52,7 @@ npm start
   - `asgi.py` & `wsgi.py`: Entry points for ASGI/WGI servers.  
   - `insa_config.json`: Custom configuration settings.
 
-- **`backend/apis/`**  
+- **`backend/core/`**  
   This folder serves as the main Django app managing the project’s API logic:  
   - **`migrations/`**:  
     Holds migration scripts (e.g., `0001_initial.py`) that manage changes to the database schema.  
@@ -117,7 +117,7 @@ This structure allows the backend and frontend to be developed and maintained in
 
 ## Models <div id='models'/>
 
-The models are defined in `backend/apis/models.py` and are created using Django's ORM. Below are the key models:
+The models are defined in `backend/core/models.py` and are created using Django's ORM. Below are the key models:
 
 ### User & Profile
 - **UserProfile**: Extends Django's built-in `User` model to store additional user-related information.
