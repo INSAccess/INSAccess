@@ -29,12 +29,11 @@ Notes:
     else where.
 
 """
-from django.db import IntegrityError
 from tqdm import tqdm
 from apis.models import *
 from django.db import transaction
 
-@transaction.atomic
+# @transaction.atomic
 def insert_list_record(list_of_records):
     """
     Inserts or updates InsaClass records from a given list.
@@ -67,34 +66,33 @@ def insert_list_record(list_of_records):
                 time_last_modified = record["time_last_modified"],
                 sequence = record["sequence"]
                 )
-        name_mappings = [(record["locations"], Room), (record["teachers"], Teacher), (record["td_tags"], GroupTD),
-                        (record["departments"], Department)]
+        # name_mappings = [(record["locations"], Room), (record["teachers"], Teacher), (record["td_tags"], GroupTD),
+        #                 (record["departments"], Department)]
         if not existing_class or existing_class.sequence != record["sequence"]:
             if existing_class:
                 existing_class.delete()
             new_class.save()
-            for names_list, model_class in name_mappings:
-                for name in names_list:
-                    insert_single_name_in_db(name, model_class)
+            # for names_list, model_class in name_mappings:
+                # for name in names_list:
+                #     insert_single_name_in_db(name, model_class)
                 # Insert ClassLink records to link InsaClass with associated entities
-                for name in record["teachers"]:
-                    insert_classlink_teacher_in_db(new_class, name)
+            for name in record["teachers"]:
+                insert_classlink_teacher_in_db(new_class, name)
 
-                for name in record["locations"]:
-                    insert_classlink_room_in_db(new_class, name)
+            for name in record["locations"]:
+                insert_classlink_room_in_db(new_class, name)
 
-                for name in record["departments"]:
-                    insert_classlink_depart_in_db(new_class, name)
+            for name in record["departments"]:
+                insert_classlink_depart_in_db(new_class, name)
 
-                for name in record["td_tags"]:
-                    insert_classlink_td_in_db(new_class, name)
+            for name in record["td_tags"]:
+                insert_classlink_td_in_db(new_class, name)
 
         # third case is that there is no change then when dont do anything
 
 def insert_single_name_in_db(name, table):
     """ Insert into tables that have only a 'name' field """
-    new_instance = table(name = name,)
-    new_instance.save()
+    table.objects.get_or_create(name=name)
 
 
 def insert_association_in_db(name, user_email, color_value, type, sector):
@@ -130,7 +128,7 @@ def insert_association_in_db(name, user_email, color_value, type, sector):
 
 def insert_classlink_depart_in_db(insa_class_object, name):
     """ Insert a link in ClassLinkDepart between Department and InsaClass """
-    linked_entity = Department.objects.filter(name=name).first()
+    linked_entity, _ = Department.objects.get_or_create(name=name)
     class_link = ClassLinkDepart(
         insa_class = insa_class_object,
         depart = linked_entity
@@ -140,7 +138,7 @@ def insert_classlink_depart_in_db(insa_class_object, name):
 
 def insert_classlink_td_in_db(insa_class_object, name):
     """ Insert a link in ClassLinkTD between GroupTD and InsaClass """
-    linked_entity = GroupTD.objects.filter(name=name).first()
+    linked_entity, _ = GroupTD.objects.get_or_create(name=name)
 
     class_link = ClassLinkTD(
         insa_class = insa_class_object,
@@ -150,7 +148,7 @@ def insert_classlink_td_in_db(insa_class_object, name):
 
 def insert_classlink_room_in_db(insa_class_object, name):
     """ Insert a link in ClassLinkRoom between Room and InsaClass """
-    linked_entity = Room.objects.filter(name=name).first()
+    linked_entity, _ = Room.objects.get_or_create(name=name)
 
     class_link = ClassLinkRoom(
         insa_class = insa_class_object,
@@ -161,7 +159,7 @@ def insert_classlink_room_in_db(insa_class_object, name):
 
 def insert_classlink_teacher_in_db(insa_class_object, name):
     """ Insert a link in ClassLinkTeacher between Teacher and InsaClass """
-    linked_entity = Teacher.objects.filter(name=name).first()
+    linked_entity, _ = Teacher.objects.get_or_create(name=name)
     class_link = ClassLinkTeacher(
         insa_class = insa_class_object,
         teacher = linked_entity
