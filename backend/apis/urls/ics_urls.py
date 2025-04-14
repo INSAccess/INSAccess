@@ -3,6 +3,6 @@ from apis.views.ics_views import generate_ics
 
 
 urlpatterns = [
-    path('<int:user_id>/', generate_ics, name='generate_ics'),
+    path('<encrypted_id>/', generate_ics, name='generate_ics'),
 ]
 

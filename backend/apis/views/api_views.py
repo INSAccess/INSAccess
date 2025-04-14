@@ -2,6 +2,7 @@ import datetime
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.core import signing
 
 from apis.serializers import InsaClassSerializer
 from apis.models import InsaClass, Department, GroupTD, UserLinkTD
@@ -153,7 +154,7 @@ class GetTdsAPIView(APIView):
         """
         user_tds = request.user.userprofile.link_td.all()
 
-        serialized_user_tds= [{"name":td.name} for td in user_tds]
+        serialized_user_tds= [td.name for td in user_tds]
 
         department_obj = Department.objects.filter(name = department).first()
         if not department_obj:
@@ -238,3 +239,10 @@ class GetEventsAPIView(APIView):
 
         return Response({"events" : events})
 
+class GetIcsUrlAPIView(APIView):
+    """Simple api route for returning the associated ics url of the user 
+    for calendars
+    """
+    def get(self, request):
+        """"""
+        return Response(f"{request.get_host()}/ics/{signing.dumps(request.user.id)}")

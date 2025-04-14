@@ -78,5 +78,34 @@
     font-size: 16px;
     color: #7c7c7c;
   }
-  
- 
+
+  .main_container{
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .copy-container {
+    display: flex;
+    align-items: center;
+    max-width: 400px;
+    margin: 2rem auto;
+    background: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .copy-input {
+    flex: 1;
+    border: none;
+    padding: 12px 16px;
+    font-size: 1rem;
+    background: transparent;
+    color: #212529;
+  }
+
+  .copy-input:focus {
+    outline: none;
+    background: #e9ecef;
+  }

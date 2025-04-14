@@ -1,11 +1,12 @@
 from icalendar import Calendar, Event
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.core import signing
 
 
 from apis.models import InsaClass
 
-def generate_ics(request, user_id):
+def generate_ics(request, encrypted_id):
     """The api route for obtaining the ics of the 
     associated user of the given id
     
@@ -13,9 +14,14 @@ def generate_ics(request, user_id):
     user_id -- the id of the user
     Return: a ics file with all the event of the user
     """
+    try:
+        user_id = signing.loads(encrypted_id)
+        user = User.objects.get(id=user_id)
+    except signing.BadSignature:
+        return JsonResponse({'error': 'Invalid token'}, status=400)
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
 
-    # user = User.objects.get(id=user_id)
-    user = request.user
     user_tds = user.userprofile.link_td.all()
     classes = InsaClass.objects.filter(link_td__in=user_tds).distinct()
 
@@ -23,7 +29,7 @@ def generate_ics(request, user_id):
 
     cal.add("method", "REQUEST")
     cal.add("prodid", "-//INSAccess/version 1.0")
-    cal.add("x-wr-calname;value=text", user_id)
+    cal.add("x-wr-calname;value=text", "personnal_calendar")
     cal.add("calscale", "GREGORIAN")
     cal.add("version", "1.0")
     for event in classes:
@@ -51,6 +57,6 @@ def generate_ics(request, user_id):
         cal.add_component(e)
 
     response = HttpResponse(cal.to_ical().decode('utf-8'), content_type="text/calendar")
-    response['Content-Disposition'] = f'inline; filename=calendar_{user_id}.ics'
+    response['Content-Disposition'] = 'inline; filename=personnal_calendar.ics'
 
     return response

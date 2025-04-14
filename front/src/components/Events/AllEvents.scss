@@ -1,3 +1,5 @@
+$maxWidth : 850px;
+
 .arrow-left {
     grid-column: 1;
     grid-row: 1;
@@ -46,11 +48,15 @@
 .arrow-left::before {
     content: "";
     position: absolute;
-    width: 50px;  /* Expand hitbox */
+    width: 50px;
     height: 50px;
-    top: 12%;
-    left: 3%;
+    top: 13%;
+    left: 4%;
     transform: translate(-50%, -50%);
+    @media (max-width: $maxWidth) {
+        top: 3%;
+        left: 8%;
+      }
 }
 
 .turned {
