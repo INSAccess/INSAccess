@@ -153,12 +153,12 @@ class GetTdsAPIView(APIView):
         """
         user_tds = request.user.userprofile.link_td.all()
 
-        serialized_user_tds= [td.name for td in user_tds]
+        serialized_user_tds= [{"name":td.name} for td in user_tds]
 
         department_obj = Department.objects.filter(name = department).first()
         if not department_obj:
             tds = GroupTD.objects.all()
-            serialized_tds= [td.name for td in department_tds]
+            serialized_tds= [td.name for td in tds]
             return Response({"user_tds" : serialized_user_tds, "all_tds" : serialized_tds})
 
         department_tds = GroupTD.objects.filter(
@@ -227,4 +227,14 @@ class GetIsConnectedAPIView(APIView):
     def get(self,request):
         """returns True if the user is authenticated else False"""
         return Response(request.user.is_authenticated)
+
+class GetEventsAPIView(APIView):
+    """Test View for visualizing the description of the events"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """returns a list of event descriptions"""
+        events = [e.desc for e in InsaClass.objects.all()]
+
+        return Response({"events" : events})
 
