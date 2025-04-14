@@ -35,12 +35,13 @@ def ics_to_list(url : str) -> list:
                         "time_stamp" : event.get("DTSTAMP").dt,#.dt converts vdd to datetime
                         "time_start" : event.get("DTSTART").dt,
                         "time_end" : event.get("DTEND").dt,
-                        "name" : event.get("SUMMARY"),
-                        "location" : event.get("LOCATION"),
+                        "desc" : event.get("SUMMARY"),
+                        "locations" :list(filter(lambda e: e != '', str(event.get("LOCATION")).split(','))),
                         "teachers" : teachers,
                         "departments" : departments,
                         "td_tags" : td_tags,
                         "uid" : event.get("UID"),
+                        "date" : event.get("DTSTART").dt.date(),
                         "time_created" : event.get("CREATED").dt,
                         "time_last_modified" : event.get("LAST-MODIFIED").dt,
                         "sequence" : event.get("SEQUENCE")
@@ -84,4 +85,6 @@ def get_academic_year():
 
 if __name__ == '__main__':
     events = fetch_department(sys.argv[1], sys.argv[2])
-    print(events)
+    for e in events:
+        print(e["locations"])
+    # print(events)

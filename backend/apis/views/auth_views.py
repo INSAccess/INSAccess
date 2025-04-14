@@ -4,7 +4,8 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from apis.models import UserProfile
-
+from apis.utils.fetch_ics import fetch_department
+from apis.utils.db_insertor import insert_list_record
 def register(request):
     if request.method == 'POST':
         username = request.POST["username"]
@@ -66,3 +67,9 @@ def user_logout(request):
 @login_required
 def profile(request):
     return render(request, "profile.html", {"user": request.user})
+
+
+def test_insertion(request):
+    records = fetch_department("ITI" ,"3")
+    insert_list_record(records)
+    return render(request, "login.html")

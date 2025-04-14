@@ -83,14 +83,14 @@ class UserProfileAdmin(admin.ModelAdmin):
     search_fields = ('user__email',)
 
 class InsaClassAdmin(admin.ModelAdmin):
-    list_display = ('desc', 'date', 'start_hour', 'end_hour')
-    list_filter = ('date','desc')
+    list_display = ('desc', 'start_hour', 'end_hour')
+    list_filter = ('time_created','desc')
     search_fields = ('desc',)
     inlines = [ClassLinkTDInline, ClassLinkRoomInline, ClassLinkTeacherInline, ClassLinkDepartInline]
 
 class InsaEvenementAdmin(admin.ModelAdmin):
-    list_display = ('desc', 'date', 'start_hour', 'end_hour', 'association')
-    list_filter = ('date', 'association')
+    list_display = ('desc', 'start_hour', 'end_hour', 'association')
+    list_filter = ('time_created', 'association')
     search_fields = ('desc', 'association__name')
     inlines = [EvenementLinkEventRoomInline]
 

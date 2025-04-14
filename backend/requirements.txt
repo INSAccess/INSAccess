@@ -7,6 +7,5 @@ requests
 django-cors-headers
 djangorestframework
 django-uniauth
-ics
 drf-yasg
 icalendar

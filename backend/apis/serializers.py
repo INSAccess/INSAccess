@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import InsaClass, GroupTD, Teacher, Room, Department
-
+from django.utils.timezone import localtime
 
 class GroupTDSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,8 +36,8 @@ class InsaClassSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         # Format start_hour and end_hour to HHMM format for the frontend
-        representation['start_hour'] = instance.start_hour.strftime("%H%M")
-        representation['end_hour'] = instance.end_hour.strftime("%H%M")
+        representation['start_hour'] = localtime(instance.start_hour).strftime("%H%M")
+        representation['end_hour'] = localtime(instance.end_hour).strftime("%H%M")
 
         representation["link_td"] = [element["name"] for 
                                      element in representation["link_td"]]

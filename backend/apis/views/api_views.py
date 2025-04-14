@@ -237,3 +237,4 @@ class GetEventsAPIView(APIView):
         events = [e.desc for e in InsaClass.objects.all()]
 
         return Response({"events" : events})
+
