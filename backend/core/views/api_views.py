@@ -6,6 +6,7 @@ from django.core import signing
 
 from core.serializers import InsaClassSerializer
 from core.models import InsaClass, Department, GroupTD, UserLinkTD
+from core.utils.categorisation import categorise
 
 class GetDayAPIView(APIView):
     """The api that returns the event class
@@ -235,7 +236,7 @@ class GetEventsAPIView(APIView):
 
     def get(self, request):
         """returns a list of event descriptions"""
-        events = [e.desc for e in InsaClass.objects.all()]
+        events = [categorise(e.desc) for e in InsaClass.objects.all()]
 
         return Response({"events" : events})
 
