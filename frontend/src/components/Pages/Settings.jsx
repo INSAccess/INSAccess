@@ -114,8 +114,7 @@ const Settings = ({updateFunction}) => {
                     id={id} 
                     title={title} 
                     onSelect={(eventKey) => fonction(eventKey)} 
-                    className="dropdown-select"
-                >
+                    className="btn-custom">
                     {items}
                 </DropdownButton>
             </div>
@@ -130,8 +129,7 @@ const Settings = ({updateFunction}) => {
                     key={i} 
                     eventKey={departementYears[departement][i]} 
                     as="button"
-                    active={year == departementYears[departement][i]}
-                >
+                    active={year == departementYears[departement][i]}>
                     {departementYears[departement][i]}
                 </Dropdown.Item>
             );

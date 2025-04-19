@@ -33,9 +33,10 @@ const items = [
       color: "#333333",
       href: "about" }
     ];
-const PATH_CALENDAR = API_URL+'/api/get_year/'
+const REDIRECT = 'theuselessweb.com'
+const PATH_CALENDAR = (API_URL != undefined) ? API_URL+'/api/get_year/' : REDIRECT
 const PATH_ASSO = 'http://localhost:3000/data_asso.json'
-const API_LOGIN = API_URL+'/authentification/login'
-const API_AUTH = API_URL+'/api/is_connected?format=json'
+const API_LOGIN = (API_URL != undefined) ? API_URL+'/authentification/login' : REDIRECT
+const API_AUTH = (API_URL != undefined) ? API_URL+'/api/is_connected?format=json' : REDIRECT
 
 export { hours_timeline, dayList, minWidth, nbDaysPerMonth, monthList, baseEventWidth, API_URL, items, PATH_ASSO, PATH_CALENDAR, API_LOGIN, API_AUTH, departementNames, departementYears };

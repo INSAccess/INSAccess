@@ -1,26 +1,30 @@
-
-.dropdown-select button{
-    border:var(--eventBorderColor);
-    color: var(--eventTextColor);
-    background-color: var(--eventColor);
-
-    &:hover, &:active {
-        background-color:var(--eventHoverColor);
-        border-color:var(--eventHoverBorderColor);
-    }
-
-    &.active, &.show {
-        background-color: var(--eventColor);
-    }
+.btn, .btn-primary {
+  border:var(--eventBorderColor) !important;
+  color: var(--eventTextColor) !important;
+  background-color: var(--buttonColor) !important;
 }
 
-.dropdown-select div {
-    background-color: var(--eventColor);
+.dropdown-menu.show, 
+.dropdown-item,
+.btn-custom .dropdown-toggle{
+    border:var(--eventBorderColor) !important;
+    color: var(--eventTextColor) !important;
+    background-color: var(--buttonColor) !important;
+}
 
-    &.active, &:active {
-        background-color: var(--eventColor);
-    }
-}   
+.btn-custom .dropdown-toggle:hover,
+.btn-custom .dropdown-toggle:focus,
+.btn-custom .dropdown-toggle:active,
+.dropdown-item:active,
+.dropdown-item:hover,
+.btn-custom.show .dropdown-toggle {
+  background-color:var(--buttonHoverColor) !important;
+  border-color:var(--eventHoverBorderColor) !important;
+}
+
+.dropdown-item.active {
+  background-color:var(--buttonActiveColor) !important;
+}
 
 .checkbox-list {
     max-width: 400px;
