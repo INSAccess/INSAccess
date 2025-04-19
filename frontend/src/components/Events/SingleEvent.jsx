@@ -57,8 +57,8 @@ const SingleEvent = (props) => {
     return (
       <>
         <button type="button" className="event" style={eventStyle} onClick={handleShow}>
-          <p className="title">{props.label}</p>
-          <p className="room">{RandomUtils.Join(props.room)}</p>
+          <p className="title">{(props.label) ? props.label : ""}</p>
+          <p className="room">{(props.room.length > 0) ? RandomUtils.Join(props.room) : ""}</p>
         </button>
 
         <Modal show={show} onHide={handleClose}>
