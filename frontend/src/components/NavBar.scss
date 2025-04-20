@@ -35,7 +35,7 @@ $minWidth: 850px;
       cursor: pointer;
       transition: color .3s ease-out;
       text-decoration: none;
-      color: #000000;
+      color: var(--textColor);
       font-weight: 500;
       letter-spacing: 0.05em;
       text-transform: uppercase;

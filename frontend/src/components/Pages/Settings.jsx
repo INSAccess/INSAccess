@@ -189,7 +189,7 @@ const Settings = ({updateFunction}) => {
 
     if (user_tds && all_tds){
         return (
-            <div>
+            <div className="settings">
                 <h1>Settings</h1>
                 <div className="main_container">
                     <div>

@@ -3,7 +3,7 @@
   border-left: 8px solid var(--eventBorderColor);
   border-radius: 8px;
   background: var(--eventColor);
-  color: var(--contrastTextColor);
+  color: var(--contrastTextColor) ;
   box-shadow: 0 4px 8px var(--shadowColorBold); 
   transition: all 0.3s ease;
 }

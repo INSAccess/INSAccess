@@ -1,4 +1,5 @@
 import coincoin from '../../images/coincoin.png'
+import './About.scss'
 
 const MainAbout = () => {
     return (
@@ -12,7 +13,7 @@ const MainAbout = () => {
                 <div className="row justify-content-xl-center">
                 <div className="col-12 col-xl-11">
                     <h2 className="mb-3">Qui sommes nous ?</h2>
-                    <p className="lead fs-4 text-secondary mb-3">On est deux étudiants d'ITI 3, un peu tarés sur les bords, motivés pour faire des projets utiles aux étudiants </p>
+                    <p className="lead fs-4 text-secondary mb-3 text">On est deux étudiants d'ITI 3, un peu tarés sur les bords, motivés pour faire des projets utiles aux étudiants </p>
                     <p className="mb-5">Ce projet a pour ambition de faciliter l'accès des étudiants aux cours et aux événements culturels de l'INSA. Tout au long de son développement,
                                          nous avons bénéficié du soutien précieux de nombreuses personnes.
                                           Nous tenons particulièrement à remercier Michel Vespier pour ses conseils techniques avisés concernant l'interface du site,

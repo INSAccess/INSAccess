@@ -18,7 +18,8 @@
   .date-num, .date-day, .date-month {
     font-size: var(--dateTextSize);
     display:flex;
-    container-name: date
+    container-name: date;
+    color: var(--textColor);
   }
   
   .date-num {

@@ -38,6 +38,36 @@
 
 }
 
+[data-theme='dark'] {
+  --backgroundColor: #202020;
+
+  --textColor: #e0e0e0;
+  --contrastTextColor :white;
+  --messageColor: #b0b0b0;
+
+  --buttonColor: #e05d57;
+  --buttonHoverColor: #d54c45;
+  --buttonActiveColor: #c13e38;
+
+  --burgerButtonColor: #db5048;
+  --burgerBackgroundColor: #b33833;
+  --burgerBackgroundBorderColor: #a52a25;
+
+  --borderColor: #2a2a2a;
+  --subSectionBackgroundColor: #1e1e1e;
+  --contrastBorderColor: #e05d57;
+  --hoverHighlight: #2c2c2c;
+
+  --eventColor: #ff6b6b;
+  --eventHoverColor: #ff8787;
+  --eventHoverBorderColor: #ff6b6b;
+  --eventBgColor: #292929;
+
+  --shadowColorBold: rgba(0, 0, 0, 0.7);
+  --shadowColor: rgba(0, 0, 0, 0.3);
+
+}
+
 //---------------------------------------------------------------//
 //                           UTILS                                //
 //---------------------------------------------------------------//
@@ -63,7 +93,11 @@
   left: 1rem;
   aspect-ratio: 3/1;
   visibility: visible;
-  @media (max-width : 850px){
+  @media (max-width : 1200px){
     visibility: hidden;
   }
+}
+
+* {
+  color: (--textColor);
 }

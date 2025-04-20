@@ -1,10 +1,10 @@
 $maxWidth : 850px;
 
-.arrow-left {
+.arrow-left,.arrow-right {
     grid-column: 1;
     grid-row: 1;
     display: block;
-    background: url("../../images/fleche.png");
+    background: url("../../images/fleche.svg");
     background-size: contain;
     border: none;
     height: 5svh;
@@ -13,13 +13,21 @@ $maxWidth : 850px;
   
 .arrow-right {
     grid-column: 4;
-    grid-row: 1;
-    display: block;
-    background: url("../../images/fleche.png");
-    background-size: contain;
-    border: none;
-    height: 5svh;
-    width: 5svh;
+    justify-self: right;
+}
+
+.arrow-left::before { //small additionnal hitbox for the left arrow
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: 13%;
+    left: 4%;
+    transform: translate(-50%, -50%);
+    @media (max-width: $maxWidth) {
+        top: 3%;
+        left: 8%;
+      }
 }
 
 .days {
@@ -41,30 +49,13 @@ $maxWidth : 850px;
     "arrow-left timeline days-events arrow-right";
 }
 
+
 .arrow-left, .timeline {
     grid-column: 2; 
 }
 
-.arrow-left::before {
-    content: "";
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    top: 13%;
-    left: 4%;
-    transform: translate(-50%, -50%);
-    @media (max-width: $maxWidth) {
-        top: 3%;
-        left: 8%;
-      }
-}
-
 .turned {
     transform: rotate(180deg);
-}
-
-.arrow-right {
-    justify-self: right;
 }
 
 .timeline {
@@ -79,4 +70,5 @@ $maxWidth : 850px;
   
 .time-marker {
     justify-self: right;
+    color: var(--textColor);
 }
