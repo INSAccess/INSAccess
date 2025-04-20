@@ -9,7 +9,7 @@ $minWidth: 850px;
     padding: 10px;
     max-width: $minWidth;
     margin: 0 auto;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--borderColor) !important;
     
     @media (max-width: $minWidth) {
       flex-direction: column;

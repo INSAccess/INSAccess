@@ -1,9 +1,14 @@
 :root {
   --numDays: 5;
   --minWidth : 850px;
-  --eventBorderColor: #db342c;
+  --hoverHighlight: #f0f0f0;
+  --messageColor: #7c7c7c;
+  --textColor:#333;
+  --borderColor: #dbdbdb;
+  --subSectionBackgroundColor: #f8f9fa;
+  --contrastBorderColor: #db342c;
   --eventColor: #d44d44;
-  --eventTextColor :white;
+  --contrastTextColor :white;
   --eventHoverColor: #ff6b6b;
   --eventHoverBorderColor: #ff4b4b;
   --rotateTime: 2s;
@@ -17,6 +22,11 @@
   --buttonColor: #db342c;
   --buttonHoverColor:  #ca2e26;
   --buttonActiveColor: #af231c;
+  --checkboxBackgroundColor: #f9f9f9;
+  --shadowColorBold:rgba(0, 0, 0, 0.3);
+  --shadowColor:rgba(0, 0, 0, 0.1);
+  --backgroundColor :#ffffff;
+
 }
 
 //---------------------------------------------------------------//

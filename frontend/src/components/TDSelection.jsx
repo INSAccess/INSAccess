@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { API_URL, minWidth } from '../utils/Constants'
-import './TDSelection.scss'
 import RandomUtils from '../utils/RandomUtils'
 import Day from '../utils/Day'
 
@@ -58,7 +57,7 @@ function TDSelection({ allTDs, userTDs, updateFunction }) {
                 </li>
             ))}
             <div className= "validate">
-            <button className='button_validate' onClick={saveSelection}>Sauvegarder</button>
+            <button className='button_validate btn btn-primary' onClick={saveSelection}>Sauvegarder</button>
             <p>{statusMessage}</p>
             </div>
         </div>

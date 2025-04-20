@@ -1,14 +1,14 @@
 .btn, .btn-primary {
-  border:var(--eventBorderColor) !important;
-  color: var(--eventTextColor) !important;
+  border:var(--contrastBorderColor) !important;
+  color: var(--contrastTextColor) !important;
   background-color: var(--buttonColor) !important;
 }
 
 .dropdown-menu.show, 
 .dropdown-item,
 .btn-custom .dropdown-toggle{
-    border:var(--eventBorderColor) !important;
-    color: var(--eventTextColor) !important;
+    border:var(--contrastBorderColor) !important;
+    color: var(--contrastTextColor) !important;
     background-color: var(--buttonColor) !important;
 }
 
@@ -29,9 +29,9 @@
 .checkbox-list {
     max-width: 400px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: var(--checkboxBackgroundColor) !important;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 10px var(--shadowColorBold);
 
   }
   .checkbox-list li { 
@@ -39,13 +39,13 @@
     display: flex;
     align-items: center;
     font-size: 16px;
-    color: #333;
+    color: var(--textColor) !important;
     transition: background-color 0.2s ease;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--borderColor) !important;
   }
   
   .checkbox-list li:hover {
-    background-color: #f0f0f0;
+    background-color: var(--hoverHighlight) ;
   }
   
   .checkbox-list input[type="checkbox"] {
@@ -56,17 +56,9 @@
   
   .button_validate {
     background-color: var(--buttonColor);
-    color: #fff;
-    border: none;
     padding: 10px 20px;
-    font-size: 16px;
     cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    margin-top: 20px;
-    display: block;
     width: 100%;
-    text-align: center;
   }
   
   .button_validate:hover {
@@ -77,7 +69,7 @@
     text-align: center;
     margin-top: 10px;
     font-size: 16px;
-    color: #7c7c7c;
+    color: var(--messageColor) !important;
   }
 
   .main_container{
@@ -90,11 +82,11 @@
     align-items: center;
     max-width: 400px;
     margin: 2rem auto;
-    background: #f8f9fa;
-    border: 1px solid #ced4da;
+    background: var(--subSectionBackgroundColor) !important;
+    border: 1px solid var(--borderColor) !important;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px var(--shadowColor);
   }
 
   .copy-input {
@@ -103,7 +95,7 @@
     padding: 12px 16px;
     font-size: 1rem;
     background: transparent;
-    color: #212529;
+    color: var(--textColor) !important;
   }
 
   .copy-input:focus {
