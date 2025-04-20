@@ -4,4 +4,4 @@ cd ./backend/
 
 make restart
 
-cd ../front/ && npm start
+cd ../frontend/ && npm start
