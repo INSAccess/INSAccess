@@ -28,14 +28,12 @@
 
 .checkbox-list {
     max-width: 400px;
-    // margin: auto;
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 
   }
-  /*Style for each checkbox*/
   .checkbox-list li { 
     padding: 10px;
     display: flex;
@@ -75,7 +73,6 @@
     background-color: var(--buttonHoverColor);
   }
   
-  /* Style for the button message */
   .validate p {
     text-align: center;
     margin-top: 10px;

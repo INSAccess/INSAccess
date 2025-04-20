@@ -35,13 +35,15 @@
     transform: rotate(359deg);
   } 
 }
+
 .logo {
   position: absolute;
   top: 0;
-  left:40px;
-  visibility: visible;
-  width: 250px;
+  width: 30%;
+  max-width: 250px;
+  left: 1rem;
   aspect-ratio: 3/1;
+  visibility: visible;
   @media (max-width : 850px){
     visibility: hidden;
   }
