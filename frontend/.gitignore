@@ -11,6 +11,9 @@ node_modules/
 # production
 /build
 
+# documentation
+/out
+
 # misc
 .DS_Store
 .env.development

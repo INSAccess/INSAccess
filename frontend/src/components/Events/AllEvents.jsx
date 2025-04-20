@@ -5,22 +5,41 @@ import { hours_timeline, minWidth } from "../../utils/Constants";
 import Day from "../../utils/Day"
 import './AllEvents.scss'
 
+/**
+ * React component for the timestamps on the left of the calendar
+ * @component
+ */
 const TimeBar = () => {
-    const hours = [];
+  const hours = [];
 
-    hours.push(<div key={-1} className="spacer"></div>);
+  hours.push(<div key={-1} className="spacer"></div>);
 
-    for (let i = 0; i < hours_timeline.length; i++){
-      hours.push(<div key={i} className="time-marker">{hours_timeline[i]}</div>)
-    }
-
-    return (
-      <div className="timeline">
-          {hours}
-      </div>
-    );
+  for (let i = 0; i < hours_timeline.length; i++){
+    hours.push(<div key={i} className="time-marker">{hours_timeline[i]}</div>)
   }
 
+  return (
+    <div className="timeline">
+        {hours}
+    </div>
+  );
+}
+
+
+/**
+ * React component for all the events currently displayed
+ * @component
+ * @param {Day} start the first day of the week to display
+ * @param {list} data the events of the week in JSON format
+ * @param {boolean} asso whether you are trying to display associative events or not
+ * @example
+ * const first_day = new Day("1970-01-01")
+ * const data = []
+ * const isAsso = false
+ * return (
+ *  <AllEvents start={first_day} data={data} asso={isAsso} />
+ * )
+ */
 const AllEvents = ({start, data, asso}) => {
   let dimensions = RandomUtils.useWindowDimensions();
   let day = new Day(start);
