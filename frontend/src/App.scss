@@ -1,31 +1,40 @@
 :root {
+  //utils constants//
   --numDays: 5;
-  --minWidth : 850px;
-  --hoverHighlight: #f0f0f0;
-  --messageColor: #7c7c7c;
-  --textColor:#333;
-  --borderColor: #dbdbdb;
-  --subSectionBackgroundColor: #f8f9fa;
-  --contrastBorderColor: #db342c;
-  --eventColor: #d44d44;
-  --contrastTextColor :white;
-  --eventHoverColor: #ff6b6b;
-  --eventHoverBorderColor: #ff4b4b;
+  --numHours: 8;
+
+  //esthetics constants//
   --rotateTime: 2s;
-  --eventBgColor: #f3eceb;
   --dateTextSize: max(3.4vh, 2.1vw);
   --dateHeight: 6svh;
-  --numHours: 8;
-  --burgerButtonColor: #ad2821;
-  --burgerBackgroundColor: #db342c;
-  --burgerBackgroundBorderColor: #d40b00;
+  
+  //color theme constants//
+  --backgroundColor :white;
+
+  --textColor:#333;
+  --contrastTextColor :white;
+  --messageColor: #7c7c7c;
+
   --buttonColor: #db342c;
   --buttonHoverColor:  #ca2e26;
   --buttonActiveColor: #af231c;
-  --checkboxBackgroundColor: #f9f9f9;
+
+  --burgerButtonColor: #ad2821;
+  --burgerBackgroundColor: #db342c;
+  --burgerBackgroundBorderColor: #d40b00;
+
+  --borderColor: #dbdbdb;
+  --subSectionBackgroundColor: #f8f9fa;
+  --contrastBorderColor: #db342c;
+  --hoverHighlight: #f0f0f0;
+  
+  --eventColor: #d44d44;
+  --eventHoverColor: #ff6b6b;
+  --eventHoverBorderColor: #ff4b4b;
+  --eventBgColor: #f3eceb;
+
   --shadowColorBold:rgba(0, 0, 0, 0.3);
   --shadowColor:rgba(0, 0, 0, 0.1);
-  --backgroundColor :#ffffff;
 
 }
 
