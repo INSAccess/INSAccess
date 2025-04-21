@@ -1,7 +1,5 @@
 
-.settings {
-  color : var(--textColor);
-}
+//----- BOOTSTRAP OVERRIDE------//
 
 .btn, .btn-primary {
   border:var(--contrastBorderColor) !important;
@@ -31,6 +29,11 @@
   background-color:var(--buttonActiveColor) !important;
 }
 
+//-----------------------------------------------------------//
+
+.settings {
+  color : var(--textColor);
+}
 
 .checkbox-list {
     max-width: 400px;
