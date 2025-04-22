@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Events/SingleEvent.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Events/SingleEvent.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { NavLink } from 'react-router-dom';
+import Day from '../../utils/Day';
+import EventUtils from '../../utils/EventUtils';
+import RandomUtils from '../../utils/RandomUtils'
+import { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import './SingleEvent.scss';
+
+/**
+ * React component that only returns a button redirecting to a link if this is an association
+ * @component
+ */
+const FollowLink = ({asso, link}) => {
+  if (asso) {
+    return (
+      &lt;NavLink to={link}>
+        &lt;Button>
+          En savoir plus
+        &lt;/Button>
+      &lt;/NavLink>
+    )
+  } else {
+    return &lt;>&lt;/>
+  }
+}
+
+/**
+ * React component that only returns a description if this is an association
+ * @component
+ */
+const Description = ({asso, desc}) => {
+  if (asso){ 
+    return &lt;div>&lt;strong>Description : &lt;/strong>&lt;br/>{desc}&lt;/div> 
+  } else { 
+    return &lt;>&lt;/>
+  }
+}
+
+/**
+ * React component to display a single event
+ * @component
+ * @example
+ * const element = {
+ *  start_hour : "0900",
+ *  end_hour : "1115",
+ *  desc : "",
+ *  link_teacher : "Random Name",
+ *  link_room : "Ma-H-R1-03",
+ *  link : "agendas.insa-rouen.fr"
+ * }
+ * const width = "93%"
+ * const left = "0%"
+ * return (
+ *  &lt;SingleEvent key={i} start_time={element.start_hour} end_time={element.end_hour}
+    label={element.desc} teacher={element.link_teacher} room={element.link_room} link={element.link} 
+    width={width} left={left}
+    desc={''} asso={asso}/>
+  )
+ */
+const SingleEvent = (props) => {
+    const hours_events = Day.createHours();
+    let start_index = hours_events.indexOf(props.start_time);
+    let end_index = hours_events.indexOf(props.end_time);
+    let eventHeight = EventUtils.getEventHeight(start_index, end_index, hours_events.length);
+    let eventPosY = EventUtils.getEventPos(start_index, hours_events.length);
+  
+    const eventStyle = {
+      height: `${eventHeight}%`,
+      width: `${props.width}%`,
+      top: `${eventPosY}%`,
+      display:"block",
+      position:"absolute",
+      left: `${props.left}%`, 
+      justifyContent:"left",
+      userSelect: "none",
+      marginLeft:"3.5%",
+      marginRight:"3.5%"
+    };
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+  
+    return (
+      &lt;>
+        &lt;button type="button" className="event" style={eventStyle} onClick={handleShow}>
+          &lt;p className="title">{(props.label) ? props.label : ""}&lt;/p>
+          &lt;p className="room">{(props.room.length > 0) ? RandomUtils.Join(props.room) : ""}&lt;/p>
+        &lt;/button>
+
+        &lt;Modal show={show} onHide={handleClose}>
+          &lt;Modal.Header closeButton>
+            &lt;Modal.Title>{props.label}&lt;/Modal.Title>
+          &lt;/Modal.Header>
+          &lt;Modal.Body>
+            &lt;div>&lt;strong>Heure de début : &lt;/strong>{Day.presentableHour(props.start_time)}&lt;/div>
+            &lt;div>&lt;strong>Heure de fin : &lt;/strong>{Day.presentableHour(props.end_time)}&lt;/div>
+            &lt;div>&lt;strong>{(props.asso) ? "Associations" : "Profs"} : &lt;/strong>{RandomUtils.Join(props.teacher)}&lt;/div>
+            &lt;Description asso={props.asso} desc={props.desc}/>
+            &lt;br/>
+            &lt;FollowLink asso={props.asso} link={props.link}/>
+          &lt;/Modal.Body>
+          &lt;Modal.Footer>
+            &lt;Button variant="primary" onClick={handleClose}>
+              Fermer
+            &lt;/Button>
+          &lt;/Modal.Footer>
+        &lt;/Modal>
+      &lt;/>
+    );
+} 
+
+export default SingleEvent;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AllEvents.html">AllEvents</a></li><li><a href="Day.html">Day</a></li><li><a href="Description.html">Description</a></li><li><a href="FollowLink.html">FollowLink</a></li><li><a href="NavBar.html">NavBar</a></li><li><a href="SingleEvent.html">SingleEvent</a></li><li><a href="TimeBar.html">TimeBar</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Apr 20 2025 12:10:34 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

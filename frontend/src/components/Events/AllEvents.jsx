@@ -29,9 +29,7 @@ const TimeBar = () => {
 /**
  * React component for all the events currently displayed
  * @component
- * @param {Day} start the first day of the week to display
- * @param {list} data the events of the week in JSON format
- * @param {boolean} asso whether you are trying to display associative events or not
+ * @category Events
  * @example
  * const first_day = new Day("1970-01-01")
  * const data = []

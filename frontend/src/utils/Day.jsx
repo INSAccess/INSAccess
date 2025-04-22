@@ -2,6 +2,7 @@ import { nbDaysPerMonth, dayList, monthList } from './Constants.jsx'
 
 /**
  * Class for handling days and dates
+ * @component
  * @constructor
  * @param {string} date - the date of the day
  */

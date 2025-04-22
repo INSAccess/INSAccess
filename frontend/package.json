@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "ajv": "^8.17.1",
     "animate": "^1.0.0",
+    "better-docs": "^2.7.3",
     "bootstrap": "^5.3.3",
     "gsap": "^3.12.7",
     "jsdoc": "^4.0.4",
@@ -28,7 +29,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "jsdoc": "jsdoc -r"
+    "docs": "jsdoc -c jsdoc.conf.json"
   },
   "browserslist": {
     "production": [

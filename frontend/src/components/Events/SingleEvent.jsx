@@ -10,8 +10,6 @@ import './SingleEvent.scss';
 /**
  * React component that only returns a button redirecting to a link if this is an association
  * @component
- * @param {boolean} asso whether you are trying to display a modal for an associative event or not
- * @param {string} link target link 
  */
 const FollowLink = ({asso, link}) => {
   if (asso) {
@@ -30,8 +28,6 @@ const FollowLink = ({asso, link}) => {
 /**
  * React component that only returns a description if this is an association
  * @component
- * @param {boolean} asso whether you are trying to display a modal for an associative event or not
- * @param {string} desc description
  */
 const Description = ({asso, desc}) => {
   if (asso){ 

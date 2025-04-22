@@ -1,7 +1,16 @@
-import re
+import re, os, json
+
+CONFIG_PATH = os.path.join(os.path.dirname((os.path.dirname(os.path.dirname(__file__)))),"config/insa_config.json")
+
+def load_config():
+    """Loads the configuration file from the project config folder."""
+    with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+CONFIG = load_config()
 
 def categorise(description):
-    departements = re.findall(r'(ITI|H|EP|GM|GPGR|GC|CGC|CFI|MECA)+', description)
+    departements = re.findall("("+"|".join(CONFIG["department_list"])+")+", description)
     if len(departements) > 0 : 
         departement = departements[0]
     else:
