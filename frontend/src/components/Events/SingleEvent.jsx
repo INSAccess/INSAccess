@@ -14,7 +14,7 @@ import './SingleEvent.scss';
 const FollowLink = ({asso, link}) => {
   if (asso) {
     return (
-      <NavLink to={link}>
+      <NavLink to={link} target="_blank" rel="noopener noreferrer">
         <Button>
           En savoir plus
         </Button>
