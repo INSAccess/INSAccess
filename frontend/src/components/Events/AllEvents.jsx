@@ -7,7 +7,7 @@ import './AllEvents.scss'
 
 /**
  * React component for the timestamps on the left of the calendar
- * @component
+ * @returns {JSX.Element}
  */
 const TimeBar = () => {
   const hours = [];
@@ -28,8 +28,13 @@ const TimeBar = () => {
 
 /**
  * React component for all the events currently displayed
- * @component
- * @category Events
+ * @param {Object} props
+ * @param {Day} props.start
+ * @param {Array} props.data
+ * @param {boolean} props.asso  
+ * 
+ * @returns {JSX.Element}
+ * 
  * @example
  * const first_day = new Day("1970-01-01")
  * const data = []
