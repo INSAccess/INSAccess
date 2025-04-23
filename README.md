@@ -3,6 +3,7 @@ This web app is designed for INSA Rouen Normandie, aiming to provide a simple cl
 
 # Table of content
 - [Installation](#installation)
+- [Documentation](#doc)
 - [Development](#dev)
 	- [Code Structure](#struct)
 	- [Utility Scripts](#util)
@@ -106,14 +107,14 @@ npm start
 
 ### Frontend
 
-- **`front/`**  
+- **`frontend/`**  
   This folder contains the code for the frontend application, which is built with React and then bundled for deployment:  
   - **`src/`**:  
     Contains the source code of the React components, contexts, images, and JavaScript files (e.g., components like `NavBar.jsx`, pages like `about.jsx`, and utilities).  
   - **`public/`**:  
     Holds static public assets (e.g., `index.html`, images, `manifest.json`, and `robots.txt`).  
-  - **`out/`**:  
-    Contains compiled assets such as fonts, scripts (e.g., for code prettifying), and CSS stylesheets.  
+  - **`docs/`**:  
+    Contains compiled documentation
   - Additional configuration files (like `package.json`, `package-lock.json`) help manage dependencies and documentation for the frontend code.
 
 This structure allows the backend and frontend to be developed and maintained independently while still integrating seamlessly during deployment.

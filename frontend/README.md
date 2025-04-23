@@ -1,3 +1,3 @@
-# INSAccess Frontend
+# INSAccess Frontend Documentation
 
-Documentation auto-générée avec JSDoc et better-docs.
+Documentation auto-générée avec JSDoc
