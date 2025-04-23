@@ -1,7 +1,7 @@
 from django.urls import path
 from core.views import GetDayAPIView, GetWeekAPIView, GetMonthAPIView,\
     GetYearAPIView, GetTdsAPIView, PostTdsAPIView, GetIsConnectedAPIView, GetEventsAPIView,\
-    GetIcsUrlAPIView
+    GetIcsUrlAPIView, GetEvenementAPIView
 
 
 
@@ -14,5 +14,6 @@ urlpatterns = [
     path('save_tds',PostTdsAPIView.as_view(), name='save_tds'),
     path('is_connected', GetIsConnectedAPIView.as_view(), name='is_connected'),
     path('get_events', GetEventsAPIView.as_view(), name='get_events'),
-    path('get_ics_url', GetIcsUrlAPIView.as_view(), name='get_ics_url')
+    path('get_ics_url', GetIcsUrlAPIView.as_view(), name='get_ics_url'),
+    path('get_evenement', GetEvenementAPIView.as_view(), name ='get_evenement')
 ]

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+import uuid
+from django.utils import timezone
 import re
 
 class UserProfile(models.Model):
@@ -25,6 +26,15 @@ class Event(models.Model):
 
     class Meta:
         abstract = True
+        
+    def save(self, *args, **kwargs):
+        if not self.uid:
+            self.uid = str(uuid.uuid4())
+        now = timezone.now()
+        if not self.time_created:
+            self.time_created = now
+        self.time_last_modified = now
+        super().save(*args, **kwargs)
 
 class InsaClass(Event):
     """INSA Class definition"""

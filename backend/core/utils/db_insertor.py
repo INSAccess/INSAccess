@@ -66,16 +66,11 @@ def insert_list_record(list_of_records):
                 time_last_modified = record["time_last_modified"],
                 sequence = record["sequence"]
                 )
-        # name_mappings = [(record["locations"], Room), (record["teachers"], Teacher), (record["td_tags"], GroupTD),
-        #                 (record["departments"], Department)]
         if not existing_class or existing_class.sequence != record["sequence"]:
             if existing_class:
                 existing_class.delete()
             new_class.save()
-            # for names_list, model_class in name_mappings:
-                # for name in names_list:
-                #     insert_single_name_in_db(name, model_class)
-                # Insert ClassLink records to link InsaClass with associated entities
+
             for name in record["teachers"]:
                 insert_classlink_teacher_in_db(new_class, name)
 
