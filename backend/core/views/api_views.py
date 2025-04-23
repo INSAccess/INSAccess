@@ -4,8 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.core import signing
 
-from core.serializers import InsaClassSerializer
-from core.models import InsaClass, Department, GroupTD, UserLinkTD
+from core.serializers import InsaClassSerializer, InsaEvenementSerializer
+from core.models import InsaClass, Department, GroupTD, UserLinkTD,InsaEvenement
 from core.utils.categorisation import categorise
 
 class GetDayAPIView(APIView):
@@ -213,6 +213,14 @@ class PostTdsAPIView(APIView):
         UserLinkTD.objects.bulk_create(user_link_tds)
 
         return Response({"success": "Sélection actualisée !"})
+
+class GetEvenementAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self,request):
+        evenements = InsaEvenement.objects.distinct()
+        serializer = InsaEvenementSerializer(evenements, context={'request': request}, many=True)
+        return Response(serializer.data)
 
 class GetIsConnectedAPIView(APIView):
     """A small api route for the temporary solution
