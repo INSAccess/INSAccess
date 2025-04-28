@@ -31,6 +31,27 @@
 
 //-----------------------------------------------------------//
 
+.view {
+  width:100%;
+  display: flex;
+}
+
+.btn_view {
+  margin:1%;
+  flex:1;
+}
+
+.dropdown_container {
+  display:flex;
+  margin:2%;
+  flex-wrap: wrap;
+}
+
+.select {
+  margin-left:5px;
+  margin-right: 5px;
+}
+
 .settings {
   color : var(--textColor);
 }
@@ -82,8 +103,6 @@
   }
 
   .main_container{
-    display: flex;
-    align-items: flex-start;
     background-color: var(--backgroundColor);
   }
 

@@ -16,30 +16,10 @@ const Settings = ({updateFunction}) => {
     const [view, setView] = useState("TDs");
     const [departement, setDepartement] = useState(departementNames[0])
     const [year, setYear] = useState(departementYears[departement][0])
-    //const [semester, setSemester] = useState(1)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const copyButtonRef = useRef(null);
     const [icsLink, setIcsLink] = useState("Error when loading ics");
-
-
-    const dropdown_style = {
-        "marginLeft":"5px",
-        "marginRight":"5px"
-    }
-
-    const view_style = {
-        "display": "block",
-        "position": "relative",
-        "left": "50%",
-        "transform": "translateX(-50%)"
-    }
-
-    const dropdown_container = {
-        "display":"flex",
-        "margin":"2%",
-        "flexWrap": "wrap"
-    }
 
     useEffect(() => {
         const loadData = async () => {
@@ -109,7 +89,7 @@ const Settings = ({updateFunction}) => {
 
     const DropDownSelect = ({ id, title, items, fonction }) => {
         return (
-            <div style={dropdown_style}>
+            <div className="select">
                 <DropdownButton 
                     id={id} 
                     title={title} 
@@ -171,12 +151,32 @@ const Settings = ({updateFunction}) => {
         )
     }
 
+    const ICS = () => {
+        return (
+            <div>
+                <h4>Le lien pour votre calendrier ics</h4>
+                <div className="copy-container">
+                    <input type="text" id="copyInput" className="copy-input" value={icsLink} readOnly></input>
+                    <button
+                            ref={copyButtonRef}
+                            className="btn btn-primary"
+                            onClick={handleCopy}
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="Copy to clipboard">
+                            Copier
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
 
     function displayView(view){
         switch (view){
             case "TDs" : return (
                 <>
-                    <div style={dropdown_container}>
+                    <div className="dropdown_container">
                         <DropDownDepart />
                         <DropDownYear />
                     </div>
@@ -184,6 +184,7 @@ const Settings = ({updateFunction}) => {
                 </>
             );
             case "create" : return (<EventCreator/>);
+            case "ics": return <ICS />
         }
     }
 
@@ -192,30 +193,12 @@ const Settings = ({updateFunction}) => {
             <div className="settings">
                 <h1>Settings</h1>
                 <div className="main_container">
-                    <div>
-                        <div style={view_style}>
-                            <Button onClick={() => {setView("TDs")}}>TD List</Button>
-                            <Button onClick={() => {setView("create")}}>Create Event</Button>
-                        </div>
-                        <>{displayView(view)}</>
+                    <div className="view">
+                        <Button className="btn_view" onClick={() => {setView("TDs")}}>Liste des TD</Button>
+                        <Button className="btn_view" onClick={() => {setView("create")}}>Créer un événement</Button>
+                        <Button className="btn_view" onClick={() => {setView("ics")}}>Lien ICS</Button>
                     </div>
-
-                    <div>
-                        <h4>Le lien pour votre calendrier ics</h4>
-                        <div className="copy-container">
-                            <input type="text" id="copyInput" className="copy-input" value={icsLink} readOnly></input>
-                            <button
-                                    ref={copyButtonRef}
-                                    className="btn btn-primary"
-                                    onClick={handleCopy}
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Copy to clipboard">
-                                    Copier
-                            </button>
-                        </div>
-                    </div>
-
+                    <>{displayView(view)}</>
                 </div>
             </div>
         ); 
