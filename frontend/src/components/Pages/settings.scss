@@ -54,80 +54,78 @@
 
 .settings {
   color : var(--textColor);
+  background-color: var(--backgroundColor);
 }
 
 .checkbox-list {
-    max-width: 400px;
-    padding: 20px;
-    background-color: var(--subSectionBackgroundColor);
-    border-radius: 8px;
-    box-shadow: 0 4px 10px var(--shadowColorBold);
+  max-width: 50%;
+  padding: 20px;
+  margin-left:3%;
+  background-color: var(--subSectionBackgroundColor);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px var(--shadowColorBold);
 
-  }
-  .checkbox-list li { 
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    color: var(--textColor);
-    transition: background-color 0.2s ease;
-    border-bottom: 1px solid var(--borderColor);
-  }
-  
-  .checkbox-list li:hover {
-    background-color: var(--hoverHighlight) ;
-  }
-  
-  .checkbox-list input[type="checkbox"] {
-    margin-right: 10px;
-    accent-color: var(--buttonColor); 
-    transform: scale(1.5);
-  }
-  
-  .button_validate {
-    background-color: var(--buttonColor);
-    padding: 10px 20px;
-    cursor: pointer;
-    width: 100%;
-  }
-  
-  .button_validate:hover {
-    background-color: var(--buttonHoverColor);
-  }
-  
-  .validate p {
-    text-align: center;
-    margin-top: 10px;
-    font-size: 16px;
-    color: var(--messageColor);
-  }
+}
+.checkbox-list li { 
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: var(--textColor);
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid var(--borderColor);
+}
 
-  .main_container{
-    background-color: var(--backgroundColor);
-  }
+.checkbox-list li:hover {
+  background-color: var(--hoverHighlight) ;
+}
 
-  .copy-container {
-    display: flex;
-    align-items: center;
-    max-width: 400px;
-    margin: 2rem auto;
-    background: var(--subSectionBackgroundColor);
-    border: 1px solid var(--borderColor);
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px var(--shadowColor);
-  }
+.checkbox-list input[type="checkbox"] {
+  margin-right: 10px;
+  accent-color: var(--buttonColor); 
+  transform: scale(1.5);
+}
 
-  .copy-input {
-    flex: 1;
-    border: none;
-    padding: 12px 16px;
-    font-size: 1rem;
-    background: transparent;
-    color: var(--textColor);
-  }
+.button_validate {
+  background-color: var(--buttonColor);
+  padding: 10px 20px;
+  cursor: pointer;
+  width: 100%;
+}
 
-  .copy-input:focus {
-    outline: none;
-    background: #e9ecef;
-  }
+.button_validate:hover {
+  background-color: var(--buttonHoverColor);
+}
+
+.validate p {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 16px;
+  color: var(--messageColor);
+}
+
+.copy-container {
+  display: flex;
+  align-items: left;
+  max-width: 50%;
+  margin: 2rem auto;
+  background: var(--subSectionBackgroundColor);
+  border: 1px solid var(--borderColor);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px var(--shadowColor);
+}
+
+.copy-input {
+  flex: 1;
+  border: none;
+  padding: 12px 16px;
+  font-size: 1rem;
+  background: transparent;
+  color: var(--textColor);
+}
+
+.copy-input:focus {
+  outline: none;
+  background: #e9ecef;
+}

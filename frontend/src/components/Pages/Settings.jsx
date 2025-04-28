@@ -153,13 +153,20 @@ const Settings = ({updateFunction}) => {
 
     const ICS = () => {
         return (
-            <div>
-                <h4>Le lien pour votre calendrier ics</h4>
+            <>
+                <div style={{"margin":"2%"}}>
+                    <h4>Le lien pour votre calendrier ics</h4>
+                    <p>
+                        Vous pouvez copier ce lien dans Google Agenda pour visualiser vos cours et vos événements personnels
+                        dans le même agenda
+                    </p>
+                </div>
                 <div className="copy-container">
                     <input type="text" id="copyInput" className="copy-input" value={icsLink} readOnly></input>
                     <button
                             ref={copyButtonRef}
                             className="btn btn-primary"
+                            style={{margin:"4px"}}
                             onClick={handleCopy}
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
@@ -167,7 +174,7 @@ const Settings = ({updateFunction}) => {
                             Copier
                     </button>
                 </div>
-            </div>
+            </>
         )
     }
 
@@ -191,21 +198,18 @@ const Settings = ({updateFunction}) => {
     if (user_tds && all_tds){
         return (
             <div className="settings">
-                <h1>Settings</h1>
-                <div className="main_container">
-                    <div className="view">
-                        <Button className="btn_view" onClick={() => {setView("TDs")}}>Liste des TD</Button>
-                        <Button className="btn_view" onClick={() => {setView("create")}}>Créer un événement</Button>
-                        <Button className="btn_view" onClick={() => {setView("ics")}}>Lien ICS</Button>
-                    </div>
-                    <>{displayView(view)}</>
+                <div className="view">
+                    <Button className="btn_view" onClick={() => {setView("TDs")}}>Liste des TD</Button>
+                    <Button className="btn_view" onClick={() => {setView("create")}}>Créer un événement</Button>
+                    <Button className="btn_view" onClick={() => {setView("ics")}}>Lien ICS</Button>
                 </div>
+                <>{displayView(view)}</>
             </div>
         ); 
     } else {
         return (
             <div>
-                <h1>Settings</h1>
+                <h1>Paramètres</h1>
             </div>
         )
     }
