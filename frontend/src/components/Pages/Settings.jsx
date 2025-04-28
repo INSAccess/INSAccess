@@ -23,7 +23,6 @@ const Settings = ({updateFunction}) => {
 
     useEffect(() => {
         const loadData = async () => {
-          //const result = await RandomUtils.fetchData(API_URL+"/api/get_tds/ITI3?format=json");
           const result = await RandomUtils.fetchData(API_URL+"/api/get_tds/"+departement+year+"?format=json");
           if (result.data){
             setUserTD(result.data.user_tds);

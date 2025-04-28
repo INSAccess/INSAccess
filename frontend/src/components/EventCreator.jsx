@@ -3,6 +3,7 @@ import { Error, Loading } from './Templates.jsx'
 import RandomUtils from '../utils/RandomUtils.jsx'
 import { useState, useEffect } from 'react'
 import Button from 'react-bootstrap/Button';
+import './EventCreator.scss'
 
 const EventCreator = () => {
 
