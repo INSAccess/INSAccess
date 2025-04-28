@@ -194,13 +194,17 @@ const Settings = ({updateFunction}) => {
         }
     }
 
+    if (loading){
+        return <Loading />
+    }
+
     if (user_tds && all_tds){
         return (
             <div className="settings">
                 <div className="view">
-                    <Button className="btn_view" onClick={() => {setView("TDs")}}>Liste des TD</Button>
-                    <Button className="btn_view" onClick={() => {setView("create")}}>Créer un événement</Button>
-                    <Button className="btn_view" onClick={() => {setView("ics")}}>Lien ICS</Button>
+                    <Button className="btn_view" style={{"flex":(view == "TDs") ? "2" : "1"}} onClick={() => {setView("TDs")}}>Liste des TD</Button>
+                    <Button className="btn_view" style={{"flex":(view == "create") ? "2" : "1"}} onClick={() => {setView("create")}}>Créer un événement</Button>
+                    <Button className="btn_view" style={{"flex":(view == "ics") ? "2" : "1"}} onClick={() => {setView("ics")}}>Lien ICS</Button>
                 </div>
                 <>{displayView(view)}</>
             </div>
