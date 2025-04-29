@@ -44,7 +44,7 @@ function App() {
       try {
         const resultAsso = await RandomUtils.fetchData(PATH_ASSO);
         const resultAgenda = await RandomUtils.fetchData(PATH_CALENDAR + day);
-        const resultTheme = await RandomUtils.fetchData(API_URL + "/api/get_theme");
+        const resultTheme = await RandomUtils.fetchData(API_URL + "/api/get_user_theme");
         document.getElementById("root").setAttribute("data-theme",resultTheme.data);
         setDataAsso(resultAsso.data || []);
         setDataAgenda(resultAgenda.data || []);
