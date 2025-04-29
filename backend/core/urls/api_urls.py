@@ -16,5 +16,5 @@ urlpatterns = [
     path('get_evenement', GetEvenementAPIView.as_view(), name ='get_evenement'),
     path('get_theme', GetUserThemeAPIView.as_view(), name ='get_theme'),
     path('post_theme', PostUserThemeAPIView.as_view(), name ='post_theme'),
-    path('config', GetConfigFileAPIView.as_view(), name='config')
+    path('get_config', GetConfigFileAPIView.as_view(), name='get_config')
 ]
