@@ -5,9 +5,8 @@ import { API_URL, departementNames, departementYears, minWidth } from '../../uti
 import { Loading } from '../Templates.jsx'
 import EventCreator from '../EventCreator.jsx';
 import Button from 'react-bootstrap/Button';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import './settings.scss'
+import DropDownCustom from '../DropDownCustom.jsx'
+import './Settings.scss'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const Settings = ({updateFunction}) => {
@@ -86,67 +85,16 @@ const Settings = ({updateFunction}) => {
         setDepartement(value)
     }
 
-    const DropDownSelect = ({ id, title, items, fonction }) => {
-        return (
-            <div className="select">
-                <DropdownButton 
-                    id={id} 
-                    title={title} 
-                    onSelect={(eventKey) => fonction(eventKey)} 
-                    className="btn-custom">
-                    {items}
-                </DropdownButton>
-            </div>
-        )
-    }
-
     const DropDownYear = () => {
-        let button_list = [];
-        for (let i = 0; i < departementYears[departement].length; i++){
-            button_list.push(
-                <Dropdown.Item 
-                    key={i} 
-                    eventKey={departementYears[departement][i]} 
-                    as="button"
-                    active={year == departementYears[departement][i]}>
-                    {departementYears[departement][i]}
-                </Dropdown.Item>
-            );
-        }
         return (
-            <DropDownSelect 
-              id="dropdown-year" 
-              title={"Année : " + year} 
-              items={button_list} 
-              fonction={setYear}
-            />
-        )
+            <DropDownCustom items={departementYears[departement]} current={year} id="dropdown-year" title="Année : " handle={setYear}/>
+        ) 
     }
     
 
     const DropDownDepart = () => {
-        let button_list = [];
-        for (let i = 0; i < departementNames.length; i++){
-            button_list.push(
-                <Dropdown.Item 
-                    key={i} 
-                    eventKey={departementNames[i]} 
-                    as="button" 
-                    href=""
-                    active={departement == departementNames[i]}
-                >
-                    {departementNames[i]}
-                </Dropdown.Item>
-            );
-        }
-
         return (
-            <DropDownSelect 
-            id="dropdown-depart" 
-            title={"Département : " + departement} 
-            items={button_list} 
-            fonction={handleSetDepartement}
-            />
+            <DropDownCustom items={departementNames} current={departement} id="dropdown-depart" title="Département : " handle={handleSetDepartement}/>
         )
     }
 
