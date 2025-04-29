@@ -1,4 +1,4 @@
-import coincoin from '../images/coincoin.png'
+import duck from '../images/duck.png'
 import "./Templates.scss"
 const Error = ({ message }) => {
     return (
@@ -11,7 +11,7 @@ const Error = ({ message }) => {
 const Loading = () => {
     return (
         <div className='loadingBackground'>
-            <img id="rotating-logo" src={coincoin} alt='image not found' ></img>
+            <img id="rotating-logo" src={duck} alt='image not found' ></img>
         </div>
     )
 }

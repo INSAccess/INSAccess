@@ -1,4 +1,4 @@
-import coincoin from '../../images/coincoin.png'
+import duck from '../../images/duck.png'
 import './About.scss'
 
 const MainAbout = () => {
@@ -7,7 +7,7 @@ const MainAbout = () => {
         <div className="container">
             <div className="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
             <div className="col-12 col-lg-6 col-xl-5">
-                <img className="img-fluid rounded" loading="lazy" src={coincoin} alt="A pu coincoin"></img>
+                <img className="img-fluid rounded" loading="lazy" src={duck} alt="couldnt load duck image"></img>
             </div>
             <div className="col-12 col-lg-6 col-xl-7">
                 <div className="row justify-content-xl-center">
