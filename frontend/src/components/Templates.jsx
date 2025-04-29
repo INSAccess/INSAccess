@@ -1,5 +1,5 @@
 import coincoin from '../images/coincoin.png'
-
+import "./Templates.scss"
 const Error = ({ message }) => {
     return (
         <div>
@@ -9,15 +9,9 @@ const Error = ({ message }) => {
 }
 
 const Loading = () => {
-    const style = {
-        "display": "flex",
-        "justifyContent": "center",
-        "alignItems": "center center",
-        "height":"100%"
-    }
     return (
-        <div style={style}>
-            <img id="rotating-logo" src={coincoin} alt={'image not found'} style={{"width":"30vh", "alignSelf":"center"}}></img>
+        <div className='loadingBackground'>
+            <img id="rotating-logo" src={coincoin} alt='image not found' style={{"width":"30vh", "alignSelf":"center"}}></img>
         </div>
     )
 }

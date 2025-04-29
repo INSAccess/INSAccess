@@ -8,7 +8,7 @@ import Calendar from './components/Pages/Calendar.jsx';
 import Associations from './components/Pages/Associations.jsx';
 import About from './components/Pages/About.jsx';
 import Day from './utils/Day.jsx';
-import { minWidth, items, PATH_CALENDAR, PATH_ASSO } from './utils/Constants.jsx';
+import { minWidth, items, PATH_CALENDAR, PATH_ASSO,API_URL } from './utils/Constants.jsx';
 import RandomUtils from './utils/RandomUtils.jsx';
 import { Loading } from './components/Templates.jsx'
 import logo from './images/insa_logo.webp'
@@ -44,7 +44,8 @@ function App() {
       try {
         const resultAsso = await RandomUtils.fetchData(PATH_ASSO);
         const resultAgenda = await RandomUtils.fetchData(PATH_CALENDAR + day);
-
+        const resultTheme = await RandomUtils.fetchData(API_URL + "/api/get_theme");
+        document.getElementById("root").setAttribute("data-theme",resultTheme.data);
         setDataAsso(resultAsso.data || []);
         setDataAgenda(resultAgenda.data || []);
         setErrorAsso(resultAsso.error);
@@ -110,15 +111,15 @@ function App() {
 
 
   return (
-    <div className="App">
-      <img className="logo" src={logo}/>
-      <div id="backmenu" className={burger} onClick={fold}></div>
-      <NavBar setPage={setPage} items={items}/>
-      <div className="fold" id="folder" onClick={foldToggle}>☰</div>
-      <AuthProvider>
-          <ProtectedRoute>{currentPage(page, day)}</ProtectedRoute>
-      </AuthProvider>
-    </div>
+      <div className="App">
+        <img className="logo" src={logo}/>
+        <div id="backmenu" className={burger} onClick={fold}></div>
+        <NavBar setPage={setPage} items={items}/>
+        <div className="fold" id="folder" onClick={foldToggle}>☰</div>
+        <AuthProvider>
+            <ProtectedRoute>{currentPage(page, day)}</ProtectedRoute>
+        </AuthProvider>
+      </div>
   );
 }
 

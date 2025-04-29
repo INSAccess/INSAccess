@@ -22,7 +22,7 @@ class Event(models.Model):
     end_hour = models.DateTimeField()
     time_created = models.DateTimeField()
     time_last_modified = models.DateTimeField()
-    sequence = models.IntegerField()
+    sequence = models.IntegerField(null=True)
     desc = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
@@ -35,6 +35,7 @@ class Event(models.Model):
         if not self.time_created:
             self.time_created = now
         self.time_last_modified = now
+        
         super().save(*args, **kwargs)
 
 class InsaClass(Event):

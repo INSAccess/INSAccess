@@ -276,6 +276,7 @@ class PostUserThemeAPIView(APIView):
         theme = EnumColorTheme.objects.filter(name=theme_name).first()
         if theme:
             request.user.userprofile.color_theme = theme
+            request.user.userprofile.save()
             return Response({"success": "Theme actualisé !"})
         else:
             return Response({"error": "Theme n'existe pas"})
