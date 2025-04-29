@@ -2,6 +2,8 @@ import { API_URL } from '../utils/Constants.jsx'
 import { Error, Loading } from './Templates.jsx'
 import RandomUtils from '../utils/RandomUtils.jsx'
 import { useState, useEffect } from 'react'
+import Button from 'react-bootstrap/Button';
+import './EventCreator.scss'
 
 const EventCreator = () => {
 
@@ -11,7 +13,7 @@ const EventCreator = () => {
 
     useEffect(() => {
         const loadData = async () => {
-          const result = await RandomUtils.fetchData(API_URL+"/api/is_assos");
+          const result = await RandomUtils.fetchData(API_URL+"/api/is_connected");
           if (result.data){
             setAsso(result.data);
           }
@@ -37,12 +39,11 @@ const EventCreator = () => {
         return (
             <div>
                 <p>Vous n'êtes pas une association</p>
-                <button href={url_login}>Se connecter en tant qu'association</button>
+                <Button href={url_login}>Se connecter en tant qu'association</Button>
             </div>
         );
     } else {
         return <div>toto</div>
-        window.location.replace(url_create);
     }  
 }
 

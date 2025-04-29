@@ -16,34 +16,13 @@ const Settings = ({updateFunction}) => {
     const [view, setView] = useState("TDs");
     const [departement, setDepartement] = useState(departementNames[0])
     const [year, setYear] = useState(departementYears[departement][0])
-    //const [semester, setSemester] = useState(1)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const copyButtonRef = useRef(null);
     const [icsLink, setIcsLink] = useState("Error when loading ics");
 
-
-    const dropdown_style = {
-        "marginLeft":"5px",
-        "marginRight":"5px"
-    }
-
-    const view_style = {
-        "display": "block",
-        "position": "relative",
-        "left": "50%",
-        "transform": "translateX(-50%)"
-    }
-
-    const dropdown_container = {
-        "display":"flex",
-        "margin":"2%",
-        "flexWrap": "wrap"
-    }
-
     useEffect(() => {
         const loadData = async () => {
-          //const result = await RandomUtils.fetchData(API_URL+"/api/get_tds/ITI3?format=json");
           const result = await RandomUtils.fetchData(API_URL+"/api/get_tds/"+departement+year+"?format=json");
           if (result.data){
             setUserTD(result.data.user_tds);
@@ -109,7 +88,7 @@ const Settings = ({updateFunction}) => {
 
     const DropDownSelect = ({ id, title, items, fonction }) => {
         return (
-            <div style={dropdown_style}>
+            <div className="select">
                 <DropdownButton 
                     id={id} 
                     title={title} 
@@ -171,12 +150,39 @@ const Settings = ({updateFunction}) => {
         )
     }
 
+    const ICS = () => {
+        return (
+            <>
+                <div style={{"margin":"2%"}}>
+                    <h4>Le lien pour votre calendrier ics</h4>
+                    <p>
+                        Vous pouvez copier ce lien dans Google Agenda pour visualiser vos cours et vos événements personnels
+                        dans le même agenda
+                    </p>
+                </div>
+                <div className="copy-container">
+                    <input type="text" id="copyInput" className="copy-input" value={icsLink} readOnly></input>
+                    <button
+                            ref={copyButtonRef}
+                            className="btn btn-primary"
+                            style={{margin:"4px"}}
+                            onClick={handleCopy}
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="Copy to clipboard">
+                            Copier
+                    </button>
+                </div>
+            </>
+        )
+    }
+
 
     function displayView(view){
         switch (view){
             case "TDs" : return (
                 <>
-                    <div style={dropdown_container}>
+                    <div className="dropdown_container">
                         <DropDownDepart />
                         <DropDownYear />
                     </div>
@@ -184,45 +190,29 @@ const Settings = ({updateFunction}) => {
                 </>
             );
             case "create" : return (<EventCreator/>);
+            case "ics": return <ICS />
         }
+    }
+
+    if (loading){
+        return <Loading />
     }
 
     if (user_tds && all_tds){
         return (
             <div className="settings">
-                <h1>Settings</h1>
-                <div className="main_container">
-                    <div>
-                        <div style={view_style}>
-                            <Button onClick={() => {setView("TDs")}}>TD List</Button>
-                            <Button onClick={() => {setView("create")}}>Create Event</Button>
-                        </div>
-                        <>{displayView(view)}</>
-                    </div>
-
-                    <div>
-                        <h4>Le lien pour votre calendrier ics</h4>
-                        <div className="copy-container">
-                            <input type="text" id="copyInput" className="copy-input" value={icsLink} readOnly></input>
-                            <button
-                                    ref={copyButtonRef}
-                                    className="btn btn-primary"
-                                    onClick={handleCopy}
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Copy to clipboard">
-                                    Copier
-                            </button>
-                        </div>
-                    </div>
-
+                <div className="view">
+                    <Button className="btn_view" style={{"flex":(view == "TDs") ? "2" : "1"}} onClick={() => {setView("TDs")}}>Liste des TD</Button>
+                    <Button className="btn_view" style={{"flex":(view == "create") ? "2" : "1"}} onClick={() => {setView("create")}}>Créer un événement</Button>
+                    <Button className="btn_view" style={{"flex":(view == "ics") ? "2" : "1"}} onClick={() => {setView("ics")}}>Lien ICS</Button>
                 </div>
+                <>{displayView(view)}</>
             </div>
         ); 
     } else {
         return (
             <div>
-                <h1>Settings</h1>
+                <h1>Paramètres</h1>
             </div>
         )
     }

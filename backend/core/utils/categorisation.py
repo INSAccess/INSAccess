@@ -1,11 +1,5 @@
 import re, os, json
-
-CONFIG_PATH = os.path.join(os.path.dirname((os.path.dirname(os.path.dirname(__file__)))),"config/insa_config.json")
-
-def load_config():
-    """Loads the configuration file from the project config folder."""
-    with open(CONFIG_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
+from core.utils.fetch_ics import load_config
 
 CONFIG = load_config()
 

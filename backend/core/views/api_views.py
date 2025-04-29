@@ -8,6 +8,7 @@ from core.serializers import InsaClassSerializer, InsaEvenementSerializer
 from core.models import InsaClass, Department, GroupTD, UserLinkTD,InsaEvenement\
     ,EnumColorTheme
 from core.utils.categorisation import categorise
+from core.utils.fetch_ics import load_config
 
 class GetDayAPIView(APIView):
     """The api that returns the event class
@@ -240,7 +241,7 @@ class GetIsConnectedAPIView(APIView):
         return Response(request.user.is_authenticated)
 
 class GetEventsAPIView(APIView):
-    """Test View for visualizing the description of the events"""
+    """API route for visualizing the description of the events"""
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -256,8 +257,7 @@ class GetIcsUrlAPIView(APIView):
     def get(self, request):
         """"""
         return Response(f"{request.get_host()}/ics/{signing.dumps(request.user.id)}")
-    
-    
+
 class GetUserThemeAPIView(APIView):
     """return the user associated theme"""
     permission_classes = [IsAuthenticated]
@@ -279,3 +279,12 @@ class PostUserThemeAPIView(APIView):
             return Response({"success": "Theme actualisé !"})
         else:
             return Response({"error": "Theme n'existe pas"})
+
+
+class GetConfigFileAPIView(APIView):
+    """API route for returning the list of available departments in the DB"""
+    def get(self, request):
+        """"""
+        CONFIG = load_config()
+        return Response(CONFIG)
+
