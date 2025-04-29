@@ -281,6 +281,13 @@ class PostUserThemeAPIView(APIView):
         else:
             return Response({"error": "Theme n'existe pas"})
 
+class GetEnumThemeAPIView(APIView):
+    """return the themes"""
+    permission_classes = [IsAuthenticated]
+    
+    def get(self,request):
+        """"""
+        return Response([theme.name for theme in EnumColorTheme.objects.all()])
 
 class GetConfigFileAPIView(APIView):
     """API route for returning the list of available departments in the DB"""
@@ -288,4 +295,5 @@ class GetConfigFileAPIView(APIView):
         """"""
         CONFIG = load_config()
         return Response(CONFIG)
+
 
