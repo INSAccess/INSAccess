@@ -1,7 +1,7 @@
 import TDSelection from '../TDSelection.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
 import { useEffect, useState, useRef } from 'react';
-import { API_URL, departementNames, departementYears } from '../../utils/Constants.jsx'
+import { API_URL, departementNames, departementYears, minWidth } from '../../utils/Constants.jsx'
 import { Loading } from '../Templates.jsx'
 import EventCreator from '../EventCreator.jsx';
 import Button from 'react-bootstrap/Button';
@@ -194,16 +194,19 @@ const Settings = ({updateFunction}) => {
         }
     }
 
+    let dimensions = RandomUtils.useWindowDimensions()
+
     if (loading){
         return <Loading />
     }
 
     if (user_tds && all_tds){
+
         return (
             <div className="settings">
                 <div className="view">
-                    <Button className="btn_view" style={{"flex":(view == "TDs") ? "2" : "1"}} onClick={() => {setView("TDs")}}>Liste des TD</Button>
-                    <Button className="btn_view" style={{"flex":(view == "create") ? "2" : "1"}} onClick={() => {setView("create")}}>Créer un événement</Button>
+                    <Button className="btn_view" style={{"flex":(view == "TDs") ? "2" : "1"}} onClick={() => {setView("TDs")}}>{(dimensions.width > minWidth) ? "Liste des TD" : "TD"}</Button>
+                    <Button className="btn_view" style={{"flex":(view == "create") ? "2" : "1"}} onClick={() => {setView("create")}}>{(dimensions.width > minWidth) ? "Créer un événement" : "Evénement"}</Button>
                     <Button className="btn_view" style={{"flex":(view == "ics") ? "2" : "1"}} onClick={() => {setView("ics")}}>Lien ICS</Button>
                 </div>
                 <>{displayView(view)}</>
