@@ -25,7 +25,7 @@ class CustomAdminSite(AdminSite):
 
         custom_order = [
             {"name": "Core Models", "models": [
-                "UserProfile", "InsaClass", "InsaEvenement",
+                "UserProfile", "InsaClass", "InsaEvenement","AssociationPublisher",
                 "Association", "Department", "Teacher", "Room"
             ]},
             {"name": "Enums", "models": ["EnumType", "EnumSector", "EnumColor", "EnumColorTheme"]},

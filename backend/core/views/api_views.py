@@ -216,7 +216,7 @@ class PostTdsAPIView(APIView):
 
         return Response({"success": "Sélection actualisée !"})
 
-class GetEvenementAPIView(APIView):
+class GetEvenementsAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self,request):
