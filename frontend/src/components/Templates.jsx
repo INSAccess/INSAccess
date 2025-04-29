@@ -11,7 +11,7 @@ const Error = ({ message }) => {
 const Loading = () => {
     return (
         <div className='loadingBackground'>
-            <img id="rotating-logo" src={coincoin} alt='image not found' style={{"width":"30vh", "alignSelf":"center"}}></img>
+            <img id="rotating-logo" src={coincoin} alt='image not found' ></img>
         </div>
     )
 }
