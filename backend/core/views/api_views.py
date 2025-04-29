@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from django.core import signing
 
 from core.serializers import InsaClassSerializer, InsaEvenementSerializer
-from core.models import InsaClass, Department, GroupTD, UserLinkTD,InsaEvenement
+from core.models import InsaClass, Department, GroupTD, UserLinkTD,InsaEvenement\
+    ,EnumColorTheme
 from core.utils.categorisation import categorise
 
 class GetDayAPIView(APIView):
@@ -255,3 +256,26 @@ class GetIcsUrlAPIView(APIView):
     def get(self, request):
         """"""
         return Response(f"{request.get_host()}/ics/{signing.dumps(request.user.id)}")
+    
+    
+class GetUserThemeAPIView(APIView):
+    """return the user associated theme"""
+    permission_classes = [IsAuthenticated]
+    
+    def get(self,request):
+        """"""
+        return Response(request.user.userprofile.color_theme.name)
+    
+class PostUserThemeAPIView(APIView):
+    """change the user associated theme"""
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        """"""
+        theme_name = request.data
+        theme = EnumColorTheme.objects.filter(name=theme_name).first()
+        if theme:
+            request.user.userprofile.color_theme = theme
+            return Response({"success": "Theme actualisé !"})
+        else:
+            return Response({"error": "Theme n'existe pas"})

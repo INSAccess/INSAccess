@@ -8,6 +8,7 @@ class UserProfile(models.Model):
     """User definition"""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     link_td = models.ManyToManyField("GroupTD", through='UserLinkTD', related_name='users')
+    color_theme = models.ForeignKey('EnumColorTheme', on_delete = models.SET_NULL, null=True)
 
     def __str__(self):
         return str(self.user)
@@ -86,7 +87,13 @@ class EnumSector(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+class EnumColorTheme(models.Model):
+    """Possible values for the color theme of the website"""
+    name = models.CharField(max_length= 100, primary_key=True)
+
+    def __str__(self):
+        return self.name
 
 class EnumColor(models.Model):
     """Possible values for the color of the association"""

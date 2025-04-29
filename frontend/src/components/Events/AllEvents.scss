@@ -4,7 +4,7 @@ $maxWidth : 850px;
     grid-column: 1;
     grid-row: 1;
     display: block;
-    background: url("../../images/fleche.svg");
+    background: var(--arrowImg);
     background-size: contain;
     border: none;
     height: 5svh;

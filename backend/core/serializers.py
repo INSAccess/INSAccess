@@ -65,6 +65,10 @@ class EnumSectorSerializer(serializers.ModelSerializer):
         model = EnumSector
         fields = ["name"]
 
+class EnumColorThemeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EnumColorTheme
+        fields = ["name"]
 
 
 class AssociationSerializer(serializers.ModelSerializer):
@@ -81,6 +85,7 @@ class EvenementRoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = EvenementRoom
         fields = ["name"]
+
 
 
 

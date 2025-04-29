@@ -8,11 +8,12 @@ import App from './App.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+//GET THEME FETCH THEN change className of root
+
 root.render(
     <BrowserRouter>
         <AuthProvider>
             <ProtectedRoute>{<App />}</ProtectedRoute>
         </AuthProvider>
     </BrowserRouter>
-    
 );

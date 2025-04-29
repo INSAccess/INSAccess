@@ -77,7 +77,7 @@ const License = () => {
 
 const About = () => {
     return (
-        <div>
+        <div className='maincontainer'>
             <MainAbout />
             <License />
         </div>

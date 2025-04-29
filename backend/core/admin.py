@@ -6,7 +6,7 @@ from .models import (
     GroupTD, Department, Teacher, Room, EvenementRoom,
 
     # Enum Models
-    EnumType, EnumSector, EnumColor,
+    EnumType, EnumSector, EnumColor,EnumColorTheme,
 
     # Link Models
     EvenementLinkEventRoom, ClassLinkTD, ClassLinkRoom, ClassLinkTeacher, 
@@ -28,7 +28,7 @@ class CustomAdminSite(AdminSite):
                 "UserProfile", "InsaClass", "InsaEvenement",
                 "Association", "Department", "Teacher", "Room"
             ]},
-            {"name": "Enums", "models": ["EnumType", "EnumSector", "EnumColor"]},
+            {"name": "Enums", "models": ["EnumType", "EnumSector", "EnumColor", "EnumColorTheme"]},
             {"name": "Link Tables", "models": [
                 "EvenementLinkEventRoom", "ClassLinkTD", "ClassLinkRoom", 
                 "ClassLinkTeacher", "ClassLinkDepart", "UserLinkTD"
@@ -164,6 +164,7 @@ custom_admin_site.register(GroupTD, GroupTDAdmin)
 custom_admin_site.register(EnumType)
 custom_admin_site.register(EnumSector)
 custom_admin_site.register(EnumColor)
+custom_admin_site.register(EnumColorTheme)
 
 # Link Models
 custom_admin_site.register(EvenementLinkEventRoom, EvenementLinkEventRoomAdmin)
