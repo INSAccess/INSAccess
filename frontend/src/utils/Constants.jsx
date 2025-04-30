@@ -35,7 +35,7 @@ const items = [
     ];
 const REDIRECT = 'theuselessweb.com'
 const PATH_CALENDAR = (API_URL != undefined) ? API_URL+'/api/get_year/' : REDIRECT
-const PATH_ASSO = (API_URL != undefined) ? API_URL + '/api/get_evenement': REDIRECT
+const PATH_ASSO = (API_URL != undefined) ? API_URL + '/api/get_evenements': REDIRECT
 const API_LOGIN = (API_URL != undefined) ? API_URL+'/authentification/login' : REDIRECT
 const API_AUTH = (API_URL != undefined) ? API_URL+'/api/is_connected?format=json' : REDIRECT
 
