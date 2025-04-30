@@ -100,6 +100,9 @@ class RandomUtils{
   }
 
   static Join(list){
+    if (typeof list == 'string'){
+      return list
+    }
     let res = ""
     for (let i = 0; i < list.length-1; i++){
       res += list[i]+', '
