@@ -71,7 +71,7 @@ class Association(models.Model):
     
 class AssociationPublisher(models.Model):
     """The user that can publish event of their association"""
-    assocation = models.ForeignKey('Association', on_delete=models.CASCADE)
+    association = models.ForeignKey('Association', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
 

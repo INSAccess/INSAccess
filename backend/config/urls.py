@@ -5,7 +5,7 @@ from django.urls import include, path
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
-from core.admin import custom_admin_site
+from core.admin import custom_admin_site,event_admin
 
 
 schema_view = get_schema_view(
@@ -28,6 +28,7 @@ urlpatterns = [
     
     path('admin/default', admin.site.urls),
     path('admin/custom', custom_admin_site.urls),
+    path('admin/event', event_admin.urls),
     path('api/', include('core.urls.api_urls')),
     path('authentification/', include('core.urls.auth_urls')),
     path('ics/', include('core.urls.ics_urls'))
