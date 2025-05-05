@@ -1,5 +1,6 @@
 import './App.scss';
 import NavBar from './components/NavBar.jsx'
+import { ConfigProvider } from './contexts/ConfigContext.jsx';
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { useState, useEffect } from 'react';
@@ -109,16 +110,17 @@ function App() {
     }
   }
 
-
   return (
       <div className="App">
         <img className="logo" src={logo}/>
         <div id="backmenu" className={burger} onClick={fold}></div>
         <NavBar setPage={setPage} items={items}/>
         <div className="fold" id="folder" onClick={foldToggle}>☰</div>
-        <AuthProvider>
-            <ProtectedRoute>{currentPage(page, day)}</ProtectedRoute>
-        </AuthProvider>
+        <ConfigProvider>
+          <AuthProvider>
+              <ProtectedRoute>{currentPage(page, day)}</ProtectedRoute>
+          </AuthProvider>
+        </ConfigProvider>
       </div>
   );
 }
