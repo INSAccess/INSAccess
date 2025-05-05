@@ -36,7 +36,6 @@ class RandomUtils{
   
     return dimensions;
   };
-  
   /**
    * Fetches the data from a given path
    * @param {string} data_path 

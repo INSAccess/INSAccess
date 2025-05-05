@@ -65,7 +65,7 @@ const SingleEvent = (props) => {
     let eventHeight = EventUtils.getEventHeight(start_index, end_index, hours_events.length);
     let eventPosY = EventUtils.getEventPos(start_index, hours_events.length);
   
-    const eventStyle = {
+    var eventStyle = {
       height: `${eventHeight}%`,
       width: `${props.width}%`,
       top: `${eventPosY}%`,
@@ -75,13 +75,37 @@ const SingleEvent = (props) => {
       justifyContent:"left",
       userSelect: "none",
       marginLeft:"3.5%",
-      marginRight:"3.5%"
+      marginRight:"3.5%",
     };
+
+    if (props.asso){//put the custom color of the users
+      eventStyle["backgroundColor"] = props.colors[props.teacher[0]];//Take the color of the first association of the event
+    }
+    else if ((props.label in props.colors)){
+      eventStyle["backgroundColor"] = props.colors[props.label];
+    }
 
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    async function handleThemeChange(e){
+      document.getElementById("root").setAttribute("data-theme",e);
+      setTheme(e);
+      //post theme on backend
+      try {
+          const response = await fetch(API_URL+"/api/post_theme", {
+              method:'POST',
+              headers:{'Content-Type':'application/json', 'X-CSRFToken':RandomUtils.getCSRFToken()},
+              mode:'cors',
+              credentials:'include',
+              body:JSON.stringify(e)
+            });
+      } catch (error) {
+          console.error(error)
+      }
+  }
   
     return (
       <>
@@ -91,13 +115,17 @@ const SingleEvent = (props) => {
         </button>
 
         <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
+          <Modal.Header >
             <Modal.Title>{props.label}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div><strong>Heure de début : </strong>{Day.presentableHour(props.start_time)}</div>
             <div><strong>Heure de fin : </strong>{Day.presentableHour(props.end_time)}</div>
             <div><strong>{(props.asso) ? "Associations" : "Profs"} : </strong>{RandomUtils.Join(props.teacher)}</div>
+            <form onSubmit={"/action_page.php"}>
+              <div><strong>Couleur : </strong></div>
+              <input type="color" id="color" name="color" value="#ff0000" onChange={handleThemeChange}></input>
+            </form>
             <Description asso={props.asso} desc={props.desc}/>
             <br/>
             <FollowLink asso={props.asso} link={props.link}/>

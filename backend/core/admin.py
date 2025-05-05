@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from .models import (
     # Core Models
     UserProfile, InsaClass, InsaEvenement, Association, AssociationPublisher,
-    GroupTD, Department, Teacher, Room,UserColoredClass,
+    GroupTD, Department, Teacher, Room, UserColoredEvent,
 
     # Enum Models
     EnumType, EnumSector,EnumColorTheme,
@@ -28,7 +28,7 @@ class CustomAdminSite(AdminSite):
         custom_order = [
             {"name": "Core Models", "models": [
                 "UserProfile", "InsaClass", "InsaEvenement","AssociationPublisher",
-                "Association", "Department", "Teacher", "Room", "UserColoredClass"
+                "Association", "Department", "Teacher", "Room", "UserColoredEvent"
             ]},
             {"name": "Enums", "models": ["EnumType", "EnumSector", "EnumColor", "EnumColorTheme"]},
             {"name": "Link Tables", "models": [
@@ -121,7 +121,7 @@ class GroupTDAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
 
-class UserColoredClassAdmin(admin.ModelAdmin):
+class UserColoredEventAdmin(admin.ModelAdmin):
     list_display = ('user',)
     search_fields = ('user',)
     
@@ -156,7 +156,7 @@ custom_admin_site.register(Department, DepartmentAdmin)
 custom_admin_site.register(Teacher, TeacherAdmin)
 custom_admin_site.register(Room, RoomAdmin)
 custom_admin_site.register(GroupTD, GroupTDAdmin)
-custom_admin_site.register(UserColoredClass, UserColoredClassAdmin)
+custom_admin_site.register(UserColoredEvent, UserColoredEventAdmin)
 
 # Enums
 custom_admin_site.register(EnumType)

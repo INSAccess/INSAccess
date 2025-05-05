@@ -56,9 +56,13 @@ class InsaClassSerializer(serializers.ModelSerializer):
                                          element in representation["link_depart"]]
         return representation
 
-class UserColoredClassSerializer(serializers.Serializer):
+class UserColoredEventSerializer(serializers.Serializer):
     def to_representation(self, data):
         return {element.title.name : element.color for element in data}
+
+class AssociationColoredEventSerializer(serializers.Serializer):
+    def to_representation(self, data):
+        return {element.name : element.color for element in data}
 
 class EnumTypeSerializer(serializers.ModelSerializer):
     class Meta:

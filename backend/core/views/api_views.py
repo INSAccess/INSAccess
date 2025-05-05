@@ -6,9 +6,9 @@ from rest_framework.response import Response
 from django.core import signing
 
 from core.serializers import InsaClassSerializer, InsaEvenementSerializer, \
-    UserColoredClassSerializer
+    UserColoredEventSerializer, AssociationColoredEventSerializer
 from core.models import InsaClass, Department, GroupTD, UserLinkTD,InsaEvenement\
-    ,EnumColorTheme,Association,AssociationPublisher, Title, UserColoredClass
+    ,EnumColorTheme,Association,AssociationPublisher, Title, UserColoredEvent
 from core.utils.categorisation import categorise
 from core.utils.fetch_ics import load_config
 from core.permissions import IsAssociationPublisher
@@ -36,7 +36,9 @@ class GetDayAPIView(APIView):
 
         classes = InsaClass.objects.filter(link_td__in=user_tds, date = day_date).distinct()
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
-        return Response(serializer.data)
+        colors_serializer = UserColoredEventSerializer(UserColoredEvent.objects.filter(user = request.user).distinct(),
+                                                       context={'request': request}, many=False)
+        return Response({"events" : serializer.data, "colors" : colors_serializer.data})
 
 class GetWeekAPIView(APIView):
     """The api that returns the event class
@@ -67,7 +69,9 @@ class GetWeekAPIView(APIView):
         classes = InsaClass.objects.filter(link_td__in=user_tds,
                                            date__range =[start_of_week, end_of_week]).distinct()
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
-        return Response(serializer.data)
+        colors_serializer = UserColoredEventSerializer(UserColoredEvent.objects.filter(user = request.user).distinct(),
+                                                       context={'request': request}, many=False)
+        return Response({"events" : serializer.data, "colors" : colors_serializer.data})
 
 
 class GetMonthAPIView(APIView):
@@ -100,7 +104,9 @@ class GetMonthAPIView(APIView):
         classes = InsaClass.objects.filter(link_td__in=user_tds,
                                            date__range =[start_of_month, end_of_month]).distinct()
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
-        return Response(serializer.data)
+        colors_serializer = UserColoredEventSerializer(UserColoredEvent.objects.filter(user = request.user).distinct(),
+                                                       context={'request': request}, many=False)
+        return Response({"events" : serializer.data, "colors" : colors_serializer.data})
 
 
 class GetYearAPIView(APIView):
@@ -132,9 +138,9 @@ class GetYearAPIView(APIView):
         classes = InsaClass.objects.filter(link_td__in=user_tds,
                                            date__range =[start_of_year, end_of_year]).distinct()
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
-        colors_serializer = UserColoredClassSerializer(UserColoredClass.objects.filter(user = request.user).distinct(),
+        colors_serializer = UserColoredEventSerializer(UserColoredEvent.objects.filter(user = request.user).distinct(),
                                                        context={'request': request}, many=False)
-        return Response({"td" : serializer.data, "colors" : colors_serializer.data})
+        return Response({"events" : serializer.data, "colors" : colors_serializer.data})
 
 
 class GetTdsAPIView(APIView):
@@ -227,7 +233,8 @@ class GetEvenementsAPIView(APIView):
     def get(self,request):
         evenements = InsaEvenement.objects.distinct()
         serializer = InsaEvenementSerializer(evenements, context={'request': request}, many=True)
-        return Response(serializer.data)
+        color_serializer = AssociationColoredEventSerializer(Association.objects.all(), context={'request': request}, many=False)
+        return Response({"events" : serializer.data, "colors" : color_serializer.data})
 
 class GetIsConnectedAPIView(APIView):
     """A small api route for the temporary solution

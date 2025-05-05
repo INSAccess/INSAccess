@@ -11,7 +11,7 @@ const EventsInDay = ({date, data, asso}) => {
     let i = 0;
     let day = new Day(date);
     const infos = day.getDateInfo();
-    const events_of_day = EventUtils.getEventsOfDay(date, data);
+    const events_of_day = EventUtils.getEventsOfDay(date, data["events"]);
   
     for (let element of events_of_day){
       const nb_overlap_total = EventUtils.getOverlappingEvents(element, events_of_day);
@@ -23,7 +23,7 @@ const EventsInDay = ({date, data, asso}) => {
       events_list.push(
         <SingleEvent key={i} start_time={element.start_hour} end_time={element.end_hour} 
         label={element.desc} teacher={element.link_teacher} room={element.link_room} link={element.link} 
-        width={width} left={left}
+        width={width} left={left} colors = {data["colors"]}
         desc={element.info} asso={asso}/>
       );
 

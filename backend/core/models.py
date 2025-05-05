@@ -64,7 +64,7 @@ class InsaEvenement(Event):
 class Association(models.Model):
     """Association profile for the club and association of INSA Rouen"""
     name = models.CharField(max_length=255, primary_key=True)
-    color = models.CharField(max_length=7, default="default")
+    color = models.CharField(max_length=7, default="#123456")
     type = models.ForeignKey('EnumType', on_delete=models.SET_NULL, null= True)
     sector = models.ForeignKey('EnumSector', on_delete=models.SET_NULL, null= True)
 
@@ -76,7 +76,7 @@ class AssociationPublisher(models.Model):
     association = models.ForeignKey('Association', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-class UserColoredClass(models.Model):
+class UserColoredEvent(models.Model):
     """The many to many relation table for custom colors on events"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.ForeignKey("Title", to_field="name", on_delete=models.CASCADE)

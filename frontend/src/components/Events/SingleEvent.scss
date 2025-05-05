@@ -1,6 +1,6 @@
 .event {
   border: none;
-  border-left: 8px solid var(--eventBorderColor);
+  // border-left: 8px solid var(--eventBorderColor);
   border-radius: 8px;
   background: var(--eventColor);
   color: var(--contrastTextColor) ;
@@ -10,12 +10,11 @@
 
 @media (hover: hover) and (pointer: fine) {
   .event:hover {
-    background: var(--eventHoverColor); 
-    border-left: 8px solid var(--eventHoverBorderColor); 
+    // background: var(--eventHoverColor); 
+    // border-left: 8px solid var(--eventHoverBorderColor); 
     transform: translateY(-3px); 
   }
 }
-
 
 .title{
   font-weight: 600;
@@ -29,3 +28,4 @@
   font-size: max(0.6vw, 1.7svh);
   height: auto;
 }
+
