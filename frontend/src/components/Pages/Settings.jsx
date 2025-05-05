@@ -1,15 +1,21 @@
 import TDSelection from '../TDSelection.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
 import { useEffect, useState, useRef } from 'react';
-import { API_URL, departementNames, departementYears, minWidth } from '../../utils/Constants.jsx'
+import { API_URL, minWidth, departementNames, departementYears } from '../../utils/Constants.jsx'
 import { Loading } from '../Templates.jsx'
 import EventCreator from '../EventCreator.jsx';
 import Button from 'react-bootstrap/Button';
 import DropDownCustom from '../DropDownCustom.jsx'
 import './Settings.scss'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useConfig } from '../../contexts/ConfigContext.jsx'
 
 const Settings = ({updateFunction}) => {
+
+    const CONFIG = useConfig()
+    const departementNames = CONFIG["departementNames"]
+    const departementYears = CONFIG["departementYears"]    
+
     const [user_tds, setUserTD] = useState(null);
     const [all_tds, setAllTD] = useState(null);
     const [view, setView] = useState("TDs");
@@ -22,7 +28,6 @@ const Settings = ({updateFunction}) => {
     const [isAssos, setIsAssos] = useState(false);
     const [current_theme, setTheme] = useState("")
     const [all_themes, setAllThemes] = useState(null)
-        
 
     useEffect(() => {
         const loadData = async () => {

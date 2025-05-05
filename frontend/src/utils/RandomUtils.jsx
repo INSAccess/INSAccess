@@ -1,24 +1,10 @@
 import { useState, useEffect } from "react";
+import { API_URL } from './Constants.jsx'
 
 /**
  * Class for handling random utility functions
  */
 class RandomUtils{
-  /**
-   * Loads the config.json file
-   * @returns {struct}
-   */
-  static getConfig(){
-    let { data, error, loading } = RandomUtils.LoadData("http://localhost:3000/config.json")
-  
-    if (!loading){
-      if (!error){
-        return data
-      } else {
-        return null
-      }
-    }
-  }
   
   /**
    * Implements the max function
