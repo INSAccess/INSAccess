@@ -5,13 +5,13 @@ from django.contrib.contenttypes.models import ContentType
 from .models import (
     # Core Models
     UserProfile, InsaClass, InsaEvenement, Association, AssociationPublisher,
-    GroupTD, Department, Teacher, Room, EvenementRoom,
+    GroupTD, Department, Teacher, Room,
 
     # Enum Models
-    EnumType, EnumSector, EnumColor,EnumColorTheme,
+    EnumType, EnumSector,EnumColorTheme,
 
     # Link Models
-    EvenementLinkEventRoom, ClassLinkTD, ClassLinkRoom, ClassLinkTeacher, 
+     ClassLinkTD, ClassLinkRoom, ClassLinkTeacher, 
     ClassLinkDepart, UserLinkTD
 )
 
@@ -73,10 +73,6 @@ class ClassLinkDepartInline(admin.TabularInline):
     model = ClassLinkDepart
     extra = 1
 
-class EvenementLinkEventRoomInline(admin.TabularInline):
-    model = EvenementLinkEventRoom
-    extra = 1
-
 
 # === CORE MODELS === #
 
@@ -91,7 +87,7 @@ class InsaClassAdmin(admin.ModelAdmin):
     inlines = [ClassLinkTDInline, ClassLinkRoomInline, ClassLinkTeacherInline, ClassLinkDepartInline]
 
 class AssociationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'unique_color', 'type', 'sector')
+    list_display = ('name', 'color', 'type', 'sector')
     search_fields = ('name','type','sector')
 
 
@@ -128,10 +124,6 @@ class GroupTDAdmin(admin.ModelAdmin):
     
 # === LINK MODELS  === #
 
-@admin.register(EvenementLinkEventRoom)
-class EvenementLinkEventRoomAdmin(admin.ModelAdmin):
-    list_display = ('evenement', 'room')
-
 @admin.register(ClassLinkTD)
 class ClassLinkTDAdmin(admin.ModelAdmin):
     list_display = ('insa_class', 'td')
@@ -160,81 +152,17 @@ custom_admin_site.register(AssociationPublisher, AssociationPublisherAdmin)
 custom_admin_site.register(Department, DepartmentAdmin)
 custom_admin_site.register(Teacher, TeacherAdmin)
 custom_admin_site.register(Room, RoomAdmin)
-custom_admin_site.register(EvenementRoom, EvenementRoomAdmin)
 custom_admin_site.register(GroupTD, GroupTDAdmin)
 
 # Enums
 custom_admin_site.register(EnumType)
 custom_admin_site.register(EnumSector)
-custom_admin_site.register(EnumColor)
 custom_admin_site.register(EnumColorTheme)
 
 # Link Models
-custom_admin_site.register(EvenementLinkEventRoom, EvenementLinkEventRoomAdmin)
 custom_admin_site.register(ClassLinkTD, ClassLinkTDAdmin)
 custom_admin_site.register(ClassLinkRoom, ClassLinkRoomAdmin)
 custom_admin_site.register(ClassLinkTeacher, ClassLinkTeacherAdmin)
 custom_admin_site.register(ClassLinkDepart, ClassLinkDepartAdmin)
 custom_admin_site.register(UserLinkTD, UserLinkTDAdmin)
-
-
-# === Custom Evenement Adder Site === #
-
-# custom view for InsaEvenement
-class InsaEvenementPublish(admin.ModelAdmin):
-    list_display = ('desc', 'start_hour', 'end_hour')
-    list_filter = ('date',)
-    search_fields = ('desc',)
-    ordering = ('-date',)
-    inlines = [EvenementLinkEventRoomInline]
-    
-    def get_queryset(self, request):
-        """affiche seulement les event de l'association si pas admin"""
-        qs = super().get_queryset(request)
-        # si superuser, tout voir
-        if request.user.is_superuser:
-            return qs
-        # sinon, seulement les événements de l'assos de l'utilisateur
-        return qs.filter(association = AssociationPublisher.objects.get(user=request.user).association)
-
-    def has_change_permission(self, request, obj=None):
-        """donne le droit de changer si l'utilisateur est un publisher et qui appartient a l'assos"""
-        if obj is None:
-            return True
-        return obj.association == AssociationPublisher.objects.get(user=request.user).association
-
-    def has_delete_permission(self, request, obj=None):
-        """donne le droit de supprimer si l'utilisateur est un publisher et qui appartient a l'assos"""
-        if obj is None:
-            return True
-        return obj.association == AssociationPublisher.objects.get(user=request.user).association
-
-
-    def has_view_permission(self, request, obj=None):
-        """ cache la vue détaillée si hors-club """
-        if obj is None:
-            return True
-        return obj.association == AssociationPublisher.objects.get(user=request.user).association
-
-
-    def save_model(self, request, obj, form, change):
-        """si création, forcer l'association a l'assos de l'utilisateur """
-        if not change and not request.user.is_superuser:
-            obj.association = AssociationPublisher.objects.get(user=request.user).association
-        super().save_model(request, obj, form, change)
-
-#custom View
-class EventAdminSite(AdminSite):
-    site_header = "Espace événements"
-    site_title = "Gestion des événements"
-    index_title = "Bienvenue"
-
-    def has_permission(self, request):
-        return (
-            request.user.is_active
-            and AssociationPublisher.objects.filter(user=request.user).exists()
-        )
-
-event_admin = EventAdminSite(name='event_admin')
-event_admin.register(InsaEvenement, InsaEvenementPublish)
 

@@ -35,6 +35,7 @@ class Event(models.Model):
         if not self.time_created:
             self.time_created = now
         self.time_last_modified = now
+        self.sequence = 0
         
         super().save(*args, **kwargs)
 
@@ -53,7 +54,8 @@ class InsaEvenement(Event):
     """INSA Event definition"""
     associated_link = models.CharField(max_length=510)
     association = models.ForeignKey('Association', on_delete=models.CASCADE)
-    evenement_link_event_room = models.ManyToManyField('EvenementRoom', through='EvenementLinkEventRoom')
+    location = models.CharField(max_length=510)
+    info = models.CharField()
 
     def __str__(self):
         return f"Insa Event : {self.desc}"
@@ -62,7 +64,7 @@ class InsaEvenement(Event):
 class Association(models.Model):
     """Association profile for the club and association of INSA Rouen"""
     name = models.CharField(max_length=255, primary_key=True)
-    unique_color = models.ForeignKey('EnumColor', on_delete=models.SET_NULL, null= True)
+    color = models.CharField(max_length=7, default="default")
     type = models.ForeignKey('EnumType', on_delete=models.SET_NULL, null= True)
     sector = models.ForeignKey('EnumSector', on_delete=models.SET_NULL, null= True)
 
@@ -96,15 +98,6 @@ class EnumColorTheme(models.Model):
     def __str__(self):
         return self.name
 
-class EnumColor(models.Model):
-    """Possible values for the color of the association"""
-    value = models.CharField(max_length=255, primary_key=True)
-    user_friendly_name = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.value
-
-
 class GroupTD(models.Model):
     """GroupTD definition"""
     name = models.CharField(max_length=100, primary_key=True)
@@ -134,24 +127,6 @@ class Room(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class EvenementRoom(models.Model):
-    """Special room for event definition"""
-    name = models.CharField(max_length=100, primary_key=True)
-
-    def __str__(self):
-        return self.name
-
-
-class EvenementLinkEventRoom(models.Model):
-    """1 to Many link between InsaEvenement and EvenementRoom tables"""
-    evenement = models.ForeignKey(InsaEvenement, on_delete=models.CASCADE, related_name='evenement_link_evenement_room', db_index=True)
-    room = models.ForeignKey(EvenementRoom, on_delete=models.CASCADE, db_index=True)
-
-    def __str__(self):
-        return f"Link: {self.evenement} - {self.room}"
-
 
 class ClassLinkTD(models.Model):
     """1 to Many link between InsaClass and GroupTD tables"""

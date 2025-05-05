@@ -1,4 +1,5 @@
 import datetime
+from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -6,9 +7,10 @@ from django.core import signing
 
 from core.serializers import InsaClassSerializer, InsaEvenementSerializer
 from core.models import InsaClass, Department, GroupTD, UserLinkTD,InsaEvenement\
-    ,EnumColorTheme
+    ,EnumColorTheme,Association,AssociationPublisher
 from core.utils.categorisation import categorise
 from core.utils.fetch_ics import load_config
+from core.permissions import IsAssociationPublisher
 
 class GetDayAPIView(APIView):
     """The api that returns the event class
@@ -234,11 +236,25 @@ class GetIsConnectedAPIView(APIView):
     Returns:
         response: the serialized boolean
     """
-    permission_classes = [IsAuthenticated]
 
     def get(self,request):
         """returns True if the user is authenticated else False"""
         return Response(request.user.is_authenticated)
+
+class GetIsAssociationPublisherAPIView(APIView):
+    """A small api route for the temporary solution
+    for knowing if the user is connected or not
+
+    Args:
+        APIView (class): the api class that is inherited by this route
+
+    Returns:
+        response: the serialized boolean
+    """
+
+    def get(self,request):
+        """returns True if the user is authenticated else False"""
+        return Response(AssociationPublisher.objects.filter(user = request.user).exists())
 
 class GetEventsAPIView(APIView):
     """API route for visualizing the description of the events"""
@@ -297,3 +313,35 @@ class GetConfigFileAPIView(APIView):
         return Response(CONFIG)
 
 
+class PostInsaEvenement(APIView):
+    """post route for creating evenement"""
+    permission_classes = [IsAuthenticated,IsAssociationPublisher]
+
+    def post(self, request):
+        """"""
+        try:
+            data = request.data
+
+            # Récupération et conversion des données
+            date = datetime.datetime.strptime(data['date'], '%Y-%m-%d').date()
+            start_hour = datetime.datetime.combine(date, datetime.datetime.strptime(data['start_hour'], '%H:%M').time())
+            end_hour = datetime.datetime.combine(date, datetime.datetime.strptime(data['end_hour'], '%H:%M').time())
+            time_stamp = timezone.now()
+
+            association = Association.objects.get(pk=(AssociationPublisher.objects.filter(user=request.user).first().association))
+
+            event = InsaEvenement.objects.create(
+                date=date,
+                time_stamp=time_stamp,
+                start_hour=start_hour,
+                end_hour=end_hour,
+                desc=data.get('title', ''),
+                associated_link=data.get('associated_link', ''),
+                association=association,
+                location=data.get('location', ''),
+                info=data.get('info', ''),
+            )
+
+            return Response({'status': 'success', 'uid': event.uid})
+        except Exception as e:
+            return Response({'status': 'error', 'message': str(e)}, status=400)
