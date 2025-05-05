@@ -1,16 +1,10 @@
 import { useState } from "react";
-import { API_URL, minWidth } from '../utils/Constants'
+import { API_URL } from '../utils/Constants'
 import RandomUtils from '../utils/RandomUtils'
-import Day from '../utils/Day'
 
-function TDSelection({ allTDs, userTDs, updateFunction }) {
+function TDSelection({ departementTDs, otherTDs, userTDs, updateFunction }) {
     const [selectedTDs, setSelectedTDs] = useState(new Set(userTDs));
     const [statusMessage, setStatusMessage] = useState(" ");
-
-    let dimensions = RandomUtils.useWindowDimensions();
-    const current_date = new Date()
-    let first_day = new Day(current_date)
-    let day = (minWidth < dimensions.width) ? first_day.getDate() : first_day.startOfWeek().getDate()
 
     // Function to toggle selection of a TD
     const toggleTD = (tdName) => {
@@ -43,22 +37,40 @@ function TDSelection({ allTDs, userTDs, updateFunction }) {
     };
 
     return (
-        <div className='checkbox-list'>
-            {allTDs.map(td => (
-                <li key={td}>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={selectedTDs.has(td)}
-                            onChange={() => toggleTD(td)}
-                        />
-                        {td}
-                    </label>
-                </li>
-            ))}
-            <div className= "validate">
-            <button className='button_validate btn btn-primary' onClick={saveSelection}>Sauvegarder</button>
-            <p>{statusMessage}</p>
+        <div style={{"display":"flex", "width":"100%"}}>
+            <div className='checkbox-list' style={{"flex":"1"}}>
+                <h1>Probablements vos TDs</h1>
+                {departementTDs.map(td => (
+                    <li key={td}>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={selectedTDs.has(td)}
+                                onChange={() => toggleTD(td)}
+                            />
+                            {td}
+                        </label>
+                    </li>
+                ))}
+                <div className= "validate">
+                    <button className='button_validate btn btn-primary' onClick={saveSelection}>Sauvegarder</button>
+                    <p>{statusMessage}</p>
+                </div>
+            </div>
+            <div className='checkbox-list' style={{"flex":"1"}}>
+                <h1>Probablement pas vos TDs</h1>
+                {otherTDs.map(td => (
+                    <li key={td}>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={selectedTDs.has(td)}
+                                onChange={() => toggleTD(td)}
+                            />
+                            {td}
+                        </label>
+                    </li>
+                ))}
             </div>
         </div>
     );

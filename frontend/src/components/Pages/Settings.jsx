@@ -1,7 +1,7 @@
 import TDSelection from '../TDSelection.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
 import { useEffect, useState, useRef } from 'react';
-import { API_URL, minWidth, departementNames, departementYears } from '../../utils/Constants.jsx'
+import { API_URL, minWidth } from '../../utils/Constants.jsx'
 import { Loading } from '../Templates.jsx'
 import EventCreator from '../EventCreator.jsx';
 import Button from 'react-bootstrap/Button';
@@ -17,7 +17,8 @@ const Settings = ({updateFunction}) => {
     const departementYears = CONFIG["departementYears"]    
 
     const [user_tds, setUserTD] = useState(null);
-    const [all_tds, setAllTD] = useState(null);
+    const [departement_tds, setDepartTD] = useState(null);
+    const [other_tds, setOtherTD] = useState(null);
     const [view, setView] = useState("TDs");
     const [departement, setDepartement] = useState(departementNames[0])
     const [year, setYear] = useState(departementYears[departement][0])
@@ -34,7 +35,8 @@ const Settings = ({updateFunction}) => {
           const result = await RandomUtils.fetchData(API_URL+"/api/get_tds/"+departement+year+"?format=json");
           if (result.data){
             setUserTD(result.data.user_tds);
-            setAllTD(result.data.department_tds);
+            setDepartTD(result.data.department_tds);
+            setOtherTD(result.data.other_tds);
           }
 
           const result_ics = await RandomUtils.fetchData(API_URL+"/api/get_ics_url");
@@ -65,7 +67,8 @@ const Settings = ({updateFunction}) => {
         if (error){
             console.error("Erreur lors du fetch des TDs")
             setUserTD([])
-            setAllTD([])
+            setDepartTD([])
+            setOtherTD([])
         }
 
     
@@ -185,7 +188,7 @@ const Settings = ({updateFunction}) => {
                         <DropDownDepart />
                         <DropDownYear />
                     </div>
-                    {all_tds && user_tds && <TDSelection allTDs={all_tds} userTDs={user_tds} updateFunction={updateFunction}/>}
+                    {departement_tds && other_tds && user_tds && <TDSelection departementTDs={departement_tds} otherTDs={other_tds} userTDs={user_tds} updateFunction={updateFunction}/>}
                 </>
             );
             case "create" : return (<EventCreator/>);
