@@ -78,8 +78,12 @@ class AssociationPublisher(models.Model):
 
 class UserColoredClass(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.ForeignKey("Title", to_field="name", on_delete=models.CASCADE)
+    color = models.CharField(max_length=7)
     
-
+    def __str__(self):
+        return f"{self.user.username} - {self.title} - {self.color}"
+    
 class EnumType(models.Model):
     """Possible values for the type in association"""
     name = models.CharField(max_length=255, primary_key=True)

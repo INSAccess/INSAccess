@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from .models import (
     # Core Models
     UserProfile, InsaClass, InsaEvenement, Association, AssociationPublisher,
-    GroupTD, Department, Teacher, Room,
+    GroupTD, Department, Teacher, Room,UserColoredClass,
 
     # Enum Models
     EnumType, EnumSector,EnumColorTheme,
@@ -28,7 +28,7 @@ class CustomAdminSite(AdminSite):
         custom_order = [
             {"name": "Core Models", "models": [
                 "UserProfile", "InsaClass", "InsaEvenement","AssociationPublisher",
-                "Association", "Department", "Teacher", "Room"
+                "Association", "Department", "Teacher", "Room", "UserColoredClass"
             ]},
             {"name": "Enums", "models": ["EnumType", "EnumSector", "EnumColor", "EnumColorTheme"]},
             {"name": "Link Tables", "models": [
@@ -120,7 +120,10 @@ class EvenementRoomAdmin(admin.ModelAdmin):
 class GroupTDAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
-    
+
+class UserColoredClassAdmin(admin.ModelAdmin):
+    list_display = ('user',)
+    search_fields = ('user',)
     
 # === LINK MODELS  === #
 
@@ -153,6 +156,7 @@ custom_admin_site.register(Department, DepartmentAdmin)
 custom_admin_site.register(Teacher, TeacherAdmin)
 custom_admin_site.register(Room, RoomAdmin)
 custom_admin_site.register(GroupTD, GroupTDAdmin)
+custom_admin_site.register(UserColoredClass, UserColoredClassAdmin)
 
 # Enums
 custom_admin_site.register(EnumType)
