@@ -54,8 +54,11 @@ class InsaClassSerializer(serializers.ModelSerializer):
                                        element in representation["link_room"]]
         representation["link_depart"] = [element["name"] for 
                                          element in representation["link_depart"]]
-
         return representation
+
+class UserColoredClassSerializer(serializers.Serializer):
+    def to_representation(self, data):
+        return {element.title.name : element.color for element in data}
 
 class EnumTypeSerializer(serializers.ModelSerializer):
     class Meta:

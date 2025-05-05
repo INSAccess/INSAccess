@@ -5,9 +5,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.core import signing
 
-from core.serializers import InsaClassSerializer, InsaEvenementSerializer
+from core.serializers import InsaClassSerializer, InsaEvenementSerializer, \
+    UserColoredClassSerializer
 from core.models import InsaClass, Department, GroupTD, UserLinkTD,InsaEvenement\
-    ,EnumColorTheme,Association,AssociationPublisher, Title
+    ,EnumColorTheme,Association,AssociationPublisher, Title, UserColoredClass
 from core.utils.categorisation import categorise
 from core.utils.fetch_ics import load_config
 from core.permissions import IsAssociationPublisher
@@ -131,7 +132,9 @@ class GetYearAPIView(APIView):
         classes = InsaClass.objects.filter(link_td__in=user_tds,
                                            date__range =[start_of_year, end_of_year]).distinct()
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
-        return Response(serializer.data)
+        colors_serializer = UserColoredClassSerializer(UserColoredClass.objects.filter(user = request.user).distinct(),
+                                                       context={'request': request}, many=False)
+        return Response({"td" : serializer.data, "colors" : colors_serializer.data})
 
 
 class GetTdsAPIView(APIView):
@@ -330,7 +333,7 @@ class PostInsaEvenement(APIView):
 
             association = Association.objects.get(pk=(AssociationPublisher.objects.filter(user=request.user).first().association))
 
-            event = InsaEvenement.objects.create(
+            InsaEvenement.objects.create(
                 date=date,
                 time_stamp=time_stamp,
                 start_hour=start_hour,

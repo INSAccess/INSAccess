@@ -77,6 +77,7 @@ class AssociationPublisher(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class UserColoredClass(models.Model):
+    """The many to many relation table for custom colors on events"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.ForeignKey("Title", to_field="name", on_delete=models.CASCADE)
     color = models.CharField(max_length=7)
