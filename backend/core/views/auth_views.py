@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from core.models import UserProfile
+from core.models import UserProfile, EnumColorTheme
 from core.utils.fetch_ics import fetch_department
 from core.utils.db_insertor import insert_list_record
 def register(request):
@@ -29,9 +29,10 @@ def register(request):
 
         # Create user and log them in
         user = User.objects.create_user(username=username, password=password)
-        user.save()
-        user_profile = UserProfile.objects.create(user = user)
+        
+        user_profile = UserProfile.objects.create(user = user,color_theme = EnumColorTheme.objects.filter(name="system").first())
         user_profile.save()
+        user.save()
         login(request, user)
         return redirect("profile")
 

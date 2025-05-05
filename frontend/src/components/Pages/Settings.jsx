@@ -19,6 +19,7 @@ const Settings = ({updateFunction}) => {
     const [error, setError] = useState(null)
     const copyButtonRef = useRef(null);
     const [icsLink, setIcsLink] = useState("Error when loading ics");
+    const [isAssos, setIsAssos] = useState(false);
     const [current_theme, setTheme] = useState("")
     const [all_themes, setAllThemes] = useState(null)
         
@@ -34,6 +35,11 @@ const Settings = ({updateFunction}) => {
           const result_ics = await RandomUtils.fetchData(API_URL+"/api/get_ics_url");
           if (result_ics.data){
               setIcsLink(result_ics.data);
+          }
+
+          const result_isAssos = await RandomUtils.fetchData(API_URL+"/api/is_association");
+          if (result_isAssos.data){
+            setIsAssos(result_isAssos.data);
           }
 
           const result_themes = await RandomUtils.fetchData(API_URL+"/api/get_themes")
@@ -194,8 +200,15 @@ const Settings = ({updateFunction}) => {
             <div className="settings">
                 <div className="view">
                     <Button className="btn_view" style={{"flex":(view == "TDs") ? "2" : "1"}} onClick={() => {setView("TDs")}}>{(dimensions.width > minWidth) ? "Liste des TD" : "TD"}</Button>
-                    <Button className="btn_view" style={{"flex":(view == "create") ? "2" : "1"}} onClick={() => {setView("create")}}>{(dimensions.width > minWidth) ? "Créer un événement" : "Evénement"}</Button>
-                    <Button className="btn_view" style={{"flex":(view == "autre") ? "2" : "1"}} onClick={() => {setView("autre")}}>Autre</Button>
+                    {isAssos && (
+                    <Button
+                        className="btn_view"
+                        style={{ flex: view === "create" ? "2" : "1" }}
+                        onClick={() => setView("create")}
+                    >
+                        {dimensions.width > minWidth ? "Créer un événement" : "Evénement"}
+                    </Button>
+)}                    <Button className="btn_view" style={{"flex":(view == "autre") ? "2" : "1"}} onClick={() => {setView("autre")}}>Autre</Button>
                 </div>
                 <>{displayView(view)}</>
             </div>
