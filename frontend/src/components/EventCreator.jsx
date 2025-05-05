@@ -6,7 +6,23 @@ import Button from 'react-bootstrap/Button';
 import './EventCreator.scss'
 import Day from '../utils/Day.jsx'
 
-const Form = ({url_create}) => {
+const EvenementForm = ({}) => {
+
+    // Function to save evenement to the backend
+    const saveEvenement = async ({form}) => {
+        try {
+            const response = await fetch(API_URL+'/api/post_insa_evenement', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': RandomUtils.getCSRFToken()},
+                mode:"cors",
+                credentials:'include',
+                body: JSON.stringify(form),
+            });
+            const data = await response.json();
+        } catch (error) {
+            console.error(error)
+        }
+    };
 
     let date = new Date()
     let day = new Day(date)
@@ -19,7 +35,6 @@ const Form = ({url_create}) => {
         const form = e.target;
         const formData = new FormData(form);
         // add timestamp field
-        formData.append("timestamp", date.getTime())
 
         //modify the start_hour field to only end with 5 or 0
         let start_hour = formData.get("start_hour")
@@ -41,16 +56,18 @@ const Form = ({url_create}) => {
             formData.set("end_hour", "18:15")
         }
 
-        //fetch(url_create, { method: form.method, body: formData });
-    
+        
         const formJson = Object.fromEntries(formData.entries());
+        saveEvenement({ form: formJson });;
         console.log(formJson);
     }
+
+
 
     return (
         <form method="post" onSubmit={handleSubmit}>
             <label>
-            Titre de l'événement: <input name="title" defaultValue="Une valeur initiale" />
+            Titre de l'événement: <input name="title" placeholder="Une valeur initiale" />
             </label>
             <hr />
             <label>
@@ -66,15 +83,15 @@ const Form = ({url_create}) => {
             </label>
             <hr />
             <label>
-            Description : <input name="desc" defaultValue="Une valeur initiale" />
+            Description : <input name="info" placeholder="Une valeur initiale" />
             </label>
             <hr />
             <label>
-            Lien : <input name="associated_link" defaultValue="Une valeur initiale" />
+            Lien : <input name="associated_link" placeholder="Une valeur initiale" />
             </label>
             <hr />
             <label>
-            Salle : <input name="room" defaultValue="Une valeur initiale" />
+            Salle : <input name="location" placeholder="Une valeur initiale" />
             </label>
             <hr />
             <button type="submit">Créer l'événement</button>
@@ -91,7 +108,7 @@ const EventCreator = () => {
 
     useEffect(() => {
         const loadData = async () => {
-          const result = await RandomUtils.fetchData(API_URL+"/api/is_connected");
+          const result = await RandomUtils.fetchData(API_URL+"/api/is_association");
           if (result.data){
             setAsso(result.data);
           }
@@ -121,7 +138,7 @@ const EventCreator = () => {
             </div>
         );
     } else {
-        return <Form url={url_create}/>
+        return <EvenementForm url={url_create}/>
     }  
 }
 

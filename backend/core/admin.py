@@ -1,15 +1,17 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 from .models import (
     # Core Models
     UserProfile, InsaClass, InsaEvenement, Association, AssociationPublisher,
-    GroupTD, Department, Teacher, Room, EvenementRoom,
+    GroupTD, Department, Teacher, Room,
 
     # Enum Models
-    EnumType, EnumSector, EnumColor,EnumColorTheme,
+    EnumType, EnumSector,EnumColorTheme,
 
     # Link Models
-    EvenementLinkEventRoom, ClassLinkTD, ClassLinkRoom, ClassLinkTeacher, 
+     ClassLinkTD, ClassLinkRoom, ClassLinkTeacher, 
     ClassLinkDepart, UserLinkTD
 )
 
@@ -71,10 +73,6 @@ class ClassLinkDepartInline(admin.TabularInline):
     model = ClassLinkDepart
     extra = 1
 
-class EvenementLinkEventRoomInline(admin.TabularInline):
-    model = EvenementLinkEventRoom
-    extra = 1
-
 
 # === CORE MODELS === #
 
@@ -88,19 +86,20 @@ class InsaClassAdmin(admin.ModelAdmin):
     search_fields = ('desc',)
     inlines = [ClassLinkTDInline, ClassLinkRoomInline, ClassLinkTeacherInline, ClassLinkDepartInline]
 
+class AssociationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'color', 'type', 'sector')
+    search_fields = ('name','type','sector')
+
+
 class InsaEvenementAdmin(admin.ModelAdmin):
     list_display = ('desc', 'start_hour', 'end_hour', 'association')
     list_filter = ('time_created', 'association')
     search_fields = ('desc', 'association__name')
-    inlines = [EvenementLinkEventRoomInline]
-
-class AssociationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'unique_color', 'type', 'sector')
-    search_fields = ('name','type','sector')
+    
 
 class AssociationPublisherAdmin(admin.ModelAdmin):
-    list_display = ('assocation', 'user')
-    search_fields = ('assocation__name', 'user__email')
+    list_display = ('association', 'user')
+    search_fields = ('association__name', 'user__email')
 
 class DepartmentAdmin(admin.ModelAdmin):
     list_display = ('name',)
@@ -125,10 +124,6 @@ class GroupTDAdmin(admin.ModelAdmin):
     
 # === LINK MODELS  === #
 
-@admin.register(EvenementLinkEventRoom)
-class EvenementLinkEventRoomAdmin(admin.ModelAdmin):
-    list_display = ('evenement', 'room')
-
 @admin.register(ClassLinkTD)
 class ClassLinkTDAdmin(admin.ModelAdmin):
     list_display = ('insa_class', 'td')
@@ -151,25 +146,23 @@ class UserLinkTDAdmin(admin.ModelAdmin):
 
 custom_admin_site.register(UserProfile, UserProfileAdmin)
 custom_admin_site.register(InsaClass, InsaClassAdmin)
-custom_admin_site.register(InsaEvenement, InsaEvenementAdmin)
 custom_admin_site.register(Association, AssociationAdmin)
+custom_admin_site.register(InsaEvenement, InsaEvenementAdmin)
 custom_admin_site.register(AssociationPublisher, AssociationPublisherAdmin)
 custom_admin_site.register(Department, DepartmentAdmin)
 custom_admin_site.register(Teacher, TeacherAdmin)
 custom_admin_site.register(Room, RoomAdmin)
-custom_admin_site.register(EvenementRoom, EvenementRoomAdmin)
 custom_admin_site.register(GroupTD, GroupTDAdmin)
 
 # Enums
 custom_admin_site.register(EnumType)
 custom_admin_site.register(EnumSector)
-custom_admin_site.register(EnumColor)
 custom_admin_site.register(EnumColorTheme)
 
 # Link Models
-custom_admin_site.register(EvenementLinkEventRoom, EvenementLinkEventRoomAdmin)
 custom_admin_site.register(ClassLinkTD, ClassLinkTDAdmin)
 custom_admin_site.register(ClassLinkRoom, ClassLinkRoomAdmin)
 custom_admin_site.register(ClassLinkTeacher, ClassLinkTeacherAdmin)
 custom_admin_site.register(ClassLinkDepart, ClassLinkDepartAdmin)
 custom_admin_site.register(UserLinkTD, UserLinkTDAdmin)
+

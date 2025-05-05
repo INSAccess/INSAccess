@@ -9,68 +9,137 @@
   --dateHeight: 6svh;
   
   //color theme constants//
-  --backgroundColor :white;
 
-  --textColor:#333;
-  --contrastTextColor :white;
-  --messageColor: #7c7c7c;
+  /////// SYSTEM COLOR ///////
+  @media (prefers-color-scheme: light){
+    --backgroundColor :white;
 
-  --buttonColor: #db342c;
-  --buttonHoverColor:  #ca2e26;
-  --buttonActiveColor: #af231c;
+    --textColor:#333;
+    --contrastTextColor :white;
+    --messageColor: #7c7c7c;
 
-  --burgerButtonColor: #ad2821;
-  --burgerBackgroundColor: #db342c;
-  --burgerBackgroundBorderColor: #d40b00;
+    --buttonColor: #db342c;
+    --buttonHoverColor:  #ca2e26;
+    --buttonActiveColor: #af231c;
 
-  --borderColor: #dbdbdb;
-  --subSectionBackgroundColor: #f8f9fa;
-  --contrastBorderColor: #db342c;
-  --hoverHighlight: #f0f0f0;
+    --burgerButtonColor: #ad2821;
+    --burgerBackgroundColor: #db342c;
+    --burgerBackgroundBorderColor: #d40b00;
+
+    --borderColor: #dbdbdb;
+    --subSectionBackgroundColor: #f8f9fa;
+    --contrastBorderColor: #db342c;
+    --hoverHighlight: #f0f0f0;
+    
+    --eventColor: #d44d44;
+    --eventHoverColor: #ff6b6b;
+    --eventHoverBorderColor: #ff4b4b;
+    --eventBgColor: #f3eceb;
+
+    --shadowColorBold:rgba(0, 0, 0, 0.3);
+    --shadowColor:rgba(0, 0, 0, 0.1);
+
+    --arrowImg:url("/images/fleche.png");
+  }
   
-  --eventColor: #d44d44;
-  --eventHoverColor: #ff6b6b;
-  --eventHoverBorderColor: #ff4b4b;
-  --eventBgColor: #f3eceb;
+  @media (prefers-color-scheme: dark){
+    --backgroundColor: #202020;
+  
+    --textColor: #e0e0e0;
+    --contrastTextColor :white;
+    --messageColor: #b0b0b0;
+  
+    --buttonColor: #e05d57;
+    --buttonHoverColor: #d54c45;
+    --buttonActiveColor: #c13e38;
+  
+    --burgerButtonColor: #db5048;
+    --burgerBackgroundColor: #b33833;
+    --burgerBackgroundBorderColor: #a52a25;
+  
+    --borderColor: #2a2a2a;
+    --subSectionBackgroundColor: #1e1e1e;
+    --contrastBorderColor: #e05d57;
+    --hoverHighlight: #2c2c2c;
+  
+    --eventColor: #ff6b6b;
+    --eventHoverColor: #ff8787;
+    --eventHoverBorderColor: #ff6b6b;
+    --eventBgColor: #292929;
+  
+    --shadowColorBold: rgba(0, 0, 0, 0.7);
+    --shadowColor: rgba(0, 0, 0, 0.3);
+  
+    --arrowImg:url("/images/fleche_w.png");
+  }
+  ///// CUSTOM COLOR //////
+  [data-theme='light'] {
+    --backgroundColor :white;
 
-  --shadowColorBold:rgba(0, 0, 0, 0.3);
-  --shadowColor:rgba(0, 0, 0, 0.1);
+    --textColor:#333;
+    --contrastTextColor :white;
+    --messageColor: #7c7c7c;
 
-  --arrowImg:url("/images/fleche.png");
+    --buttonColor: #db342c;
+    --buttonHoverColor:  #ca2e26;
+    --buttonActiveColor: #af231c;
+
+    --burgerButtonColor: #ad2821;
+    --burgerBackgroundColor: #db342c;
+    --burgerBackgroundBorderColor: #d40b00;
+
+    --borderColor: #dbdbdb;
+    --subSectionBackgroundColor: #f8f9fa;
+    --contrastBorderColor: #db342c;
+    --hoverHighlight: #f0f0f0;
+    
+    --eventColor: #d44d44;
+    --eventHoverColor: #ff6b6b;
+    --eventHoverBorderColor: #ff4b4b;
+    --eventBgColor: #f3eceb;
+
+    --shadowColorBold:rgba(0, 0, 0, 0.3);
+    --shadowColor:rgba(0, 0, 0, 0.1);
+
+    --arrowImg:url("/images/fleche.png");
+  }
+
+  [data-theme='dark'] {
+    --backgroundColor: #202020;
+  
+    --textColor: #e0e0e0;
+    --contrastTextColor :white;
+    --messageColor: #b0b0b0;
+  
+    --buttonColor: #e05d57;
+    --buttonHoverColor: #d54c45;
+    --buttonActiveColor: #c13e38;
+  
+    --burgerButtonColor: #db5048;
+    --burgerBackgroundColor: #b33833;
+    --burgerBackgroundBorderColor: #a52a25;
+  
+    --borderColor: #2a2a2a;
+    --subSectionBackgroundColor: #1e1e1e;
+    --contrastBorderColor: #e05d57;
+    --hoverHighlight: #2c2c2c;
+  
+    --eventColor: #ff6b6b;
+    --eventHoverColor: #ff8787;
+    --eventHoverBorderColor: #ff6b6b;
+    --eventBgColor: #292929;
+  
+    --shadowColorBold: rgba(0, 0, 0, 0.7);
+    --shadowColor: rgba(0, 0, 0, 0.3);
+  
+    --arrowImg:url("/images/fleche_w.png");
+  
+  }
+  ///////////////////////////////////////////
 
 }
 
-[data-theme='dark'] {
-  --backgroundColor: #202020;
 
-  --textColor: #e0e0e0;
-  --contrastTextColor :white;
-  --messageColor: #b0b0b0;
-
-  --buttonColor: #e05d57;
-  --buttonHoverColor: #d54c45;
-  --buttonActiveColor: #c13e38;
-
-  --burgerButtonColor: #db5048;
-  --burgerBackgroundColor: #b33833;
-  --burgerBackgroundBorderColor: #a52a25;
-
-  --borderColor: #2a2a2a;
-  --subSectionBackgroundColor: #1e1e1e;
-  --contrastBorderColor: #e05d57;
-  --hoverHighlight: #2c2c2c;
-
-  --eventColor: #ff6b6b;
-  --eventHoverColor: #ff8787;
-  --eventHoverBorderColor: #ff6b6b;
-  --eventBgColor: #292929;
-
-  --shadowColorBold: rgba(0, 0, 0, 0.7);
-  --shadowColor: rgba(0, 0, 0, 0.3);
-
-  --arrowImg:url("/images/fleche_w.png");
-
-}
 
 //---------------------------------------------------------------//
 //                           UTILS                                //

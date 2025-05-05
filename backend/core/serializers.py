@@ -50,11 +50,6 @@ class InsaClassSerializer(serializers.ModelSerializer):
 
         return representation
 
-class EnumColorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EnumColor
-        fields = ["value", "user_friendly_name"]
-
 class EnumTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = EnumType
@@ -72,36 +67,22 @@ class EnumColorThemeSerializer(serializers.ModelSerializer):
 
 
 class AssociationSerializer(serializers.ModelSerializer):
-    unique_color = EnumColorSerializer(read_only = True)
     type = EnumTypeSerializer(read_only = True)
     sector = EnumSectorSerializer(read_only = True)
     
     class Meta:
         model = Association
-        fields = ["name", "unique_color", "type", "sector"]
-
-
-class EvenementRoomSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EvenementRoom
-        fields = ["name"]
-
-
-
+        fields = ["name", "color", "type", "sector"]
 
 class InsaEvenementSerializer(serializers.ModelSerializer):
-    link_room = serializers.SerializerMethodField()
     link_teacher = serializers.SerializerMethodField()
     link = serializers.SerializerMethodField()
 
     class Meta:
         model = InsaEvenement
         fields = ["uid", "date", "start_hour", "end_hour", "desc",
-                  "link", "link_teacher", "link_room"]
+                  "link", "link_teacher", "location"]
 
-    def get_link_room(self, obj):
-        return [room.name for room in obj.evenement_link_event_room.all()]
-    
     def get_link_teacher(self, obj):
         return [obj.association.name,]
 
@@ -112,5 +93,7 @@ class InsaEvenementSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation['start_hour'] = localtime(instance.start_hour).strftime("%H%M")
         representation['end_hour'] = localtime(instance.end_hour).strftime("%H%M")
+        representation['link_room'] = [representation['location'],]
+        representation.pop("location")
 
         return representation
