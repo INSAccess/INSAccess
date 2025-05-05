@@ -90,10 +90,9 @@ const SingleEvent = (props) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    async function handleThemeChange(e){
-      document.getElementById("root").setAttribute("data-theme",e);
-      setTheme(e);
-      //post theme on backend
+    async function handleColorChange(e){
+
+      //RESTE A FAIRE G PAS FINI DESO PAS DESO
       try {
           const response = await fetch(API_URL+"/api/post_theme", {
               method:'POST',
@@ -124,7 +123,7 @@ const SingleEvent = (props) => {
             <div><strong>{(props.asso) ? "Associations" : "Profs"} : </strong>{RandomUtils.Join(props.teacher)}</div>
             <form onSubmit={"/action_page.php"}>
               <div><strong>Couleur : </strong></div>
-              <input type="color" id="color" name="color" value="#ff0000" onChange={handleThemeChange}></input>
+              <input type="color" id="color" name="color" value="#ff0000" onBlur={(e) => handleColorChange(e.target.value, props.label)}></input>
             </form>
             <Description asso={props.asso} desc={props.desc}/>
             <br/>
