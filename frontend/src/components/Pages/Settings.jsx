@@ -185,7 +185,7 @@ const Settings = ({updateFunction}) => {
                         <DropDownDepart />
                         <DropDownYear />
                     </div>
-                    <TDSelection allTDs={all_tds} userTDs={user_tds} updateFunction={updateFunction}/>
+                    {all_tds && user_tds && <TDSelection allTDs={all_tds} userTDs={user_tds} updateFunction={updateFunction}/>}
                 </>
             );
             case "create" : return (<EventCreator/>);
@@ -199,32 +199,23 @@ const Settings = ({updateFunction}) => {
         return <Loading />
     }
 
-    if (user_tds && all_tds){
-
-        return (
-            <div className="settings">
-                <div className="view">
-                    <Button className="btn_view" style={{"flex":(view == "TDs") ? "2" : "1"}} onClick={() => {setView("TDs")}}>{(dimensions.width > minWidth) ? "Liste des TD" : "TD"}</Button>
-                    {isAssos && (
-                    <Button
-                        className="btn_view"
-                        style={{ flex: view === "create" ? "2" : "1" }}
-                        onClick={() => setView("create")}
-                    >
-                        {dimensions.width > minWidth ? "Créer un événement" : "Evénement"}
-                    </Button>
-)}                    <Button className="btn_view" style={{"flex":(view == "autre") ? "2" : "1"}} onClick={() => {setView("autre")}}>Autre</Button>
-                </div>
-                <>{displayView(view)}</>
+    return (
+        <div className="settings">
+            <div className="view">
+                <Button className="btn_view" style={{"flex":(view == "TDs") ? "2" : "1"}} onClick={() => {setView("TDs")}}>{(dimensions.width > minWidth) ? "Liste des TD" : "TD"}</Button>
+                {isAssos && (
+                <Button
+                    className="btn_view"
+                    style={{ flex: view === "create" ? "2" : "1" }}
+                    onClick={() => setView("create")}
+                >
+                    {dimensions.width > minWidth ? "Créer un événement" : "Evénement"}
+                </Button>)}
+                <Button className="btn_view" style={{"flex":(view == "autre") ? "2" : "1"}} onClick={() => {setView("autre")}}>Autre</Button>
             </div>
-        ); 
-    } else {
-        return (
-            <div>
-                <h1>Paramètres</h1>
-            </div>
-        )
-    }
+            <>{displayView(view)}</>
+        </div>
+    ); 
 
 }
 
