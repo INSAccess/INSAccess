@@ -24,7 +24,7 @@ const EventsInDay = ({date, data, asso}) => {
         <SingleEvent key={i} start_time={element.start_hour} end_time={element.end_hour} 
         label={element.desc} teacher={element.link_teacher} room={element.link_room} link={element.link} 
         width={width} left={left}
-        desc={''} asso={asso}/>
+        desc={element.info} asso={asso}/>
       );
 
       placed.push(element)

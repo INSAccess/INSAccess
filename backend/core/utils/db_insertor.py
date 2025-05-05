@@ -31,9 +31,7 @@ Notes:
 """
 from tqdm import tqdm
 from core.models import *
-from django.db import transaction
 
-# @transaction.atomic
 def insert_list_record(list_of_records):
     """
     Inserts or updates InsaClass records from a given list.
@@ -61,7 +59,7 @@ def insert_list_record(list_of_records):
                 start_hour = record["time_start"],
                 end_hour = record["time_end"],
                 date = record["date"],
-                desc = record["desc"],
+                desc = Title.objects.get_or_create(name=record["desc"])[0],
                 time_created = record["time_created"],
                 time_last_modified = record["time_last_modified"],
                 sequence = record["sequence"]
@@ -90,30 +88,23 @@ def insert_single_name_in_db(name, table):
     table.objects.get_or_create(name=name)
 
 
-def insert_association_in_db(name, user_email, color_value, type, sector):
+def insert_association_in_db(name, color, type, sector):
     """ Insert an association into the database """
-    linked_user = User.objects.filter(email=user_email).first()
-    linked_color = EnumColor.objects.filter(value=color_value).first()
     linked_type = EnumType.objects.filter(name=type).first()
     linked_sector = EnumSector.objects.filter(name=sector).first()
 
-    if linked_color and linked_sector and linked_type and linked_user:
+    if linked_sector and linked_type:
         exists = Association.objects.filter(name=name).first()
-        exists_user = Association.objects.filter(user_email=user_email).first()
 
         if not exists:
-            if not exists_user:
-                new_association = Association(
-                    name = name,
-                    user_email = user_email,
-                    unique_color = color_value,
-                    type = type,
-                    sector = sector
-                )
-                new_association.save()
-                print("Association created successfully!")
-            else:
-                print("User already associated with another association!")
+            new_association = Association(
+                name = name,
+                color = color,
+                type = type,
+                sector = sector
+            )
+            new_association.save()
+            print("Association created successfully!")
         else:
             print("Association already exists!")
     else:

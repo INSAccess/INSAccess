@@ -23,7 +23,7 @@ class Event(models.Model):
     time_created = models.DateTimeField()
     time_last_modified = models.DateTimeField()
     sequence = models.IntegerField(null=True)
-    desc = models.CharField(max_length=255, null=True, blank=True)
+    desc = models.ForeignKey("Title", on_delete = models.SET_NULL, null=True)
 
     class Meta:
         abstract = True
@@ -74,6 +74,9 @@ class Association(models.Model):
 class AssociationPublisher(models.Model):
     """The user that can publish event of their association"""
     association = models.ForeignKey('Association', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class UserColoredClass(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
 
@@ -127,6 +130,13 @@ class Room(models.Model):
 
     def __str__(self):
         return self.name
+
+class Title(models.Model):
+    name = models.CharField(max_length=255, primary_key=True)
+
+    def __str__(self):
+        return self.name
+
 
 class ClassLinkTD(models.Model):
     """1 to Many link between InsaClass and GroupTD tables"""
