@@ -177,7 +177,7 @@ class GetTdsAPIView(APIView):
         
         department_tds.sort()
         other_tds.sort()
-        return Response({"user_tds" : serialized_user_tds, "department_tds" : department_tds + other_tds})
+        return Response({"user_tds" : serialized_user_tds, "department_tds" : department_tds, "other_tds":other_tds})
 
 class PostTdsAPIView(APIView):
     """the api route class for saving the selected tds
