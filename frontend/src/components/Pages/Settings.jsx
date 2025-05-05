@@ -154,7 +154,7 @@ const Settings = ({updateFunction}) => {
                     <input type="text" id="copyInput" className="copy-input" value={icsLink} readOnly></input>
                     <button
                             ref={copyButtonRef}
-                            className="btn btn-primary"
+                            className="btn btn-primary copy-button"
                             style={{margin:"4px"}}
                             onClick={handleCopy}
                             data-bs-toggle="tooltip"

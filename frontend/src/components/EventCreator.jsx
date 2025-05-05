@@ -94,8 +94,8 @@ const EvenementForm = ({}) => {
             Salle : <input name="location" placeholder="Une valeur initiale" />
             </label>
             <hr />
-            <button type="submit">Créer l'événement</button>
-            <button type="reset">Effacer</button>
+            <button className="btn btn-primary" type="submit">Créer l'événement</button>
+            <button className="btn btn-primary" type="reset">Effacer</button>
         </form>
     )
 }

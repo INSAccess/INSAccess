@@ -128,17 +128,20 @@
   font-size: 16px;
   color: var(--messageColor);
 }
-
 .copy-container {
   display: flex;
-  align-items: left;
-  max-width: 50%;
+  flex-wrap: wrap; /* ✅ Allow wrapping on small screens */
+  align-items: center; /* ✅ Fix alignment */
+  width: 100%;
+  max-width: 500px; /* ✅ Reasonable fixed max width */
   margin: 2rem auto;
   background: var(--subSectionBackgroundColor);
   border: 1px solid var(--borderColor);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 12px var(--shadowColor);
+  gap: 4px; /* Optional: spacing between input and button when wrapped */
+  padding: 4px; /* Optional: inner spacing */
 }
 
 .copy-input {
@@ -152,5 +155,8 @@
 
 .copy-input:focus {
   outline: none;
-  background: #e9ecef;
+}
+
+.copy-button {
+  min-width: 70px;
 }
