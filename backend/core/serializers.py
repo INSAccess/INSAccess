@@ -17,6 +17,11 @@ class RoomSerializer(serializers.ModelSerializer):
         model = Room
         fields = ["name"]
 
+class TitleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Title
+        fields = ["name"]
+
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
@@ -27,6 +32,7 @@ class InsaClassSerializer(serializers.ModelSerializer):
     link_teacher = TeacherSerializer(many=True, read_only=True)
     link_room = RoomSerializer(many=True, read_only=True)
     link_depart = DepartmentSerializer(many=True, read_only=True)
+    desc = TitleSerializer(read_only=True)
 
     class Meta:
         model = InsaClass
@@ -38,6 +44,7 @@ class InsaClassSerializer(serializers.ModelSerializer):
         # Format start_hour and end_hour to HHMM format for the frontend
         representation['start_hour'] = localtime(instance.start_hour).strftime("%H%M")
         representation['end_hour'] = localtime(instance.end_hour).strftime("%H%M")
+        representation['desc'] = representation["desc"].get("name")
 
         representation["link_td"] = [element["name"] for 
                                      element in representation["link_td"]]
@@ -81,7 +88,7 @@ class InsaEvenementSerializer(serializers.ModelSerializer):
     class Meta:
         model = InsaEvenement
         fields = ["uid", "date", "start_hour", "end_hour", "desc",
-                  "link", "link_teacher", "location"]
+                  "link", "link_teacher", "location","info"]
 
     def get_link_teacher(self, obj):
         return [obj.association.name,]

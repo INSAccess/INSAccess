@@ -7,7 +7,7 @@ from django.core import signing
 
 from core.serializers import InsaClassSerializer, InsaEvenementSerializer
 from core.models import InsaClass, Department, GroupTD, UserLinkTD,InsaEvenement\
-    ,EnumColorTheme,Association,AssociationPublisher
+    ,EnumColorTheme,Association,AssociationPublisher, Title
 from core.utils.categorisation import categorise
 from core.utils.fetch_ics import load_config
 from core.permissions import IsAssociationPublisher
@@ -157,7 +157,7 @@ class GetTdsAPIView(APIView):
         Returns:
         response: the serialized data
         """
-        user_tds = request.user.userprofile.link_td.all()
+        user_tds = request.user.userprofile.link_td.all() 
 
         serialized_user_tds= [td.name for td in user_tds]
 
@@ -262,7 +262,7 @@ class GetEventsAPIView(APIView):
 
     def get(self, request):
         """returns a list of event descriptions"""
-        events = [categorise(e.desc) for e in InsaClass.objects.all()]
+        events = [categorise(e.desc.name) for e in InsaClass.objects.all()]
 
         return Response({"events" : events})
 
@@ -335,13 +335,13 @@ class PostInsaEvenement(APIView):
                 time_stamp=time_stamp,
                 start_hour=start_hour,
                 end_hour=end_hour,
-                desc=data.get('title', ''),
+                desc=Title.objects.get_or_create(name=data.get('title', ''))[0],
                 associated_link=data.get('associated_link', ''),
                 association=association,
                 location=data.get('location', ''),
                 info=data.get('info', ''),
             )
 
-            return Response({'status': 'success', 'uid': event.uid})
+            return Response({'status': 'success'})
         except Exception as e:
             return Response({'status': 'error', 'message': str(e)}, status=400)
