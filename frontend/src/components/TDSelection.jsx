@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { API_URL } from '../utils/Constants'
 import RandomUtils from '../utils/RandomUtils'
+import { useData } from '../contexts/DataContext'
 
-function TDSelection({ departementTDs, otherTDs, userTDs, updateFunction }) {
+function TDSelection({ departementTDs, otherTDs, userTDs }) {
     const [selectedTDs, setSelectedTDs] = useState(new Set(userTDs));
     const [statusMessage, setStatusMessage] = useState(" ");
+
+    const BUNDLE = useData()
+    const updateFunction = BUNDLE.forceUpdate
 
     // Function to toggle selection of a TD
     const toggleTD = (tdName) => {

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { hours_timeline, minWidth } from "../../utils/Constants";
 import Day from "../../utils/Day"
 import './AllEvents.scss'
+import { useData } from '../../contexts/DataContext.jsx'
 
 /**
  * React component for the timestamps on the left of the calendar
@@ -43,7 +44,17 @@ const TimeBar = () => {
  *  <AllEvents start={first_day} data={data} asso={isAsso} />
  * )
  */
-const AllEvents = ({start, data, asso}) => {
+const AllEvents = ({asso}) => {
+
+  const BUNDLE = useData()
+  let data = []
+  if (asso){
+    data = BUNDLE.dataAsso
+  } else {
+    data = BUNDLE.dataAgenda
+  }
+  const start = BUNDLE.day
+
   let dimensions = RandomUtils.useWindowDimensions();
   let day = new Day(start);
 

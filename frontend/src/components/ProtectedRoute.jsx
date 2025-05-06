@@ -1,6 +1,6 @@
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { API_LOGIN } from '../utils/Constants.jsx'
-import { Error, Loading } from './Templates.jsx'
+import { ErrorTemplate, Loading } from './Templates.jsx'
 
 const ProtectedRoute = ({ children }) => {
     const { token, loading, error } = useAuth();
@@ -19,7 +19,7 @@ const ProtectedRoute = ({ children }) => {
     }
 
     if (error){
-        return <Error message={error}/>
+        return <ErrorTemplate message={error}/>
     }
 };
 

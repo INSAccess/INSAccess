@@ -1,9 +1,11 @@
 import duck from '../images/duck.png'
 import "./Templates.scss"
-const Error = ({ message }) => {
+
+const ErrorTemplate = ({ message }) => {
+    console.error(message)
     return (
         <div>
-            <p>{message}</p>
+            <p>Il y a eu une erreur</p>
         </div>
     );
 }
@@ -16,4 +18,4 @@ const Loading = () => {
     )
 }
 
-export { Error, Loading };
+export { ErrorTemplate, Loading };

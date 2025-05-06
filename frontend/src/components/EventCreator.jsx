@@ -1,5 +1,5 @@
 import { API_URL } from '../utils/Constants.jsx'
-import { Error, Loading } from './Templates.jsx'
+import { ErrorTemplate, Loading } from './Templates.jsx'
 import RandomUtils from '../utils/RandomUtils.jsx'
 import { useState, useEffect } from 'react'
 import Button from 'react-bootstrap/Button';
@@ -127,7 +127,7 @@ const EventCreator = () => {
     }
 
     if (error){
-        return <Error message={"Verification de l'identité impossible"}/>
+        return <ErrorTemplate message={"Verification de l'identité impossible"}/>
     }
 
     if (!isAsso){

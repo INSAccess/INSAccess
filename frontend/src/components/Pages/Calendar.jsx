@@ -1,10 +1,8 @@
 import AllEvents from '../Events/AllEvents.jsx'
 
-const Calendar = ({start, data}) => {
+const Calendar = () => {
 
-  return (
-    <AllEvents start={start} data={data} asso={false}/>
-  )
+  return <AllEvents asso={false}/>
 }
 
 export default Calendar;

@@ -10,6 +10,7 @@ export const ConfigProvider = ({ children }) => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
+    // Load the config
     useEffect(() => {
         const loadData = async () => {
           const result = await RandomUtils.fetchData(API_URL+"/api/get_config");
@@ -29,6 +30,7 @@ export const ConfigProvider = ({ children }) => {
         }
     }, []);
 
+    // Format the config
     useEffect(() => {
         if (!loading && !error){
             let departementYears = {}

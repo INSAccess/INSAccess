@@ -10,11 +10,11 @@ import './Settings.scss'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useConfig } from '../../contexts/ConfigContext.jsx'
 
-const Settings = ({updateFunction}) => {
+const Settings = () => {
 
     const CONFIG = useConfig()
     const departementNames = CONFIG["departementNames"]
-    const departementYears = CONFIG["departementYears"]    
+    const departementYears = CONFIG["departementYears"]  
 
     const [user_tds, setUserTD] = useState(null);
     const [departement_tds, setDepartTD] = useState(null);
@@ -188,7 +188,7 @@ const Settings = ({updateFunction}) => {
                         <DropDownDepart />
                         <DropDownYear />
                     </div>
-                    {departement_tds && other_tds && user_tds && <TDSelection departementTDs={departement_tds} otherTDs={other_tds} userTDs={user_tds} updateFunction={updateFunction}/>}
+                    {departement_tds && other_tds && user_tds && <TDSelection departementTDs={departement_tds} otherTDs={other_tds} userTDs={user_tds}/>}
                 </>
             );
             case "create" : return (<EventCreator/>);
