@@ -6,6 +6,8 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import './SingleEvent.scss';
+import { API_URL } from '../../utils/Constants.jsx'
+import { HexColorPicker } from "react-colorful";
 
 /**
  * React component that only returns a button redirecting to a link if this is an association
@@ -53,10 +55,10 @@ const Description = ({asso, desc}) => {
  * const left = "0%"
  * return (
  *  <SingleEvent key={i} start_time={element.start_hour} end_time={element.end_hour}
-    label={element.desc} teacher={element.link_teacher} room={element.link_room} link={element.link} 
-    width={width} left={left}
-    desc={''} asso={asso}/>
-  )
+ *  label={element.desc} teacher={element.link_teacher} room={element.link_room} link={element.link} 
+ *  width={width} left={left}
+ *  desc={''} asso={asso}/>
+ *)
  */
 const SingleEvent = (props) => {
     const hours_events = Day.createHours();
@@ -86,11 +88,12 @@ const SingleEvent = (props) => {
     }
 
     const [show, setShow] = useState(false);
+    const [color, setColor] = useState("#aabbcc");
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    async function handleColorChange(e){
+    async function saveColor(){
 
       //RESTE A FAIRE G PAS FINI DESO PAS DESO
       try {
@@ -99,7 +102,7 @@ const SingleEvent = (props) => {
               headers:{'Content-Type':'application/json', 'X-CSRFToken':RandomUtils.getCSRFToken()},
               mode:'cors',
               credentials:'include',
-              body:JSON.stringify(e)
+              body:color
             });
       } catch (error) {
           console.error(error)
@@ -121,10 +124,11 @@ const SingleEvent = (props) => {
             <div><strong>Heure de début : </strong>{Day.presentableHour(props.start_time)}</div>
             <div><strong>Heure de fin : </strong>{Day.presentableHour(props.end_time)}</div>
             <div><strong>{(props.asso) ? "Associations" : "Profs"} : </strong>{RandomUtils.Join(props.teacher)}</div>
-            <form onSubmit={"/action_page.php"}>
-              <div><strong>Couleur : </strong></div>
-              <input type="color" id="color" name="color" value="#ff0000" onBlur={(e) => handleColorChange(e.target.value, props.label)}></input>
-            </form>
+            <div id="event-color-picker">
+              <strong>Couleur : </strong>
+              <HexColorPicker color={color} onChange={setColor} />
+            </div>
+            <Button variant="primary" onClick={saveColor}>Sauvegarder la couleur</Button>
             <Description asso={props.asso} desc={props.desc}/>
             <br/>
             <FollowLink asso={props.asso} link={props.link}/>
