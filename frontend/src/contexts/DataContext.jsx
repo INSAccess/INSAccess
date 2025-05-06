@@ -49,7 +49,7 @@ export const DataProvider = (props) => {
       };
   
       loadData();
-    }, [shouldUpdate, day]);
+    }, [shouldUpdate, day, props.page]);
 
   if (errorAgenda){
     console.error(errorAgenda)
