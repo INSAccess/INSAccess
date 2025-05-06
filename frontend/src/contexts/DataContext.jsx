@@ -29,8 +29,8 @@ export const DataProvider = (props) => {
       window.scrollTo(0, 0);
       const loadData = async () => {
         if (!shouldUpdate || props.page != "home") return;
-  
         setLoading(true);
+
         try {
           const resultAsso = await RandomUtils.fetchData(PATH_ASSO);
           const resultAgenda = await RandomUtils.fetchData(PATH_CALENDAR + day);
@@ -58,8 +58,8 @@ export const DataProvider = (props) => {
   if (errorAsso){
     console.error(errorAsso)
   }
-
-  if (loading) {
+  
+  if (loading && (dataAsso.length == 0 || dataAgenda.length == 0)) {
     return <Loading />;
   }
 

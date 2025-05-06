@@ -83,11 +83,13 @@ class EventUtils {
    */
   static getEventsOfDay(date, data){
     const events = []
-    data.forEach(ev => {
-      if (ev.date === date) {
-        events.push(ev)
-      }
-    })
+    if (data) {
+      data.forEach(ev => {
+        if (ev.date === date) {
+          events.push(ev)
+        }
+      })
+    }
     return events;
   }
 }

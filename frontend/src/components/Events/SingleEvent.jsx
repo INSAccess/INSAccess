@@ -107,6 +107,7 @@ const SingleEvent = (props) => {
               body:JSON.stringify({"color" : color, "title" : props.label})
             });
             BUNDLE.forceUpdate()
+            handleClose()
       } catch (error) {
           console.error(error)
       }
@@ -147,14 +148,7 @@ const SingleEvent = (props) => {
           </Modal.Footer>
         </Modal>
       </>
-    );                {isAssos && (
-                <Button
-                    className="btn_view"
-                    style={{ flex: view === "create" ? "2" : "1" }}
-                    onClick={() => setView("create")}
-                >
-                    {dimensions.width > minWidth ? "Créer un événement" : "Evénement"}
-                </Button>)}
+    );
 } 
 
 export default SingleEvent;
