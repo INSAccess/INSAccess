@@ -8,6 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import './SingleEvent.scss';
 import { API_URL } from '../../utils/Constants.jsx'
 import { HexColorPicker } from "react-colorful";
+import { useData } from '../../contexts/DataContext.jsx'
 
 /**
  * React component that only returns a button redirecting to a link if this is an association
@@ -90,6 +91,8 @@ const SingleEvent = (props) => {
     const [show, setShow] = useState(false);
     const [color, setColor] = useState("#aabbcc");
 
+    const BUNDLE = useData()
+
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -103,6 +106,7 @@ const SingleEvent = (props) => {
               credentials:'include',
               body:JSON.stringify({"color" : color, "title" : props.label})
             });
+            BUNDLE.forceUpdate()
       } catch (error) {
           console.error(error)
       }
@@ -123,10 +127,15 @@ const SingleEvent = (props) => {
             <div><strong>Heure de début : </strong>{Day.presentableHour(props.start_time)}</div>
             <div><strong>Heure de fin : </strong>{Day.presentableHour(props.end_time)}</div>
             <div><strong>{(props.asso) ? "Associations" : "Profs"} : </strong>{RandomUtils.Join(props.teacher)}</div>
-             {!props.asso && (<div id="event-color-picker">
-              <strong>Couleur : </strong>
-              <HexColorPicker color={color} onChange={setColor} onBlur={saveColor} />
-            </div>)}
+             {!props.asso && (
+              <>
+                <div id="event-color-picker">
+                  <strong>Couleur : </strong>
+                  <HexColorPicker color={color} onChange={setColor} onBlur={saveColor} />
+                </div>
+                <Button onClick={saveColor}>Sauvegarder</Button>
+              </>
+              )}
             <Description asso={props.asso} desc={props.desc}/>
             <br/>
             <FollowLink asso={props.asso} link={props.link}/>
