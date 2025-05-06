@@ -28,7 +28,7 @@ export const ConfigProvider = ({ children }) => {
             console.error("Erreur lors du fetch de la configuration")
             setData({})
         }
-    }, []);
+    }, [data]);
 
     // Format the config
     useEffect(() => {
@@ -46,7 +46,7 @@ export const ConfigProvider = ({ children }) => {
 
             setConfig({"departementYears":departementYears, "departementNames":departementNames})
         }
-    }, [loading, error])
+    }, [])
 
     return (
         <ConfigContext.Provider value={CONFIG}>

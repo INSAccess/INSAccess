@@ -16,9 +16,9 @@ const Settings = () => {
     const departementNames = CONFIG["departementNames"]
     const departementYears = CONFIG["departementYears"]  
 
-    const [user_tds, setUserTD] = useState(null);
-    const [departement_tds, setDepartTD] = useState(null);
-    const [other_tds, setOtherTD] = useState(null);
+    const [user_tds, setUserTD] = useState([]);
+    const [departement_tds, setDepartTD] = useState([]);
+    const [other_tds, setOtherTD] = useState([]);
     const [view, setView] = useState("TDs");
     const [departement, setDepartement] = useState(departementNames[0])
     const [year, setYear] = useState(departementYears[departement][0])
@@ -28,7 +28,7 @@ const Settings = () => {
     const [icsLink, setIcsLink] = useState("Error when loading ics");
     const [isAssos, setIsAssos] = useState(false);
     const [current_theme, setTheme] = useState("")
-    const [all_themes, setAllThemes] = useState(null)
+    const [all_themes, setAllThemes] = useState([])
 
     useEffect(() => {
         const loadData = async () => {
@@ -198,7 +198,7 @@ const Settings = () => {
 
     let dimensions = RandomUtils.useWindowDimensions()
 
-    if (loading){
+    if (loading && (user_tds.length == 0 || departement_tds.length == 0 || other_tds.length == 0)){
         return <Loading />
     }
 
