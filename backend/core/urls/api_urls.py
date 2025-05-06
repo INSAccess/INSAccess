@@ -2,7 +2,7 @@ from django.urls import path
 from core.views import GetDayAPIView, GetWeekAPIView, GetMonthAPIView,\
     GetYearAPIView, GetTdsAPIView, PostTdsAPIView, GetIsConnectedAPIView, GetEventsAPIView,\
     GetIcsUrlAPIView, GetEvenementsAPIView, GetUserThemeAPIView, PostUserThemeAPIView, GetConfigFileAPIView\
-    ,GetEnumThemeAPIView, PostInsaEvenement,GetIsAssociationPublisherAPIView
+    ,GetEnumThemeAPIView, PostInsaEvenement,GetIsAssociationPublisherAPIView, PostUserColor
 
 urlpatterns = [
     path('get_day/<str:day>/', GetDayAPIView.as_view(), name='get_day'),
@@ -21,4 +21,6 @@ urlpatterns = [
     path('post_theme', PostUserThemeAPIView.as_view(), name ='post_theme'),
     path('get_config', GetConfigFileAPIView.as_view(), name='get_config'),
     path('post_insa_evenement', PostInsaEvenement.as_view(), name='post_insa_evenement'),
+    path('post_user_color', PostUserColor.as_view(), name='post_user_color'),
+    
 ]

@@ -95,14 +95,13 @@ const SingleEvent = (props) => {
 
     async function saveColor(){
 
-      //RESTE A FAIRE G PAS FINI DESO PAS DESO
       try {
-          const response = await fetch(API_URL+"/api/post_theme", {
+          const response = await fetch(API_URL+"/api/post_user_color", {
               method:'POST',
               headers:{'Content-Type':'application/json', 'X-CSRFToken':RandomUtils.getCSRFToken()},
               mode:'cors',
               credentials:'include',
-              body:color
+              body:JSON.stringify({"color" : color, "title" : props.label})
             });
       } catch (error) {
           console.error(error)
@@ -124,11 +123,10 @@ const SingleEvent = (props) => {
             <div><strong>Heure de début : </strong>{Day.presentableHour(props.start_time)}</div>
             <div><strong>Heure de fin : </strong>{Day.presentableHour(props.end_time)}</div>
             <div><strong>{(props.asso) ? "Associations" : "Profs"} : </strong>{RandomUtils.Join(props.teacher)}</div>
-            <div id="event-color-picker">
+             {!props.asso && (<div id="event-color-picker">
               <strong>Couleur : </strong>
-              <HexColorPicker color={color} onChange={setColor} />
-            </div>
-            <Button variant="primary" onClick={saveColor}>Sauvegarder la couleur</Button>
+              <HexColorPicker color={color} onChange={setColor} onBlur={saveColor} />
+            </div>)}
             <Description asso={props.asso} desc={props.desc}/>
             <br/>
             <FollowLink asso={props.asso} link={props.link}/>
@@ -140,7 +138,14 @@ const SingleEvent = (props) => {
           </Modal.Footer>
         </Modal>
       </>
-    );
+    );                {isAssos && (
+                <Button
+                    className="btn_view"
+                    style={{ flex: view === "create" ? "2" : "1" }}
+                    onClick={() => setView("create")}
+                >
+                    {dimensions.width > minWidth ? "Créer un événement" : "Evénement"}
+                </Button>)}
 } 
 
 export default SingleEvent;

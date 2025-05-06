@@ -322,6 +322,20 @@ class GetConfigFileAPIView(APIView):
         CONFIG = load_config()
         return Response(CONFIG)
 
+class PostUserColor(APIView):
+    """Api view for posting the prefered color for an event title"""
+    def post(self,request):
+        """"""
+        try:
+            data = request.data
+            field = UserColoredEvent.objects.get_or_create(user = request.user, title = Title.objects.filter(name = data["title"]).first())[0]
+            field.color = data["color"]
+            field.save()
+            return Response({'status': 'success'})
+        except Exception as e:
+            return Response({'status': 'error', 'message': str(e)}, status=400)
+
+        
 
 class PostInsaEvenement(APIView):
     """post route for creating evenement"""
