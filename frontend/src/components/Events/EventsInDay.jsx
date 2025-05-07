@@ -31,6 +31,9 @@ const EventsInDay = ({date, data, asso}) => {
       i += 1;
     } 
   
+    if (events_list.length == 0 && (day.getNumberDayOfWeek() == 6)){
+      return <></>
+    }
     return (
       <div className="day">
         <div className="date">

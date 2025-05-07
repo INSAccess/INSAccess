@@ -60,8 +60,8 @@ const AllEvents = ({asso}) => {
 
   let list_days = []
   const [first_day, setDay] = useState(day);
-  let nb_days =  ((minWidth < dimensions.width) ? 5 : 1);
-  let current_day = (nb_days == 5) ? first_day.copy().startOfWeek() : first_day.copy();
+  let nb_days =  ((minWidth < dimensions.width) ? 6 : 1);
+  let current_day = (nb_days == 6) ? first_day.copy().startOfWeek() : first_day.copy();
 
   function handleDay(direction, value){
     if (direction === "prev"){

@@ -132,7 +132,7 @@ const SingleEvent = (props) => {
               <>
                 <div id="event-color-picker">
                   <strong>Couleur : </strong>
-                  <HexColorPicker color={color} onChange={setColor} onBlur={saveColor} />
+                  <HexColorPicker color={color} onChange={setColor}/>
                 </div>
                 <Button onClick={saveColor}>Sauvegarder</Button>
               </>

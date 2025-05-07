@@ -142,6 +142,11 @@ const Day = class Day{
     return dayList[date.getDay()]
   }
 
+  getNumberDayOfWeek(){
+    let date = new Date(this.date)
+    return date.getDay()
+  }
+
   /**
    * Uses the Date class to get the month as an integer and then convert it the a readable string
    * @returns {string}
