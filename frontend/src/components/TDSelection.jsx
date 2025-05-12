@@ -2,10 +2,12 @@ import { useState } from "react";
 import { API_URL } from '../utils/Constants'
 import RandomUtils from '../utils/RandomUtils'
 import { useData } from '../contexts/DataContext'
+import Alert from '@mui/material/Alert'
 
 function TDSelection({ departementTDs, otherTDs, userTDs }) {
     const [selectedTDs, setSelectedTDs] = useState(new Set(userTDs));
     const [statusMessage, setStatusMessage] = useState(" ");
+    const [errorFlag, raiseErrorFlag] = useState(false)
 
     const BUNDLE = useData()
     const updateFunction = BUNDLE.forceUpdate
@@ -35,8 +37,9 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
         setStatusMessage(data.success);
         updateFunction()
     } catch (error) {
-        console.error(error)
-        setStatusMessage("An error occurred while saving your selection.");
+        
+        raiseErrorFlag(true)
+        setStatusMessage("Echec de la sauvegarde des TDs");
     }
     };
 
@@ -76,6 +79,7 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
                     </li>
                 ))}
             </div>
+            {errorFlag && <Alert severity="error" variant="filled" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}
         </div>
     );
 }

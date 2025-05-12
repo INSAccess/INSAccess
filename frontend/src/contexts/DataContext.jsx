@@ -3,6 +3,7 @@ import Day from '../utils/Day.jsx';
 import { minWidth, PATH_CALENDAR, PATH_ASSO,API_URL } from '../utils/Constants.jsx';
 import RandomUtils from '../utils/RandomUtils.jsx';
 import { Loading } from '../components/Templates.jsx'
+import Alert from '@mui/material/Alert';
 
 const DataContext = createContext()
 
@@ -13,6 +14,8 @@ export const DataProvider = (props) => {
   const [errorAsso, setErrorAsso] = useState(null)
   const [errorAgenda, setErrorAgenda] = useState(null)
   const [shouldUpdate, setUpdate] = useState(true)
+  const [errorFlag, raiseErrorFlag] = useState(false)
+  const [statusMessage, setStatusMessage] = useState("")
 
   let dimensions = RandomUtils.useWindowDimensions();
 
@@ -41,7 +44,8 @@ export const DataProvider = (props) => {
           setErrorAsso(resultAsso.error);
           setErrorAgenda(resultAgenda.error);
         } catch (error) {
-          console.error("Erreur de chargement des données", error);
+          setStatusMessage("Echec du chargement des données")
+          raiseErrorFlag(true)
         } finally {
           setLoading(false);
           setUpdate(false);
@@ -49,24 +53,29 @@ export const DataProvider = (props) => {
       };
   
       loadData();
+
+      if (errorAgenda){
+        setStatusMessage("Echec du chargement des cours")
+        raiseErrorFlag(true)
+      }
+    
+      if (errorAsso){
+        setStatusMessage("Echec du chargement des événements")
+        raiseErrorFlag(true)
+      }
     }, [shouldUpdate, day, props.page]);
-
-  if (errorAgenda){
-    console.error(errorAgenda)
-  }
-
-  if (errorAsso){
-    console.error(errorAsso)
-  }
   
   if (loading && (dataAsso.length == 0 || dataAgenda.length == 0)) {
     return <Loading />;
   }
 
   return (
+    <>
       <DataContext.Provider value={{dataAsso, dataAgenda, day, forceUpdate}}>
           {props.children}
       </DataContext.Provider>
+      {errorFlag && <Alert severity="error" variant="filled" onClose={() => {rasieErrorFlag(false)}}>{statusMessage}</Alert>}
+    </>
   );
 }
 

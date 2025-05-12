@@ -12,11 +12,16 @@ body {
     
 }
 
-
-
 .App {
     display: flex;
     height: 100%;
     flex-direction: column;
 }
 
+.MuiAlert-standard, .MuiAlert-filled {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 98%;
+    margin: 1%;
+}

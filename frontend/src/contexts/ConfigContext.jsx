@@ -1,14 +1,16 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import RandomUtils from '../utils/RandomUtils.jsx'
 import { API_URL } from '../utils/Constants.jsx'
+import Alert from '@mui/material/Alert';
 
 const ConfigContext = createContext()
 
 export const ConfigProvider = ({ children }) => {
-    const [CONFIG, setConfig] = useState({})
+    const [CONFIG, setConfig] = useState(null)
     const [data, setData] = useState({})
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [errorFlag, raiseErrorFlag] = useState(false)
 
     // Load the config
     useEffect(() => {
@@ -23,8 +25,10 @@ export const ConfigProvider = ({ children }) => {
         };
     
         loadData();
+        console.log(error)
 
         if (error){
+            raiseErrorFlag(true)
             console.error("Erreur lors du fetch de la configuration")
             setData({})
         }
@@ -49,9 +53,12 @@ export const ConfigProvider = ({ children }) => {
     }, [loading, error])
 
     return (
-        <ConfigContext.Provider value={CONFIG}>
-            {children}
-        </ConfigContext.Provider>
+        <>
+            <ConfigContext.Provider value={CONFIG}>
+                {children}
+            </ConfigContext.Provider>
+            {errorFlag && <Alert severity="error" onClose={() => {raiseErrorFlag(false)}}>Echec du chargement de la configuration</Alert>}
+        </>
     );
 }
 

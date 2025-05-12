@@ -9,6 +9,7 @@ import './SingleEvent.scss';
 import { API_URL } from '../../utils/Constants.jsx'
 import { HexColorPicker } from "react-colorful";
 import { useData } from '../../contexts/DataContext.jsx'
+import Alert from '@mui/material/Alert';
 
 /**
  * React component that only returns a button redirecting to a link if this is an association
@@ -90,6 +91,8 @@ const SingleEvent = (props) => {
 
     const [show, setShow] = useState(false);
     const [color, setColor] = useState("#aabbcc");
+    const [errorFlag, raiseErrorFlag] = useState(false);
+    const [statusMessage, setStatusMessage] = useState("")
 
     const BUNDLE = useData()
 
@@ -97,19 +100,20 @@ const SingleEvent = (props) => {
     const handleShow = () => setShow(true);
 
     async function saveColor(){
+      const response = await fetch(API_URL+"/api/post_user_color", {
+          method:'POST',
+          headers:{'Content-Type':'application/json', 'X-CSRFToken':RandomUtils.getCSRFToken()},
+          mode:'cors',
+          credentials:'include',
+          body:JSON.stringify({"color" : color, "title" : props.label})
+      });
 
-      try {
-          const response = await fetch(API_URL+"/api/post_user_color", {
-              method:'POST',
-              headers:{'Content-Type':'application/json', 'X-CSRFToken':RandomUtils.getCSRFToken()},
-              mode:'cors',
-              credentials:'include',
-              body:JSON.stringify({"color" : color, "title" : props.label})
-            });
-            BUNDLE.forceUpdate()
-            handleClose()
-      } catch (error) {
-          console.error(error)
+      if (!response.ok){
+        setStatusMessage(`Echec de la sauvegarde : ${response.status} ${response.statusText}`)
+        raiseErrorFlag(true)
+      } else {
+        BUNDLE.forceUpdate()
+        handleClose()
       }
   }
   
@@ -142,6 +146,7 @@ const SingleEvent = (props) => {
             <FollowLink asso={props.asso} link={props.link}/>
           </Modal.Body>
           <Modal.Footer>
+            {errorFlag && <Alert severity="error" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}
             <Button variant="primary" onClick={handleClose}>
               Fermer
             </Button>

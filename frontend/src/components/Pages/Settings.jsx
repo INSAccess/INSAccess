@@ -13,8 +13,8 @@ import { useConfig } from '../../contexts/ConfigContext.jsx'
 const Settings = () => {
 
     const CONFIG = useConfig()
-    const departementNames = CONFIG["departementNames"]
-    const departementYears = CONFIG["departementYears"]  
+    const departementNames = CONFIG ? CONFIG["departementNames"] : ["STPI"]
+    const departementYears = CONFIG ? CONFIG["departementYears"] : {"STPI":[1]}  
 
     const [user_tds, setUserTD] = useState(null);
     const [departement_tds, setDepartTD] = useState(null);
