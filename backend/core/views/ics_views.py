@@ -2,9 +2,11 @@ from icalendar import Calendar, Event
 from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
 from django.core import signing
-
-
 from core.models import InsaClass
+
+import logging
+logger = logging.getLogger(__name__)
+
 
 def generate_ics(request, encrypted_id):
     """The api route for obtaining the ics of the 
@@ -18,9 +20,13 @@ def generate_ics(request, encrypted_id):
         user_id = signing.loads(encrypted_id)
         user = User.objects.get(id=user_id)
     except signing.BadSignature:
-        return JsonResponse({'error': 'Invalid token'}, status=400)
+        response = JsonResponse({'error': 'Invalid token'}, status=400)
+        logger.error("Invalid token provided for ICS generation", extra={"request": request, "status_code": response.status_code})
+        return response
     except User.DoesNotExist:
-        return JsonResponse({'error': 'User not found'}, status=404)
+        response = JsonResponse({'error': 'User not found'}, status=404)
+        logger.error("User not found for ICS generation", extra={"request": request, "status_code": response.status_code})
+        return response
 
     user_tds = user.userprofile.link_td.all()
     classes = InsaClass.objects.filter(link_td__in=user_tds).distinct()
@@ -58,5 +64,6 @@ def generate_ics(request, encrypted_id):
 
     response = HttpResponse(cal.to_ical().decode('utf-8'), content_type="text/calendar")
     response['Content-Disposition'] = 'inline; filename=personnal_calendar.ics'
-
+    logger.info("ICS calendar generated successfully", extra={"request": request, "status_code": response.status_code})
     return response
+

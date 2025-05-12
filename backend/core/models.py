@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid
 from django.utils import timezone
-import re
 
 class UserProfile(models.Model):
     """User definition"""
@@ -70,7 +69,7 @@ class Association(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 class AssociationPublisher(models.Model):
     """The user that can publish event of their association"""
     association = models.ForeignKey('Association', on_delete=models.CASCADE)
@@ -81,10 +80,10 @@ class UserColoredEvent(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.ForeignKey("Title", to_field="name", on_delete=models.CASCADE)
     color = models.CharField(max_length=7)
-    
+
     def __str__(self):
         return f"{self.user.username} - {self.title} - {self.color}"
-    
+
 class EnumType(models.Model):
     """Possible values for the type in association"""
     name = models.CharField(max_length=255, primary_key=True)

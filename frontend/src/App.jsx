@@ -11,7 +11,7 @@ import Associations from './components/Pages/Associations.jsx';
 import About from './components/Pages/About.jsx';
 import { items } from './utils/Constants.jsx';
 import { ErrorTemplate } from './components/Templates.jsx'
-import logo from './images/insa_logo.webp'
+import logo from './images/Logo_INSA_blanc.svg'
 
 function App() {
 

@@ -40,6 +40,7 @@
     --shadowColor:rgba(0, 0, 0, 0.1);
 
     --arrowImg:url("/images/fleche.png");
+    --insaLogo:url("/images/Logo_INSA_noir.png");
   }
   
   @media (prefers-color-scheme: dark){
@@ -71,6 +72,7 @@
     --shadowColor: rgba(0, 0, 0, 0.3);
   
     --arrowImg:url("/images/fleche_w.png");
+    --insaLogo:url("/images/Logo_INSA_blanc.png");
   }
   ///// CUSTOM COLOR //////
   [data-theme='light'] {
@@ -102,6 +104,7 @@
     --shadowColor:rgba(0, 0, 0, 0.1);
 
     --arrowImg:url("/images/fleche.png");
+    --insaLogo:url("/images/Logo_INSA_noir.png");
   }
 
   [data-theme='dark'] {
@@ -133,6 +136,7 @@
     --shadowColor: rgba(0, 0, 0, 0.3);
   
     --arrowImg:url("/images/fleche_w.png");
+    --insaLogo:url("/images/Logo_INSA_blanc.png");
   
   }
   ///////////////////////////////////////////
@@ -161,11 +165,11 @@
 .logo {
   position: absolute;
   top: 0;
-  width: 30%;
-  max-width: 250px;
-  left: 1rem;
-  aspect-ratio: 3/1;
-  visibility: visible;
+  size: 0%;
+  max-width: 300px;
+  left: 4rem;
+  visibility: hidden;
+  content: var(--insaLogo);
   @media (max-width : 1200px){
     visibility: hidden;
   }

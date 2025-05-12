@@ -1,7 +1,5 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite
-from django.contrib.auth.models import Group, Permission
-from django.contrib.contenttypes.models import ContentType
 from .models import (
     # Core Models
     UserProfile, InsaClass, InsaEvenement, Association, AssociationPublisher,

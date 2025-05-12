@@ -13,6 +13,9 @@ from core.utils.categorisation import categorise
 from core.utils.fetch_ics import load_config
 from core.permissions import IsAssociationPublisher
 
+import logging
+logger = logging.getLogger(__name__)
+
 class GetDayAPIView(APIView):
     """The api that returns the event class
     of the request user for the day
@@ -30,7 +33,9 @@ class GetDayAPIView(APIView):
         try:
             day_date = datetime.datetime.strptime(day, "%Y-%m-%d").date()
         except ValueError :
-            return Response({"error": "Invalid date format"}, status = 400)
+            response = Response({"error": "Invalid date format"}, status = 400)
+            logger.error(f"User tried to input this {day} as a date" ,extra={"request": request, "status_code": response.status_code})
+            return response
 
         user_tds = request.user.userprofile.link_td.all()
 
@@ -38,7 +43,9 @@ class GetDayAPIView(APIView):
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
         colors_serializer = UserColoredEventSerializer(UserColoredEvent.objects.filter(user = request.user).distinct(),
                                                        context={'request': request}, many=False)
-        return Response({"events" : serializer.data, "colors" : colors_serializer.data})
+        response = Response({"events" : serializer.data, "colors" : colors_serializer.data})
+        logger.info("User fetched events",extra={"request": request, "status_code": response.status_code})
+        return response
 
 class GetWeekAPIView(APIView):
     """The api that returns the event class
@@ -58,7 +65,9 @@ class GetWeekAPIView(APIView):
         try:
             day_date = datetime.datetime.strptime(day, "%Y-%m-%d").date()
         except ValueError :
-            return Response({"error": "Invalid date format"}, status = 400)
+            response = Response({"error": "Invalid date format"}, status = 400)
+            logger.error(f"User tried to input this {day} as a date" ,extra={"request": request, "status_code": response.status_code})
+            return response
 
         start_of_week = day_date - datetime.timedelta(days=day_date.weekday())  # Monday
         end_of_week = start_of_week + datetime.timedelta(days=6)  # Sunday
@@ -71,7 +80,9 @@ class GetWeekAPIView(APIView):
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
         colors_serializer = UserColoredEventSerializer(UserColoredEvent.objects.filter(user = request.user).distinct(),
                                                        context={'request': request}, many=False)
-        return Response({"events" : serializer.data, "colors" : colors_serializer.data})
+        response = Response({"events" : serializer.data, "colors" : colors_serializer.data})
+        logger.info("User fetched events",extra={"request": request, "status_code": response.status_code})
+        return response
 
 
 class GetMonthAPIView(APIView):
@@ -92,7 +103,9 @@ class GetMonthAPIView(APIView):
         try:
             day_date = datetime.datetime.strptime(day, "%Y-%m-%d").date()
         except ValueError :
-            return Response({"error": "Invalid date format"}, status = 400)
+            response = Response({"error": "Invalid date format"}, status = 400)
+            logger.error(f"User tried to input this {day} as a date" ,extra={"request": request, "status_code": response.status_code})
+            return response
 
         start_of_month = day_date.replace(day=1)  # First day of the month
         end_of_month = (start_of_month + datetime.timedelta(days=32)).replace(day=1)\
@@ -106,7 +119,9 @@ class GetMonthAPIView(APIView):
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
         colors_serializer = UserColoredEventSerializer(UserColoredEvent.objects.filter(user = request.user).distinct(),
                                                        context={'request': request}, many=False)
-        return Response({"events" : serializer.data, "colors" : colors_serializer.data})
+        response = Response({"events" : serializer.data, "colors" : colors_serializer.data})
+        logger.info("User fetched events",extra={"request": request, "status_code": response.status_code})
+        return response
 
 
 class GetYearAPIView(APIView):
@@ -127,7 +142,9 @@ class GetYearAPIView(APIView):
         try:
             day_date = datetime.datetime.strptime(day, "%Y-%m-%d").date()
         except ValueError :
-            return Response({"error": "Invalid date format"}, status = 400)
+            response = Response({"error": "Invalid date format"}, status = 400)
+            logger.error(f"User tried to input this {day} as a date" ,extra={"request": request, "status_code": response.status_code})
+            return response
 
         start_of_year = day_date.replace(month=1,day=1)  # First day of the year
         end_of_year = (start_of_year + datetime.timedelta(days=400)).replace(day=1,month=1)\
@@ -140,7 +157,9 @@ class GetYearAPIView(APIView):
         serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
         colors_serializer = UserColoredEventSerializer(UserColoredEvent.objects.filter(user = request.user).distinct(),
                                                        context={'request': request}, many=False)
-        return Response({"events" : serializer.data, "colors" : colors_serializer.data})
+        response = Response({"events" : serializer.data, "colors" : colors_serializer.data})
+        logger.info("User fetched events",extra={"request": request, "status_code": response.status_code})
+        return response
 
 
 class GetTdsAPIView(APIView):
@@ -167,14 +186,15 @@ class GetTdsAPIView(APIView):
         response: the serialized data
         """
         user_tds = request.user.userprofile.link_td.all() 
-
         serialized_user_tds= [td.name for td in user_tds]
 
         department_obj = Department.objects.filter(name = department).first()
         if not department_obj:
             tds = GroupTD.objects.all()
             serialized_tds= [td.name for td in tds]
-            return Response({"user_tds" : serialized_user_tds, "all_tds" : serialized_tds})
+            response = Response({"user_tds" : serialized_user_tds, "all_tds" : serialized_tds})
+            logger.warning(f"Department not found {department}, defaulting to all tds", extra={"request": request, "status_code": response.status_code})
+            return response
 
         department_tds = GroupTD.objects.filter(
             classlinktd__insa_class__link_depart=department_obj
@@ -186,7 +206,9 @@ class GetTdsAPIView(APIView):
         
         department_tds.sort()
         other_tds.sort()
-        return Response({"user_tds" : serialized_user_tds, "department_tds" : department_tds, "other_tds":other_tds})
+        response = Response({"user_tds" : serialized_user_tds, "department_tds" : department_tds, "other_tds":other_tds})
+        logger.info(f"Department {department} TDs fetched", extra={"request": request, "status_code": response.status_code})
+        return response
 
 class PostTdsAPIView(APIView):
     """the api route class for saving the selected tds
@@ -225,7 +247,10 @@ class PostTdsAPIView(APIView):
 
         UserLinkTD.objects.bulk_create(user_link_tds)
 
-        return Response({"success": "Sélection actualisée !"})
+        response = Response({"success": "Sélection actualisée !"})
+        logger.info("User updated TD selection", extra={"request": request, "status_code": response.status_code})
+        return response
+
 
 class GetEvenementsAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -234,7 +259,10 @@ class GetEvenementsAPIView(APIView):
         evenements = InsaEvenement.objects.distinct()
         serializer = InsaEvenementSerializer(evenements, context={'request': request}, many=True)
         color_serializer = AssociationColoredEventSerializer(Association.objects.all(), context={'request': request}, many=False)
-        return Response({"events" : serializer.data, "colors" : color_serializer.data})
+        response = Response({"events" : serializer.data, "colors" : color_serializer.data})
+        logger.info("Fetched INSA events and association colors", extra={"request": request, "status_code": response.status_code})
+        return response
+
 
 class GetIsConnectedAPIView(APIView):
     """A small api route for the temporary solution
@@ -249,7 +277,10 @@ class GetIsConnectedAPIView(APIView):
 
     def get(self,request):
         """returns True if the user is authenticated else False"""
-        return Response(request.user.is_authenticated)
+        response = Response(request.user.is_authenticated)
+        logger.info("Checked user authentication", extra={"request": request, "status_code": response.status_code})
+        return response
+
 
 class GetIsAssociationPublisherAPIView(APIView):
     """A small api route for the temporary solution
@@ -264,7 +295,10 @@ class GetIsAssociationPublisherAPIView(APIView):
 
     def get(self,request):
         """returns True if the user is authenticated else False"""
-        return Response(AssociationPublisher.objects.filter(user = request.user).exists())
+        response = Response(AssociationPublisher.objects.filter(user = request.user).exists())
+        logger.info("Checked if user is an association publisher", extra={"request": request, "status_code": response.status_code})
+        return response
+
 
 class GetEventsAPIView(APIView):
     """API route for visualizing the description of the events"""
@@ -274,7 +308,10 @@ class GetEventsAPIView(APIView):
         """returns a list of event descriptions"""
         events = [categorise(e.desc.name) for e in InsaClass.objects.all()]
 
-        return Response({"events" : events})
+        response = Response({"events" : events})
+        logger.info("Categorised and returned INSA class events", extra={"request": request, "status_code": response.status_code})
+        return response
+
 
 class GetIcsUrlAPIView(APIView):
     """Simple api route for returning the associated ics url of the user 
@@ -282,7 +319,10 @@ class GetIcsUrlAPIView(APIView):
     """
     def get(self, request):
         """"""
-        return Response(f"{request.get_host()}/ics/{signing.dumps(request.user.id)}")
+        response = Response(f"{request.get_host()}/ics/{signing.dumps(request.user.id)}")
+        logger.info("Returned ICS URL for user", extra={"request": request, "status_code": response.status_code})
+        return response
+
 
 class GetUserThemeAPIView(APIView):
     """return the user associated theme"""
@@ -290,7 +330,10 @@ class GetUserThemeAPIView(APIView):
     
     def get(self,request):
         """"""
-        return Response(request.user.userprofile.color_theme.name)
+        response = Response(request.user.userprofile.color_theme.name)
+        logger.info("Returned user color theme", extra={"request": request, "status_code": response.status_code})
+        return response
+
     
 class PostUserThemeAPIView(APIView):
     """change the user associated theme"""
@@ -303,9 +346,14 @@ class PostUserThemeAPIView(APIView):
         if theme:
             request.user.userprofile.color_theme = theme
             request.user.userprofile.save()
-            return Response({"success": "Theme actualisé !"})
+            response = Response({"success": "Theme actualisé !"})
+            logger.info("User updated color theme", extra={"request": request, "status_code": response.status_code})
+            return response
         else:
-            return Response({"error": "Theme n'existe pas"})
+            response = Response({"error": "Theme n'existe pas"}, status = 400)
+            logger.error(f"User tried to update with a non-existent theme : {theme}", extra={"request": request, "status_code": response.status_code})
+            return response
+
 
 class GetEnumThemeAPIView(APIView):
     """return the themes"""
@@ -313,14 +361,21 @@ class GetEnumThemeAPIView(APIView):
     
     def get(self,request):
         """"""
-        return Response([theme.name for theme in EnumColorTheme.objects.all()])
+        themes = [theme.name for theme in EnumColorTheme.objects.all()]
+        response = Response(themes)
+        logger.info("Returned list of available color themes", extra={"request": request, "status_code": response.status_code})
+        return response
+
 
 class GetConfigFileAPIView(APIView):
     """API route for returning the list of available departments in the DB"""
     def get(self, request):
         """"""
         CONFIG = load_config()
-        return Response(CONFIG)
+        response = Response(CONFIG)
+        logger.info("Returned configuration data", extra={"request": request, "status_code": response.status_code})
+        return response
+
 
 class PostUserColor(APIView):
     """Api view for posting the prefered color for an event title"""
@@ -331,9 +386,14 @@ class PostUserColor(APIView):
             field = UserColoredEvent.objects.get_or_create(user = request.user, title = Title.objects.filter(name = data["title"]).first())[0]
             field.color = data["color"]
             field.save()
-            return Response({'status': 'success'})
+            response = Response({'status': 'success'})
+            logger.info("User colored event updated successfully", extra={"request": request, "status_code": response.status_code})
+            return response
         except Exception as e:
-            return Response({'status': 'error', 'message': str(e)}, status=400)
+            response = Response({'status': 'error', 'message': str(e)}, status=400)
+            logger.error(f"Error updating user colored event: {str(e)}", extra={"request": request, "status_code": response.status_code})
+            return response
+
 
         
 
@@ -366,6 +426,10 @@ class PostInsaEvenement(APIView):
                 info=data.get('info', ''),
             )
 
-            return Response({'status': 'success'})
+            response = Response({'status': 'success'})
+            logger.info("Operation successful", extra={"request": request, "status_code": response.status_code})
+            return response
         except Exception as e:
-            return Response({'status': 'error', 'message': str(e)}, status=400)
+            response = Response({'status': 'error', 'message': str(e)}, status=400)
+            logger.error(f"Error occurred: {str(e)}", extra={"request": request, "status_code": response.status_code})
+            return response

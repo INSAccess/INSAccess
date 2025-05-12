@@ -1,6 +1,7 @@
-import environ
+import environ, os
 from pathlib import Path
 from corsheaders.defaults import default_headers
+from core.utils.logging import RequestFilter
 
 
 
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'core.utils.middleware_log.RequestLogMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -100,10 +102,6 @@ UNIAUTH_LOGOUT_CAS_COMPLETELY = True
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -114,10 +112,6 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -134,10 +128,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'fr-FR'
 
 TIME_ZONE = 'Europe/Paris'
@@ -146,13 +136,60 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 STATIC_URL = 'static/'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+DJANGO_LOG_LEVEL = os.getenv('DJANGO_LOG_LEVEL', 'INFO')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    'filters': {
+        'request_filter': {
+            '()': RequestFilter,
+        },
+    },
+
+    'formatters': {
+        'with_request': {
+            'format': (
+                '[%(userip)s] - [%(user)s] - [%(sessionid)s] - '
+                '[%(asctime)s] - [%(method)s %(path)s] - '
+                '[%(status_code)s] - [%(message)s] - '
+                '[%(base_url)s|%(referer)s] - '
+                '[%(user_agent)s]'
+            ),
+            'style': '%',
+        },
+    },
+
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': DJANGO_LOG_LEVEL,
+            'formatter': 'with_request',
+            'filters': ['request_filter'],
+        },
+        'file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'level': DJANGO_LOG_LEVEL,
+            'formatter': 'with_request',
+            'filters': ['request_filter'],
+            'filename': BASE_DIR / 'logs' / 'django.log',
+            'maxBytes': 10_485_760,
+            'backupCount': 5,
+            'encoding': 'utf-8',
+        },
+    },
+
+    'loggers': {
+        '': {
+            'handlers': ['console', 'file'],
+            'level': DJANGO_LOG_LEVEL,
+        },
+    },
+}
