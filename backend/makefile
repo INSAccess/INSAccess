@@ -50,7 +50,7 @@ collectstatic:
 
 # Running Tests
 test:
-	docker-compose exec web python manage.py test
+	docker-compose exec web python manage.py test core.tests
 
 # Cleanup
 clean:
@@ -63,6 +63,6 @@ resetdb:
 	docker-compose up -d db
 	sleep 5  # Give the database time to initialize
 	docker-compose up -d web  # Make sure the web service is started
-	sleep 10  # Wait for the web service to fully start
+	sleep 5  # Wait for the web service to fully start
 	docker-compose exec web python manage.py migrate
 

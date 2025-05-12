@@ -3,11 +3,11 @@ from datetime import datetime
 from icalendar import Calendar
 
 CONFIG_PATH = os.path.join(os.path.dirname((os.path.dirname(os.path.dirname(__file__)))),"config/insa_config.json")
-
 def load_config():
     """Loads the configuration file from the project config folder."""
     with open(CONFIG_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
+
 
 CONFIG = load_config()
 DEPARTMENTS = set(list(map(''.join, itertools.product(CONFIG["department_list"], CONFIG["years_for_department"]))) + 

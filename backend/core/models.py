@@ -34,7 +34,8 @@ class Event(models.Model):
         if not self.time_created:
             self.time_created = now
         self.time_last_modified = now
-        self.sequence = 0
+        if not self.sequence:
+            self.sequence = 0;
         
         super().save(*args, **kwargs)
 
