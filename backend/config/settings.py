@@ -144,6 +144,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 BASE_DIR = Path(__file__).resolve().parent.parent
 DJANGO_LOG_LEVEL = os.getenv('DJANGO_LOG_LEVEL', 'INFO')
 
+LOG_DIR = os.path.join(BASE_DIR, 'core', 'logs')
+os.makedirs(LOG_DIR, exist_ok=True)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
