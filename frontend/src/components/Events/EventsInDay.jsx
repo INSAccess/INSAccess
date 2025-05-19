@@ -1,12 +1,14 @@
 import EventUtils from "../../utils/EventUtils";
+import RandomUtils from "../../utils/RandomUtils";
 import Day from "../../utils/Day";
 import SingleEvent from "./SingleEvent"
-import { baseEventWidth } from "../../utils/Constants";
+import { baseEventWidth, minWidth } from "../../utils/Constants";
 import './EventsInDay.scss'
 
 const EventsInDay = ({date, data, asso}) => {
     const events_list = [];
     const placed = [];
+    let dimensions = RandomUtils.useWindowDimensions();
     
     let i = 0;
     let day = new Day(date);
@@ -31,7 +33,7 @@ const EventsInDay = ({date, data, asso}) => {
       i += 1;
     } 
   
-    if (events_list.length == 0 && (day.getNumberDayOfWeek() == 6)){
+    if (events_list.length == 0 && (day.getNumberDayOfWeek() == 6 || day.getNumberDayOfWeek() == 7) && minWidth < dimensions.width){
       return <></>
     }
     return (
