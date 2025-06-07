@@ -58,6 +58,11 @@ const MainAbout = () => {
     );
 }
 
+/**
+ * License component
+ * @component
+ * @returns {JSX.Element} 
+ */
 const License = () => {
     return (
         <p>
@@ -75,6 +80,11 @@ const License = () => {
     )
 }
 
+/**
+ * Component to display the about page and the licence of the website
+ * @component
+ * @returns {JSX.Element} 
+ */
 const About = () => {
     return (
         <div className='maincontainer'>

@@ -16,6 +16,12 @@ const DropDownSelect = ({ id, title, items, fonction }) => {
     )
 }
 
+/**
+ * Custom Dropdown component
+ * The item props should be a list of objects with the fields {items, current, id, title, handle} with handle being the function called when the user select any choice
+ * @component
+ * @returns {JSX.Element} 
+ */
 const DropDownCustom = ({items, current, id, title, handle}) => {
     let button_list = [];
     for (let i = 0; i < items.length; i++){

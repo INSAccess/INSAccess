@@ -14,6 +14,7 @@ import Alert from '@mui/material/Alert';
 /**
  * React component that only returns a button redirecting to a link if this is an association
  * @component
+ * @returns {JSX.Element}
  */
 const FollowLink = ({asso, link}) => {
   if (asso) {
@@ -32,6 +33,7 @@ const FollowLink = ({asso, link}) => {
 /**
  * React component that only returns a description if this is an association
  * @component
+ * @returns {JSX.Element}
  */
 const Description = ({asso, desc}) => {
   if (asso){ 
@@ -44,6 +46,7 @@ const Description = ({asso, desc}) => {
 /**
  * React component to display a single event
  * @component
+ * @returns {JSX.Element}
  * @example
  * const element = {
  *  start_hour : "0900",

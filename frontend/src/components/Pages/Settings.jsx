@@ -10,6 +10,11 @@ import './Settings.scss'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useConfig } from '../../contexts/ConfigContext.jsx'
 
+/**
+ * Settings component, handling the theme, the TD selection, ICS link and event creation
+ * @component
+ * @returns {JSX.Element} 
+ */
 const Settings = () => {
 
     const CONFIG = useConfig()
@@ -79,6 +84,8 @@ const Settings = () => {
         }
     }, [departement, year]);
 
+
+    // Switch between dark, light or system theme 
     const ThemeSwitch = () => {
 
         async function handleThemeChange(e){
@@ -140,7 +147,6 @@ const Settings = () => {
             <DropDownCustom items={departementYears[departement]} current={year} id="dropdown-year" title="Année : " handle={setYear}/>
         ) 
     }
-    
 
     const DropDownDepart = () => {
         return (

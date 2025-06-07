@@ -5,6 +5,11 @@ import SingleEvent from "./SingleEvent"
 import { baseEventWidth, minWidth } from "../../utils/Constants";
 import './EventsInDay.scss'
 
+/**
+ * React component that displays all the event of a given day
+ * @component
+ * @returns {JSX.Element} 
+ */
 const EventsInDay = ({date, data, asso}) => {
     const events_list = [];
     const placed = [];
@@ -33,6 +38,7 @@ const EventsInDay = ({date, data, asso}) => {
       i += 1;
     } 
   
+    // Doesn't display the end of the week if empty
     if (events_list.length == 0 && (day.getNumberDayOfWeek() == 6 || day.getNumberDayOfWeek() == 7) && minWidth < dimensions.width){
       return <></>
     }

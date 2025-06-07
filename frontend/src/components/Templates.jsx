@@ -1,6 +1,11 @@
 import duck from '../images/duck.png'
 import "./Templates.scss"
 
+/**
+ * Custom Error handling component
+ * @component
+ * @returns {JSX.Element} 
+ */
 const ErrorTemplate = ({ message }) => {
     console.error(message)
     return (
@@ -10,6 +15,11 @@ const ErrorTemplate = ({ message }) => {
     );
 }
 
+/**
+ * Custom Loading component
+ * @component
+ * @returns {JSX.Element} 
+ */
 const Loading = () => {
     return (
         <div className='loadingBackground'>

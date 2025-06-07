@@ -4,6 +4,11 @@ import RandomUtils from '../utils/RandomUtils'
 import { useData } from '../contexts/DataContext'
 import Alert from '@mui/material/Alert'
 
+/**
+ * Component listing the different TDs the user can "subscribe" to. 
+ * @component
+ * @returns {JSX.Element} 
+ */
 function TDSelection({ departementTDs, otherTDs, userTDs }) {
     const [selectedTDs, setSelectedTDs] = useState(new Set(userTDs));
     const [statusMessage, setStatusMessage] = useState(" ");

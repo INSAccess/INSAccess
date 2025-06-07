@@ -8,6 +8,7 @@ import { useData } from '../../contexts/DataContext.jsx'
 
 /**
  * React component for the timestamps on the left of the calendar
+ * @component
  * @returns {JSX.Element}
  */
 const TimeBar = () => {
@@ -34,15 +35,8 @@ const TimeBar = () => {
  * @param {Array} props.data
  * @param {boolean} props.asso  
  * 
+ * @component
  * @returns {JSX.Element}
- * 
- * @example
- * const first_day = new Day("1970-01-01")
- * const data = []
- * const isAsso = false
- * return (
- *  <AllEvents start={first_day} data={data} asso={isAsso} />
- * )
  */
 const AllEvents = ({asso}) => {
 

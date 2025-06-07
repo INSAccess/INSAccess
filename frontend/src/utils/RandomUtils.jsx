@@ -84,6 +84,11 @@ class RandomUtils{
     return {data, error, loading}
   }
 
+  /**
+   * Concatenates all the strings passed in as a list, or returns the original string if there is only one
+   * @param {*} list List of string or single string to concatenate
+   * @returns {string} Concatenation of the strings passed in
+   */
   static Join(list){
     if (typeof list == 'string'){
       return list
