@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/TDSelection.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/TDSelection.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useState } from "react";
+import { API_URL } from '../utils/Constants'
+import RandomUtils from '../utils/RandomUtils'
+import { useData } from '../contexts/DataContext'
+import Alert from '@mui/material/Alert'
+
+/**
+ * Component listing the different TDs the user can "subscribe" to. 
+ * @component
+ * @returns {JSX.Element} 
+ */
+function TDSelection({ departementTDs, otherTDs, userTDs }) {
+    const [selectedTDs, setSelectedTDs] = useState(new Set(userTDs));
+    const [statusMessage, setStatusMessage] = useState(" ");
+    const [errorFlag, raiseErrorFlag] = useState(false)
+
+    const BUNDLE = useData()
+    const updateFunction = BUNDLE.forceUpdate
+
+    // Function to toggle selection of a TD
+    const toggleTD = (tdName) => {
+        const updatedTDs = new Set(selectedTDs);
+        if (updatedTDs.has(tdName)) {
+            updatedTDs.delete(tdName);
+        } else {
+            updatedTDs.add(tdName);
+        }
+        setSelectedTDs(updatedTDs);
+    };
+
+    // Function to save selection to the backend
+    const saveSelection = async () => {
+      try {
+        const response = await fetch(API_URL+'/api/save_tds', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': RandomUtils.getCSRFToken()},
+            mode:"cors",
+            credentials:'include',
+            body: JSON.stringify({ selected_tds: Array.from(selectedTDs) }),
+        });
+        const data = await response.json();
+        setStatusMessage(data.success);
+        updateFunction()
+    } catch (error) {
+        
+        raiseErrorFlag(true)
+        setStatusMessage("Echec de la sauvegarde des TDs");
+    }
+    };
+
+    return (
+        &lt;div style={{"display":"flex", "width":"100%"}}>
+            &lt;div className='checkbox-list' style={{"flex":"1"}}>
+                &lt;h1>Probablements vos TDs&lt;/h1>
+                {departementTDs.map(td => (
+                    &lt;li key={td}>
+                        &lt;label>
+                            &lt;input
+                                type="checkbox"
+                                checked={selectedTDs.has(td)}
+                                onChange={() => toggleTD(td)}
+                            />
+                            {td}
+                        &lt;/label>
+                    &lt;/li>
+                ))}
+                &lt;div className= "validate">
+                    &lt;button className='button_validate btn btn-primary' onClick={saveSelection}>Sauvegarder&lt;/button>
+                    &lt;p>{statusMessage}&lt;/p>
+                &lt;/div>
+            &lt;/div>
+            &lt;div className='checkbox-list' style={{"flex":"1"}}>
+                &lt;h1>Probablement pas vos TDs&lt;/h1>
+                {otherTDs.map(td => (
+                    &lt;li key={td}>
+                        &lt;label>
+                            &lt;input
+                                type="checkbox"
+                                checked={selectedTDs.has(td)}
+                                onChange={() => toggleTD(td)}
+                            />
+                            {td}
+                        &lt;/label>
+                    &lt;/li>
+                ))}
+            &lt;/div>
+            {errorFlag &amp;&amp; &lt;Alert severity="error" variant="filled" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}&lt;/Alert>}
+        &lt;/div>
+    );
+}
+
+export default TDSelection;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#NavBar">NavBar</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Jun 07 2025 19:37:34 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
