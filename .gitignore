@@ -17,3 +17,5 @@ build/
 venv/
 
 !backend/core/logs/.keep
+
+local_settings.py
