@@ -1,7 +1,11 @@
 import duck from '../../images/duck.png'
 import './About.scss'
+import { useTranslation } from 'react-i18next';
 
 const MainAbout = () => {
+
+    const { t, i18n } = useTranslation();
+
     return (
         <section className="py-3 py-md-5">
         <div className="container">
@@ -12,7 +16,7 @@ const MainAbout = () => {
             <div className="col-12 col-lg-6 col-xl-7">
                 <div className="row justify-content-xl-center">
                 <div className="col-12 col-xl-11">
-                    <h2 className="mb-3">Le projet</h2>
+                    <h2 className="mb-3">{t('AboutTitle')}</h2>
                     <p className="mb-5">Ce projet, créé par Raphaël Senellart et Jules Galhardo en ITI, a pour ambition de faciliter l'accès des étudiants aux cours et aux événements culturels de l'INSA. Tout au long de son développement,
                                         nous avons bénéficié du soutien précieux de nombreuses personnes que nous tenons à remercier : M. Bonnegent et M. Vasseur de la DSI, Mme Baudesson et Mme Caldin
                                         du Service Culture et M. Reynet du Service Communication pour leur soutien constant et pour avoir valorisé ce projet, sans oublier Michel Vespier pour ses conseils techniques concernant l'interface du site.

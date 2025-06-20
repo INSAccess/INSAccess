@@ -1,7 +1,7 @@
 import TDSelection from '../TDSelection.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
 import { useEffect, useState, useRef } from 'react';
-import { API_URL, minWidth } from '../../utils/Constants.jsx'
+import { API_URL, minWidth, LANGUAGES } from '../../utils/Constants.jsx'
 import { Loading } from '../Templates.jsx'
 import EventCreator from '../EventCreator.jsx';
 import Button from 'react-bootstrap/Button';
@@ -9,6 +9,7 @@ import DropDownCustom from '../DropDownCustom.jsx'
 import './Settings.scss'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useConfig } from '../../contexts/ConfigContext.jsx'
+import { useTranslation } from 'react-i18next';
 
 /**
  * Settings component, handling the theme, the TD selection, ICS link and event creation
@@ -34,6 +35,14 @@ const Settings = () => {
     const [isAssos, setIsAssos] = useState(false);
     const [current_theme, setTheme] = useState("")
     const [all_themes, setAllThemes] = useState(null)
+    const [language, setLanguage] = useState("fr")
+
+    const { t, i18n } = useTranslation();
+
+    const handleSetLanguage = (lng) => {
+        i18n.changeLanguage(lng);
+        setLanguage(lng);
+    };
 
     useEffect(() => {
         const loadData = async () => {
@@ -154,6 +163,12 @@ const Settings = () => {
         )
     }
 
+    const DropDownLng = () => {
+        return (
+            <DropDownCustom items={LANGUAGES} id="languages" title="Language : " current={language} handle={handleSetLanguage}/>
+        )
+    }
+
     const OtherParams = () => {
         return (
             <>
@@ -179,8 +194,12 @@ const Settings = () => {
                 </div>
                 <div style={{"margin":"2%"}}>
                     <h4>Changer le theme</h4>
-                </div>                
-                <ThemeSwitch />
+                    <ThemeSwitch />
+                </div>
+                <div style={{"margin":"2%"}}>
+                    <h4>Langue</h4>
+                    <DropDownLng />
+                </div>    
             </>
         )
     }

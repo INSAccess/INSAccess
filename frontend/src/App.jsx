@@ -12,6 +12,7 @@ import About from './components/Pages/About.jsx';
 import { items } from './utils/Constants.jsx';
 import { ErrorTemplate } from './components/Templates.jsx'
 import logo from './images/Logo_INSA_blanc.svg'
+import './utils/Dictionnary'
 
 function App() {
 
