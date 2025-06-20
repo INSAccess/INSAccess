@@ -11,6 +11,7 @@ const { useRef, useState, useEffect, createRef } = React
  * @returns {JSX.Element} 
  */
 const NavBar = ({ setPage, items }) => {
+
   const $root = useRef();
   const $indicator1 = useRef();
   const $indicator2 = useRef();
@@ -29,8 +30,8 @@ const NavBar = ({ setPage, items }) => {
       height: height,
       backgroundColor: items[active].color,
       ease: 'elastic.out(.7, .7)',
-      duration: .8 };
-
+      duration: .8 
+    };
 
     gsap.to($indicator1.current, {
       ...settings });

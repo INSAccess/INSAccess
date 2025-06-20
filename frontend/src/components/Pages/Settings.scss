@@ -60,6 +60,22 @@
 
 //-----------------------------------------------------------//
 
+.margin2 {
+  margin:2%;
+}
+
+.selectContainer {
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.selectContainer > .margin2 > .select {
+  margin-left:6%;
+  margin-top:4%;
+}
+
+//-----------------------------------------------------------//
+
 .dropdown_container {
   display:flex;
   margin:2%;
@@ -79,7 +95,7 @@
 .checkbox-list {
   max-width: 50%;
   padding: 20px;
-  margin-left:3%;
+  margin-inline:1.5%;
   background-color: var(--subSectionBackgroundColor);
   border-radius: 8px;
   box-shadow: 0 4px 10px var(--shadowColorBold);

@@ -1,32 +1,33 @@
 import duck from '../../images/duck.png'
 import './About.scss'
 import { useTranslation } from 'react-i18next';
+import RandomUtils from "../../utils/RandomUtils";
+import { minWidth } from "../../utils/Constants";
 
 const MainAbout = () => {
 
     const { t, i18n } = useTranslation();
 
+    let dimensions = RandomUtils.useWindowDimensions();
+
+
     return (
         <section className="py-3 py-md-5">
-        <div className="container">
-            <div className="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
-            <div className="col-12 col-lg-6 col-xl-5">
-                <img className="img-fluid rounded" loading="lazy" src={duck} alt="couldnt load duck image"></img>
-            </div>
-            <div className="col-12 col-lg-6 col-xl-7">
-                <div className="row justify-content-xl-center">
-                <div className="col-12 col-xl-11">
-                    <h2 className="mb-3">{t('AboutTitle')}</h2>
-                    <p className="mb-5">Ce projet, créé par Raphaël Senellart et Jules Galhardo en ITI, a pour ambition de faciliter l'accès des étudiants aux cours et aux événements culturels de l'INSA. Tout au long de son développement,
-                                        nous avons bénéficié du soutien précieux de nombreuses personnes que nous tenons à remercier : M. Bonnegent et M. Vasseur de la DSI, Mme Baudesson et Mme Caldin
-                                        du Service Culture et M. Reynet du Service Communication pour leur soutien constant et pour avoir valorisé ce projet, sans oublier Michel Vespier pour ses conseils techniques concernant l'interface du site.
-                                        Nous n'oublions pas les étudiants, les élus, les associations et les clubs de l'INSA pour leurs propositions et idées sur les fonctionnalités du site.
-                    </p>
-                </div>
+            <div className="container">
+                <div className="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
+                    {(minWidth >= dimensions.width) ? <></> : <div className="col-12 col-lg-6 col-xl-5">
+                        <img className="img-fluid rounded" loading="lazy" src={duck} alt="couldnt load duck image"></img>
+                    </div>}
+                    <div className="col-12 col-lg-6 col-xl-7">
+                        <div className="row justify-content-xl-center">
+                            <div className="col-12 col-xl-11">
+                                <h2 className="mb-3">{t('AboutTitle')}</h2>
+                                <p className="mb-5">{t('AboutContent')}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            </div>
-        </div>
         </section>
     );
 }
@@ -38,7 +39,7 @@ const MainAbout = () => {
  */
 const License = () => {
     return (
-        <p>
+        <p id="license">
             <a href="https://github.com/INSAccess/INSAccess" property="dct:title" rel="cc:attributionURL">INSAccess</a> by 
             <span property="cc:attributionName">&nbsp;Raphaël Senellart and Jules Galhardo&nbsp;</span> 
             is licensed under&nbsp;

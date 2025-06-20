@@ -9,14 +9,42 @@ import Settings from './components/Pages/Settings.jsx';
 import Calendar from './components/Pages/Calendar.jsx';
 import Associations from './components/Pages/Associations.jsx';
 import About from './components/Pages/About.jsx';
-import { items } from './utils/Constants.jsx';
 import { ErrorTemplate } from './components/Templates.jsx'
 import logo from './images/Logo_INSA_blanc.svg'
 import './utils/Dictionnary'
+import { useTranslation } from 'react-i18next';
 
 function App() {
 
+  const { t, i18n } = useTranslation();
   const [page, setPage] = useState("home")
+
+  const items = [
+    {
+      name: t("Calendar"),
+      color: "#777777",
+      href: "home" },
+    
+    {
+      name: t("Events"),
+      color: "#666666",
+      href: "associations" },
+    
+    {
+      name: t("Settings"),
+      color: "#555555",
+      href: "settings" },
+    
+    {
+        name: t("Friends"),
+        color: "#444444",
+        href: "settings" },
+    
+    {
+      name: t("About"),
+      color: "#333333",
+      href: "about" }
+  ];
 
   let burger="menu"
 

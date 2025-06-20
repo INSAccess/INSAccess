@@ -6,32 +6,7 @@ const departementYears = {"ITI":[3, 4, 5], "GM":[3, 4, 5], "EP":[3, 4, 5], "STPI
 const minWidth = 850;
 const monthList = [ "Jan", "Févr", "Mars", "Avril", "Mai", "Juin", "Juil", "Aout", "Sept", "Oct", "Nov", "Déc"];
 const baseEventWidth = 93
-const items = [
-  {
-    name: "Calendrier",
-    color: "#777777",
-    href: "home" },
-  
-  {
-    name: "Evenements",
-    color: "#666666",
-    href: "associations" },
-  
-  {
-    name: "Parametres",
-    color: "#555555",
-    href: "settings" },
-  
-  {
-      name: "Amis",
-      color: "#444444",
-      href: "settings" },
-  
-  {
-    name: "A propos",
-    color: "#333333",
-    href: "about" }
-];
+
 const LANGUAGES = ["en", "fr"]
 const API_URL = process.env.REACT_APP_API_URL;
 const REDIRECT = 'theuselessweb.com'
@@ -40,4 +15,4 @@ const PATH_ASSO = (API_URL != undefined) ? API_URL + '/api/get_evenements': REDI
 const API_LOGIN = (API_URL != undefined) ? API_URL+'/authentification/login' : REDIRECT
 const API_AUTH = (API_URL != undefined) ? API_URL+'/api/is_connected?format=json' : REDIRECT
 
-export { hours_timeline, dayList, minWidth, nbDaysPerMonth, monthList, baseEventWidth, API_URL, items, PATH_ASSO, PATH_CALENDAR, API_LOGIN, API_AUTH, departementNames, departementYears, LANGUAGES };
+export { hours_timeline, dayList, minWidth, nbDaysPerMonth, monthList, baseEventWidth, API_URL, PATH_ASSO, PATH_CALENDAR, API_LOGIN, API_AUTH, departementNames, departementYears, LANGUAGES };

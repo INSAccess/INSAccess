@@ -172,7 +172,7 @@ const Settings = () => {
     const OtherParams = () => {
         return (
             <>
-                <div style={{"margin":"2%"}}>
+                <div className="margin2">
                     <h4>Le lien pour votre calendrier ics</h4>
                     <p>
                         Vous pouvez copier ce lien dans Google Agenda pour visualiser vos cours et vos événements personnels
@@ -192,14 +192,16 @@ const Settings = () => {
                             Copier
                     </button>
                 </div>
-                <div style={{"margin":"2%"}}>
-                    <h4>Changer le theme</h4>
-                    <ThemeSwitch />
+                <div className="selectContainer">
+                    <div className="margin2">
+                        <h4>Changer le theme</h4>
+                        <ThemeSwitch />
+                    </div>
+                    <div className="margin2">
+                        <h4>Langue</h4>
+                        <DropDownLng />
+                    </div>
                 </div>
-                <div style={{"margin":"2%"}}>
-                    <h4>Langue</h4>
-                    <DropDownLng />
-                </div>    
             </>
         )
     }
