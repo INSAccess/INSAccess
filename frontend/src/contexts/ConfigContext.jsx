@@ -25,7 +25,6 @@ export const ConfigProvider = ({ children }) => {
         };
     
         loadData();
-        console.log(error)
 
         if (error){
             raiseErrorFlag(true)

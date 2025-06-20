@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
-
+import { reportWebVitals, sendToAnalytics } from './reportWebVitals.js';
 import './index.scss';
 import App from './App.jsx';
 
@@ -16,3 +16,5 @@ root.render(
         </AuthProvider>
     </BrowserRouter>
 );
+
+reportWebVitals(sendToAnalytics);
