@@ -55,6 +55,15 @@ const resources = {
       "ThemeDD":"Theme : ",
       "LanguageChange":"Language",
       "LanguageDD":"Language : ",
+      // Event
+      "Close":"Close",
+      "StartHour":"Start hour : ",
+      "EndHour":"End hour : ",
+      "Color":"Color : ",
+      "More":"More",
+      "Description":"Description : ",
+      "Associations":"Association(s)",
+      "Teachers":"Teacher(s)",
     }
   },
   fr: {
@@ -111,6 +120,15 @@ const resources = {
       "ThemeDD":"Thème : ",
       "LanguageChange":"Langue",
       "LanguageDD":"Langue : ",
+      // Event
+      "Close":"Fermer",
+      "StartHour":"Heure de début : ",
+      "EndHour":"Heure de fin : ",
+      "Color":"Couleur : ",
+      "More":"En savoir plus",
+      "Description":"Description : ",
+      "Associations":"Association(s)",
+      "Teachers":"Professeur(s)",
     }
   }
 };

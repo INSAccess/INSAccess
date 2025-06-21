@@ -10,6 +10,7 @@ import { API_URL } from '../../utils/Constants.jsx'
 import { HexColorPicker } from "react-colorful";
 import { useData } from '../../contexts/DataContext.jsx'
 import Alert from '@mui/material/Alert';
+import { useTranslation } from 'react-i18next';
 
 /**
  * React component that only returns a button redirecting to a link if this is an association
@@ -17,11 +18,14 @@ import Alert from '@mui/material/Alert';
  * @returns {JSX.Element}
  */
 const FollowLink = ({asso, link}) => {
+
+  const { t, i18n } = useTranslation();
+
   if (asso) {
     return (
       <NavLink to={link} target="_blank" rel="noopener noreferrer">
         <Button>
-          En savoir plus
+          {t('More')}
         </Button>
       </NavLink>
     )
@@ -36,8 +40,11 @@ const FollowLink = ({asso, link}) => {
  * @returns {JSX.Element}
  */
 const Description = ({asso, desc}) => {
+
+  const { t, i18n } = useTranslation();
+
   if (asso){ 
-    return <div><strong>Description : </strong><br/>{desc}</div> 
+    return <div><strong>{t('Description')}</strong><br/>{desc}</div> 
   } else { 
     return <></>
   }
@@ -66,6 +73,9 @@ const Description = ({asso, desc}) => {
  *)
  */
 const SingleEvent = (props) => {
+
+    const { t, i18n } = useTranslation();
+
     const hoursEvents = Day.createHours();
     let startIndex = hoursEvents.indexOf(props.startTime);
     let endIndex = hoursEvents.indexOf(props.endTime);
@@ -132,16 +142,16 @@ const SingleEvent = (props) => {
             <Modal.Title>{props.label}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div><strong>Heure de début : </strong>{Day.presentableHour(props.startTime)}</div>
-            <div><strong>Heure de fin : </strong>{Day.presentableHour(props.endTime)}</div>
-            <div><strong>{(props.asso) ? "Associations" : "Profs"} : </strong>{RandomUtils.Join(props.teacher)}</div>
+            <div><strong>{t('StartHour')}</strong>{Day.presentableHour(props.startTime)}</div>
+            <div><strong>{t('EndHour')}</strong>{Day.presentableHour(props.endTime)}</div>
+            <div><strong>{(props.asso) ? t("Associations") : t("Teachers")} : </strong>{RandomUtils.Join(props.teacher)}</div>
              {!props.asso && (
               <>
                 <div id="event-color-picker">
-                  <strong>Couleur : </strong>
+                  <strong>{t('Color')}</strong>
                   <HexColorPicker color={color} onChange={setColor}/>
                 </div>
-                <Button onClick={saveColor}>Sauvegarder</Button>
+                <Button onClick={saveColor}>{t('Save')}</Button>
               </>
               )}
             <Description asso={props.asso} desc={props.desc}/>
@@ -151,7 +161,7 @@ const SingleEvent = (props) => {
           <Modal.Footer>
             {errorFlag && <Alert severity="error" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}
             <Button variant="primary" onClick={handleClose}>
-              Fermer
+              {t('Close')}
             </Button>
           </Modal.Footer>
         </Modal>

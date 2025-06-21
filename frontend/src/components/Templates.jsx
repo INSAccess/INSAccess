@@ -10,7 +10,7 @@ const ErrorTemplate = ({ message }) => {
     console.error(message)
     return (
         <div>
-            <p>Il y a eu une erreur</p>
+            <p>There has been an error</p>
         </div>
     );
 }
