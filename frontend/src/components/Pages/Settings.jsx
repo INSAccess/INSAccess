@@ -115,7 +115,7 @@ const Settings = () => {
         }
     
         return (
-            <DropDownCustom items={all_themes} id="themes" title="Theme : " current={current_theme} handle={handleThemeChange}/>
+            <DropDownCustom items={all_themes} id="themes" title={t('ThemeDD')} current={current_theme} handle={handleThemeChange}/>
         )
     }
 
@@ -140,7 +140,7 @@ const Settings = () => {
           }, 2000);
         
         } catch (err) {
-          console.error("Copy failed:", err);
+          console.error("Copy failed : ", err);
         }
       };
 
@@ -153,19 +153,19 @@ const Settings = () => {
 
     const DropDownYear = () => {
         return (
-            <DropDownCustom items={departementYears[departement]} current={year} id="dropdown-year" title="Année : " handle={setYear}/>
+            <DropDownCustom items={departementYears[departement]} current={year} id="dropdown-year" title={t('YearDD')} handle={setYear}/>
         ) 
     }
 
     const DropDownDepart = () => {
         return (
-            <DropDownCustom items={departementNames} current={departement} id="dropdown-depart" title="Département : " handle={handleSetDepartement}/>
+            <DropDownCustom items={departementNames} current={departement} id="dropdown-depart" title={t('DepartmentDD')} handle={handleSetDepartement}/>
         )
     }
 
     const DropDownLng = () => {
         return (
-            <DropDownCustom items={LANGUAGES} id="languages" title="Language : " current={language} handle={handleSetLanguage}/>
+            <DropDownCustom items={LANGUAGES} id="languages" title={t('LanguageDD')} current={language} handle={handleSetLanguage}/>
         )
     }
 
@@ -173,11 +173,8 @@ const Settings = () => {
         return (
             <>
                 <div className="margin2">
-                    <h4>Le lien pour votre calendrier ics</h4>
-                    <p>
-                        Vous pouvez copier ce lien dans Google Agenda pour visualiser vos cours et vos événements personnels
-                        dans le même agenda
-                    </p>
+                    <h4>{t('ICSLink')}</h4>
+                    <p>{t('ICSText')}</p>
                 </div>
                 <div className="copy-container">
                     <input type="text" id="copyInput" className="copy-input" value={icsLink} readOnly></input>
@@ -189,16 +186,16 @@ const Settings = () => {
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
                             title="Copy to clipboard">
-                            Copier
+                            {t('ICSCopy')}
                     </button>
                 </div>
                 <div className="selectContainer">
                     <div className="margin2">
-                        <h4>Changer le theme</h4>
+                        <h4>{t('ThemeChange')}</h4>
                         <ThemeSwitch />
                     </div>
                     <div className="margin2">
-                        <h4>Langue</h4>
+                        <h4>{t('LanguageChange')}</h4>
                         <DropDownLng />
                     </div>
                 </div>
@@ -232,16 +229,16 @@ const Settings = () => {
     return (
         <div className="settings">
             <div className="view">
-                <Button className="btn_view" style={{"flex":(view == "TDs") ? "2" : "1"}} onClick={() => {setView("TDs")}}>{(dimensions.width > minWidth) ? "Liste des TD" : "TD"}</Button>
+                <Button className="btn_view" style={{"flex":(view == "TDs") ? "2" : "1"}} onClick={() => {setView("TDs")}}>{(dimensions.width > minWidth) ? t('TDList') : t('TDListShort')}</Button>
                 {isAssos && (
                 <Button
                     className="btn_view"
                     style={{ flex: view === "create" ? "2" : "1" }}
                     onClick={() => setView("create")}
                 >
-                    {dimensions.width > minWidth ? "Créer un événement" : "Evénement"}
+                    {dimensions.width > minWidth ? t('CreateEvent') : t('CreateEventShort')}
                 </Button>)}
-                <Button className="btn_view" style={{"flex":(view == "autre") ? "2" : "1"}} onClick={() => {setView("autre")}}>Autre</Button>
+                <Button className="btn_view" style={{"flex":(view == "autre") ? "2" : "1"}} onClick={() => {setView("autre")}}>{t('OtherSettings')}</Button>
             </div>
             <>{displayView(view)}</>
         </div>
