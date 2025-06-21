@@ -56,21 +56,21 @@ const AllEvents = ({asso}) => {
   let dimensions = RandomUtils.useWindowDimensions();
   let day = new Day(start);
 
-  let list_days = []
-  const [first_day, setDay] = useState(day);
-  let nb_days =  ((minWidth < dimensions.width) ? 6 : 1);
-  let current_day = (nb_days == 6) ? first_day.copy().startOfWeek(dayList) : first_day.copy();
+  let listDays = []
+  const [firstDay, setDay] = useState(day);
+  let nbDays =  ((minWidth < dimensions.width) ? 6 : 1);
+  let currentDay = (nbDays == 6) ? firstDay.copy().startOfWeek(dayList) : firstDay.copy();
 
   function handleDay(direction, value){
     if (direction === "prev"){
-      setDay(first_day => first_day.prev(value))
+      setDay(firstDay => firstDay.prev(value))
     } else if (direction === "next"){
-      setDay(first_day => first_day.next(value))
+      setDay(firstDay => firstDay.next(value))
     }
   }
 
 const calendarRef = useRef(null);
-let skipDays = (nb_days == 1) ? 1 : 7;
+let skipDays = (nbDays == 1) ? 1 : 7;
 
   useEffect(() => {
     let touchStartX = 0;
@@ -105,11 +105,11 @@ let skipDays = (nb_days == 1) ? 1 : 7;
         calendarRef.current.removeEventListener("touchend", handleTouchEnd);
       }
     };
-  }, [nb_days]);
+  }, [nbDays]);
 
-  for (let i = 0; i < nb_days; i++){
-    list_days.push(<EventsInDay key={i} date={current_day.getDate()} data={data} asso={asso}/>);
-    current_day = current_day.next(1);
+  for (let i = 0; i < nbDays; i++){
+    listDays.push(<EventsInDay key={i} date={currentDay.getDate()} data={data} asso={asso}/>);
+    currentDay = currentDay.next(1);
   }
 
 
@@ -119,7 +119,7 @@ let skipDays = (nb_days == 1) ? 1 : 7;
       <button type="button" className="arrow-left" onClick={() => {handleDay("prev", skipDays)}}></button>
       <TimeBar />
       <div className="days">
-        {list_days}
+        {listDays}
       </div>
       <button type="button" className="arrow-right turned" onClick={() => {handleDay("next", skipDays)}}></button>
   </div>

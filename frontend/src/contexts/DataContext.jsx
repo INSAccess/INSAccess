@@ -24,9 +24,9 @@ export const DataProvider = (props) => {
 
   let dimensions = RandomUtils.useWindowDimensions();
 
-  const current_date = new Date()
-  let first_day = new Day(current_date)
-  let day = (minWidth < dimensions.width) ? first_day.startOfWeek(dayList).getDate() : first_day.getDate()
+  const currentDate = new Date()
+  let firstDay = new Day(currentDate)
+  let day = (minWidth < dimensions.width) ? firstDay.startOfWeek(dayList).getDate() : firstDay.getDate()
 
   function forceUpdate(){
     setUpdate(true)

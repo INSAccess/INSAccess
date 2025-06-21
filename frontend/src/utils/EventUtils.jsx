@@ -7,23 +7,23 @@ import RandomUtils from './RandomUtils.jsx';
 class EventUtils {
   /**
    * Returns the height an events should have based on its start time, end time and the number of subdivisions possible
-   * @param {int} start_index the index of the start time of the event in the time array
-   * @param {int} end_index the index of the end time of the event in the time array
-   * @param {int} nb_div the number of subdivisions possible (the length of the time array)
+   * @param {int} startIndex the index of the start time of the event in the time array
+   * @param {int} endIndex the index of the end time of the event in the time array
+   * @param {int} nbDiv the number of subdivisions possible (the length of the time array)
    * @returns {float} the expected height of the event
    */
-  static getEventHeight(start_index, end_index, nb_div){
-    return ((end_index-start_index)/(nb_div+1))*100
+  static getEventHeight(startIndex, endIndex, nbDiv){
+    return ((endIndex-startIndex)/(nbDiv+1))*100
   }
 
   /**
    * Returns the position of the event from the top of the div
-   * @param {int} start_index the index of the start time of the event in the time array
-   * @param {int} nb_div the number of subdivisions possible (the length of the time array)
+   * @param {int} startIndex the index of the start time of the event in the time array
+   * @param {int} nbDiv the number of subdivisions possible (the length of the time array)
    * @returns {float} the expected position of the event
    */
-  static getEventPos(start_index, nb_div){
-    return 100*(start_index+1)/(nb_div+1);
+  static getEventPos(startIndex, nbDiv){
+    return 100*(startIndex+1)/(nbDiv+1);
   }
 
   /**
@@ -33,13 +33,13 @@ class EventUtils {
    * @returns {int} the number of events
    */
   static getNbEventsAtHour(hour, events){
-    let nb_events = 0;
+    let nbEvents = 0;
     for (let element of events){
       if (element.start_hour < hour && element.end_hour > hour){
-        nb_events++;
+        nbEvents++;
       }
     }
-    return nb_events;
+    return nbEvents;
   }
   
   /**
@@ -49,8 +49,8 @@ class EventUtils {
    */
   static getHoursOfEvent(event){
     let hours = []
-    const hours_events = Day.createHours();
-    for (let hour of hours_events){
+    const hoursEvents = Day.createHours();
+    for (let hour of hoursEvents){
       if (hour >= event.start_hour && hour <= event.end_hour){
         hours.push(hour);
       }
@@ -65,14 +65,14 @@ class EventUtils {
    * @returns {int}
    */
   static getOverlappingEvents(event, events){
-    let max_overlap = 0;
-    let nb_overlap = 0;
-    let hours_of_event = EventUtils.getHoursOfEvent(event)
-    for (let hour of hours_of_event){
-      nb_overlap = EventUtils.getNbEventsAtHour(hour, events)
-      max_overlap = RandomUtils.max(max_overlap, nb_overlap)
+    let maxOverlap = 0;
+    let nbOverlap = 0;
+    let hoursOfEvent = EventUtils.getHoursOfEvent(event)
+    for (let hour of hoursOfEvent){
+      nbOverlap = EventUtils.getNbEventsAtHour(hour, events)
+      maxOverlap = RandomUtils.max(maxOverlap, nbOverlap)
     }
-    return max_overlap;
+    return maxOverlap;
   }
   
   /**

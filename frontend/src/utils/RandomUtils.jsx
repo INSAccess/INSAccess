@@ -38,10 +38,10 @@ class RandomUtils{
   };
   /**
    * Fetches the data from a given path
-   * @param {string} data_path 
+   * @param {string} dataPath 
    * @returns {struct} data, error
    */
-  static async fetchData(data_path){
+  static async fetchData(dataPath){
     const initConfig = {
       method:'GET',
       headers:{'Content-Type':'application/json', 'Accept':'application/json', 'X-CSRFToken':RandomUtils.getCSRFToken()},
@@ -49,7 +49,7 @@ class RandomUtils{
       credentials:'include'
     }
     try {
-      const response = await fetch(data_path, initConfig);
+      const response = await fetch(dataPath, initConfig);
       if (!response.ok) {
         throw new Error("Erreur lors du fetch");
       }
@@ -62,17 +62,17 @@ class RandomUtils{
   
   /**
    * Loads the data from the given path and returns the state of loading (data if success, error message and loading)
-   * @param {string} data_path 
+   * @param {string} dataPath 
    * @returns {struct} data, error, loading
    */
-  static LoadData(data_path){
+  static LoadData(dataPath){
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
       const loadData = async () => {
-        const result = await RandomUtils.fetchData(data_path);
+        const result = await RandomUtils.fetchData(dataPath);
         setData(result.data);
         setError(result.error);
         setLoading(false);

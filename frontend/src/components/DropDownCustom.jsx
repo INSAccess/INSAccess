@@ -23,9 +23,9 @@ const DropDownSelect = ({ id, title, items, fonction }) => {
  * @returns {JSX.Element} 
  */
 const DropDownCustom = ({items, current, id, title, handle}) => {
-    let button_list = [];
+    let buttonList = [];
     for (let i = 0; i < items.length; i++){
-        button_list.push(
+        buttonList.push(
             <Dropdown.Item 
                 key={i} 
                 eventKey={items[i]} 
@@ -41,7 +41,7 @@ const DropDownCustom = ({items, current, id, title, handle}) => {
         <DropDownSelect 
         id={id} 
         title={title + current} 
-        items={button_list} 
+        items={buttonList} 
         fonction={handle}
         />
     )

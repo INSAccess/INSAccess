@@ -22,9 +22,9 @@ const Settings = () => {
     const departementNames = CONFIG ? CONFIG["departementNames"] : ["STPI"]
     const departementYears = CONFIG ? CONFIG["departementYears"] : {"STPI":[1]}  
 
-    const [user_tds, setUserTD] = useState(null);
-    const [departement_tds, setDepartTD] = useState(null);
-    const [other_tds, setOtherTD] = useState(null);
+    const [userTds, setUserTD] = useState(null);
+    const [departementTds, setDepartTD] = useState(null);
+    const [otherTds, setOtherTD] = useState(null);
     const [view, setView] = useState("TDs");
     const [departement, setDepartement] = useState(departementNames[0])
     const [year, setYear] = useState(departementYears[departement][0])
@@ -33,8 +33,8 @@ const Settings = () => {
     const copyButtonRef = useRef(null);
     const [icsLink, setIcsLink] = useState("Error when loading ics");
     const [isAssos, setIsAssos] = useState(false);
-    const [current_theme, setTheme] = useState("")
-    const [all_themes, setAllThemes] = useState(null)
+    const [currentTheme, setTheme] = useState("")
+    const [allThemes, setAllThemes] = useState(null)
     const [language, setLanguage] = useState("fr")
 
     const { t, i18n } = useTranslation();
@@ -53,9 +53,9 @@ const Settings = () => {
             setOtherTD(result.data.other_tds);
           }
 
-          const result_ics = await RandomUtils.fetchData(API_URL+"/api/get_ics_url");
-          if (result_ics.data){
-              setIcsLink(result_ics.data);
+          const resultIcs = await RandomUtils.fetchData(API_URL+"/api/get_ics_url");
+          if (resultIcs.data){
+              setIcsLink(resultIcs.data);
           }
 
           const result_isAssos = await RandomUtils.fetchData(API_URL+"/api/is_association");
@@ -63,14 +63,14 @@ const Settings = () => {
             setIsAssos(result_isAssos.data);
           }
 
-          const result_themes = await RandomUtils.fetchData(API_URL+"/api/get_themes")
-          if (result_themes.data){
-            setAllThemes(result_themes.data)
+          const resultThemes = await RandomUtils.fetchData(API_URL+"/api/get_themes")
+          if (resultThemes.data){
+            setAllThemes(resultThemes.data)
           }
 
-          const result_user_theme = await RandomUtils.fetchData(API_URL+"/api/get_user_theme")
-          if (result_user_theme.data){
-            setTheme(result_user_theme.data)
+          const resultUserTheme = await RandomUtils.fetchData(API_URL+"/api/get_user_theme")
+          if (resultUserTheme.data){
+            setTheme(resultUserTheme.data)
           }
 
           setError(result.error);
@@ -115,7 +115,7 @@ const Settings = () => {
         }
     
         return (
-            <DropDownCustom items={all_themes} id="themes" title={t('ThemeDD')} current={current_theme} handle={handleThemeChange}/>
+            <DropDownCustom items={allThemes} id="themes" title={t('ThemeDD')} current={currentTheme} handle={handleThemeChange}/>
         )
     }
 
@@ -212,7 +212,7 @@ const Settings = () => {
                         <DropDownDepart />
                         <DropDownYear />
                     </div>
-                    {departement_tds && other_tds && user_tds && <TDSelection departementTDs={departement_tds} otherTDs={other_tds} userTDs={user_tds}/>}
+                    {departementTds && otherTds && userTds && <TDSelection departementTDs={departementTds} otherTDs={otherTds} userTDs={userTds}/>}
                 </>
             );
             case "create" : return (<EventCreator/>);

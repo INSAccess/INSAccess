@@ -48,7 +48,7 @@ const Description = ({asso, desc}) => {
  * @component
  * @returns {JSX.Element}
  * @example
- * const element = {
+ * const element = { 
  *  start_hour : "0900",
  *  end_hour : "1115",
  *  desc : "",
@@ -59,18 +59,18 @@ const Description = ({asso, desc}) => {
  * const width = "93%"
  * const left = "0%"
  * return (
- *  <SingleEvent key={i} start_time={element.start_hour} end_time={element.end_hour}
+ *  <SingleEvent key={i} startTime={element.start_hour} endTime={element.end_hour}
  *  label={element.desc} teacher={element.link_teacher} room={element.link_room} link={element.link} 
  *  width={width} left={left}
  *  desc={''} asso={asso}/>
  *)
  */
 const SingleEvent = (props) => {
-    const hours_events = Day.createHours();
-    let start_index = hours_events.indexOf(props.start_time);
-    let end_index = hours_events.indexOf(props.end_time);
-    let eventHeight = EventUtils.getEventHeight(start_index, end_index, hours_events.length);
-    let eventPosY = EventUtils.getEventPos(start_index, hours_events.length);
+    const hoursEvents = Day.createHours();
+    let startIndex = hoursEvents.indexOf(props.startTime);
+    let endIndex = hoursEvents.indexOf(props.endTime);
+    let eventHeight = EventUtils.getEventHeight(startIndex, endIndex, hoursEvents.length);
+    let eventPosY = EventUtils.getEventPos(startIndex, hoursEvents.length);
   
     var eventStyle = {
       height: `${eventHeight}%`,
@@ -132,8 +132,8 @@ const SingleEvent = (props) => {
             <Modal.Title>{props.label}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div><strong>Heure de début : </strong>{Day.presentableHour(props.start_time)}</div>
-            <div><strong>Heure de fin : </strong>{Day.presentableHour(props.end_time)}</div>
+            <div><strong>Heure de début : </strong>{Day.presentableHour(props.startTime)}</div>
+            <div><strong>Heure de fin : </strong>{Day.presentableHour(props.endTime)}</div>
             <div><strong>{(props.asso) ? "Associations" : "Profs"} : </strong>{RandomUtils.Join(props.teacher)}</div>
              {!props.asso && (
               <>

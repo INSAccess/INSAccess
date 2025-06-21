@@ -18,24 +18,24 @@ const EventsInDay = ({date, data, asso}) => {
   const dayList = [t('Sunday'), t('Monday'), t('Tuesday'), t('Wednesday'), t('Thursday'), t('Friday'), t('Saturday'),];
   const monthList = [t('January'), t('February'), t('March'), t('April'), t('May'), t('June'), t('July'), t('August'), t('September'), t('October'), t('November'), t('December')];
 
-  const events_list = [];
+  const eventsList = [];
   const placed = [];
   let dimensions = RandomUtils.useWindowDimensions();
   
   let i = 0;
   let day = new Day(date);
   const infos = day.getDateInfo(dayList, monthList);
-  const events_of_day = EventUtils.getEventsOfDay(date, data["events"]);
+  const eventsOfDay = EventUtils.getEventsOfDay(date, data["events"]);
 
-  for (let element of events_of_day){
-    const nb_overlap_total = EventUtils.getOverlappingEvents(element, events_of_day);
-    const nb_overlap_placed = EventUtils.getOverlappingEvents(element, placed);
+  for (let element of eventsOfDay){
+    const nbOverlapTotal = EventUtils.getOverlappingEvents(element, eventsOfDay);
+    const nbOverlapPlaced = EventUtils.getOverlappingEvents(element, placed);
 
-    const width = baseEventWidth/nb_overlap_total
-    const left = baseEventWidth*(1-(nb_overlap_placed+1)/nb_overlap_total)
+    const width = baseEventWidth/nbOverlapTotal
+    const left = baseEventWidth*(1-(nbOverlapPlaced+1)/nbOverlapTotal)
 
-    events_list.push(
-      <SingleEvent key={i} start_time={element.start_hour} end_time={element.end_hour} 
+    eventsList.push(
+      <SingleEvent key={i} startTime={element.start_hour} endTime={element.end_hour} 
       label={element.desc} teacher={element.link_teacher} room={element.link_room} link={element.link} 
       width={width} left={left} colors = {data["colors"]}
       desc={element.info} asso={asso}/>
@@ -46,7 +46,7 @@ const EventsInDay = ({date, data, asso}) => {
   } 
 
   // Doesn't display the end of the week if empty
-  if (events_list.length == 0 && (day.getNumberDayOfWeek() == 6 || day.getNumberDayOfWeek() == 7) && minWidth < dimensions.width){
+  if (eventsList.length == 0 && (day.getNumberDayOfWeek() == 6 || day.getNumberDayOfWeek() == 7) && minWidth < dimensions.width){
     return <></>
   }
   return (
@@ -57,7 +57,7 @@ const EventsInDay = ({date, data, asso}) => {
         <p className="date-month">{infos[2]}</p> 
       </div>
       <div className="events">
-        {events_list}
+        {eventsList}
       </div>
     </div>
   );

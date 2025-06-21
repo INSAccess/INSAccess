@@ -37,20 +37,20 @@ const EvenementForm = ({}) => {
         // add timestamp field
 
         //modify the start_hour field to only end with 5 or 0
-        let start_hour = formData.get("start_hour")
-        if (start_hour != undefined && start_hour != ""){
-            if (start_hour[start_hour.length-1] != "5" && start_hour[start_hour.length-1] != "0"){
-                formData.set("start_hour", start_hour.replace(/.$/, "0"))
+        let startHour = formData.get("start_hour")
+        if (startHour != undefined && startHour != ""){
+            if (startHour[startHour.length-1] != "5" && startHour[startHour.length-1] != "0"){
+                formData.set("start_hour", startHour.replace(/.$/, "0"))
             }
         } else {
             formData.set("start_hour", "08:00")
         }
 
         //modify the end_hour field to only end with 5 or 0
-        let end_hour = formData.get("end_hour")
-        if (end_hour != undefined && end_hour != ""){
-            if (end_hour[end_hour.length-1] != "5" && end_hour[end_hour.length-1] != "0"){
-                formData.set("end_hour", end_hour.replace(/.$/, "5"))
+        let endHour = formData.get("end_hour")
+        if (endHour != undefined && endHour != ""){
+            if (endHour[endHour.length-1] != "5" && endHour[endHour.length-1] != "0"){
+                formData.set("end_hour", endHour.replace(/.$/, "5"))
             }
         } else {
             formData.set("end_hour", "18:15")
@@ -119,8 +119,8 @@ const EventCreator = () => {
         loadData();
     }, []);
 
-    const url_login = API_URL+"/login"
-    const url_create = API_URL+"/create"
+    const urlLogin = API_URL+"/login"
+    const urlCreate = API_URL+"/create"
 
     if (loading){
         return <Loading/>
@@ -134,11 +134,11 @@ const EventCreator = () => {
         return (
             <div>
                 <p>Vous n'êtes pas une association</p>
-                <Button href={url_login}>Se connecter en tant qu'association</Button>
+                <Button href={urlLogin}>Se connecter en tant qu'association</Button>
             </div>
         );
     } else {
-        return <EvenementForm url={url_create}/>
+        return <EvenementForm url={urlCreate}/>
     }  
 }
 

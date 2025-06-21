@@ -219,7 +219,7 @@ const Day = class Day{
   static createHours(){
     let result = [];
     let string = "";
-    let last_hour = "2015"
+    let lastHour = "2015"
     let currentHour = 8;
     let currentMinute = 0;
     for (let i = 0; i <= 12; i++){
@@ -235,7 +235,7 @@ const Day = class Day{
         string += `${currentMinute}`;
         result.push(string);
         currentMinute += 5;
-        if (string === last_hour){
+        if (string === lastHour){
           return result;
         }
       }
