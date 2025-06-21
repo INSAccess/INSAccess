@@ -14,6 +14,27 @@ const resources = {
       "Settings":"Settings",
       "Friends":"Friends",
       "About":"About",
+      // Days
+      "Sunday":"Sun",
+      "Monday":"Mon",
+      "Tuesday":"Tue",
+      "Wednesday":"Wed",
+      "Thursday":"Thu",
+      "Friday":"Fri",
+      "Saturday":"Sat",
+      // Months
+      "January":"Jan", 
+      "February":"Febr", 
+      "March":"March", 
+      "April":"April", 
+      "May":"May", 
+      "June":"June", 
+      "July":"Jul", 
+      "August":"Aug", 
+      "September":"Sept", 
+      "October":"Oct", 
+      "November":"Nov", 
+      "December":"Dec",
     }
   },
   fr: {
@@ -28,6 +49,27 @@ const resources = {
       "Settings":"Parametres",
       "Friends":"Amis",
       "About":"A propos",
+      // Days
+      "Sunday":"Dim",
+      "Monday":"Lun",
+      "Tuesday":"Mar",
+      "Wednesday":"Mer",
+      "Thursday":"Jeu",
+      "Friday":"Ven",
+      "Saturday":"Sam",
+      // Months
+      "January":"Jan", 
+      "February":"Févr", 
+      "March":"Mars", 
+      "April":"Avril", 
+      "May":"Mai", 
+      "June":"Juin", 
+      "July":"Juil", 
+      "August":"Août", 
+      "September":"Sept", 
+      "October":"Oct", 
+      "November":"Nov", 
+      "December":"Déc",
     }
   }
 };

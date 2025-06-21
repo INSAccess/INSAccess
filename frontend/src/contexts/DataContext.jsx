@@ -4,6 +4,7 @@ import { minWidth, PATH_CALENDAR, PATH_ASSO,API_URL } from '../utils/Constants.j
 import RandomUtils from '../utils/RandomUtils.jsx';
 import { Loading } from '../components/Templates.jsx'
 import Alert from '@mui/material/Alert';
+import { useTranslation } from 'react-i18next';
 
 const DataContext = createContext()
 
@@ -17,11 +18,15 @@ export const DataProvider = (props) => {
   const [errorFlag, raiseErrorFlag] = useState(false)
   const [statusMessage, setStatusMessage] = useState("")
 
+  const { t, i18n } = useTranslation();
+
+  const dayList = [t('Sunday'), t('Monday'), t('Tuesday'), t('Wednesday'), t('Thursday'), t('Friday'), t('Saturday'),];
+
   let dimensions = RandomUtils.useWindowDimensions();
 
   const current_date = new Date()
   let first_day = new Day(current_date)
-  let day = (minWidth < dimensions.width) ? first_day.startOfWeek().getDate() : first_day.getDate()
+  let day = (minWidth < dimensions.width) ? first_day.startOfWeek(dayList).getDate() : first_day.getDate()
 
   function forceUpdate(){
     setUpdate(true)

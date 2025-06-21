@@ -1,4 +1,4 @@
-import { nbDaysPerMonth, dayList, monthList } from './Constants.jsx'
+import { nbDaysPerMonth } from './Constants.jsx'
 
 /**
  * Class for handling days and dates
@@ -116,9 +116,9 @@ const Day = class Day{
    * Calucates the start of the current week
    * @returns {Day}
    */
-  startOfWeek(){
+  startOfWeek(dayList){
     let day = this.copy();
-    while (day.getDayOfWeek() !== dayList[1]){
+    while (day.getDayOfWeek(dayList) !== dayList[1]){
       day = day.prev(1);
     }
     return day;
@@ -137,7 +137,7 @@ const Day = class Day{
    * Uses the Date class to get the day of the week as an integer and then convert it the a readable string
    * @returns {string}
    */
-  getDayOfWeek(){
+  getDayOfWeek(dayList){
     let date = new Date(this.date)
     return dayList[date.getDay()]
   }
@@ -151,7 +151,7 @@ const Day = class Day{
    * Uses the Date class to get the month as an integer and then convert it the a readable string
    * @returns {string}
    */
-  getMonthOfYear(){
+  getMonthOfYear(monthList){
     return monthList[this.month-1]
   }
 
@@ -200,8 +200,8 @@ const Day = class Day{
    * Returns readable informations on the current day
    * @returns {Array}
    */
-  getDateInfo(){
-      return [this.getDayOfWeek(), this.getDay(), this.getMonthOfYear()];
+  getDateInfo(dayList, monthList){
+      return [this.getDayOfWeek(dayList), this.getDay(), this.getMonthOfYear(monthList)];
   }
 
   /**

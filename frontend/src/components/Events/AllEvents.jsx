@@ -1,10 +1,11 @@
 import EventsInDay from "./EventsInDay";
 import RandomUtils from "../../utils/RandomUtils";
 import { useState, useEffect, useRef } from "react";
-import { hours_timeline, minWidth } from "../../utils/Constants";
+import { hoursTimeline, minWidth } from "../../utils/Constants";
 import Day from "../../utils/Day"
 import './AllEvents.scss'
 import { useData } from '../../contexts/DataContext.jsx'
+import { useTranslation } from 'react-i18next';
 
 /**
  * React component for the timestamps on the left of the calendar
@@ -16,8 +17,8 @@ const TimeBar = () => {
 
   hours.push(<div key={-1} className="spacer"></div>);
 
-  for (let i = 0; i < hours_timeline.length; i++){
-    hours.push(<div key={i} className="time-marker">{hours_timeline[i]}</div>)
+  for (let i = 0; i < hoursTimeline.length; i++){
+    hours.push(<div key={i} className="time-marker">{hoursTimeline[i]}</div>)
   }
 
   return (
@@ -39,6 +40,9 @@ const TimeBar = () => {
  * @returns {JSX.Element}
  */
 const AllEvents = ({asso}) => {
+  const { t, i18n } = useTranslation();
+
+  const dayList = [t('Sunday'), t('Monday'), t('Tuesday'), t('Wednesday'), t('Thursday'), t('Friday'), t('Saturday'),];
 
   const BUNDLE = useData()
   let data = []
@@ -55,7 +59,7 @@ const AllEvents = ({asso}) => {
   let list_days = []
   const [first_day, setDay] = useState(day);
   let nb_days =  ((minWidth < dimensions.width) ? 6 : 1);
-  let current_day = (nb_days == 6) ? first_day.copy().startOfWeek() : first_day.copy();
+  let current_day = (nb_days == 6) ? first_day.copy().startOfWeek(dayList) : first_day.copy();
 
   function handleDay(direction, value){
     if (direction === "prev"){
