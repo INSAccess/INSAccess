@@ -1,5 +1,6 @@
 import duck from '../images/duck.png'
 import "./Templates.scss"
+import { useTranslation } from 'react-i18next';
 
 /**
  * Custom Error handling component
@@ -28,4 +29,20 @@ const Loading = () => {
     )
 }
 
-export { ErrorTemplate, Loading };
+/**
+ * Custom WIP component
+ * @component
+ * @returns {JSX.Element}
+ */
+const WorkInProgressTemplate = () => {
+
+    const { t, i18n } = useTranslation();
+
+    return (
+    <div className="WIP">
+        <h1>{t('WIP')}</h1>
+    </div>
+    )
+}
+
+export { ErrorTemplate, Loading, WorkInProgressTemplate };

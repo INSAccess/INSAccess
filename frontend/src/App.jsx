@@ -9,7 +9,7 @@ import Settings from './components/Pages/Settings.jsx';
 import Calendar from './components/Pages/Calendar.jsx';
 import Associations from './components/Pages/Associations.jsx';
 import About from './components/Pages/About.jsx';
-import { ErrorTemplate } from './components/Templates.jsx'
+import { ErrorTemplate, WorkInProgressTemplate } from './components/Templates.jsx'
 import logo from './images/Logo_INSA_blanc.svg'
 import './utils/Dictionnary'
 import { useTranslation } from 'react-i18next';
@@ -38,7 +38,7 @@ function App() {
     {
         name: t("Friends"),
         color: "#444444",
-        href: "settings" },
+        href: "friends" },
     
     {
       name: t("About"),
@@ -80,6 +80,7 @@ function App() {
       case "home" : return <Calendar/>;
       case "about" : return <About />;
       case "settings" : return <Settings/>;
+      case "friends" : return <WorkInProgressTemplate />;
       case "associations" : return <Associations/>;
     }
   }

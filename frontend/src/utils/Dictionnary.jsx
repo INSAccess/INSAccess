@@ -64,6 +64,8 @@ const resources = {
       "Description":"Description : ",
       "Associations":"Association(s)",
       "Teachers":"Teacher(s)",
+      // Other
+      "WIP":"Coming soon...",
     }
   },
   fr: {
@@ -129,6 +131,8 @@ const resources = {
       "Description":"Description : ",
       "Associations":"Association(s)",
       "Teachers":"Professeur(s)",
+      // Other
+      "WIP":"Ça arrive bientôt...",
     }
   }
 };
