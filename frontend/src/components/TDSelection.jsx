@@ -2,6 +2,7 @@ import { useState } from "react";
 import { API_URL } from '../utils/Constants'
 import RandomUtils from '../utils/RandomUtils'
 import { useData } from '../contexts/DataContext'
+import { useTranslation } from 'react-i18next'
 import Alert from '@mui/material/Alert'
 
 /**
@@ -16,6 +17,8 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
 
     const BUNDLE = useData()
     const updateFunction = BUNDLE.forceUpdate
+
+    const { t, i18n } = useTranslation();
 
     // Function to toggle selection of a TD
     const toggleTD = (tdName) => {
@@ -51,7 +54,7 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
     return (
         <div style={{"display":"flex", "width":"100%"}}>
             <div className='checkbox-list' style={{"flex":"1"}}>
-                <h1>Probablements vos TDs</h1>
+                <h1>{t('TDLikely')}</h1>
                 {departementTDs.map(td => (
                     <li key={td}>
                         <label>
@@ -65,12 +68,12 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
                     </li>
                 ))}
                 <div className= "validate">
-                    <button className='button_validate btn btn-primary' onClick={saveSelection}>Sauvegarder</button>
+                    <button className='button_validate btn btn-primary' onClick={saveSelection}>{t('Save')}</button>
                     <p>{statusMessage}</p>
                 </div>
             </div>
             <div className='checkbox-list' style={{"flex":"1"}}>
-                <h1>Probablement pas vos TDs</h1>
+                <h1>{t('TDNotLikely')}</h1>
                 {otherTDs.map(td => (
                     <li key={td}>
                         <label>
