@@ -3,8 +3,6 @@ from pathlib import Path
 from corsheaders.defaults import default_headers
 from core.utils.logging import RequestFilter
 
-
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
@@ -15,9 +13,6 @@ SECRET_KEY = 'django-insecure-n%of#5dk!t(((--f9-48qqi!u6ooo6(zv&hvu_c&3hk4lbo*1&
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -33,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_cas_ng',
 ]
 
 MIDDLEWARE = [
@@ -45,6 +41,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_cas_ng.middleware.CASMiddleware'
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -91,13 +88,18 @@ CORS_URLS_REGEX = r'^/api/.*'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    'django_cas_ng.backends.CASBackend',
     # 'uniauth.backends.CASBackend',
 ]
 
-LOGIN_URL = "authentification/login/" #LOGIN_URL = "/accounts/login/" for CAS implementation
+CAS_SERVER_URL = 'https://cas.insa-rouen.fr/cas/'
 
-UNIAUTH_LOGIN_DISPLAY_STANDARD = False
-UNIAUTH_LOGOUT_CAS_COMPLETELY = True
+#LOGIN_URL = "authentification/login/" 
+LOGIN_URL = "accounts/login/" #for CAS implementation
+
+
+# UNIAUTH_LOGIN_DISPLAY_STANDARD = False
+# UNIAUTH_LOGOUT_CAS_COMPLETELY = True
 
 
 WSGI_APPLICATION = 'config.wsgi.application'

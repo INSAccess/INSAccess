@@ -14,7 +14,7 @@ class UserProfile(models.Model):
 
 class Event(models.Model):
     """Generic Class for defining events in the calendar"""
-    uid = models.CharField(primary_key = True, editable = False)
+    uid = models.CharField(primary_key = True, editable = False, max_length = 256)
     date = models.DateField()
     time_stamp = models.DateTimeField()
     start_hour = models.DateTimeField()
@@ -55,7 +55,7 @@ class InsaEvenement(Event):
     associated_link = models.CharField(max_length=510)
     association = models.ForeignKey('Association', on_delete=models.CASCADE)
     location = models.CharField(max_length=510)
-    info = models.CharField()
+    info = models.CharField(max_length=510)
 
     def __str__(self):
         return f"Insa Event : {self.desc}"
