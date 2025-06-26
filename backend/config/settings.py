@@ -32,8 +32,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'core.utils.middleware_log.RequestLogMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'core.utils.middleware_log.RequestLogMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -41,7 +41,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_cas_ng.middleware.CASMiddleware'
+    'django_cas_ng.middleware.CASMiddleware',
+
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -67,14 +68,16 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "http://172.18.26.13:3000" # TEMPORARY USED FOR LOCALHOST TEST
+    "http://172.18.26.13:3000", # TEMPORARY USED FOR LOCALHOST TEST
+    "http://localhost:3004",
 ]
 
 CORS_ALLOW_HEADERS = default_headers
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
-    "http://172.18.26.13:3000" # TEMPORARY USED FOR LOCALHOST TEST
+    "http://172.18.26.13:3000", # TEMPORARY USED FOR LOCALHOST TEST
+    "http://localhost:3004",
 ]
 
 
@@ -89,10 +92,12 @@ CORS_URLS_REGEX = r'^/api/.*'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'django_cas_ng.backends.CASBackend',
+    'corsheaders.middleware.CorsMiddleware',
     # 'uniauth.backends.CASBackend',
 ]
 
-CAS_SERVER_URL = 'https://cas.insa-rouen.fr/cas/'
+CAS_SERVER_URL = 'http://localhost:3004/cas/' #'https://cas.insa-rouen.fr/cas/'
+#CAS_LOGIN_NEXT_PAGE = 'http://localhost:3000'
 
 #LOGIN_URL = "authentification/login/" 
 LOGIN_URL = "accounts/login/" #for CAS implementation

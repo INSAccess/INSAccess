@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from core.models import UserProfile, EnumColorTheme
 from core.utils.fetch_ics import fetch_department
 from core.utils.db_insertor import insert_list_record
+
 def register(request):
     if request.method == 'POST':
         username = request.POST["username"]

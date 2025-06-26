@@ -56,6 +56,27 @@ npm start
 
 - alternatively you can use `./run_servers.sh` to launch both at the same time. The only downside is that the django server will only launched detached from the termimal. You can still view it with by doing `make up` in another terminal
 
+- A mock cas server can be launched by installing the npm package `cas-server-mock` and running the following command : 
+
+```bash
+npx cas-server-mock --port=3004 --database=/tmp/users.json
+```
+
+The database file must contain the list of users in the following format : 
+
+```json
+[
+  {
+    "name":"user",
+    "attributes":{
+      "mail":"example@mail.com",
+      ...
+    }
+  },
+  ...
+]
+```
+
 ## Code Structure <div id="struct"/>
 
 ### Backend
