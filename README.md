@@ -130,6 +130,7 @@ This structure allows the backend and frontend to be developed and maintained in
 	> for day, simply put the day (ex : 20250123 for 2025/01/23), for week, must be the sunday previous to the week you wanna fetch (for the 12 to 16 then fetch at 11), for month, simply fetch at the first day of the month
 	- for `db_insertion.py` simply `import` `insert_list_records` or `insert_record_in_db`
 
+**IMPORTANT** : In order to fetch the events, you must now use the route `/authentification/temp`. The previous methods and scripts either don't exist or don't work anymore. This section of the README will be modified in the future. 
 
 ## Models <div id='models'/>
 
