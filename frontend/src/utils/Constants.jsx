@@ -7,6 +7,7 @@ const baseEventWidth = 93
 
 const LANGUAGES = ["en", "fr"]
 const API_URL = process.env.REACT_APP_API_URL;
+//const API_LOGIN = process.env.CAS_URL;
 const REDIRECT = 'theuselessweb.com'
 const PATH_CALENDAR = (API_URL != undefined) ? API_URL+'/api/get_year/' : REDIRECT
 const PATH_ASSO = (API_URL != undefined) ? API_URL + '/api/get_evenements': REDIRECT

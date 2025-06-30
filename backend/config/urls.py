@@ -6,8 +6,6 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 from core.admin import custom_admin_site
-import django_cas_ng.views as cas_views
-
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -30,7 +28,6 @@ urlpatterns = [
     path('admin/default', admin.site.urls),
     path('admin/custom', custom_admin_site.urls),
     path('api/', include('core.urls.api_urls')),
-    #path('authentification/', include('core.urls.auth_urls')),
-    path('accounts/login', cas_views.LoginView.as_view(), name='cas_ng_login'),
+    path('authentification/', include('core.urls.auth_urls')),
     path('ics/', include('core.urls.ics_urls'))
 ]

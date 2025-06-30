@@ -7,6 +7,9 @@ from core.models import UserProfile, EnumColorTheme
 from core.utils.fetch_ics import fetch_department
 from core.utils.db_insertor import insert_list_record
 
+from django.shortcuts import redirect
+from django_cas_ng.views import LoginView
+
 def register(request):
     if request.method == 'POST':
         username = request.POST["username"]

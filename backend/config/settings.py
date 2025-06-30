@@ -87,8 +87,6 @@ ALLOWED_HOSTS = ["127.0.0.1", "localhost", "172.18.26.13"# TEMPORARY USED FOR LO
 
 CORS_URLS_REGEX = r'^/api/.*'
 
-
-
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'django_cas_ng.backends.CASBackend',
@@ -97,7 +95,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 CAS_SERVER_URL = 'http://localhost:3004/cas/' #'https://cas.insa-rouen.fr/cas/'
-#CAS_LOGIN_NEXT_PAGE = 'http://localhost:3000'
+
+CAS_REDIRECT_URL = 'http://localhost:3000/'
 
 #LOGIN_URL = "authentification/login/" 
 LOGIN_URL = "accounts/login/" #for CAS implementation
