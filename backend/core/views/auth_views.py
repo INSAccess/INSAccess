@@ -10,6 +10,7 @@ from core.utils.db_insertor import insert_list_record
 from django.shortcuts import redirect
 from django_cas_ng.views import LoginView
 
+# Used before CAS integration, not needed now
 def register(request):
     if request.method == 'POST':
         username = request.POST["username"]
@@ -42,7 +43,7 @@ def register(request):
 
     return render(request, "register.html")
 
-
+# Used before CAS integration, not needed now
 def user_login(request):
     if request.method == "POST":
         username = request.POST["username"]

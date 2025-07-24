@@ -59,7 +59,7 @@ npm start
 - A mock cas server can be launched by installing the npm package `cas-server-mock` and running the following command : 
 
 ```bash
-npx cas-server-mock --port=3004 --database=/tmp/users.json
+npx cas-server-mock --port=3004 --database=./users.json
 ```
 
 The database file must contain the list of users in the following format : 

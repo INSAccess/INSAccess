@@ -1,10 +1,15 @@
-FROM python:3.11
+FROM python:3.11-slim
 
-WORKDIR /core
+WORKDIR /app
 
-COPY . /core//
+# Copier requirements depuis le dossier backend
+COPY ./requirements.txt .
 
+# Installer les dépendances Python
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Copier le code backend
+COPY . .
 
 EXPOSE 8000
 

@@ -14,43 +14,44 @@ down:
 
 restart:
 	docker-compose down && docker-compose up -d --build
+	
 logs:
-	docker-compose logs -f web
+	docker-compose logs -f django
 
 # Database Migrations
 migrate:
-	docker-compose exec web python manage.py migrate
+	docker-compose exec django python manage.py migrate
 
 makemigrations:
-	docker-compose exec web python manage.py makemigrations
+	docker-compose exec django python manage.py makemigrations
 
 showmigrations:
-	docker-compose exec web python manage.py showmigrations
+	docker-compose exec django python manage.py showmigrations
 
 # Django User Management
 createsuperuser:
-	docker-compose exec web python manage.py createsuperuser
+	docker-compose exec django python manage.py createsuperuser
 
 changepassword:
-	docker-compose exec web python manage.py changepassword $(USER)
+	docker-compose exec django python manage.py changepassword $(USER)
 
 # Shell Access
 pyshell:
-	docker-compose exec web python manage.py shell
+	docker-compose exec django python manage.py shell
 
 dbshell:
 	docker-compose exec db psql -U root -d db.postgresql
 
 shell:
-	docker-compose exec web sh
+	docker-compose exec django sh
 
 # Static Files
 collectstatic:
-	docker-compose exec web python manage.py collectstatic --noinput
+	docker-compose exec django python manage.py collectstatic --noinput
 
 # Running Tests
 test:
-	docker-compose exec web python manage.py test core.tests
+	docker-compose exec django python manage.py test core.tests
 
 # Cleanup
 clean:
@@ -62,7 +63,7 @@ resetdb:
 	docker-compose down -v
 	docker-compose up -d db
 	sleep 5  # Give the database time to initialize
-	docker-compose up -d web  # Make sure the web service is started
+	docker-compose up -d django  # Make sure the web service is started
 	sleep 5  # Wait for the web service to fully start
-	docker-compose exec web python manage.py migrate
+	docker-compose exec django python manage.py migrate
 

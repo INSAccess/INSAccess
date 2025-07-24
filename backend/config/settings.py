@@ -65,9 +65,12 @@ TEMPLATES = [
 
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://frontend:3000",
     "http://172.18.26.13:3000", # TEMPORARY USED FOR LOCALHOST TEST
     "http://localhost:3004",
 ]
@@ -80,10 +83,11 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3004",
 ]
 
-
-
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "172.18.26.13"# TEMPORARY USED FOR LOCALHOST TEST
-                 ]
+ALLOWED_HOSTS = [
+    "127.0.0.1", 
+    "localhost", 
+    "172.18.26.13"# TEMPORARY USED FOR LOCALHOST TEST
+]
 
 CORS_URLS_REGEX = r'^/api/.*'
 
@@ -94,9 +98,12 @@ AUTHENTICATION_BACKENDS = [
     # 'uniauth.backends.CASBackend',
 ]
 
-CAS_SERVER_URL = 'http://localhost:3004/cas/' #'https://cas.insa-rouen.fr/cas/'
+CAS_SERVER_URL = os.environ.get('CAS_SERVER_URL', 'http://localhost:3004/cas/') #'https://cas.insa-rouen.fr/cas/'
+CAS_REDIRECT_URL = 'authentification/profile'
 
-CAS_REDIRECT_URL = 'http://localhost:3000/'
+# Only for dev
+CAS_ROOT_PROXIED_AS = None
+CAS_FORCE_CHANGE_USERNAME_CASE = None
 
 #LOGIN_URL = "authentification/login/" 
 LOGIN_URL = "accounts/login/" #for CAS implementation

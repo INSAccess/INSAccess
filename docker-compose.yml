@@ -1,0 +1,85 @@
+services:
+  db:
+    image: docker.io/library/postgres:latest
+    environment:
+      POSTGRES_DB: db.postgresql
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: toto123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+      - CHOKIDAR_USEPOLLING=true
+      - CI=true
+      - NODE_OPTIONS=--max_old_space_size=4096
+    depends_on:
+      django:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  django:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - ./backend/core/logs:/app/logs
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_started
+      cas-server:
+        condition: service_started
+    environment:
+      - DB_HOST=db
+      - DB_NAME=db.postgresql
+      - DB_USER=root
+      - DB_PASSWORD=toto123
+      - DJANGO_SETTINGS_MODULE=config.settings
+      - PYTHONPATH=/app
+      - CAS_SERVER_URL=http://localhost:3004/cas/
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "python", "manage.py", "check"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 2m
+
+  cas-server:
+    image: node:18-alpine
+    working_dir: /app
+    command: sh -c "npm install -g cas-server-mock && npx cas-server-mock --port=3004 --database=./users.json
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=development
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  frontend_node_modules:
