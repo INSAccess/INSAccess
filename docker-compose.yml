@@ -1,3 +1,4 @@
+
 services:
   db:
     image: docker.io/library/postgres:latest
@@ -10,27 +11,16 @@ services:
     networks:
       - app-network
 
-  frontend:
-    build: 
-      context: ./frontend
+  cas-server:
+    build:
+      context: ./cas-server
       dockerfile: Dockerfile
-      target: development
     ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
-      - frontend_node_modules:/app/node_modules
+      - "3004:3004"
     environment:
-      - REACT_APP_API_URL=http://localhost:8000
-      - CHOKIDAR_USEPOLLING=true
-      - CI=true
-      - NODE_OPTIONS=--max_old_space_size=4096
-    depends_on:
-      django:
-        condition: service_healthy
+      - NODE_ENV=development
     networks:
       - app-network
-    restart: unless-stopped
 
   django:
     build:
@@ -65,16 +55,27 @@ services:
       retries: 3
       start_period: 2m
 
-  cas-server:
-    image: node:18-alpine
-    working_dir: /app
-    command: sh -c "npm install -g cas-server-mock && npx cas-server-mock --port=3004 --database=./users.json
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
     ports:
-      - "3004:3004"
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
     environment:
-      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:8000
+      - CHOKIDAR_USEPOLLING=true
+      - CI=true
+      - NODE_OPTIONS=--max_old_space_size=4096
+    depends_on:
+      django:
+        condition: service_healthy
     networks:
       - app-network
+    restart: unless-stopped
 
 networks:
   app-network:
