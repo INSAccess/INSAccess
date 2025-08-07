@@ -7,8 +7,51 @@ from core.models import UserProfile, EnumColorTheme
 from core.utils.fetch_ics import fetch_department
 from core.utils.db_insertor import insert_list_record
 
-from django.shortcuts import redirect
 from django_cas_ng.views import LoginView
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.urls import reverse
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+@require_http_methods(["GET"])
+def cas_callback_debug(request):
+    """Vue pour debugger les requetes CAS"""
+    ticket = request.GET.get('ticket')
+    error = request.GET.get('error')
+    service = request.GET.get('service')
+
+    debug_info = {
+        'ticket': ticket,
+        'error': error,
+        'service': service,
+        'user_authenticated': request.user.is_authenticated,
+        'user': request.user.username if request.user.is_authenticated else None,
+        'full_url': request.build_absolute_uri(),
+        'get_params':dict(request.GET),
+    }
+
+    logger.info(f"Debug CAS Callback : {debug_info}")
+    return JsonResponse(debug_info)
+
+@login_required
+def profile(request):
+    return render(request, "profile.html", {"user": request.username})
+
+@login_required
+@require_http_methods(["POST"])
+def user_logout(request):
+    logout(request)
+    return redirect("login")
+
+def test_insertion(request):
+    records = fetch_department("ITI" ,"3")
+    insert_list_record(records)
+    return render(request, "login.html")
+
+# -------------------------------------------------------------- #
 
 # Used before CAS integration, not needed now
 def register(request):
@@ -62,20 +105,4 @@ def user_login(request):
         else:   
             messages.error(request, "Mauvais mdp ou nom d'utilisateur")
 
-    return render(request, "login.html")
-
-
-def user_logout(request):
-    logout(request)
-    return redirect("login")
-
-
-@login_required
-def profile(request):
-    return render(request, "profile.html", {"user": request.user})
-
-
-def test_insertion(request):
-    records = fetch_department("ITI" ,"3")
-    insert_list_record(records)
     return render(request, "login.html")

@@ -1,11 +1,14 @@
+# cas-server/Dockerfile
 FROM node:20-alpine
-
-RUN npm install -g cas-server-mock
 
 WORKDIR /app
 
-COPY . .
+# Copier les fichiers
+COPY package.json server.js ./
+
+# Installer les dépendances
+RUN npm install
 
 EXPOSE 3004
 
-CMD ["npx", "cas-server-mock", "--port", "3004", "--database", "./users.json"]
+CMD ["npm", "start"]

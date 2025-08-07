@@ -45,15 +45,10 @@ services:
       - DB_PASSWORD=toto123
       - DJANGO_SETTINGS_MODULE=config.settings
       - PYTHONPATH=/app
-      - CAS_SERVER_URL=http://localhost:3004/cas/
+      - CAS_SERVER_URL=http://cas-server:3004/cas/
+      - DOCKER_ENV=true
     networks:
       - app-network
-    healthcheck:
-      test: ["CMD", "python", "manage.py", "check"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 2m
 
   frontend:
     build:
@@ -68,11 +63,8 @@ services:
     environment:
       - REACT_APP_API_URL=http://localhost:8000
       - CHOKIDAR_USEPOLLING=true
-      - CI=true
-      - NODE_OPTIONS=--max_old_space_size=4096
     depends_on:
       django:
-        condition: service_healthy
     networks:
       - app-network
     restart: unless-stopped

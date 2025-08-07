@@ -34,14 +34,15 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'core.utils.middleware_log.RequestLogMiddleware',
+    'core.utils.middleware_cas.CASDebugMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_cas_ng.middleware.CASMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_cas_ng.middleware.CASMiddleware',
 
 ]
 
@@ -70,23 +71,24 @@ CSRF_COOKIE_SAMESITE = 'Lax'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "http://frontend:3000",
-    "http://172.18.26.13:3000", # TEMPORARY USED FOR LOCALHOST TEST
     "http://localhost:3004",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3004",
 ]
 
 CORS_ALLOW_HEADERS = default_headers
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
-    "http://172.18.26.13:3000", # TEMPORARY USED FOR LOCALHOST TEST
     "http://localhost:3004",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3004",
 ]
 
 ALLOWED_HOSTS = [
     "127.0.0.1", 
     "localhost", 
-    "172.18.26.13"# TEMPORARY USED FOR LOCALHOST TEST
+    "0.0.0.0",
 ]
 
 CORS_URLS_REGEX = r'^/api/.*'
@@ -94,20 +96,36 @@ CORS_URLS_REGEX = r'^/api/.*'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'django_cas_ng.backends.CASBackend',
-    'corsheaders.middleware.CorsMiddleware',
     # 'uniauth.backends.CASBackend',
 ]
 
-CAS_SERVER_URL = os.environ.get('CAS_SERVER_URL', 'http://localhost:3004/cas/') #'https://cas.insa-rouen.fr/cas/'
-CAS_REDIRECT_URL = 'authentification/profile'
+# Configuration CAS
+if os.environ.get('CAS_SERVER_URL', 'http://localhost:3004/cas/'):
+    CAS_SERVER_URL = 'http://cas-server:3004/cas/'
+else:
+    CAS_SERVER_URL = 'http://localhost:3004/cas/'
+CAS_SERVER_URL =  #'https://cas.insa-rouen.fr/cas/'
+CAS_VERSION = 3
+
+CAS_LOGOUT_COMPLETELY = True
+CAS_REDIRECT_URL = '/authentification/profile'
+
+LOGIN_REDIRECT_URL = 'http://localhost:3000/'
+LOGOUT_REDIRECT_URL = '/authentification/login'
 
 # Only for dev
 CAS_ROOT_PROXIED_AS = None
 CAS_FORCE_CHANGE_USERNAME_CASE = None
+CAS_IGNORE_REFERER = True
 
-#LOGIN_URL = "authentification/login/" 
-LOGIN_URL = "accounts/login/" #for CAS implementation
+LOGIN_URL = "authentification/login/"
 
+CAS_APPLY_ATTRIBUTES_TO_USER = True
+CAS_RENAME_ATTRIBUTES = {
+    'email':'email',
+    'firstName':'first_name',
+    'lastName':'last_name',
+}
 
 # UNIAUTH_LOGIN_DISPLAY_STANDARD = False
 # UNIAUTH_LOGOUT_CAS_COMPLETELY = True

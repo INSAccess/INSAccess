@@ -1,13 +1,13 @@
-django==4.0
+django==4.2.7
 django-environ
 psycopg2-binary
 tqdm
 pytest
-requests
-django-cors-headers==3.13.0
+requests==2.31.0
+django-cors-headers==4.3.1
 djangorestframework
 django-uniauth
 drf-yasg
 icalendar
 django-ipware
-django-cas-ng==5.0
+django-cas-ng==4.3.0
