@@ -1,4 +1,3 @@
-// cas-server/server.js
 const express = require('express');
 const app = express();
 const PORT = 3004;
@@ -15,11 +14,11 @@ app.use(express.urlencoded({ extended: true }));
 // Page de login
 app.get('/cas/login', (req, res) => {
   const service = req.query.service;
-  
+
   if (!service) {
     return res.status(400).send('Service parameter required');
   }
-  
+
   res.send(`
     <html>
       <body>
@@ -38,12 +37,12 @@ app.get('/cas/login', (req, res) => {
 // Traitement du login
 app.post('/cas/login', (req, res) => {
   const { username, password, service } = req.body;
-  
+
   if (users[username] && users[username].password === password) {
     // Générer un ticket
     const ticket = `ST-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     tickets.set(ticket, { username, service, timestamp: Date.now() });
-    
+
     // Rediriger avec le ticket
     const redirectUrl = `${service}${service.includes('?') ? '&' : '?'}ticket=${ticket}`;
     res.redirect(redirectUrl);
@@ -53,53 +52,53 @@ app.post('/cas/login', (req, res) => {
 });
 
 // Validation du ticket
-app.get('/cas/serviceValidate', (req, res) => {
+app.get(['/cas/serviceValidate', '/cas/p3/serviceValidate'], (req, res) => {
   const { service, ticket } = req.query;
-  
+
   console.log(`Validating ticket: ${ticket} for service: ${service}`);
-  
+
   if (!ticket || !service) {
     return res.status(400).send(`
-      <cas:serviceResponse>
+      <cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
         <cas:authenticationFailure code="INVALID_REQUEST">
           Missing required parameters
         </cas:authenticationFailure>
       </cas:serviceResponse>
     `);
   }
-  
+
   const ticketData = tickets.get(ticket);
-  
+
   if (!ticketData) {
     return res.send(`
-      <cas:serviceResponse>
+      <cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
         <cas:authenticationFailure code="INVALID_TICKET">
           Ticket ${ticket} not recognized
         </cas:authenticationFailure>
       </cas:serviceResponse>
     `);
   }
-  
+
   // Vérifier que le service correspond
   if (ticketData.service !== service) {
     return res.send(`
-      <cas:serviceResponse>
+      <cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
         <cas:authenticationFailure code="INVALID_SERVICE">
           Service mismatch
         </cas:authenticationFailure>
       </cas:serviceResponse>
     `);
   }
-  
+
   // Supprimer le ticket (usage unique)
   tickets.delete(ticket);
-  
+
   const user = users[ticketData.username];
-  
+
   // Réponse de succès
   res.set('Content-Type', 'application/xml');
   res.send(`
-    <cas:serviceResponse>
+    <cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
       <cas:authenticationSuccess>
         <cas:user>${ticketData.username}</cas:user>
         <cas:attributes>

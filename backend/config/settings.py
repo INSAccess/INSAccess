@@ -86,8 +86,8 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 ALLOWED_HOSTS = [
-    "127.0.0.1", 
-    "localhost", 
+    "127.0.0.1",
+    "localhost",
     "0.0.0.0",
 ]
 
@@ -100,12 +100,9 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Configuration CAS
-if os.environ.get('CAS_SERVER_URL', 'http://localhost:3004/cas/'):
-    CAS_SERVER_URL = 'http://cas-server:3004/cas/'
-else:
-    CAS_SERVER_URL = 'http://localhost:3004/cas/'
-#CAS_SERVER_URL = 'https://cas.insa-rouen.fr/cas/'
+CAS_SERVER_URL = 'http://192.168.1.25:3004/cas/'
 CAS_VERSION = 3
+#CAS_SERVER_URL = 'https://cas.insa-rouen.fr/cas/'
 
 CAS_LOGOUT_COMPLETELY = True
 CAS_REDIRECT_URL = '/authentification/profile'

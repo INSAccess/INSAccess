@@ -6,22 +6,6 @@ services:
       POSTGRES_DB: db.postgresql
       POSTGRES_USER: root
       POSTGRES_PASSWORD: toto123
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - app-network
-
-  cas-server:
-    build:
-      context: ./cas-server
-      dockerfile: Dockerfile
-    ports:
-      - "3004:3004"
-    environment:
-      - NODE_ENV=development
-    networks:
-      - app-network
-
   django:
     build:
       context: ./backend
@@ -36,8 +20,6 @@ services:
     depends_on:
       db:
         condition: service_started
-      cas-server:
-        condition: service_started
     environment:
       - DB_HOST=db
       - DB_NAME=db.postgresql
@@ -45,34 +27,20 @@ services:
       - DB_PASSWORD=toto123
       - DJANGO_SETTINGS_MODULE=config.settings
       - PYTHONPATH=/app
-      - CAS_SERVER_URL=http://cas-server:3004/cas/
+      - CAS_SERVER_URL=http://localhost:3004/cas/
       - DOCKER_ENV=true
-    networks:
-      - app-network
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      target: development
     ports:
       - "3000:3000"
     volumes:
       - ./frontend:/app
-      - frontend_node_modules:/app/node_modules
     environment:
       - REACT_APP_API_URL=http://localhost:8000
       - CHOKIDAR_USEPOLLING=true
     depends_on:
       - django
-    networks:
-      - app-network
     restart: unless-stopped
-
-networks:
-  app-network:
-    driver: bridge
-
-volumes:
-  postgres_data:
-  frontend_node_modules:

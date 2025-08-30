@@ -77,7 +77,7 @@ def register(request):
 
         # Create user and log them in
         user = User.objects.create_user(username=username, password=password)
-        
+
         user_profile = UserProfile.objects.create(user = user,color_theme = EnumColorTheme.objects.filter(name="system").first())
         user_profile.save()
         user.save()
@@ -102,7 +102,7 @@ def user_login(request):
         if user is not None:
             login(request, user)
             return redirect("profile")
-        else:   
+        else:
             messages.error(request, "Mauvais mdp ou nom d'utilisateur")
 
     return render(request, "login.html")
