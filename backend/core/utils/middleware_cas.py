@@ -2,18 +2,25 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class CASDebugMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        if 'ticket' in request.GET:
-            logger.info(f"CAS Ticket reçu : {request.GET.get('ticket')}")
-            logger.info(f"Service URL : {request.GET.get('service', 'N/A')}")
-            logger.info(f"Full URL : {request.build_absolute_uri()}")
-
-        if 'error' in request.GET:
-            logger.error(f"Erreur CAS : {request.GET.get('error')}")
+class UserProfileMiddleware(MiddlewareMixin):
+    """
+    Middleware to ensure UserProfile exists for authenticated users
+    """
+    
+    def process_request(self, request):
+        # Only check for authenticated users
+        if request.user.is_authenticated:
+            # Check if user has a profile
+            if not hasattr(request.user, 'userprofile') or not UserProfile.objects.filter(user=request.user).exists():
+                try:
+                    # Create UserProfile if it doesn't exist
+                    default_theme = EnumColorTheme.objects.filter(name="system").first()
+                    UserProfile.objects.get_or_create(
+                        user=request.user,
+                        defaults={'color_theme': default_theme}
+                    )
+                    logger.info(f"Created UserProfile for user: {request.user.username}")
+                except Exception as e:
+                    logger.error(f"Error creating UserProfile for {request.user.username}: {e}")
         
-        response = self.get_response(request)
-        return response
+        return None

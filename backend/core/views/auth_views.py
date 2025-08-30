@@ -38,16 +38,23 @@ def cas_callback_debug(request):
 
 @login_required
 def profile(request):
-    return render(request, "profile.html", {"user": request.user})
+    
+    user, created = User.objects.get_or_create(username=request.user)
+
+    # create user profile if it doesn't exists
+    if not UserProfile.objects.filter(user=user).exists():
+        user_profile = UserProfile.objects.create(user = user,color_theme = EnumColorTheme.objects.filter(name="system").first())
+        user_profile.save()
+
+    return redirect("http://localhost:3000/")
 
 def test_insertion(request):
-    records = fetch_department("ITI" ,"3")
+    records = fetch_department("ITI" ,"4")
     insert_list_record(records)
     return render(request, "login.html")
 
 # -------------------------------------------------------------- #
 
-# Used before CAS integration, not needed now
 def register(request):
     if request.method == 'POST':
         username = request.POST["username"]
