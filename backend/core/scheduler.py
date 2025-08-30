@@ -12,7 +12,7 @@ def start():
         scheduler.add_job(
             update_all_years,
             "interval",
-            minutes =1 ,
+            minutes =15 ,
             id="my_hourly_task",
             replace_existing=True,
         )
