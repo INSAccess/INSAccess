@@ -104,7 +104,7 @@ CAS_VERSION = 3
 #CAS_SERVER_URL = 'https://cas.insa-rouen.fr/cas/'
 
 CAS_LOGOUT_COMPLETELY = True
-CAS_REDIRECT_URL = '/authentification/profile'
+CAS_REDIRECT_URL = '/authentification/finalize'
 
 CAS_CREATE_USER = True
 
