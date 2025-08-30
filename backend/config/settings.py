@@ -99,7 +99,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Configuration CAS
-CAS_SERVER_URL = 'http://192.168.1.18:3004/cas/'
+CAS_SERVER_URL = 'http://192.168.1.25:3004/cas/'
 CAS_VERSION = 3
 #CAS_SERVER_URL = 'https://cas.insa-rouen.fr/cas/'
 
