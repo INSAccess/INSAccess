@@ -45,6 +45,10 @@ def test_insertion(request):
     insert_list_record(records)
     return render(request, "login.html")
 
+def seed_database(request):
+    from core.fixtures.seed_enums import run_seeder
+    run_seeder()
+    return render(request, "login.html")
 # -------------------------------------------------------------- #
 
 # Used before CAS integration, not needed now

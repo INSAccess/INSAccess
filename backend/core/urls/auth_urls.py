@@ -12,4 +12,5 @@ urlpatterns = [
     path("cas-callback/", auth_views.cas_callback_debug, name="cas_debug"),
     path("profile/", auth_views.profile, name="profile"),
     path("temp/", auth_views.test_insertion, name ="temp"),
+    path("seed/", auth_views.seed_database, name ="temp_seeder")
 ]
