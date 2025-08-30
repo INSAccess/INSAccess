@@ -104,7 +104,7 @@ if os.environ.get('CAS_SERVER_URL', 'http://localhost:3004/cas/'):
     CAS_SERVER_URL = 'http://cas-server:3004/cas/'
 else:
     CAS_SERVER_URL = 'http://localhost:3004/cas/'
-CAS_SERVER_URL =  #'https://cas.insa-rouen.fr/cas/'
+#CAS_SERVER_URL = 'https://cas.insa-rouen.fr/cas/'
 CAS_VERSION = 3
 
 CAS_LOGOUT_COMPLETELY = True
