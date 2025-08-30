@@ -34,7 +34,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'core.utils.middleware_log.RequestLogMiddleware',
-    'core.utils.middleware_cas.CASDebugMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -105,10 +104,9 @@ CAS_VERSION = 3
 #CAS_SERVER_URL = 'https://cas.insa-rouen.fr/cas/'
 
 CAS_LOGOUT_COMPLETELY = True
-CAS_REDIRECT_URL = 'http://localhost:3000'
+CAS_REDIRECT_URL = '/authentification/finalize'
 
-LOGIN_REDIRECT_URL = 'http://localhost:3000/'
-LOGOUT_REDIRECT_URL = '/authentification/login'
+CAS_CREATE_USER = True
 
 # Only for dev
 CAS_ROOT_PROXIED_AS = None
