@@ -10,7 +10,7 @@ def load_config():
 
 
 CONFIG = load_config()
-DEPARTMENTS = set(list(map(''.join, itertools.product(CONFIG["department_list"], CONFIG["years_for_department"]))) + 
+DEPARTMENTS = set(list(map(''.join, itertools.product(CONFIG["department_list"], CONFIG["years_for_department"]))) +
                     list(map(''.join, itertools.product(CONFIG["prepa_name"], CONFIG["years_for_prepa"]))))
 
 logger = logging.getLogger(__name__)
@@ -22,11 +22,11 @@ def ics_to_list(url : str) -> list:
     Returns a list of dictionnary of each event
     present in the ics file of the given url
     """
-    
+
     response = requests.get(url, timeout = 5)# in sec
     logger.info(f"reponse trying to get ics : {response.status_code}")
     if response.status_code == 200: #request is successful
-    
+
         ical = Calendar.from_ical(response.content)
         list_of_events = []
         for event in ical.walk("VEVENT"):
@@ -51,11 +51,11 @@ def ics_to_list(url : str) -> list:
 
 def description_parsing(desc : str):
     """parse the given description into 3 subsets :
-    the teachers names, the departments names and 
+    the teachers names, the departments names and
     the td_tags"""
     elements = [e for e in desc.split('\n') if e and not (e.startswith('(') or e.isdigit() or e in CONFIG["misc_item_in_description"])]# remove empty elements and date of submission
     teachers, departments, td_tags = [], [], []
-    
+
     for e in elements:
         if len(e.split()) > 1:
             teachers.append(e)
@@ -63,7 +63,7 @@ def description_parsing(desc : str):
             departments.append(e)
         else:
             td_tags.append(e)
-    
+
     return teachers, departments, td_tags
 
 def fetch_department(department : str, depart_year : str) -> list:
@@ -75,11 +75,11 @@ def fetch_department(department : str, depart_year : str) -> list:
         return ics_to_list(f"{CONFIG['ics_url_prefix']}{get_academic_year()}-{department}{depart_year}")
 
 def get_academic_year():
-    """returns the current academic year 
+    """returns the current academic year
     for instance if the academic years are 2024-2025 then it returns
     2024"""
     current_date = datetime.now()
-    if current_date.month > 8:# if the summer vacations are over
+    if current_date.month > 7:# if the summer vacations are over
         return current_date.year
     return current_date.year -1
 

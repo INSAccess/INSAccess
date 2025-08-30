@@ -15,7 +15,7 @@ def finalize(request):
     user, user_created = User.objects.get_or_create(username=request.user)
 
     # create user profile if it doesn't exists
-    user_profile, profile_created = UserProfile.objects.get_or_create(user = user,color_theme = EnumColorTheme.objects.get_or_create(name="system"))
+    user_profile, profile_created = UserProfile.objects.get_or_create(user = user,color_theme = EnumColorTheme.objects.get_or_create(name="system")[0])
     user_profile.save()
 
     return redirect("http://localhost:3000/")
