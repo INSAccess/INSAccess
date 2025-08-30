@@ -10,12 +10,21 @@ module.exports = {
     },
     users: [
         {
-            username: 'test',
-            password: 'test',
-            attributes: {
-                email: 'test@example.com',
+            username: 'root',
+            password: 'toto',
+	    attributes: {
+                email: 'root@example.com',
                 firstName: 'Test',
                 lastName: 'User'
+            }
+        },
+        {
+            username: 'test',
+            password: 'toto',
+            attributes: {
+                email: 'test@example.com',
+                firstName: 'Toto',
+                lastName: 'Tamer'
             }
         }
     ]

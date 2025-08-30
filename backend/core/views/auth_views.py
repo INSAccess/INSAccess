@@ -38,13 +38,7 @@ def cas_callback_debug(request):
 
 @login_required
 def profile(request):
-    return render(request, "profile.html", {"user": request.username})
-
-@login_required
-@require_http_methods(["POST"])
-def user_logout(request):
-    logout(request)
-    return redirect("login")
+    return render(request, "profile.html", {"user": request.user})
 
 def test_insertion(request):
     records = fetch_department("ITI" ,"3")
@@ -85,24 +79,3 @@ def register(request):
         return redirect("profile")
 
     return render(request, "register.html")
-
-# Used before CAS integration, not needed now
-def user_login(request):
-    if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
-
-        # Check if fields are empty
-        if not username or not password:
-            messages.error(request, "Tous les champs doivent être remplis!")
-            return redirect("login")
-
-        # Authenticate user
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect("profile")
-        else:
-            messages.error(request, "Mauvais mdp ou nom d'utilisateur")
-
-    return render(request, "login.html")

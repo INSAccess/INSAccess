@@ -79,7 +79,7 @@ export const DataProvider = (props) => {
       <DataContext.Provider value={{dataAsso, dataAgenda, day, forceUpdate}}>
           {props.children}
       </DataContext.Provider>
-      {errorFlag && <Alert severity="error" variant="filled" onClose={() => {rasieErrorFlag(false)}}>{statusMessage}</Alert>}
+      {errorFlag && <Alert severity="error" variant="filled" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}
     </>
   );
 }

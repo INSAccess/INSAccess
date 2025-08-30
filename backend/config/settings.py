@@ -100,12 +100,12 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Configuration CAS
-CAS_SERVER_URL = 'http://192.168.1.25:3004/cas/'
+CAS_SERVER_URL = 'http://192.168.1.18:3004/cas/'
 CAS_VERSION = 3
 #CAS_SERVER_URL = 'https://cas.insa-rouen.fr/cas/'
 
 CAS_LOGOUT_COMPLETELY = True
-CAS_REDIRECT_URL = '/authentification/profile'
+CAS_REDIRECT_URL = 'http://localhost:3000'
 
 LOGIN_REDIRECT_URL = 'http://localhost:3000/'
 LOGOUT_REDIRECT_URL = '/authentification/login'
@@ -123,10 +123,6 @@ CAS_RENAME_ATTRIBUTES = {
     'firstName':'first_name',
     'lastName':'last_name',
 }
-
-# UNIAUTH_LOGIN_DISPLAY_STANDARD = False
-# UNIAUTH_LOGOUT_CAS_COMPLETELY = True
-
 
 WSGI_APPLICATION = 'config.wsgi.application'
 

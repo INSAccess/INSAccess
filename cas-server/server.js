@@ -6,7 +6,8 @@ const PORT = 3004;
 const tickets = new Map();
 const users = {
   'test': { password: 'test', email: 'test@test.com', firstName: 'Test', lastName: 'User' },
-  'admin': { password: 'admin', email: 'admin@test.com', firstName: 'Admin', lastName: 'User' }
+  'admin': { password: 'admin', email: 'admin@test.com', firstName: 'Admin', lastName: 'User' },
+  'root': { password: 'toto1234', email: 'root@toto.com', firstName: 'root', lastName: 'root' }
 };
 
 app.use(express.urlencoded({ extended: true }));
