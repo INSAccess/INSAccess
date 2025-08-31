@@ -99,12 +99,13 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Configuration CAS
-CAS_SERVER_URL = 'http://192.168.1.25:3004/cas/'
+CAS_SERVER_URL = 'http://192.168.1.11:3004/cas/'
 CAS_VERSION = 3
 #CAS_SERVER_URL = 'https://cas.insa-rouen.fr/cas/'
 
 CAS_LOGOUT_COMPLETELY = True
 CAS_REDIRECT_URL = '/authentification/finalize'
+LOGOUT_REDIRECT_URL = '/authentification/login'
 
 CAS_CREATE_USER = True
 

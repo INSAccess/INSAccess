@@ -10,12 +10,10 @@ import { ErrorTemplate, Loading } from './Templates.jsx'
 const ProtectedRoute = ({ children }) => {
     const { token, loading, error } = useAuth();
 
-    const urlLogin = API_LOGIN
-
     if (loading) {
         return <Loading />
     } else if (!token){
-        window.location.replace(urlLogin)
+        window.location.replace(API_LOGIN)
     }
 
     if (token){

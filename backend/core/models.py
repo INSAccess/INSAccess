@@ -4,11 +4,37 @@ import uuid
 import hashlib
 from django.utils import timezone
 
+class EnumType(models.Model):
+    """Possible values for the type in association"""
+    name = models.CharField(max_length=255, primary_key=True)
+
+    def __str__(self):
+        return self.name
+
+class EnumSector(models.Model):
+    """Possible values for the sector (e.g., sport, music, etc.)"""
+    name = models.CharField(max_length=255, primary_key=True)
+
+    def __str__(self):
+        return self.name
+
+class EnumColorTheme(models.Model):
+    """Possible values for the color theme of the website"""
+    name = models.CharField(max_length= 100, primary_key=True)
+
+    @classmethod
+    def get_default_theme(cls):
+        theme, created = cls.objects.get_or_create(name='system')
+        return theme.pk
+
+    def __str__(self):
+        return self.name
+
 class UserProfile(models.Model):
     """User definition"""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     link_td = models.ManyToManyField("GroupTD", through='UserLinkTD', related_name='users')
-    color_theme = models.ForeignKey('EnumColorTheme', on_delete = models.SET_NULL, null=True)
+    color_theme = models.ForeignKey('EnumColorTheme', default=EnumColorTheme.get_default_theme, on_delete = models.SET_NULL, null=True)
     ics_uid = models.CharField(
         max_length=64,
         unique=True,
@@ -99,27 +125,6 @@ class UserColoredEvent(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.title} - {self.color}"
-
-class EnumType(models.Model):
-    """Possible values for the type in association"""
-    name = models.CharField(max_length=255, primary_key=True)
-
-    def __str__(self):
-        return self.name
-
-class EnumSector(models.Model):
-    """Possible values for the sector (e.g., sport, music, etc.)"""
-    name = models.CharField(max_length=255, primary_key=True)
-
-    def __str__(self):
-        return self.name
-
-class EnumColorTheme(models.Model):
-    """Possible values for the color theme of the website"""
-    name = models.CharField(max_length= 100, primary_key=True)
-
-    def __str__(self):
-        return self.name
 
 class GroupTD(models.Model):
     """GroupTD definition"""

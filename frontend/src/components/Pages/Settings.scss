@@ -61,17 +61,23 @@
 //-----------------------------------------------------------//
 
 .margin2 {
-  margin:2%;
+  margin: 2%;
 }
 
 .selectContainer {
-  display:grid;
+  display: grid;
   grid-template-columns: 1fr 1fr;
 }
 
 .selectContainer > .margin2 > .select {
-  margin-left:6%;
-  margin-top:4%;
+  margin-left: 6%;
+  margin-top: 4%;
+}
+
+.logout {
+  position: absolute;
+  bottom: 4%;
+  right: 4%;
 }
 
 //-----------------------------------------------------------//
