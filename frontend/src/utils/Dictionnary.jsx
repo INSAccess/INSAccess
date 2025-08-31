@@ -55,6 +55,7 @@ const resources = {
       "ThemeDD":"Theme : ",
       "LanguageChange":"Language",
       "LanguageDD":"Language : ",
+      "Logout":"Log out",
       // Event
       "Close":"Close",
       "StartHour":"Start hour : ",
@@ -122,6 +123,7 @@ const resources = {
       "ThemeDD":"Thème : ",
       "LanguageChange":"Langue",
       "LanguageDD":"Langue : ",
+      "Logout":"Se déconnecter",
       // Event
       "Close":"Fermer",
       "StartHour":"Heure de début : ",

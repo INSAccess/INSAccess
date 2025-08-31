@@ -1,7 +1,7 @@
 import TDSelection from '../TDSelection.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
 import { useEffect, useState, useRef } from 'react';
-import { API_URL, minWidth, LANGUAGES } from '../../utils/Constants.jsx'
+import { API_URL, API_LOGOUT, minWidth, LANGUAGES } from '../../utils/Constants.jsx'
 import { Loading } from '../Templates.jsx'
 import EventCreator from '../EventCreator.jsx';
 import Button from 'react-bootstrap/Button';
@@ -119,6 +119,10 @@ const Settings = () => {
         )
     }
 
+    const handleLogout = () => {
+        window.location.replace(API_LOGOUT)
+    }
+
     const handleCopy = async () => {
         try {
           await navigator.clipboard.writeText(icsLink);
@@ -198,6 +202,11 @@ const Settings = () => {
                         <h4>{t('LanguageChange')}</h4>
                         <DropDownLng />
                     </div>
+                </div>
+                <div class="logout">
+                    <button className="btn btn-primary" onClick={handleLogout}>
+                        {t('Logout')}
+                    </button>
                 </div>
             </>
         )
