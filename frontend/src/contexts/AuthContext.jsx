@@ -13,7 +13,6 @@ export const AuthProvider = ({ children }) => {
         const loadData = async () => {
           const result = await RandomUtils.fetchData(API_AUTH);
           if (result.data){
-            console.log(result.data)
             setToken(result.data);
           }
           setError(result.error);

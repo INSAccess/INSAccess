@@ -48,16 +48,13 @@ class RandomUtils{
       mode:'cors',
       credentials:'include'
     }
-    try {
-      const response = await fetch(dataPath, initConfig);
-      if (!response.ok) {
-        throw new Error("Erreur lors du fetch");
-      }
-      const json = await response.json();
-      return { data: json, error: null };
-    } catch (error) {
-      return { data: null, error: error.message };
+    const response = await fetch(dataPath, initConfig);
+    const json = await response.json();
+
+    if (!response.ok){
+      return { data: null, error: json.error};
     }
+    return { data: json, error: null};
   };
   
   /**
