@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
+import hashlib
 from django.utils import timezone
 
 class UserProfile(models.Model):
@@ -8,6 +9,20 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     link_td = models.ManyToManyField("GroupTD", through='UserLinkTD', related_name='users')
     color_theme = models.ForeignKey('EnumColorTheme', on_delete = models.SET_NULL, null=True)
+    ics_uid = models.CharField(
+        max_length=64,
+        unique=True,
+        editable=False,
+        default="",
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.ics_uid:
+            # Generate a hash-based UID (e.g. using uuid4 + user id)
+            raw_value = f"{uuid.uuid4()}-{self.user_id}".encode("utf-8")
+            self.ics_uid = hashlib.sha256(raw_value).hexdigest()
+        super().save(*args, **kwargs)
+
 
     def __str__(self):
         return str(self.user)
@@ -26,7 +41,7 @@ class Event(models.Model):
 
     class Meta:
         abstract = True
-        
+
     def save(self, *args, **kwargs):
         if not self.uid:
             self.uid = str(uuid.uuid4())
@@ -36,7 +51,7 @@ class Event(models.Model):
         self.time_last_modified = now
         if not self.sequence:
             self.sequence = 0;
-        
+
         super().save(*args, **kwargs)
 
 class InsaClass(Event):
@@ -150,7 +165,7 @@ class ClassLinkTD(models.Model):
 
     def __str__(self):
         return f"Class: {self.insa_class} - TD: {self.td}"
-    
+
 
 
 class ClassLinkRoom(models.Model):
@@ -188,5 +203,5 @@ class UserLinkTD(models.Model):
 
     def __str__(self):
         return f"User: {self.user} - TD: {self.name_td}"
-    
+
 
