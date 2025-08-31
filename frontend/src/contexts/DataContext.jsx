@@ -12,8 +12,6 @@ export const DataProvider = (props) => {
   const [dataAsso, setDataAsso] = useState([])
   const [dataAgenda, setDataAgenda] = useState([])
   const [loading, setLoading] = useState(false)
-  const [errorAsso, setErrorAsso] = useState(null)
-  const [errorAgenda, setErrorAgenda] = useState(null)
   const [shouldUpdate, setUpdate] = useState(true)
   const [errorFlag, raiseErrorFlag] = useState(false)
   const [statusMessage, setStatusMessage] = useState("")
@@ -39,35 +37,30 @@ export const DataProvider = (props) => {
         if (!shouldUpdate || props.page != "home") return;
         setLoading(true);
 
-        try {
-          const resultAsso = await RandomUtils.fetchData(PATH_ASSO);
-          const resultAgenda = await RandomUtils.fetchData(PATH_CALENDAR + day);
-          const resultTheme = await RandomUtils.fetchData(API_URL + "/api/get_user_theme");
-          document.getElementById("root").setAttribute("data-theme",resultTheme.data);
-          setDataAsso(resultAsso.data || []);
-          setDataAgenda(resultAgenda.data || []);
-          setErrorAsso(resultAsso.error);
-          setErrorAgenda(resultAgenda.error);
-        } catch (error) {
-          setStatusMessage("Echec du chargement des données")
+        const resultAsso = await RandomUtils.fetchData(PATH_ASSO);
+        const resultAgenda = await RandomUtils.fetchData(PATH_CALENDAR + day);
+        const resultTheme = await RandomUtils.fetchData(API_URL + "/api/get_user_theme");
+        document.getElementById("root").setAttribute("data-theme",resultTheme.data);
+        setDataAsso(resultAsso.data || []);
+        setDataAgenda(resultAgenda.data || []);
+
+        if (resultAsso.error){
+          setStatusMessage(resultAsso.error)
           raiseErrorFlag(true)
-        } finally {
-          setLoading(false);
-          setUpdate(false);
+        } else if (resultAgenda.error){
+          setStatusMessage(resultAgenda.error)
+          raiseErrorFlag(true)
+        } else if (resultTheme.error){
+          setStatusMessage(resultTheme.error)
+          raiseErrorFlag(true)
         }
+
+        setLoading(false);
+        setUpdate(false);
       };
   
       loadData();
 
-      if (errorAgenda){
-        setStatusMessage("Echec du chargement des cours")
-        raiseErrorFlag(true)
-      }
-    
-      if (errorAsso){
-        setStatusMessage("Echec du chargement des événements")
-        raiseErrorFlag(true)
-      }
     }, [shouldUpdate, day, props.page]);
   
   if (loading && (dataAsso.length == 0 || dataAgenda.length == 0)) {

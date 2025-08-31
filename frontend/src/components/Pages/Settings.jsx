@@ -177,6 +177,13 @@ const Settings = () => {
         return (
             <>
                 <div className="margin2">
+                    <ThemeSwitch id="theme"/>
+                </div>
+                <div className="margin2">
+                    <DropDownLng id="lng"/>
+                    <hr/>
+                </div>
+                <div className="margin2">
                     <h4>{t('ICSLink')}</h4>
                     <p>{t('ICSText')}</p>
                 </div>
@@ -193,17 +200,7 @@ const Settings = () => {
                             {t('ICSCopy')}
                     </button>
                 </div>
-                <div className="selectContainer">
-                    <div className="margin2">
-                        <h4>{t('ThemeChange')}</h4>
-                        <ThemeSwitch />
-                    </div>
-                    <div className="margin2">
-                        <h4>{t('LanguageChange')}</h4>
-                        <DropDownLng />
-                    </div>
-                </div>
-                <div class="logout">
+                <div className="margin2">
                     <button className="btn btn-primary" onClick={handleLogout}>
                         {t('Logout')}
                     </button>
