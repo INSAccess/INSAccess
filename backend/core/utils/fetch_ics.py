@@ -25,7 +25,6 @@ def ics_to_list(url: str) -> list:
     """
     try:
         response = requests.get(url, timeout=5)
-        logger.info(f"Response trying to get ICS: {response.status_code}")
 
         if response.status_code != 200:
             logger.warning(f"Failed to fetch ICS from {url} (status code {response.status_code})")

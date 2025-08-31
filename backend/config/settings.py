@@ -63,31 +63,32 @@ TEMPLATES = [
     },
 ]
 
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = True #AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa
 CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "http://localhost:3004",
     "http://127.0.0.1:3000",
-    "http://127.0.0.1:3004",
+    "http://192.168.1.25",
+    "http://192.168.1.25:8000"
 ]
 
 CORS_ALLOW_HEADERS = default_headers
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
-    "http://localhost:3004",
     "http://127.0.0.1:3000",
-    "http://127.0.0.1:3004",
+    "http://192.168.1.25",
+    "http://192.168.1.25:8000"
 ]
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     "0.0.0.0",
+    "192.168.1.25"
 ]
 
 CORS_URLS_REGEX = r'^/api/.*'

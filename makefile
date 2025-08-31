@@ -7,7 +7,11 @@ install:
 
 # Start and Stop Services
 up:
-	docker-compose up
+	docker-compose -f docker-compose.dev.yml up
+
+build:
+	docker build -t insaccess-backend:latest ./backend
+	docker build -t insaccess-frontend:latest ./frontend
 
 down:
 	docker-compose down

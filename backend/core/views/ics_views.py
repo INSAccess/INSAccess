@@ -1,34 +1,29 @@
 from icalendar import Calendar, Event
 from django.contrib.auth.models import User
+from core.models import UserProfile
 from django.http import HttpResponse, JsonResponse
-from django.core import signing
 from core.models import InsaClass
 
 import logging
 logger = logging.getLogger(__name__)
 
 
-def generate_ics(request, encrypted_id):
-    """The api route for obtaining the ics of the 
-    associated user of the given id
-    
+def generate_ics(request, ics_uid):
+    """The api route for obtaining the ics of the
+    associated user of the given ics uid
+
     Keyword arguments:
-    user_id -- the id of the user
+    ics_uid -- the ics uid of the user
     Return: a ics file with all the event of the user
     """
     try:
-        user_id = signing.loads(encrypted_id)
-        user = User.objects.get(id=user_id)
-    except signing.BadSignature:
+        userprofile = UserProfile.objects.get(ics_uid=ics_uid)
+    except UserProfile.DoesNotExist:
         response = JsonResponse({'error': 'Invalid token'}, status=400)
-        logger.error("Invalid token provided for ICS generation", extra={"request": request, "status_code": response.status_code})
-        return response
-    except User.DoesNotExist:
-        response = JsonResponse({'error': 'User not found'}, status=404)
         logger.error("User not found for ICS generation", extra={"request": request, "status_code": response.status_code})
         return response
 
-    user_tds = user.userprofile.link_td.all()
+    user_tds = userprofile.link_td.all()
     classes = InsaClass.objects.filter(link_td__in=user_tds).distinct()
 
     cal = Calendar()
@@ -44,17 +39,17 @@ def generate_ics(request, encrypted_id):
         e.add("dtstart", event.start_hour)
         e.add("dtend", event.end_hour)
         e.add("summary", event.desc)
-        
+
         rooms = [room.name for room in event.link_room.all()]
         e.add("location", ",".join(rooms))
-        
+
         td_tags = [td.name for td in event.link_td.all()]
         departments = [depart.name for depart in event.link_depart.all()]
         teachers = [teacher.name for teacher in event.link_teacher.all()]
         final_description = td_tags + teachers + departments
         nl = "\n"
         e.add("description", f"{nl}{nl}{nl.join(final_description)}{nl}")
-        
+
         e.add('uid', event.uid)
         e.add("created", event.time_created)
         e.add("last-modified", event.time_last_modified)

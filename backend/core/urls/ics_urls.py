@@ -3,6 +3,6 @@ from core.views.ics_views import generate_ics
 
 
 urlpatterns = [
-    path('<encrypted_id>/', generate_ics, name='generate_ics'),
+    path('<ics_uid>/', generate_ics, name='generate_ics'),
 ]
 

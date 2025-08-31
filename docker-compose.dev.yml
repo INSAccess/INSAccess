@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: db.postgresql
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: toto123
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  django:
+    build:
+      context: ./backend
+      dockerfile: ./backend/dev.Dockerfile
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - ./backend/core/logs:/app/logs
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_started
+    environment:
+      - DB_HOST=db
+      - DB_NAME=db.postgresql
+      - DB_USER=root
+      - DB_PASSWORD=toto123
+      - DJANGO_SETTINGS_MODULE=config.settings
+      - PYTHONPATH=/app
+      - CAS_SERVER_URL=http://localhost:3004/cas/
+      - DOCKER_ENV=true
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ./frontend/dev.Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - django
+    restart: unless-stopped
+
+volumes:
+  db_data:
