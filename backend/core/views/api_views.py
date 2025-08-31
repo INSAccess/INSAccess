@@ -3,7 +3,6 @@ from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from django.core import signing
 
 from core.serializers import InsaClassSerializer, InsaEvenementSerializer, \
     UserColoredEventSerializer, AssociationColoredEventSerializer
@@ -163,7 +162,7 @@ class GetYearAPIView(APIView):
 
 
 class GetTdsAPIView(APIView):
-    """Returns the Json of the request user's td and the department td's 
+    """Returns the Json of the request user's td and the department td's
         (or all of them if no department is found)
 
     Args:
@@ -185,7 +184,7 @@ class GetTdsAPIView(APIView):
         Returns:
         response: the serialized data
         """
-        user_tds = request.user.userprofile.link_td.all() 
+        user_tds = request.user.userprofile.link_td.all()
         serialized_user_tds= [td.name for td in user_tds]
 
         department_obj = Department.objects.filter(name = department).first()
@@ -203,7 +202,7 @@ class GetTdsAPIView(APIView):
         serialized_tds= [td.name for td in department_tds]
         department_tds = [tds for tds in serialized_tds if tds.startswith(department)]
         other_tds = [tds for tds in serialized_tds if not tds.startswith(department)]
-        
+
         department_tds.sort()
         other_tds.sort()
         response = Response({"user_tds" : serialized_user_tds, "department_tds" : department_tds, "other_tds":other_tds})
@@ -254,7 +253,7 @@ class PostTdsAPIView(APIView):
 
 class GetEvenementsAPIView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def get(self,request):
         evenements = InsaEvenement.objects.distinct()
         serializer = InsaEvenementSerializer(evenements, context={'request': request}, many=True)
@@ -314,12 +313,12 @@ class GetEventsAPIView(APIView):
 
 
 class GetIcsUrlAPIView(APIView):
-    """Simple api route for returning the associated ics url of the user 
+    """Simple api route for returning the associated ics url of the user
     for calendars
     """
     def get(self, request):
         """"""
-        response = Response(f"{request.get_host()}/ics/{signing.dumps(request.user.id)}")
+        response = Response(f"{request.get_host()}/ics/{request.user.userprofile.ics_uid}")
         logger.info("Returned ICS URL for user", extra={"request": request, "status_code": response.status_code})
         return response
 
@@ -327,18 +326,18 @@ class GetIcsUrlAPIView(APIView):
 class GetUserThemeAPIView(APIView):
     """return the user associated theme"""
     permission_classes = [IsAuthenticated]
-    
+
     def get(self,request):
         """"""
         response = Response(request.user.userprofile.color_theme.name)
         logger.info("Returned user color theme", extra={"request": request, "status_code": response.status_code})
         return response
 
-    
+
 class PostUserThemeAPIView(APIView):
     """change the user associated theme"""
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request):
         """"""
         theme_name = request.data
@@ -358,7 +357,7 @@ class PostUserThemeAPIView(APIView):
 class GetEnumThemeAPIView(APIView):
     """return the themes"""
     permission_classes = [IsAuthenticated]
-    
+
     def get(self,request):
         """"""
         themes = [theme.name for theme in EnumColorTheme.objects.all()]
@@ -395,7 +394,7 @@ class PostUserColor(APIView):
             return response
 
 
-        
+
 
 class PostInsaEvenement(APIView):
     """post route for creating evenement"""
