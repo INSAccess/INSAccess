@@ -112,8 +112,6 @@ let skipDays = (nbDays == 1) ? 1 : 7;
     currentDay = currentDay.next(1);
   }
 
-
-
   return (
     <div className="calendar" ref={calendarRef}>
       <button type="button" className="arrow-left" onClick={() => {handleDay("prev", skipDays)}}></button>
