@@ -9,6 +9,7 @@ import DropDownCustom from '../DropDownCustom.jsx'
 import './Settings.scss'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useConfig } from '../../contexts/ConfigContext.jsx'
+import { useData } from '../../contexts/DataContext.jsx'
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -20,22 +21,22 @@ const Settings = () => {
 
     const CONFIG = useConfig()
     const departementNames = CONFIG ? CONFIG["departementNames"] : ["STPI"]
-    const departementYears = CONFIG ? CONFIG["departementYears"] : {"STPI":[1]}  
+    const departementYears = CONFIG ? CONFIG["departementYears"] : {"STPI":[1]}
 
-    const [userTds, setUserTD] = useState(null);
-    const [departementTds, setDepartTD] = useState(null);
-    const [otherTds, setOtherTD] = useState(null);
+    const BUNDLE = useData()
+    let tds = BUNDLE.tds
+    let icsLink = BUNDLE.icsLink
+    let isAssos = BUNDLE.isAssos
+    let allThemes = BUNDLE.allThemes
+    let userTheme = BUNDLE.userTheme
+
     const [view, setView] = useState("TDs");
+    
+    const copyButtonRef = useRef(null);
+    const [language, setLanguage] = useState("fr")
+    const [currentTheme, setTheme] = useState(userTheme)
     const [departement, setDepartement] = useState(departementNames[0])
     const [year, setYear] = useState(departementYears[departement][0])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
-    const copyButtonRef = useRef(null);
-    const [icsLink, setIcsLink] = useState("Error when loading ics");
-    const [isAssos, setIsAssos] = useState(false);
-    const [currentTheme, setTheme] = useState("")
-    const [allThemes, setAllThemes] = useState(null)
-    const [language, setLanguage] = useState("fr")
 
     const { t, i18n } = useTranslation();
 
@@ -45,53 +46,10 @@ const Settings = () => {
     };
 
     useEffect(() => {
-        const loadData = async () => {
-          const result = await RandomUtils.fetchData(API_URL+"/api/get_tds/"+departement+year+"?format=json");
-          if (result.data){
-            setUserTD(result.data.user_tds);
-            setDepartTD(result.data.department_tds);
-            setOtherTD(result.data.other_tds);
-          }
-
-          const resultIcs = await RandomUtils.fetchData(API_URL+"/api/get_ics_url");
-          if (resultIcs.data){
-              setIcsLink(resultIcs.data);
-          }
-
-          const result_isAssos = await RandomUtils.fetchData(API_URL+"/api/is_association");
-          if (result_isAssos.data){
-            setIsAssos(result_isAssos.data);
-          }
-
-          const resultThemes = await RandomUtils.fetchData(API_URL+"/api/get_themes")
-          if (resultThemes.data){
-            setAllThemes(resultThemes.data)
-          }
-
-          const resultUserTheme = await RandomUtils.fetchData(API_URL+"/api/get_user_theme")
-          if (resultUserTheme.data){
-            setTheme(resultUserTheme.data)
-          }
-
-          setError(result.error);
-          setLoading(false);
-        };
-
-
-        if (error){
-            console.error("Erreur lors du fetch des TDs")
-            setUserTD([])
-            setDepartTD([])
-            setOtherTD([])
-        }
-
-    
-        loadData();
-
         if (window.bootstrap && copyButtonRef.current) { //used for the copy to clipboard feature
             new window.bootstrap.Tooltip(copyButtonRef.current);
         }
-    }, [departement, year]);
+    }, []);
 
 
     // Switch between dark, light or system theme 
@@ -218,7 +176,7 @@ const Settings = () => {
                         <DropDownDepart />
                         <DropDownYear />
                     </div>
-                    {departementTds && otherTds && userTds && <TDSelection departementTDs={departementTds} otherTDs={otherTds} userTDs={userTds}/>}
+                    {tds[departement+year] && <TDSelection departementTDs={tds[departement+year]["department_tds"]} otherTDs={tds[departement+year]["other_tds"]} userTDs={tds[departement+year]["user_tds"]}/>}
                 </>
             );
             case "create" : return (<EventCreator/>);
@@ -227,10 +185,6 @@ const Settings = () => {
     }
 
     let dimensions = RandomUtils.useWindowDimensions()
-
-    if (loading){
-        return <Loading />
-    }
 
     return (
         <div className="settings">
