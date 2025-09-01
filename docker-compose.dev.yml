@@ -11,7 +11,7 @@ services:
   django:
     build:
       context: ./backend
-      dockerfile: ./backend/dev.Dockerfile
+      dockerfile: dev.Dockerfile
     command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
     working_dir: /app
     volumes:
@@ -35,7 +35,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: ./frontend/dev.Dockerfile
+      dockerfile: dev.Dockerfile
     ports:
       - "3000:3000"
     volumes:

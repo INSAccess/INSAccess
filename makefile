@@ -22,6 +22,12 @@ restart:
 logs:
 	docker-compose logs -f django
 
+ps:
+	docker-compose ps
+
+ps_dev:
+	docker-compose -f docker-compose.dev.yml ps
+
 # Database Migrations
 migrate:
 	docker-compose exec django python manage.py migrate
@@ -31,6 +37,15 @@ makemigrations:
 
 showmigrations:
 	docker-compose exec django python manage.py showmigrations
+
+migrate_dev:
+	docker-compose -f docker-compose.dev.yml exec django python manage.py migrate
+
+makemigrations_dev:
+	docker-compose -f docker-compose.dev.yml exec django python manage.py makemigrations
+
+showmigrations_dev:
+	docker-compose -f docker-compose.dev.yml exec django python manage.py showmigrations
 
 # Django User Management
 createsuperuser:
