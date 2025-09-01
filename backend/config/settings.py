@@ -12,7 +12,7 @@ environ.Env.read_env()
 SECRET_KEY = 'django-insecure-n%of#5dk!t(((--f9-48qqi!u6ooo6(zv&hvu_c&3hk4lbo*1&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Application definition
 
@@ -63,7 +63,7 @@ TEMPLATES = [
     },
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True #AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
@@ -71,8 +71,11 @@ CSRF_COOKIE_SAMESITE = 'Lax'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "http://192.168.1.25",
-    "http://192.168.1.25:8000"
+    "http://172.18.26.13",
+    "http://172.18.26.13:8000",
+    "http://172.18.26.13:3000",
+    "http://172.18.26.13:80",
+    "http://172.18.26.13:3004"
 ]
 
 CORS_ALLOW_HEADERS = default_headers
@@ -80,15 +83,16 @@ CORS_ALLOW_HEADERS = default_headers
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "http://192.168.1.25",
-    "http://192.168.1.25:8000"
+    "http://172.18.26.13",
+    "http://172.18.26.13:8000",
+    "http://172.18.26.13:3000",
+    "http://172.18.26.13:80",
+    "http://172.18.26.13:3004"
 ]
 
 ALLOWED_HOSTS = [
-    "127.0.0.1",
     "localhost",
-    "0.0.0.0",
-    "192.168.1.25"
+    "172.18.26.13"
 ]
 
 CORS_URLS_REGEX = r'^/api/.*'
@@ -100,7 +104,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Configuration CAS
-CAS_SERVER_URL = 'http://192.168.1.11:3004/cas/'
+CAS_SERVER_URL = 'http://172.18.26.13:3004/cas/'
 CAS_VERSION = 3
 #CAS_SERVER_URL = 'https://cas.insa-rouen.fr/cas/'
 

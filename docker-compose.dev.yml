@@ -29,7 +29,7 @@ services:
       - DB_PASSWORD=toto123
       - DJANGO_SETTINGS_MODULE=config.settings
       - PYTHONPATH=/app
-      - CAS_SERVER_URL=http://localhost:3004/cas/
+      - CAS_SERVER_URL=toto
       - DOCKER_ENV=true
 
   frontend:
@@ -41,7 +41,7 @@ services:
     volumes:
       - ./frontend:/app
     environment:
-      - REACT_APP_API_URL=http://localhost:8000
+      - REACT_APP_API_URL=http://172.18.26.13:8000
       - CHOKIDAR_USEPOLLING=true
     depends_on:
       - django

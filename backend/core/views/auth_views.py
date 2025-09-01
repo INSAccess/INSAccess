@@ -18,9 +18,9 @@ def get_frontend_url():
     Prod: <your-ip>:80
     """
     if not settings.DEBUG:  # production
-        return "http://192.168.1.25/"
+        return "http://172.18.26.13/"
     else:
-        return "http://localhost:3000/"
+        return "http://172.18.26.13:3000/"
 
 
 @login_required

@@ -26,7 +26,7 @@ services:
   frontend:
     image: insaccess-frontend:latest
     environment:
-      - REACT_APP_API_URL="http://192.168.1.25:8000"
+      - REACT_APP_API_URL="http://172.18.26.13:8000"
     depends_on:
       - backend
     ports:
