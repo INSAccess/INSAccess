@@ -164,7 +164,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -176,54 +177,44 @@ LOG_DIR = os.path.join(BASE_DIR, 'core', 'logs')
 os.makedirs(LOG_DIR, exist_ok=True)
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
+    "version": 1,
+    "disable_existing_loggers": False,
 
-    'filters': {
-        'request_filter': {
-            '()': RequestFilter,
+    "filters": {
+        "request_filter": {
+            "()": RequestFilter,
         },
     },
 
-    'formatters': {
-        'with_request': {
-            'format': (
-                '[%(userip)s] - [%(user)s] - [%(sessionid)s] - '
-                '[%(asctime)s] - [%(method)s %(path)s] - '
-                '[%(status_code)s] - [%(message)s] - '
-                '[%(base_url)s|%(referer)s] - '
-                '[%(user_agent)s]'
+    "formatters": {
+        "with_request": {
+            "format": (
+                "[%(userip)s] - [%(user)s] - [%(sessionid)s] - "
+                "[%(asctime)s] - [%(method)s %(path)s %(status_code)s] - "
+                "[%(message)s] - "
+                "[%(user_agent)s]"
             ),
-            'style': '%',
+            "style": "%",
         },
     },
 
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'level': DJANGO_LOG_LEVEL,
-            'formatter': 'with_request',
-            'filters': ['request_filter'],
-        },
-        'file': {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'level': DJANGO_LOG_LEVEL,
-            'formatter': 'with_request',
-            'filters': ['request_filter'],
-            'filename': BASE_DIR / 'logs' / 'django.log',
-            'maxBytes': 10_485_760,
-            'backupCount': 5,
-            'encoding': 'utf-8',
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": DJANGO_LOG_LEVEL,
+            "formatter": "with_request",
+            "filters": ["request_filter"],
         },
     },
 
-    'loggers': {
-        '': {
-            'handlers': ['console', 'file'],
-            'level': DJANGO_LOG_LEVEL,
+    "loggers": {
+        "": {
+            "handlers": ["console"],  # only console now
+            "level": DJANGO_LOG_LEVEL,
         },
     },
 }
+
 
 
 LOCAL_SETTINGS = os.path.join(BASE_DIR,'config/', "local_settings.py")
