@@ -30,8 +30,6 @@ const Settings = () => {
     let allThemes = BUNDLE.allThemes
     let userTheme = BUNDLE.userTheme
 
-    console.log(BUNDLE)
-
     const [view, setView] = useState("TDs");
     
     const copyButtonRef = useRef(null);
