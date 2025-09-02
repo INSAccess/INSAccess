@@ -107,7 +107,7 @@ const AllEvents = ({asso}) => {
     return () => {
       if (calendarRef.current) {
         calendarRef.current.removeEventListener("touchstart", handleTouchStart);
-        calendarRef.current.removeEventListener("touchend", handleTouchend);
+        calendarRef.current.removeEventListener("touchend", handleTouchEnd);
       }
     };
   }, [nbDays]);
