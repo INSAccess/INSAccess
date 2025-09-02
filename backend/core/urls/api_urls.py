@@ -22,5 +22,5 @@ urlpatterns = [
     path('get_config', GetConfigFileAPIView.as_view(), name='get_config'),
     path('post_insa_evenement', PostInsaEvenement.as_view(), name='post_insa_evenement'),
     path('post_user_color', PostUserColor.as_view(), name='post_user_color'),
-    
+
 ]

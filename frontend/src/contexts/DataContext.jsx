@@ -84,49 +84,29 @@ export const DataProvider = (props) => {
   }, [shouldUpdate, day, props.page, CONFIG]);
 
   // Chargement des TDs séparément
-  useEffect(() => {
-    const loadTds = async () => {
-      if (!CONFIG || !shouldUpdate || props.page != "home") return;
+useEffect(() => {
+  const loadAllTds = async () => {
+    if (!CONFIG || !shouldUpdate || props.page != "home") return;
 
-      setLoadingTds(true);
-      try {
-        const tdsPromises = [];
-        const departmentYearPairs = [];
+    setLoadingTds(true);
+    try {
+      const url = API_URL + "/api/get_tds/all?format=json";
+      const result = await RandomUtils.fetchData(url);
 
-        for (let departement of departementNames) {
-          if (departementYears[departement]) {
-            for (let year of departementYears[departement]) {
-              const key = departement + year;
-              const url = API_URL + "/api/get_tds/" + key + "?format=json";
-              departmentYearPairs.push({ departement, year, key });
-              tdsPromises.push(RandomUtils.fetchData(url));
-            }
-          }
-        }
-
-        const tdsResults = await Promise.all(tdsPromises);
-        const tdsData = {};
-        tdsResults.forEach((resultTds, index) => {
-          const { key, departement, year } = departmentYearPairs[index];
-          if (resultTds.data) {
-            tdsData[key] = {
-              "user_tds": resultTds.data.user_tds,
-              "other_tds": resultTds.data.other_tds,
-              "department_tds": resultTds.data.department_tds
-            };
-          }
-        });
-        setTds(tdsData);
-      } catch (error) {
-        console.error("Error loading TDs:", error);
-      } finally {
-        setLoadingTds(false);
-        setUpdate(false);
+      if (result.data) {
+        setTds(result.data.departments); // departments object from backend
       }
-    };
+    } catch (error) {
+      console.error("Error loading TDs:", error);
+    } finally {
+      setLoadingTds(false);
+      setUpdate(false);
+    }
+  };
 
-    loadTds();
-  }, [shouldUpdate, day, props.page, CONFIG]);
+  loadAllTds();
+}, [shouldUpdate, day, props.page, CONFIG]);
+
 
   if (loading && (dataAsso.length == 0 || dataAgenda.length == 0)) {
     return <Loading />;

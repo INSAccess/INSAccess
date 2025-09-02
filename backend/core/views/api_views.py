@@ -178,58 +178,79 @@ class GetYearAPIView(APIView):
             logger.error("Internal server error at get_year" ,extra={"request": request, "status_code": response.status_code})
             return response
 
-
 class GetTdsAPIView(APIView):
-    """Returns the Json of the request user's td and the department td's
-        (or all of them if no department is found)
+    """Returns TDs for a user, department, or all departments."""
 
-    Args:
-        APIView (class): the api class that is inherited by this route
-
-    Returns:
-        response: the serialized data
-    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request, department):
-        """provide the serialized tds of the given department
-        return all tds if the given department doesnt match our database's department
-
-        Args:
-            request : the request associated with the call of this api
-            department (String): the department given in the get method
-
-        Returns:
-        response: the serialized data
+        """
+        Get TDs for a specific department or all departments if 'all' is passed.
         """
         try:
-            user_tds = request.user.userprofile.link_td.all()
-            serialized_user_tds= [td.name for td in user_tds]
+            # Fetch user TDs via UserLinkTD
+            user_profile = request.user.userprofile
+            user_tds_qs = user_profile.link_td.all()
+            user_tds = [td.name for td in user_tds_qs]
 
-            department_obj = Department.objects.filter(name = department).first()
-            if not department_obj:
-                tds = GroupTD.objects.all()
-                serialized_tds= [td.name for td in tds]
-                response = Response({"user_tds" : serialized_user_tds, "all_tds" : serialized_tds})
-                logger.warning(f"Department not found {department}, defaulting to all tds", extra={"request": request, "status_code": response.status_code})
+            if department.lower() == "all":
+                all_departments = Department.objects.all()
+                all_tds_data = {}
+
+                for dept in all_departments:
+                    department_tds_qs = GroupTD.objects.filter(
+                        classlinktd__insa_class__classlinkdepart__depart=dept
+                    ).distinct()
+
+                    serialized_tds = [td.name for td in department_tds_qs]
+                    dept_tds = sorted([td for td in serialized_tds if td.startswith(dept.name)])
+                    other_tds = sorted([td for td in serialized_tds if not td.startswith(dept.name)])
+
+                    all_tds_data[dept.name] = {
+                        "department_tds": dept_tds,
+                        "other_tds": other_tds
+                    }
+
+                response = Response({
+                    "user_tds": user_tds,
+                    "departments": all_tds_data
+                })
+                logger.info("All TDs fetched", extra={"request": request, "status_code": response.status_code})
+                return response
+            # Fetch department TDs
+            dept_obj = Department.objects.filter(name=department).first()
+            if not dept_obj:
+                # Department not found, return all TDs flat
+                all_tds = GroupTD.objects.all()
+                serialized_tds = [td.name for td in all_tds]
+                response = Response({
+                    "user_tds": user_tds,
+                    "all_tds": serialized_tds
+                })
+                logger.warning(f"Department not found {department}, defaulting to all TDs",
+                               extra={"request": request, "status_code": response.status_code})
                 return response
 
-            department_tds = GroupTD.objects.filter(
-                classlinktd__insa_class__link_depart=department_obj
+            department_tds_qs = GroupTD.objects.filter(
+                classlinktd__insa_class__link_depart__depart=dept_obj
             ).distinct()
+            serialized_tds = [td.name for td in department_tds_qs]
+            department_tds = sorted([td for td in serialized_tds if td.startswith(department)])
+            other_tds = sorted([td for td in serialized_tds if not td.startswith(department)])
 
-            serialized_tds= [td.name for td in department_tds]
-            department_tds = [tds for tds in serialized_tds if tds.startswith(department)]
-            other_tds = [tds for tds in serialized_tds if not tds.startswith(department)]
-
-            department_tds.sort()
-            other_tds.sort()
-            response = Response({"user_tds" : serialized_user_tds, "department_tds" : department_tds, "other_tds":other_tds})
-            logger.info(f"Department {department} TDs fetched", extra={"request": request, "status_code": response.status_code})
+            response = Response({
+                "user_tds": user_tds,
+                "department_tds": department_tds,
+                "other_tds": other_tds
+            })
+            logger.info(f"Department {department} TDs fetched",
+                        extra={"request": request, "status_code": response.status_code})
             return response
-        except:
-            response = Response({"error": "Internal server error"}, status = 500)
-            logger.error("Internal server error at get_tds" ,extra={"request": request, "status_code": response.status_code})
+
+        except Exception as e:
+            response = Response({"error": "Internal server error"}, status=500)
+            logger.error(f"Internal server error at get_tds: {str(e)}",
+                         extra={"request": request, "status_code": response.status_code})
             return response
 
 class PostTdsAPIView(APIView):

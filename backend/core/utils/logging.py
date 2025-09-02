@@ -2,6 +2,9 @@ import logging
 import hashlib
 
 
+import hashlib
+import logging
+
 class RequestFilter(logging.Filter):
     """
     Injects request information into the LogRecord.
@@ -15,20 +18,32 @@ class RequestFilter(logging.Filter):
                 record.userip = xff.split(",")[0].strip()
             else:
                 record.userip = req.META.get("REMOTE_ADDR", "-")
-            record.user        = getattr(req.user, 'id', 'anonymous')
+
+            if hasattr(req, "user"):
+                record.user = getattr(req.user, "id", "anonymous")
+            else:
+                record.user = "unknown"
+
             raw_session = req.COOKIES.get("sessionid") or req.headers.get("Authorization", "")
             if raw_session:
                 record.sessionid = hashlib.sha256(raw_session.encode()).hexdigest()[:8]
             else:
                 record.sessionid = "-"
-            record.method      = req.method
-            record.path        = req.get_full_path()
-            record.status_code = getattr(record, 'status_code', '-')
-            record.base_url    = req.build_absolute_uri('/')[:-1]
-            record.referer     = req.META.get('HTTP_REFERER', '-')
-            record.user_agent  = req.META.get('HTTP_USER_AGENT', '-')
+
+            record.method      = getattr(req, "method", "-")
+            record.path        = req.get_full_path() if hasattr(req, "get_full_path") else "-"
+            record.status_code = getattr(record, "status_code", "-")
+            try:
+                record.base_url = req.build_absolute_uri("/")[:-1]
+            except Exception:
+                record.base_url = "-"
+            record.referer     = req.META.get("HTTP_REFERER", "-")
+            record.user_agent  = req.META.get("HTTP_USER_AGENT", "-")
         else:
-            for attr in ('userip','user','sessionid','method',
-                         'path','status_code','base_url','referer','user_agent'):
-                setattr(record, attr, '-')
+            for attr in (
+                "userip", "user", "sessionid", "method",
+                "path", "status_code", "base_url", "referer", "user_agent"
+            ):
+                setattr(record, attr, "-")
+
         return True

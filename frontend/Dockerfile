@@ -1,10 +1,12 @@
 FROM node:20-alpine AS build
 
 WORKDIR /app
+
+# Build-time argument
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+
 COPY package.json package-lock.json* ./
-
-ENV REACT_APP_API_URL="http://192.168.1.18:8000"
-
 RUN npm install --legacy-peer-deps
 
 COPY . .
@@ -24,5 +26,4 @@ COPY --from=build /app/build /usr/share/nginx/html
 
 EXPOSE 80
 
-# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]

@@ -8,13 +8,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env()
 
-# SECURITY WARNING: keep the secret key used in production secret!
+HOST_IP = env('HOST_IP', default='localhost')
+
 SECRET_KEY = 'django-insecure-n%of#5dk!t(((--f9-48qqi!u6ooo6(zv&hvu_c&3hk4lbo*1&'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-# Application definition
+DEBUG = True
 
 INSTALLED_APPS = [
     'core',
@@ -67,46 +65,26 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://172.18.26.13",
-    "http://172.18.26.13:8000",
-    "http://172.18.26.13:3000",
-    "http://172.18.26.13:80",
-    "http://172.18.26.13:3004"
-]
-
 CORS_ALLOW_HEADERS = default_headers
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://172.18.26.13",
-    "http://172.18.26.13:8000",
-    "http://172.18.26.13:3000",
-    "http://172.18.26.13:80",
-    "http://172.18.26.13:3004"
-]
+PORTS = ["", "8000", "3000", "80", "3004"]
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "172.18.26.13"
-]
+CORS_ALLOWED_ORIGINS = [f"http://{HOST_IP}:{port}" if port else f"http://{HOST_IP}" for port in PORTS]
+CSRF_TRUSTED_ORIGINS = [f"http://{HOST_IP}:{port}" if port else f"http://{HOST_IP}" for port in PORTS]
+
+ALLOWED_HOSTS = [HOST_IP,]
 
 CORS_URLS_REGEX = r'^/api/.*'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'django_cas_ng.backends.CASBackend',
-    # 'uniauth.backends.CASBackend',
 ]
 
 # Configuration CAS
-CAS_SERVER_URL = 'http://172.18.26.13:3004/cas/'
+CAS_SERVER_URL = env('CAS_SERVER_URL')
 CAS_VERSION = 3
-#CAS_SERVER_URL = 'https://cas.insa-rouen.fr/cas/'
+
 
 CAS_LOGOUT_COMPLETELY = True
 CAS_REDIRECT_URL = '/authentification/finalize'
@@ -169,12 +147,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-BASE_DIR = Path(__file__).resolve().parent.parent
 DJANGO_LOG_LEVEL = os.getenv('DJANGO_LOG_LEVEL', 'INFO')
-
-LOG_DIR = os.path.join(BASE_DIR, 'core', 'logs')
-os.makedirs(LOG_DIR, exist_ok=True)
 
 LOGGING = {
     "version": 1,
@@ -209,13 +182,11 @@ LOGGING = {
 
     "loggers": {
         "": {
-            "handlers": ["console"],  # only console now
+            "handlers": ["console"],
             "level": DJANGO_LOG_LEVEL,
         },
     },
 }
-
-
 
 LOCAL_SETTINGS = os.path.join(BASE_DIR,'config/', "local_settings.py")
 
