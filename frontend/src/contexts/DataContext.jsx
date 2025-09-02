@@ -25,6 +25,9 @@ export const DataProvider = (props) => {
   const [allThemes, setAllThemes] = useState(null);
   const [userTheme, setUserTheme] = useState(null);
   const [tds, setTds] = useState({});
+  // Ajout d'un compteur pour forcer le re-render
+  const [updateCounter, setUpdateCounter] = useState(0);
+  
   const { t, i18n } = useTranslation();
   const dayList = [t('Sunday'), t('Monday'), t('Tuesday'), t('Wednesday'), t('Thursday'), t('Friday'), t('Saturday')];
   let dimensions = RandomUtils.useWindowDimensions();
@@ -32,15 +35,19 @@ export const DataProvider = (props) => {
   let firstDay = new Day(currentDate);
   let day = (minWidth < dimensions.width) ? firstDay.startOfWeek(dayList).getDate() : firstDay.getDate();
 
+  // Fonction forceUpdate modifiée pour utiliser un compteur
   function forceUpdate() {
     setUpdate(true);
+    setUpdateCounter(prev => prev + 1); // Force le re-render même si les autres deps n'ont pas changé
   }
 
   // Chargement des données principales (agenda, asso, thème, etc.)
   useEffect(() => {
     window.scrollTo(0, 0);
     const loadMainData = async () => {
-      if (!shouldUpdate || props.page != "home") return;
+      // Conditions simplifiées - on charge si shouldUpdate est true ET qu'on est sur la bonne page
+      if (!shouldUpdate) return;
+      if (props.page !== "home") return;
       if (!CONFIG) return;
 
       setLoading(true);
@@ -57,7 +64,7 @@ export const DataProvider = (props) => {
         document.getElementById("root").setAttribute("data-theme", resultTheme.data);
         setDataAsso(resultAsso.data || []);
         setDataAgenda(resultAgenda.data || []);
-        if (resultIsAssos.data) setIsAssos(resultIsAssos.data);
+        if (resultIsAssos.data !== undefined) setIsAssos(resultIsAssos.data);
         if (resultThemes.data) setAllThemes(resultThemes.data);
         if (resultTheme.data) setUserTheme(resultTheme.data);
         if (resultIcs.data) setIcsLink(resultIcs.data);
@@ -81,32 +88,32 @@ export const DataProvider = (props) => {
     };
 
     loadMainData();
-  }, [shouldUpdate, day, props.page, CONFIG]);
+  }, [shouldUpdate, day, props.page, CONFIG, updateCounter]); // Ajout de updateCounter dans les dépendances
 
   // Chargement des TDs séparément
-useEffect(() => {
-  const loadAllTds = async () => {
-    if (!CONFIG || !shouldUpdate || props.page != "home") return;
+  useEffect(() => {
+    const loadAllTds = async () => {
+      if (!CONFIG || !shouldUpdate) return;
+      if (props.page !== "home") return;
 
-    setLoadingTds(true);
-    try {
-      const url = API_URL + "/api/get_tds/all?format=json";
-      const result = await RandomUtils.fetchData(url);
+      setLoadingTds(true);
+      try {
+        const url = API_URL + "/api/get_tds/all?format=json";
+        const result = await RandomUtils.fetchData(url);
 
-      if (result.data) {
-        setTds(result.data.departments); // departments object from backend
+        if (result.data) {
+          setTds(result.data.departments); // departments object from backend
+        }
+      } catch (error) {
+        console.error("Error loading TDs:", error);
+      } finally {
+        setLoadingTds(false);
+        setUpdate(false); // Reset shouldUpdate APRÈS avoir chargé les TDs
       }
-    } catch (error) {
-      console.error("Error loading TDs:", error);
-    } finally {
-      setLoadingTds(false);
-      setUpdate(false);
-    }
-  };
+    };
 
-  loadAllTds();
-}, [shouldUpdate, day, props.page, CONFIG]);
-
+    loadAllTds();
+  }, [shouldUpdate, day, props.page, CONFIG, updateCounter]); // Ajout de updateCounter ici aussi
 
   if (loading && (dataAsso.length == 0 || dataAgenda.length == 0)) {
     return <Loading />;

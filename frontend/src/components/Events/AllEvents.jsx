@@ -56,8 +56,9 @@ const AllEvents = ({asso}) => {
   let dimensions = RandomUtils.useWindowDimensions();
   let day = new Day(start);
 
-  let listDays = []
   const [firstDay, setDay] = useState(day);
+  const [renderKey, setRenderKey] = useState(0);
+  
   let nbDays =  ((minWidth < dimensions.width) ? 6 : 1);
   let currentDay = (nbDays == 6) ? firstDay.copy().startOfWeek(dayList) : firstDay.copy();
 
@@ -69,8 +70,12 @@ const AllEvents = ({asso}) => {
     }
   }
 
-const calendarRef = useRef(null);
-let skipDays = (nbDays == 1) ? 1 : 7;
+  const calendarRef = useRef(null);
+  let skipDays = (nbDays == 1) ? 1 : 7;
+
+  useEffect(() => {
+    setRenderKey(prev => prev + 1);
+  }, [BUNDLE.dataAsso, BUNDLE.dataAgenda]);
 
   useEffect(() => {
     let touchStartX = 0;
@@ -102,13 +107,21 @@ let skipDays = (nbDays == 1) ? 1 : 7;
     return () => {
       if (calendarRef.current) {
         calendarRef.current.removeEventListener("touchstart", handleTouchStart);
-        calendarRef.current.removeEventListener("touchend", handleTouchEnd);
+        calendarRef.current.removeEventListener("touchend", handleTouchend);
       }
     };
   }, [nbDays]);
 
+  let listDays = []
   for (let i = 0; i < nbDays; i++){
-    listDays.push(<EventsInDay key={i} date={currentDay.getDate()} data={data} asso={asso}/>);
+    listDays.push(
+      <EventsInDay 
+        key={`${i}-${renderKey}`}
+        date={currentDay.getDate()} 
+        data={data} 
+        asso={asso}
+      />
+    );
     currentDay = currentDay.next(1);
   }
 
@@ -120,8 +133,7 @@ let skipDays = (nbDays == 1) ? 1 : 7;
         {listDays}
       </div>
       <button type="button" className="arrow-right turned" onClick={() => {handleDay("next", skipDays)}}></button>
-  </div>
-      
+    </div>      
   );
 }
 
