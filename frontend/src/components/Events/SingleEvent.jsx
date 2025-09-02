@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import './SingleEvent.scss';
 import { API_URL } from '../../utils/Constants.jsx'
-import { HexColorPicker } from "react-colorful";
+import { CompactPicker } from 'react-color';
 import { useData } from '../../contexts/DataContext.jsx'
 import Alert from '@mui/material/Alert';
 import { useTranslation } from 'react-i18next';
@@ -81,29 +81,16 @@ const SingleEvent = (props) => {
     let endIndex = hoursEvents.indexOf(props.endTime);
     let eventHeight = EventUtils.getEventHeight(startIndex, endIndex, hoursEvents.length);
     let eventPosY = EventUtils.getEventPos(startIndex, hoursEvents.length);
-  
-    var eventStyle = {
-      height: `${eventHeight}%`,
-      width: `${props.width}%`,
-      top: `${eventPosY}%`,
-      display:"block",
-      position:"absolute",
-      left: `${props.left}%`, 
-      justifyContent:"left",
-      userSelect: "none",
-      marginLeft:"3.5%",
-      marginRight:"3.5%",
-    };
 
-    if (props.asso){//put the custom color of the users
-      eventStyle["backgroundColor"] = props.colors[props.teacher[0]];//Take the color of the first association of the event
-    }
-    else if ((props.label in props.colors)){
-      eventStyle["backgroundColor"] = props.colors[props.label];
-    }
+    // if (props.asso){//put the custom color of the users
+    //   eventStyle["backgroundColor"] = props.colors[props.teacher[0]];//Take the color of the first association of the event
+    // }
+    // else if (props.label in props.colors){
+    //   eventStyle["backgroundColor"] = props.colors[props.label];
+    // }
 
     const [show, setShow] = useState(false);
-    const [color, setColor] = useState("#aabbcc");
+    const [color, setColor] = useState(props.colors[props.label]);
     const [errorFlag, raiseErrorFlag] = useState(false);
     const [statusMessage, setStatusMessage] = useState("")
 
@@ -111,6 +98,10 @@ const SingleEvent = (props) => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const handleSetColor = (color) => {
+      setColor(color["hex"])
+    }
 
     async function saveColor(){
       const response = await fetch(API_URL+"/api/post_user_color", {
@@ -132,7 +123,7 @@ const SingleEvent = (props) => {
   
     return (
       <>
-        <button type="button" className="event" style={eventStyle} onClick={handleShow}>
+        <button type="button" className="event" style={{height: `${eventHeight}%`, width: `${props.width}%`, top: `${eventPosY}%`, left: `${props.left}%`, backgroundColor: color}} onClick={handleShow}>
           <p className="title">{(props.label) ? props.label : ""}</p>
           <p className="room">{(props.room.length > 0) ? RandomUtils.Join(props.room) : ""}</p>
         </button>
@@ -148,8 +139,7 @@ const SingleEvent = (props) => {
              {!props.asso && (
               <>
                 <div id="event-color-picker">
-                  <strong>{t('Color')}</strong>
-                  <HexColorPicker color={color} onChange={setColor}/>
+                  <CompactPicker color={color} onChangeComplete={handleSetColor}/>
                 </div>
                 <Button onClick={saveColor}>{t('Save')}</Button>
               </>
