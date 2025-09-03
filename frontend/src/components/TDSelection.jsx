@@ -52,40 +52,49 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
     };
 
     return (
-        <div style={{"display":"flex", "width":"100%"}}>
-            <div className='checkbox-list' style={{"flex":"1"}}>
-                <h1>{t('TDLikely')}</h1>
-                {departementTDs.map(td => (
-                    <li key={td}>
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={selectedTDs.has(td)}
-                                onChange={() => toggleTD(td)}
-                            />
-                            {td}
-                        </label>
-                    </li>
-                ))}
+        <div className="container-fluid">
+            <div className="row">
+                {/* Première liste - 12 colonnes sur mobile, 6 sur desktop */}
+                <div className="col-12 col-md-6">
+                    <div className='checkbox-list'>
+                        <h1>{t('TDLikely')}</h1>
+                        {departementTDs.map(td => (
+                            <li key={td}>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedTDs.has(td)}
+                                        onChange={() => toggleTD(td)}
+                                    />
+                                    {td}
+                                </label>
+                            </li>
+                        ))}
+                    </div>
+                </div>
+                
+                {/* Deuxième liste - 12 colonnes sur mobile, 6 sur desktop */}
+                <div className="col-12 col-md-6">
+                    <div className='checkbox-list'>
+                        <h1>{t('TDNotLikely')}</h1>
+                        {otherTDs.map(td => (
+                            <li key={td}>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedTDs.has(td)}
+                                        onChange={() => toggleTD(td)}
+                                    />
+                                    {td}
+                                </label>
+                            </li>
+                        ))}
+                    </div>
+                </div>
                 <div className= "validate">
                     <button className='button_validate btn btn-primary' onClick={saveSelection}>{t('Save')}</button>
                     <p>{statusMessage}</p>
                 </div>
-            </div>
-            <div className='checkbox-list' style={{"flex":"1"}}>
-                <h1>{t('TDNotLikely')}</h1>
-                {otherTDs.map(td => (
-                    <li key={td}>
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={selectedTDs.has(td)}
-                                onChange={() => toggleTD(td)}
-                            />
-                            {td}
-                        </label>
-                    </li>
-                ))}
             </div>
             {errorFlag && <Alert severity="error" variant="filled" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}
         </div>

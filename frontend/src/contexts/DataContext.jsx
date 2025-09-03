@@ -33,24 +33,23 @@ export const DataProvider = (props) => {
   let dimensions = RandomUtils.useWindowDimensions();
   const currentDate = new Date();
   let firstDay = new Day(currentDate);
-  let day = (minWidth < dimensions.width) ? firstDay.startOfWeek(dayList).getDate() : firstDay.getDate();
+  const [day, setDay] = useState((minWidth < dimensions.width) ? firstDay.startOfWeek(dayList).getDate() : firstDay.getDate());
 
-  // Fonction forceUpdate modifiée pour utiliser un compteur
   function forceUpdate() {
     setUpdate(true);
-    setUpdateCounter(prev => prev + 1); // Force le re-render même si les autres deps n'ont pas changé
+    setUpdateCounter(prev => prev + 1);
   }
 
   // Chargement des données principales (agenda, asso, thème, etc.)
   useEffect(() => {
     window.scrollTo(0, 0);
     const loadMainData = async () => {
-      // Conditions simplifiées - on charge si shouldUpdate est true ET qu'on est sur la bonne page
       if (!shouldUpdate) return;
       if (props.page !== "home") return;
       if (!CONFIG) return;
 
       setLoading(true);
+      let time = Date.now()
       try {
         const [resultAsso, resultAgenda, resultTheme, resultIcs, resultIsAssos, resultThemes] = await Promise.all([
           RandomUtils.fetchData(PATH_ASSO),
@@ -83,12 +82,13 @@ export const DataProvider = (props) => {
         setStatusMessage("Error loading main data");
         raiseErrorFlag(true);
       } finally {
+        console.log("Loading complete for main data - "+(Date.now()-time)/1000+"s")
         setLoading(false);
       }
     };
 
     loadMainData();
-  }, [shouldUpdate, day, props.page, CONFIG, updateCounter]); // Ajout de updateCounter dans les dépendances
+  }, [shouldUpdate, day, props.page, CONFIG, updateCounter]); 
 
   // Chargement des TDs séparément
   useEffect(() => {
@@ -97,23 +97,25 @@ export const DataProvider = (props) => {
       if (props.page !== "home") return;
 
       setLoadingTds(true);
+      let time = Date.now()
       try {
         const url = API_URL + "/api/get_tds/all?format=json";
         const result = await RandomUtils.fetchData(url);
 
         if (result.data) {
-          setTds(result.data.departments); // departments object from backend
+          setTds({departments: result.data.departments, user_tds:result.data.user_tds}); // departments object from backend
         }
       } catch (error) {
         console.error("Error loading TDs:", error);
       } finally {
+        console.log("Loading complete for tds - "+(Date.now()-time)/1000+"s")
         setLoadingTds(false);
-        setUpdate(false); // Reset shouldUpdate APRÈS avoir chargé les TDs
+        setUpdate(false);
       }
     };
 
     loadAllTds();
-  }, [shouldUpdate, day, props.page, CONFIG, updateCounter]); // Ajout de updateCounter ici aussi
+  }, [shouldUpdate, props.page, CONFIG, updateCounter]);
 
   if (loading && (dataAsso.length == 0 || dataAgenda.length == 0)) {
     return <Loading />;
@@ -121,7 +123,7 @@ export const DataProvider = (props) => {
 
   return (
     <>
-      <DataContext.Provider value={{dataAsso, dataAgenda, day, forceUpdate, tds, icsLink, isAssos, allThemes, userTheme, loadingTds}}>
+      <DataContext.Provider value={{dataAsso, dataAgenda, day, setDay, forceUpdate, tds, icsLink, isAssos, allThemes, userTheme, loadingTds}}>
           {props.children}
       </DataContext.Provider>
       {errorFlag && <Alert severity="error" variant="filled" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}

@@ -1,4 +1,3 @@
-
 //----- BOOTSTRAP OVERRIDE------//
 
 .btn, .btn-primary {
@@ -82,15 +81,24 @@
   background-color: var(--backgroundColor);
 }
 
+/* Modification principale : adaptation responsive */
 .checkbox-list {
-  max-width: 50%;
   padding: 20px;
-  margin-inline:1.5%;
+  margin-bottom: 20px; /* Espacement vertical sur mobile */
   background-color: var(--subSectionBackgroundColor);
   border-radius: 8px;
   box-shadow: 0 4px 10px var(--shadowColorBold);
-
 }
+
+/* Espacement horizontal seulement sur desktop */
+@media (min-width: 768px) {
+  .checkbox-list {
+    margin-bottom: 0;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
 .checkbox-list li { 
   padding: 10px;
   display: flex;
@@ -128,6 +136,7 @@
   font-size: 16px;
   color: var(--messageColor);
 }
+
 .copy-container {
   display: flex;
   flex-wrap: wrap; /* ✅ Allow wrapping on small screens */

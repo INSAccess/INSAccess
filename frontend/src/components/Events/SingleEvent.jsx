@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import Day from '../../utils/Day';
 import EventUtils from '../../utils/EventUtils';
 import RandomUtils from '../../utils/RandomUtils'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import './SingleEvent.scss';
@@ -82,12 +82,9 @@ const SingleEvent = (props) => {
     let eventHeight = EventUtils.getEventHeight(startIndex, endIndex, hoursEvents.length);
     let eventPosY = EventUtils.getEventPos(startIndex, hoursEvents.length);
 
-    // if (props.asso){//put the custom color of the users
-    //   eventStyle["backgroundColor"] = props.colors[props.teacher[0]];//Take the color of the first association of the event
-    // }
-    // else if (props.label in props.colors){
-    //   eventStyle["backgroundColor"] = props.colors[props.label];
-    // }
+    if (props.asso){//put the custom color of the users
+      setColor(props.colors[props.teacher[0]]);//Take the color of the first association of the event
+    }
 
     const [show, setShow] = useState(false);
     const [color, setColor] = useState(props.colors[props.label]);
@@ -95,6 +92,10 @@ const SingleEvent = (props) => {
     const [statusMessage, setStatusMessage] = useState("")
 
     const BUNDLE = useData()
+
+    useEffect(() => {
+        setColor(props.colors[props.label] || '#d44d44');
+    }, [props.colors, props.label, props.startTime, props.endTime, props.teacher, props.room]);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);

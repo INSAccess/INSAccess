@@ -169,6 +169,7 @@ const Settings = () => {
 
 
     function displayView(view){
+        console.log(tds)
         switch (view){
             case "TDs" : return (
                 <>
@@ -176,7 +177,7 @@ const Settings = () => {
                         <DropDownDepart />
                         <DropDownYear />
                     </div>
-                    {tds[departement+year] && <TDSelection departementTDs={tds[departement+year]["department_tds"]} otherTDs={tds[departement+year]["other_tds"]} userTDs={tds[departement+year]["user_tds"]}/>}
+                    {tds.departments[departement+year] && <TDSelection departementTDs={tds.departments[departement+year]["department_tds"]} otherTDs={tds.departments[departement+year]["other_tds"]} userTDs={tds.user_tds}/>}
                 </>
             );
             case "create" : return (<EventCreator/>);
