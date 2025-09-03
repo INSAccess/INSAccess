@@ -15,6 +15,7 @@ dist/
 build/
 *.egg-info/
 venv/
+.env
 
 !backend/core/logs/.keep
 

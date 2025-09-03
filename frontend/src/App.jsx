@@ -92,9 +92,13 @@ function App() {
           <div id="backmenu" className={burger} onClick={fold}></div>
           <NavBar setPage={setPage} items={items}/>
           <div className="fold" id="folder" onClick={foldToggle}>☰</div>
-            <AuthProvider><ConfigProvider><DataProvider page={page}>
-                <ProtectedRoute>{currentPage(page)}</ProtectedRoute>
-            </DataProvider></ConfigProvider></AuthProvider>
+            <AuthProvider>
+              <ConfigProvider>
+                <DataProvider page={page}>
+                  <ProtectedRoute>{currentPage(page)}</ProtectedRoute>
+                </DataProvider>
+              </ConfigProvider>
+            </AuthProvider>
         </div>
     );
   } catch (e){

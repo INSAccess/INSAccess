@@ -3,23 +3,16 @@ from pathlib import Path
 from corsheaders.defaults import default_headers
 from core.utils.logging import RequestFilter
 
-
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
 environ.Env.read_env()
 
-# SECURITY WARNING: keep the secret key used in production secret!
+HOST_IP = env('HOST_IP', default='localhost')
+
 SECRET_KEY = 'django-insecure-n%of#5dk!t(((--f9-48qqi!u6ooo6(zv&hvu_c&3hk4lbo*1&'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'core',
@@ -33,18 +26,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_cas_ng',
 ]
 
 MIDDLEWARE = [
-    'core.utils.middleware_log.RequestLogMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'core.utils.middleware_log.RequestLogMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_cas_ng.middleware.CASMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -52,7 +48,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,38 +63,48 @@ TEMPLATES = [
 
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://172.18.26.13:3000" # TEMPORARY USED FOR LOCALHOST TEST
-]
-
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
 CORS_ALLOW_HEADERS = default_headers
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://172.18.26.13:3000" # TEMPORARY USED FOR LOCALHOST TEST
-]
+PORTS = ["", "8000", "3000", "80", "3004"]
 
+CORS_ALLOWED_ORIGINS = [f"http://{HOST_IP}:{port}" if port else f"http://{HOST_IP}" for port in PORTS]
+CSRF_TRUSTED_ORIGINS = [f"http://{HOST_IP}:{port}" if port else f"http://{HOST_IP}" for port in PORTS]
 
-
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "172.18.26.13"# TEMPORARY USED FOR LOCALHOST TEST
-                 ]
+ALLOWED_HOSTS = [HOST_IP,]
 
 CORS_URLS_REGEX = r'^/api/.*'
 
-
-
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    # 'uniauth.backends.CASBackend',
+    'django_cas_ng.backends.CASBackend',
 ]
 
-LOGIN_URL = "authentification/login/" #LOGIN_URL = "/accounts/login/" for CAS implementation
+# Configuration CAS
+CAS_SERVER_URL = env('CAS_SERVER_URL')
+CAS_VERSION = 3
 
-UNIAUTH_LOGIN_DISPLAY_STANDARD = False
-UNIAUTH_LOGOUT_CAS_COMPLETELY = True
 
+CAS_LOGOUT_COMPLETELY = True
+CAS_REDIRECT_URL = '/authentification/finalize'
+LOGOUT_REDIRECT_URL = '/authentification/login'
+
+CAS_CREATE_USER = True
+
+# Only for dev
+CAS_ROOT_PROXIED_AS = None
+CAS_FORCE_CHANGE_USERNAME_CASE = None
+CAS_IGNORE_REFERER = True
+
+LOGIN_URL = "authentification/login/"
+
+CAS_APPLY_ATTRIBUTES_TO_USER = True
+CAS_RENAME_ATTRIBUTES = {
+    'email':'email',
+    'firstName':'first_name',
+    'lastName':'last_name',
+}
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
@@ -136,67 +142,54 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / "staticfiles" / "static",
+]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-BASE_DIR = Path(__file__).resolve().parent.parent
 DJANGO_LOG_LEVEL = os.getenv('DJANGO_LOG_LEVEL', 'INFO')
 
-LOG_DIR = os.path.join(BASE_DIR, 'core', 'logs')
-os.makedirs(LOG_DIR, exist_ok=True)
-
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
+    "version": 1,
+    "disable_existing_loggers": False,
 
-    'filters': {
-        'request_filter': {
-            '()': RequestFilter,
+    "filters": {
+        "request_filter": {
+            "()": RequestFilter,
         },
     },
 
-    'formatters': {
-        'with_request': {
-            'format': (
-                '[%(userip)s] - [%(user)s] - [%(sessionid)s] - '
-                '[%(asctime)s] - [%(method)s %(path)s] - '
-                '[%(status_code)s] - [%(message)s] - '
-                '[%(base_url)s|%(referer)s] - '
-                '[%(user_agent)s]'
+    "formatters": {
+        "with_request": {
+            "format": (
+                "[%(userip)s] - [%(user)s] - [%(sessionid)s] - "
+                "[%(asctime)s] - [%(method)s %(path)s %(status_code)s] - "
+                "[%(message)s] - "
+                "[%(user_agent)s]"
             ),
-            'style': '%',
+            "style": "%",
         },
     },
 
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'level': DJANGO_LOG_LEVEL,
-            'formatter': 'with_request',
-            'filters': ['request_filter'],
-        },
-        'file': {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'level': DJANGO_LOG_LEVEL,
-            'formatter': 'with_request',
-            'filters': ['request_filter'],
-            'filename': BASE_DIR / 'logs' / 'django.log',
-            'maxBytes': 10_485_760,
-            'backupCount': 5,
-            'encoding': 'utf-8',
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": DJANGO_LOG_LEVEL,
+            "formatter": "with_request",
+            "filters": ["request_filter"],
         },
     },
 
-    'loggers': {
-        '': {
-            'handlers': ['console', 'file'],
-            'level': DJANGO_LOG_LEVEL,
+    "loggers": {
+        "": {
+            "handlers": ["console"],
+            "level": DJANGO_LOG_LEVEL,
         },
     },
 }
-
 
 LOCAL_SETTINGS = os.path.join(BASE_DIR,'config/', "local_settings.py")
 

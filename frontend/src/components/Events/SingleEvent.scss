@@ -1,6 +1,11 @@
 .event {
+  display:block;
+  position:absolute;
+  user-select: none;
+  margin-left: 3.5%;
+  margin-right: 3.5%;
+  justify-content: left;
   border: none;
-  // border-left: 8px solid var(--eventBorderColor);
   border-radius: 8px;
   background: var(--eventColor);
   color: var(--contrastTextColor) ;
@@ -10,22 +15,20 @@
 
 @media (hover: hover) and (pointer: fine) {
   .event:hover {
-    // background: var(--eventHoverColor); 
-    // border-left: 8px solid var(--eventHoverBorderColor); 
     transform: translateY(-3px); 
   }
 }
 
 .title{
   font-weight: 600;
-  margin-bottom: 0.1vw;
+  margin-bottom: 0.1svw;
   font-size: 1.8svh;
 }
 
 .time, .teacher, .room {
   font-weight: 430;
-  margin-bottom: 0.1vw;
-  font-size: max(0.6vw, 1.7svh);
+  margin-bottom: 0.1svw;
+  font-size: max(0.6svw, 1.7svh);
   height: auto;
 }
 

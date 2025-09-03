@@ -9,28 +9,29 @@ export const ConfigProvider = ({ children }) => {
     const [CONFIG, setConfig] = useState(null)
     const [data, setData] = useState({})
     const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
+    const [statusMessage, setStatusMessage] = useState("")
+    const [error, setError] = useState(false)
     const [errorFlag, raiseErrorFlag] = useState(false)
 
     // Load the config
     useEffect(() => {
         const loadData = async () => {
-          const result = await RandomUtils.fetchData(API_URL+"/api/get_config");
-          if (result.data){
-            setData(result.data);
-          }
+            const result = await RandomUtils.fetchData(API_URL+"/api/get_config");
+            if (result.data){
+                setData(result.data);
+            }
+        
+            if (result.error){
+                setStatusMessage(result.error)
+                setError(true)
+                raiseErrorFlag(true)
+                setData({})
+            }
 
-          setError(result.error);
-          setLoading(false);
+            setLoading(false);
         };
     
         loadData();
-
-        if (error){
-            raiseErrorFlag(true)
-            console.error("Erreur lors du fetch de la configuration")
-            setData({})
-        }
     }, []);
 
     // Format the config
@@ -56,7 +57,7 @@ export const ConfigProvider = ({ children }) => {
             <ConfigContext.Provider value={CONFIG}>
                 {children}
             </ConfigContext.Provider>
-            {errorFlag && <Alert severity="error" onClose={() => {raiseErrorFlag(false)}}>Echec du chargement de la configuration</Alert>}
+            {errorFlag && <Alert severity="error" variant="filled" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}
         </>
     );
 }

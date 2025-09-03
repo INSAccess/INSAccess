@@ -10,7 +10,6 @@ const MainAbout = () => {
 
     let dimensions = RandomUtils.useWindowDimensions();
 
-
     return (
         <section className="py-3 py-md-5">
             <div className="container">

@@ -1,20 +1,61 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
+import hashlib
 from django.utils import timezone
+
+class EnumType(models.Model):
+    """Possible values for the type in association"""
+    name = models.CharField(max_length=255, primary_key=True)
+
+    def __str__(self):
+        return self.name
+
+class EnumSector(models.Model):
+    """Possible values for the sector (e.g., sport, music, etc.)"""
+    name = models.CharField(max_length=255, primary_key=True)
+
+    def __str__(self):
+        return self.name
+
+class EnumColorTheme(models.Model):
+    """Possible values for the color theme of the website"""
+    name = models.CharField(max_length= 100, primary_key=True)
+
+    @classmethod
+    def get_default_theme(cls):
+        theme, created = cls.objects.get_or_create(name='system')
+        return theme.pk
+
+    def __str__(self):
+        return self.name
 
 class UserProfile(models.Model):
     """User definition"""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     link_td = models.ManyToManyField("GroupTD", through='UserLinkTD', related_name='users')
-    color_theme = models.ForeignKey('EnumColorTheme', on_delete = models.SET_NULL, null=True)
+    color_theme = models.ForeignKey('EnumColorTheme', default=EnumColorTheme.get_default_theme, on_delete = models.SET_NULL, null=True)
+    ics_uid = models.CharField(
+        max_length=64,
+        unique=True,
+        editable=False,
+        default="",
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.ics_uid:
+            # Generate a hash-based UID (e.g. using uuid4 + user id)
+            raw_value = f"{uuid.uuid4()}-{self.user_id}".encode("utf-8")
+            self.ics_uid = hashlib.sha256(raw_value).hexdigest()
+        super().save(*args, **kwargs)
+
 
     def __str__(self):
         return str(self.user)
 
 class Event(models.Model):
     """Generic Class for defining events in the calendar"""
-    uid = models.CharField(primary_key = True, editable = False)
+    uid = models.CharField(primary_key = True, editable = False, max_length = 256)
     date = models.DateField()
     time_stamp = models.DateTimeField()
     start_hour = models.DateTimeField()
@@ -26,7 +67,7 @@ class Event(models.Model):
 
     class Meta:
         abstract = True
-        
+
     def save(self, *args, **kwargs):
         if not self.uid:
             self.uid = str(uuid.uuid4())
@@ -36,7 +77,7 @@ class Event(models.Model):
         self.time_last_modified = now
         if not self.sequence:
             self.sequence = 0;
-        
+
         super().save(*args, **kwargs)
 
 class InsaClass(Event):
@@ -55,7 +96,7 @@ class InsaEvenement(Event):
     associated_link = models.CharField(max_length=510)
     association = models.ForeignKey('Association', on_delete=models.CASCADE)
     location = models.CharField(max_length=510)
-    info = models.CharField()
+    info = models.CharField(max_length=510)
 
     def __str__(self):
         return f"Insa Event : {self.desc}"
@@ -84,27 +125,6 @@ class UserColoredEvent(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.title} - {self.color}"
-
-class EnumType(models.Model):
-    """Possible values for the type in association"""
-    name = models.CharField(max_length=255, primary_key=True)
-
-    def __str__(self):
-        return self.name
-
-class EnumSector(models.Model):
-    """Possible values for the sector (e.g., sport, music, etc.)"""
-    name = models.CharField(max_length=255, primary_key=True)
-
-    def __str__(self):
-        return self.name
-
-class EnumColorTheme(models.Model):
-    """Possible values for the color theme of the website"""
-    name = models.CharField(max_length= 100, primary_key=True)
-
-    def __str__(self):
-        return self.name
 
 class GroupTD(models.Model):
     """GroupTD definition"""
@@ -150,7 +170,7 @@ class ClassLinkTD(models.Model):
 
     def __str__(self):
         return f"Class: {self.insa_class} - TD: {self.td}"
-    
+
 
 
 class ClassLinkRoom(models.Model):
@@ -188,5 +208,5 @@ class UserLinkTD(models.Model):
 
     def __str__(self):
         return f"User: {self.user} - TD: {self.name_td}"
-    
+
 

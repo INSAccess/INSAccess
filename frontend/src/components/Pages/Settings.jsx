@@ -1,7 +1,7 @@
 import TDSelection from '../TDSelection.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
 import { useEffect, useState, useRef } from 'react';
-import { API_URL, minWidth, LANGUAGES } from '../../utils/Constants.jsx'
+import { API_URL, API_LOGOUT, minWidth, LANGUAGES } from '../../utils/Constants.jsx'
 import { Loading } from '../Templates.jsx'
 import EventCreator from '../EventCreator.jsx';
 import Button from 'react-bootstrap/Button';
@@ -9,6 +9,7 @@ import DropDownCustom from '../DropDownCustom.jsx'
 import './Settings.scss'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useConfig } from '../../contexts/ConfigContext.jsx'
+import { useData } from '../../contexts/DataContext.jsx'
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -20,22 +21,22 @@ const Settings = () => {
 
     const CONFIG = useConfig()
     const departementNames = CONFIG ? CONFIG["departementNames"] : ["STPI"]
-    const departementYears = CONFIG ? CONFIG["departementYears"] : {"STPI":[1]}  
+    const departementYears = CONFIG ? CONFIG["departementYears"] : {"STPI":[1]}
 
-    const [userTds, setUserTD] = useState(null);
-    const [departementTds, setDepartTD] = useState(null);
-    const [otherTds, setOtherTD] = useState(null);
+    const BUNDLE = useData()
+    let tds = BUNDLE.tds
+    let icsLink = BUNDLE.icsLink
+    let isAssos = BUNDLE.isAssos
+    let allThemes = BUNDLE.allThemes
+    let userTheme = BUNDLE.userTheme
+
     const [view, setView] = useState("TDs");
+    
+    const copyButtonRef = useRef(null);
+    const [language, setLanguage] = useState("fr")
+    const [currentTheme, setTheme] = useState(userTheme)
     const [departement, setDepartement] = useState(departementNames[0])
     const [year, setYear] = useState(departementYears[departement][0])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
-    const copyButtonRef = useRef(null);
-    const [icsLink, setIcsLink] = useState("Error when loading ics");
-    const [isAssos, setIsAssos] = useState(false);
-    const [currentTheme, setTheme] = useState("")
-    const [allThemes, setAllThemes] = useState(null)
-    const [language, setLanguage] = useState("fr")
 
     const { t, i18n } = useTranslation();
 
@@ -45,53 +46,10 @@ const Settings = () => {
     };
 
     useEffect(() => {
-        const loadData = async () => {
-          const result = await RandomUtils.fetchData(API_URL+"/api/get_tds/"+departement+year+"?format=json");
-          if (result.data){
-            setUserTD(result.data.user_tds);
-            setDepartTD(result.data.department_tds);
-            setOtherTD(result.data.other_tds);
-          }
-
-          const resultIcs = await RandomUtils.fetchData(API_URL+"/api/get_ics_url");
-          if (resultIcs.data){
-              setIcsLink(resultIcs.data);
-          }
-
-          const result_isAssos = await RandomUtils.fetchData(API_URL+"/api/is_association");
-          if (result_isAssos.data){
-            setIsAssos(result_isAssos.data);
-          }
-
-          const resultThemes = await RandomUtils.fetchData(API_URL+"/api/get_themes")
-          if (resultThemes.data){
-            setAllThemes(resultThemes.data)
-          }
-
-          const resultUserTheme = await RandomUtils.fetchData(API_URL+"/api/get_user_theme")
-          if (resultUserTheme.data){
-            setTheme(resultUserTheme.data)
-          }
-
-          setError(result.error);
-          setLoading(false);
-        };
-
-
-        if (error){
-            console.error("Erreur lors du fetch des TDs")
-            setUserTD([])
-            setDepartTD([])
-            setOtherTD([])
-        }
-
-    
-        loadData();
-
         if (window.bootstrap && copyButtonRef.current) { //used for the copy to clipboard feature
             new window.bootstrap.Tooltip(copyButtonRef.current);
         }
-    }, [departement, year]);
+    }, []);
 
 
     // Switch between dark, light or system theme 
@@ -117,6 +75,10 @@ const Settings = () => {
         return (
             <DropDownCustom items={allThemes} id="themes" title={t('ThemeDD')} current={currentTheme} handle={handleThemeChange}/>
         )
+    }
+
+    const handleLogout = () => {
+        window.location.replace(API_LOGOUT)
     }
 
     const handleCopy = async () => {
@@ -173,6 +135,13 @@ const Settings = () => {
         return (
             <>
                 <div className="margin2">
+                    <ThemeSwitch id="theme"/>
+                </div>
+                <div className="margin2">
+                    <DropDownLng id="lng"/>
+                    <hr/>
+                </div>
+                <div className="margin2">
                     <h4>{t('ICSLink')}</h4>
                     <p>{t('ICSText')}</p>
                 </div>
@@ -189,15 +158,10 @@ const Settings = () => {
                             {t('ICSCopy')}
                     </button>
                 </div>
-                <div className="selectContainer">
-                    <div className="margin2">
-                        <h4>{t('ThemeChange')}</h4>
-                        <ThemeSwitch />
-                    </div>
-                    <div className="margin2">
-                        <h4>{t('LanguageChange')}</h4>
-                        <DropDownLng />
-                    </div>
+                <div className="margin2">
+                    <button className="btn btn-primary" onClick={handleLogout}>
+                        {t('Logout')}
+                    </button>
                 </div>
             </>
         )
@@ -205,6 +169,7 @@ const Settings = () => {
 
 
     function displayView(view){
+        console.log(tds)
         switch (view){
             case "TDs" : return (
                 <>
@@ -212,7 +177,7 @@ const Settings = () => {
                         <DropDownDepart />
                         <DropDownYear />
                     </div>
-                    {departementTds && otherTds && userTds && <TDSelection departementTDs={departementTds} otherTDs={otherTds} userTDs={userTds}/>}
+                    {tds.departments[departement+year] && <TDSelection departementTDs={tds.departments[departement+year]["department_tds"]} otherTDs={tds.departments[departement+year]["other_tds"]} userTDs={tds.user_tds}/>}
                 </>
             );
             case "create" : return (<EventCreator/>);
@@ -221,10 +186,6 @@ const Settings = () => {
     }
 
     let dimensions = RandomUtils.useWindowDimensions()
-
-    if (loading){
-        return <Loading />
-    }
 
     return (
         <div className="settings">
