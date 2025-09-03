@@ -10,6 +10,4 @@ urlpatterns = [
 
     # Custom Auth Views
     path("finalize/", auth_views.finalize, name="finalize"),
-    path("temp/", auth_views.test_insertion, name ="temp"),
-    path("seed/", auth_views.seed_database, name ="temp_seeder")
 ]

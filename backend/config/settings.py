@@ -81,7 +81,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Configuration CAS
-CAS_SERVER_URL = "toto"
+CAS_SERVER_URL = env('CAS_SERVER_URL', default='cas_server')
 CAS_VERSION = 3
 
 
@@ -90,11 +90,6 @@ CAS_REDIRECT_URL = '/authentification/finalize'
 LOGOUT_REDIRECT_URL = '/authentification/login'
 
 CAS_CREATE_USER = True
-
-# Only for dev
-CAS_ROOT_PROXIED_AS = None
-CAS_FORCE_CHANGE_USERNAME_CASE = None
-CAS_IGNORE_REFERER = True
 
 LOGIN_URL = "authentification/login/"
 
