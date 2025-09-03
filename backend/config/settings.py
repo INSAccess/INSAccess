@@ -61,7 +61,7 @@ TEMPLATES = [
     },
 ]
 
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
@@ -69,7 +69,6 @@ CORS_ALLOW_HEADERS = default_headers
 
 PORTS = ["", "8000", "3000", "80", "3004"]
 
-CORS_ALLOWED_ORIGINS = [f"http://{HOST_IP}:{port}" if port else f"http://{HOST_IP}" for port in PORTS]
 CSRF_TRUSTED_ORIGINS = [f"http://{HOST_IP}:{port}" if port else f"http://{HOST_IP}" for port in PORTS]
 
 ALLOWED_HOSTS = [HOST_IP,]

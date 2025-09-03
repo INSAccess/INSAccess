@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Build-time argument
 ARG REACT_APP_API_URL
-ENV REACT_APP_API_URL=$REACT_APP_API_URL
+ENV REACT_APP_API_URL="https://edt.insa-rouen.fr"
 
 COPY package.json package-lock.json* ./
 RUN npm install --legacy-peer-deps
