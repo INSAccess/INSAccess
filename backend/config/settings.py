@@ -82,7 +82,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Configuration CAS
-CAS_SERVER_URL = env('CAS_SERVER_URL')
+CAS_SERVER_URL = "toto"
 CAS_VERSION = 3
 
 
