@@ -408,6 +408,21 @@ class GetUserThemeAPIView(APIView):
             logger.error("Internal server error at get_user_theme" ,extra={"request": request, "status_code": response.status_code})
             return response
 
+class GetUserProfileAPIView(APIView):
+    """return the user associated theme"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        """"""
+        try:
+            response = Response({"displayName": request.user.username})
+            logger.info("Returned user profile", extra={"request": request, "status_code": response.status_code})
+            return response
+        except:
+            response = Response({"error": "Internal server error"}, status = 500)
+            logger.error("Internal server error at get_profile" ,extra={"request": request, "status_code": response.status_code})
+            return response
+
 class PostUserThemeAPIView(APIView):
     """change the user associated theme"""
     permission_classes = [IsAuthenticated]

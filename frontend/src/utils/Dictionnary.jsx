@@ -56,6 +56,7 @@ const resources = {
       "LanguageChange":"Language",
       "LanguageDD":"Language : ",
       "Logout":"Log out",
+      "Welcome":"Welcome",
       // Event
       "Close":"Close",
       "StartHour":"Start hour : ",
@@ -124,6 +125,7 @@ const resources = {
       "LanguageChange":"Langue",
       "LanguageDD":"Langue : ",
       "Logout":"Se déconnecter",
+      "Welcome":"Bienvenue",
       // Event
       "Close":"Fermer",
       "StartHour":"Heure de début : ",

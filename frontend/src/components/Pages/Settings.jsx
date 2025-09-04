@@ -135,9 +135,10 @@ const Settings = () => {
         return (
             <>
                 <div className="margin2">
-                    <ThemeSwitch id="theme"/>
+                    <h4>{t('Welcome')} {BUNDLE.userProfile.displayName}</h4>
                 </div>
                 <div className="margin2">
+                    <ThemeSwitch id="theme"/>
                     <DropDownLng id="lng"/>
                     <hr/>
                 </div>
