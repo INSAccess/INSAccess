@@ -24,8 +24,8 @@ export const DataProvider = (props) => {
   const [isAssos, setIsAssos] = useState(false);
   const [allThemes, setAllThemes] = useState(null);
   const [userTheme, setUserTheme] = useState(null);
+  const [userProfile, setProfile] = useState(null);
   const [tds, setTds] = useState({});
-  // Ajout d'un compteur pour forcer le re-render
   const [updateCounter, setUpdateCounter] = useState(0);
   
   const { t, i18n } = useTranslation();
@@ -49,24 +49,25 @@ export const DataProvider = (props) => {
       if (!CONFIG) return;
 
       setLoading(true);
-      let time = Date.now()
       try {
-        const [resultAsso, resultAgenda, resultTheme, resultIcs, resultIsAssos, resultThemes] = await Promise.all([
+        const [resultAsso, resultAgenda, resultTheme, resultIcs, resultIsAssos, resultThemes, resultProfile] = await Promise.all([
           RandomUtils.fetchData(PATH_ASSO),
           RandomUtils.fetchData(PATH_CALENDAR + day),
           RandomUtils.fetchData(API_URL + "/api/get_user_theme"),
           RandomUtils.fetchData(API_URL + "/api/get_ics_url"),
           RandomUtils.fetchData(API_URL + "/api/is_association"),
-          RandomUtils.fetchData(API_URL + "/api/get_themes")
+          RandomUtils.fetchData(API_URL + "/api/get_themes"),
+          RandomUtils.fetchData(API_URL + "/api/get_profile")
         ]);
 
         document.getElementById("root").setAttribute("data-theme", resultTheme.data);
-        setDataAsso(resultAsso.data || []);
-        setDataAgenda(resultAgenda.data || []);
-        if (resultIsAssos.data !== undefined) setIsAssos(resultIsAssos.data);
+        if (resultAsso.data) setDataAsso(resultAsso.data);
+        if (resultAgenda.data) setDataAgenda(resultAgenda.data);
+        if (resultIsAssos.data) setIsAssos(resultIsAssos.data);
         if (resultThemes.data) setAllThemes(resultThemes.data);
         if (resultTheme.data) setUserTheme(resultTheme.data);
         if (resultIcs.data) setIcsLink(resultIcs.data);
+        if (resultProfile.data) setProfile(resultProfile.data);
 
         if (resultAsso.error) {
           setStatusMessage(resultAsso.error);
@@ -82,7 +83,6 @@ export const DataProvider = (props) => {
         setStatusMessage("Error loading main data");
         raiseErrorFlag(true);
       } finally {
-        console.log("Loading complete for main data - "+(Date.now()-time)/1000+"s")
         setLoading(false);
       }
     };
@@ -97,18 +97,15 @@ export const DataProvider = (props) => {
       if (props.page !== "home") return;
 
       setLoadingTds(true);
-      let time = Date.now()
       try {
         const url = API_URL + "/api/get_tds/all?format=json";
         const result = await RandomUtils.fetchData(url);
 
-        if (result.data) {
-          setTds({departments: result.data.departments, user_tds:result.data.user_tds}); // departments object from backend
-        }
+        if (result.data) setTds({departments: result.data.departments, user_tds:result.data.user_tds});
+      
       } catch (error) {
         console.error("Error loading TDs:", error);
       } finally {
-        console.log("Loading complete for tds - "+(Date.now()-time)/1000+"s")
         setLoadingTds(false);
         setUpdate(false);
       }
@@ -123,7 +120,7 @@ export const DataProvider = (props) => {
 
   return (
     <>
-      <DataContext.Provider value={{dataAsso, dataAgenda, day, setDay, forceUpdate, tds, icsLink, isAssos, allThemes, userTheme, loadingTds}}>
+      <DataContext.Provider value={{dataAsso, dataAgenda, day, setDay, forceUpdate, tds, icsLink, isAssos, allThemes, userTheme, loadingTds, userProfile}}>
           {props.children}
       </DataContext.Provider>
       {errorFlag && <Alert severity="error" variant="filled" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}
