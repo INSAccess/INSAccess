@@ -28,6 +28,8 @@ def finalize(request):
     user_profile.save()
     if profile_created :
         subscribed_tds = request.session.get('attributes', {}).get('supannAffectation', [])
+        subscribed_tds = [td.upper() for td in subscribed_tds]
+
         tds_in_db = GroupTD.objects.filter(name__in=subscribed_tds)
         user_profile.link_td.add(*tds_in_db)
 
