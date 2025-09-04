@@ -1,20 +1,9 @@
 
 PROJECT_NAME := backend
 
-#Create the docker
-install:
-	docker-compose build
-
 # Start and Stop Services
 up:
-	docker-compose -f docker-compose.dev.yml up
-
-build:
-	docker build -t insaccess-backend:latest ./backend
-	docker build -t insaccess-frontend:latest ./frontend
-
-down:
-	docker-compose down
+	docker-compose up
 
 restart:
 	docker-compose down && docker-compose up -d

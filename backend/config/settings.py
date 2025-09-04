@@ -1,4 +1,4 @@
-import environ, os
+import environ, os, sys
 from pathlib import Path
 from corsheaders.defaults import default_headers
 from core.utils.logging import RequestFilter
@@ -169,17 +169,25 @@ LOGGING = {
     },
 
     "handlers": {
-        "console": {
+        "console_stdout": {
             "class": "logging.StreamHandler",
-            "level": DJANGO_LOG_LEVEL,
+            "level": "INFO",
             "formatter": "with_request",
             "filters": ["request_filter"],
+            "stream": sys.stdout,
+        },
+        "console_stderr": {
+            "class": "logging.StreamHandler",
+            "level": "ERROR",
+            "formatter": "with_request",
+            "filters": ["request_filter"],
+            "stream": sys.stderr,
         },
     },
 
     "loggers": {
         "": {
-            "handlers": ["console"],
+            "handlers": ["console_stdout", "console_stderr"],
             "level": DJANGO_LOG_LEVEL,
         },
     },
