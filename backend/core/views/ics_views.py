@@ -29,7 +29,7 @@ def generate_ics(request, ics_uid):
     cal = Calendar()
 
     cal.add("method", "REQUEST")
-    cal.add("prodid", "-//INSAccess/version 1.0")
+    cal.add("prodid", "-//Edt/version 1.0")
     cal.add("x-wr-calname;value=text", "personnal_calendar")
     cal.add("calscale", "GREGORIAN")
     cal.add("version", "1.0")

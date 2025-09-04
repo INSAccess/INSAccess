@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from core.models import UserProfile
+from core.models import UserProfile, GroupTD
 from django.conf import settings
 
 import logging
@@ -23,10 +23,13 @@ def get_frontend_url():
 @login_required
 def finalize(request):
     user, user_created = User.objects.get_or_create(username=request.user)
-
-    # create user profile if it doesn't exists
+    logger.info(request.user.username)
     user_profile, profile_created = UserProfile.objects.get_or_create(user = user)
     user_profile.save()
+    if profile_created :
+        subscribed_tds = request.session.get('attributes', {}).get('supannAffectation', [])
+        tds_in_db = GroupTD.objects.filter(name__in=subscribed_tds)
+        user_profile.link_td.add(*tds_in_db)
 
     return redirect(get_frontend_url())
 

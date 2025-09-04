@@ -91,13 +91,12 @@ LOGOUT_REDIRECT_URL = '/authentification/login'
 
 CAS_CREATE_USER = True
 
-LOGIN_URL = "authentification/login/"
+LOGIN_URL = "/authentification/login/"
 
 CAS_APPLY_ATTRIBUTES_TO_USER = True
 CAS_RENAME_ATTRIBUTES = {
-    'email':'email',
-    'firstName':'first_name',
-    'lastName':'last_name',
+    'mail':'email',
+    'displayName':'first_name',
 }
 
 WSGI_APPLICATION = 'config.wsgi.application'

@@ -6,7 +6,6 @@ urlpatterns = [
     # CAS Views
     path("login/", cas_views.LoginView.as_view(), name='cas_ng_login'),
     path("logout/", cas_views.LogoutView.as_view(), name='cas_ng_logout'),
-    path("callback/", cas_views.CallbackView.as_view(), name='cas_ng_proxy_callback'),
 
     # Custom Auth Views
     path("finalize/", auth_views.finalize, name="finalize"),
