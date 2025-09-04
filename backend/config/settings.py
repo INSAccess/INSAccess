@@ -89,6 +89,8 @@ CAS_LOGOUT_COMPLETELY = True
 CAS_REDIRECT_URL = '/authentification/finalize'
 LOGOUT_REDIRECT_URL = '/authentification/login'
 
+CAS_IGNORE_REFERER = True
+
 CAS_CREATE_USER = True
 
 LOGIN_URL = "/authentification/login/"
