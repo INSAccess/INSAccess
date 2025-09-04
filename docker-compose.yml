@@ -10,29 +10,35 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
 
-  backend:
+  django:
     build:
       context: ./backend
-      dockerfile: Dockerfile
-    env_file:
-      - .env
-    depends_on:
-      - db
+      dockerfile: dev.Dockerfile
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    working_dir: /app
+    volumes:
+      - ./backend:/app
     ports:
       - "8000:8000"
+    depends_on:
+      db:
+        condition: service_started
+    env_file:
+      - .env
 
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
-      args:
-        REACT_APP_API_URL: ${REACT_APP_API_URL}
+      dockerfile: dev.Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
     env_file:
       - .env
     depends_on:
-      - backend
-    ports:
-      - "80:80"
+      - django
+    restart: unless-stopped
 
 volumes:
   db_data:

@@ -1,4 +1,4 @@
-import environ, os
+import environ, os, sys
 from pathlib import Path
 from corsheaders.defaults import default_headers
 from core.utils.logging import RequestFilter
@@ -61,7 +61,7 @@ TEMPLATES = [
     },
 ]
 
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
@@ -69,7 +69,6 @@ CORS_ALLOW_HEADERS = default_headers
 
 PORTS = ["", "8000", "3000", "80", "3004"]
 
-CORS_ALLOWED_ORIGINS = [f"http://{HOST_IP}:{port}" if port else f"http://{HOST_IP}" for port in PORTS]
 CSRF_TRUSTED_ORIGINS = [f"http://{HOST_IP}:{port}" if port else f"http://{HOST_IP}" for port in PORTS]
 
 ALLOWED_HOSTS = [HOST_IP,]
@@ -82,7 +81,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Configuration CAS
-CAS_SERVER_URL = env('CAS_SERVER_URL')
+CAS_SERVER_URL = env('CAS_SERVER_URL', default='cas_server')
 CAS_VERSION = 3
 
 
@@ -92,18 +91,12 @@ LOGOUT_REDIRECT_URL = '/authentification/login'
 
 CAS_CREATE_USER = True
 
-# Only for dev
-CAS_ROOT_PROXIED_AS = None
-CAS_FORCE_CHANGE_USERNAME_CASE = None
-CAS_IGNORE_REFERER = True
-
-LOGIN_URL = "authentification/login/"
+LOGIN_URL = "/authentification/login/"
 
 CAS_APPLY_ATTRIBUTES_TO_USER = True
 CAS_RENAME_ATTRIBUTES = {
-    'email':'email',
-    'firstName':'first_name',
-    'lastName':'last_name',
+    'mail':'email',
+    'displayName':'first_name',
 }
 
 WSGI_APPLICATION = 'config.wsgi.application'
@@ -175,17 +168,25 @@ LOGGING = {
     },
 
     "handlers": {
-        "console": {
+        "console_stdout": {
             "class": "logging.StreamHandler",
-            "level": DJANGO_LOG_LEVEL,
+            "level": "INFO",
             "formatter": "with_request",
             "filters": ["request_filter"],
+            "stream": sys.stdout,
+        },
+        "console_stderr": {
+            "class": "logging.StreamHandler",
+            "level": "ERROR",
+            "formatter": "with_request",
+            "filters": ["request_filter"],
+            "stream": sys.stderr,
         },
     },
 
     "loggers": {
         "": {
-            "handlers": ["console"],
+            "handlers": ["console_stdout", "console_stderr"],
             "level": DJANGO_LOG_LEVEL,
         },
     },

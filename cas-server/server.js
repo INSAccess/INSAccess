@@ -5,14 +5,36 @@ const PORT = 3004;
 // Stockage des tickets en mémoire
 const tickets = new Map();
 const users = {
-  'test': { password: 'test', email: 'test@test.com', firstName: 'Test', lastName: 'User' },
-  'admin': { password: 'admin', email: 'admin@test.com', firstName: 'Admin', lastName: 'User' },
-  'root': { password: 'toto1234', email: 'root@toto.com', firstName: 'root', lastName: 'root' },
-  'toto': { password: 'toto', email: 'root@toto.com', firstName: 'root', lastName: 'root' },
-  'jules': { password: 'toto', email: 'root@toto.com', firstName: 'root', lastName: 'root' },
-  'tim': { password: 'tim', email: 'root@toto.com', firstName: 'root', lastName: 'root' },
-  'iris': { password: 'iris', email: 'root@toto.com', firstName: 'root', lastName: 'root' },
-  'coucou': { password: 'coucou', email: 'root@toto.com', firstName: 'root', lastName: 'root' }
+  'tes': {
+    password: 'test',
+    mail: 'test@test.com',
+    supannAffectation: ['ITI41-RI-TD-01', 'ITI41-TIM-TD-02', 'ITI41-TI-TD-02'],
+    displayName: 'Test Test'
+  },
+  'alice': {
+    password: 'alice123',
+    mail: 'alice@example.com',
+    supannAffectation: ['ITI41-ANG-PG-TD-01', 'ITI41-RO-TD-01', 'ITI41-FLE-TD-01'],
+    displayName: 'Alice Dupont'
+  },
+  'bob': {
+    password: 'bob123',
+    mail: 'bob@example.com',
+    supannAffectation: ['ITI41-APS-TD-02', 'ITI41-TW2-TD-01', 'ITI41-ESPAGNOL-TD-01'],
+    displayName: 'Bob Martin'
+  },
+  'carol': {
+    password: 'carol123',
+    mail: 'carol@example.com',
+    supannAffectation: ['ITI41-BD2-TD-01', 'ITI41-ALLEMAND-TD-01', 'ITI41-ML-TD-02'],
+    displayName: 'Carol Durand'
+  },
+  'dave': {
+    password: 'dave123',
+    mail: 'dave@example.com',
+    supannAffectation: ['ITI31-TD-GR-01', 'ITI31-FLE-TD-01', 'ITI31-TD-GR-03'],
+    displayName: 'Dave Leroy'
+  },
 
 };
 
@@ -241,9 +263,11 @@ app.get(['/cas/serviceValidate', '/cas/p3/serviceValidate'], (req, res) => {
       <cas:authenticationSuccess>
         <cas:user>${ticketData.username}</cas:user>
         <cas:attributes>
-          <cas:email>${user.email}</cas:email>
-          <cas:firstName>${user.firstName}</cas:firstName>
-          <cas:lastName>${user.lastName}</cas:lastName>
+          <cas:mail>${user.mail}</cas:mail>
+          <cas:displayName>${user.displayName}</cas:displayName>
+          <cas:supannAffectation>${user.supannAffectation[0]}</cas:supannAffectation>
+          <cas:supannAffectation>${user.supannAffectation[1]}</cas:supannAffectation>
+          <cas:supannAffectation>${user.supannAffectation[2]}</cas:supannAffectation>
         </cas:attributes>
       </cas:authenticationSuccess>
     </cas:serviceResponse>
