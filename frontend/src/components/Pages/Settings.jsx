@@ -87,7 +87,6 @@ const Settings = () => {
                     body:JSON.stringify(e)
                   });
                     BUNDLE.changeLanguage(e)
-                    i18n.changeLanguage(e);
                     setLanguage(e);
             } catch (error) {
                 console.error(error)

@@ -23,8 +23,8 @@ const users = {
     supannAffectation: ['ITI41-APS-TD-02', 'ITI41-TW2-TD-01', 'ITI41-ESPAGNOL-TD-01'],
     displayName: 'Bob Martin'
   },
-  'carol': {
-    password: 'carol123',
+  'carole': {
+    password: 'carole123',
     mail: 'carol@example.com',
     supannAffectation: ['ITI41-BD2-TD-01', 'ITI41-ALLEMAND-TD-01', 'ITI41-ML-TD-02'],
     displayName: 'Carol Durand'

@@ -83,7 +83,7 @@ const resources = {
       "ConfigError":"Error while loading config",
       "LoadSuccess":"Loading successful",
       "SaveSuccess":"Saving successful",
-      "DeleteSuccess":"Delete successful",
+      "DeleteSuccess":"Delete successful (reload the page to see the update)",
       // Form
       "FormTitle":"Event title",
       "FormDate":"Date",
@@ -181,7 +181,7 @@ const resources = {
       "ConfigError":"Erreur pendant le chargement de la configuration",
       "LoadSuccess":"Chargement réussi",
       "SaveSuccess":"Sauvegarde réussie",
-      "DeleteSuccess":"Suppression réussie",
+      "DeleteSuccess":"Suppression réussie (rechargez la page pour mettre à jour les événements)",
       // Form
       "FormTitle":"Titre de l'événement",
       "FormDate":"Date",
