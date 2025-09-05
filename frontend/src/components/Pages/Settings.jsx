@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 /**
  * Settings component, handling the theme, the TD selection, ICS link and event creation
  * @component
- * @returns {JSX.Element} 
+ * @returns {JSX.Element}
  */
 const Settings = () => {
 
@@ -28,21 +28,18 @@ const Settings = () => {
     let isAssos = BUNDLE.isAssos
     let allThemes = BUNDLE.allThemes
     let userTheme = BUNDLE.userTheme
+    let allLanguages = BUNDLE.allLanguages
+    let userLanguage = BUNDLE.userLanguage
 
-    
-    const copyButtonRef = useRef(null);
     const [view, setView] = useState("TDs");
-    const [language, setLanguage] = useState("fr")
+
+    const copyButtonRef = useRef(null);
+    const [currentLanguage, setLanguage] = useState(userLanguage)
     const [currentTheme, setTheme] = useState(userTheme)
     const [departement, setDepartement] = useState(departementNames[0])
     const [year, setYear] = useState(departementYears[departement][0])
 
     const { t, i18n } = useTranslation();
-
-    const handleSetLanguage = (lng) => {
-        i18n.changeLanguage(lng);
-        setLanguage(lng);
-    };
 
     useEffect(() => {
         if (window.bootstrap && copyButtonRef.current) { //used for the copy to clipboard feature
@@ -51,51 +48,81 @@ const Settings = () => {
     }, []);
 
 
-    // Switch between dark, light or system theme 
+    // Switch between dark, light or system theme
     const ThemeSwitch = () => {
 
         async function handleThemeChange(e){
-            document.getElementById("root").setAttribute("data-theme",e);
-            setTheme(e);
             //post theme on backend
             try {
-                const response = await fetch(API_URL+"/api/post_theme", {
+                const response = await fetch(API_URL+"/api/post_user_theme", {
                     method:'POST',
                     headers:{'Content-Type':'application/json', 'X-CSRFToken':RandomUtils.getCSRFToken()},
                     mode:'cors',
                     credentials:'include',
                     body:JSON.stringify(e)
                   });
+                    setTheme(e);
+                    document.getElementById("root").setAttribute("data-theme",e);
+                    BUNDLE.changeTheme(e)
             } catch (error) {
                 console.error(error)
             }
         }
-    
+
         return (
             <DropDownCustom items={allThemes} id="themes" title={t('ThemeDD')} current={currentTheme} handle={handleThemeChange}/>
         )
     }
 
+    const LanguageSwitch = () => {
+
+        async function handleLanguageChange(e){
+            //post theme on backend
+            try {
+                const response = await fetch(API_URL+"/api/post_user_language", {
+                    method:'POST',
+                    headers:{'Content-Type':'application/json', 'X-CSRFToken':RandomUtils.getCSRFToken()},
+                    mode:'cors',
+                    credentials:'include',
+                    body:JSON.stringify(e)
+                  });
+                    BUNDLE.changeLanguage(e)
+                    i18n.changeLanguage(e);
+                    setLanguage(e);
+            } catch (error) {
+                console.error(error)
+            }
+        }
+
+        return (
+            <DropDownCustom items={allLanguages} id="languages" title={t('LanguageDD')} current={currentLanguage} handle={handleLanguageChange}/>
+        )
+    }
+
+    const handleLogout = () => {
+        window.location.replace(API_LOGOUT)
+    }
+
     const handleCopy = async () => {
         try {
           await navigator.clipboard.writeText(icsLink);
-        
+
           // Get the tooltip instance (or create it if needed)
           let tooltip = window.bootstrap.Tooltip.getInstance(copyButtonRef.current);
           if (!tooltip) {
               tooltip = new window.bootstrap.Tooltip(copyButtonRef.current);
           }
-        
+
           // Update the tooltip text by changing the attribute
           copyButtonRef.current.setAttribute("data-bs-original-title", "Copied!");
           tooltip.show();
-        
+
           // Reset the tooltip text after 2 seconds
           setTimeout(() => {
             copyButtonRef.current.setAttribute("data-bs-original-title", "Copy to clipboard");
             tooltip.hide();
           }, 2000);
-        
+
         } catch (err) {
           console.error("Copy failed : ", err);
         }
@@ -111,18 +138,12 @@ const Settings = () => {
     const DropDownYear = () => {
         return (
             <DropDownCustom items={departementYears[departement]} current={year} id="dropdown-year" title={t('YearDD')} handle={setYear}/>
-        ) 
+        )
     }
 
     const DropDownDepart = () => {
         return (
             <DropDownCustom items={departementNames} current={departement} id="dropdown-depart" title={t('DepartmentDD')} handle={handleSetDepartement}/>
-        )
-    }
-
-    const DropDownLng = () => {
-        return (
-            <DropDownCustom items={LANGUAGES} id="languages" title={t('LanguageDD')} current={language} handle={handleSetLanguage}/>
         )
     }
 
@@ -133,7 +154,8 @@ const Settings = () => {
                     <ThemeSwitch id="theme"/>
                 </div>
                 <div className="margin2">
-                    <DropDownLng id="lng"/>
+                    <ThemeSwitch id="theme"/>
+                    <LanguageSwitch id="lng"/>
                     <hr/>
                 </div>
                 <div className="margin2">
@@ -159,7 +181,6 @@ const Settings = () => {
 
 
     function displayView(view){
-        console.log(tds)
         switch (view){
             case "TDs" : return (
                 <>
@@ -193,7 +214,7 @@ const Settings = () => {
             </div>
             <>{displayView(view)}</>
         </div>
-    ); 
+    );
 
 }
 

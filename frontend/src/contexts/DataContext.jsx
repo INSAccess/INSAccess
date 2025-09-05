@@ -22,12 +22,14 @@ export const DataProvider = (props) => {
   const [statusMessage, setStatusMessage] = useState("");
   const [icsLink, setIcsLink] = useState("Error when loading ics");
   const [isAssos, setIsAssos] = useState(false);
+  const [allLanguages, setAllLanguages] = useState(null);
+  const [userLanguage, setUserLanguage] = useState(null);
   const [allThemes, setAllThemes] = useState(null);
   const [userTheme, setUserTheme] = useState(null);
   const [userProfile, setProfile] = useState(null);
   const [tds, setTds] = useState({});
   const [updateCounter, setUpdateCounter] = useState(0);
-  
+
   const { t, i18n } = useTranslation();
   const dayList = [t('Sunday'), t('Monday'), t('Tuesday'), t('Wednesday'), t('Thursday'), t('Friday'), t('Saturday')];
   let dimensions = RandomUtils.useWindowDimensions();
@@ -40,6 +42,21 @@ export const DataProvider = (props) => {
     setUpdateCounter(prev => prev + 1);
   }
 
+  function changeTheme(theme) {
+    setUserTheme(theme)
+  }
+
+  function changeLanguage(lang) {
+    setUserLanguage(lang)
+  }
+
+
+  useEffect(() => {
+    if (userLanguage) {
+      i18n.changeLanguage(userLanguage);
+    }
+  }, [userLanguage]);
+
   // Chargement des données principales (agenda, asso, thème, etc.)
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -50,14 +67,17 @@ export const DataProvider = (props) => {
 
       setLoading(true);
       try {
-        const [resultAsso, resultAgenda, resultTheme, resultIcs, resultIsAssos, resultThemes, resultProfile] = await Promise.all([
+        const [resultAsso, resultAgenda, resultTheme, resultIcs, resultIsAssos, resultThemes,
+           resultProfile, resultLanguages, resultLanguage] = await Promise.all([
           RandomUtils.fetchData(PATH_ASSO),
           RandomUtils.fetchData(PATH_CALENDAR + day),
           RandomUtils.fetchData(API_URL + "/api/get_user_theme"),
           RandomUtils.fetchData(API_URL + "/api/get_ics_url"),
           RandomUtils.fetchData(API_URL + "/api/is_association"),
           RandomUtils.fetchData(API_URL + "/api/get_themes"),
-          RandomUtils.fetchData(API_URL + "/api/get_profile")
+          RandomUtils.fetchData(API_URL + "/api/get_profile"),
+          RandomUtils.fetchData(API_URL + "/api/get_languages"),
+          RandomUtils.fetchData(API_URL + "/api/get_user_language")
         ]);
 
         document.getElementById("root").setAttribute("data-theme", resultTheme.data);
@@ -68,6 +88,8 @@ export const DataProvider = (props) => {
         if (resultTheme.data) setUserTheme(resultTheme.data);
         if (resultIcs.data) setIcsLink(resultIcs.data);
         if (resultProfile.data) setProfile(resultProfile.data);
+        if (resultLanguages.data) setAllLanguages(resultLanguages.data);
+        if (resultLanguage.data) setUserLanguage(resultLanguage.data);
 
         if (resultAsso.error) {
           setStatusMessage(resultAsso.error);
@@ -88,7 +110,7 @@ export const DataProvider = (props) => {
     };
 
     loadMainData();
-  }, [shouldUpdate, day, props.page, CONFIG, updateCounter]); 
+  }, [shouldUpdate, day, props.page, CONFIG, updateCounter]);
 
   // Chargement des TDs séparément
   useEffect(() => {
@@ -102,7 +124,7 @@ export const DataProvider = (props) => {
         const result = await RandomUtils.fetchData(url);
 
         if (result.data) setTds({departments: result.data.departments, user_tds:result.data.user_tds});
-      
+
       } catch (error) {
         console.error("Error loading TDs:", error);
       } finally {
@@ -120,7 +142,8 @@ export const DataProvider = (props) => {
 
   return (
     <>
-      <DataContext.Provider value={{dataAsso, dataAgenda, day, setDay, forceUpdate, tds, icsLink, isAssos, allThemes, userTheme, loadingTds, userProfile}}>
+      <DataContext.Provider value={{dataAsso, dataAgenda, day, setDay, forceUpdate, changeTheme, changeLanguage, tds, icsLink, isAssos,
+         allThemes, userTheme, loadingTds, userProfile, allLanguages, userLanguage}}>
           {props.children}
       </DataContext.Provider>
       {errorFlag && <Alert severity="error" variant="filled" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}

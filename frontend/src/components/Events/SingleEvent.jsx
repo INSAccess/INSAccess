@@ -43,9 +43,9 @@ const Description = ({asso, desc}) => {
 
   const { t, i18n } = useTranslation();
 
-  if (asso){ 
-    return <div><strong>{t('Description')}</strong><br/>{desc}</div> 
-  } else { 
+  if (asso){
+    return <div><strong>{t('Description')}</strong><br/>{desc}</div>
+  } else {
     return <></>
   }
 }
@@ -55,7 +55,7 @@ const Description = ({asso, desc}) => {
  * @component
  * @returns {JSX.Element}
  * @example
- * const element = { 
+ * const element = {
  *  start_hour : "0900",
  *  end_hour : "1115",
  *  desc : "",
@@ -67,24 +67,20 @@ const Description = ({asso, desc}) => {
  * const left = "0%"
  * return (
  *  <SingleEvent key={i} startTime={element.start_hour} endTime={element.end_hour}
- *  label={element.desc} teacher={element.link_teacher} room={element.link_room} link={element.link} 
+ *  label={element.desc} teacher={element.link_teacher} room={element.link_room} link={element.link}
  *  width={width} left={left}
  *  desc={''} asso={asso}/>
  *)
  */
 const SingleEvent = (props) => {
 
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const hoursEvents = Day.createHours();
     let startIndex = hoursEvents.indexOf(props.startTime);
     let endIndex = hoursEvents.indexOf(props.endTime);
     let eventHeight = EventUtils.getEventHeight(startIndex, endIndex, hoursEvents.length);
     let eventPosY = EventUtils.getEventPos(startIndex, hoursEvents.length);
-
-    if (props.asso){//put the custom color of the users
-      setColor(props.colors[props.teacher[0]]);//Take the color of the first association of the event
-    }
 
     const [show, setShow] = useState(false);
     const [color, setColor] = useState(props.colors[props.label]);
@@ -93,8 +89,13 @@ const SingleEvent = (props) => {
 
     const BUNDLE = useData()
 
+
+
     useEffect(() => {
-        setColor(props.colors[props.label] || '#d44d44');
+      if (props.asso){//put the custom color of the users
+        setColor(props.colors[props.teacher[0]]);//Take the color of the first association of the event
+      }
+      setColor(props.colors[props.label] || '#d44d44');
     }, [props.colors, props.label, props.startTime, props.endTime, props.teacher, props.room]);
 
     const handleClose = () => setShow(false);
@@ -121,7 +122,7 @@ const SingleEvent = (props) => {
         handleClose()
       }
   }
-  
+
     return (
       <>
         <button type="button" className="event" style={{height: `${eventHeight}%`, width: `${props.width}%`, top: `${eventPosY}%`, left: `${props.left}%`, backgroundColor: color}} onClick={handleShow}>
@@ -158,6 +159,6 @@ const SingleEvent = (props) => {
         </Modal>
       </>
     );
-} 
+}
 
 export default SingleEvent;
