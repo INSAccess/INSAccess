@@ -1,8 +1,7 @@
 import TDSelection from '../TDSelection.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
 import { useEffect, useState, useRef } from 'react';
-import { API_URL, API_LOGOUT, minWidth, LANGUAGES } from '../../utils/Constants.jsx'
-import { Loading } from '../Templates.jsx'
+import { API_URL, minWidth, LANGUAGES } from '../../utils/Constants.jsx'
 import EventCreator from '../EventCreator.jsx';
 import Button from 'react-bootstrap/Button';
 import DropDownCustom from '../DropDownCustom.jsx'
@@ -30,9 +29,9 @@ const Settings = () => {
     let allThemes = BUNDLE.allThemes
     let userTheme = BUNDLE.userTheme
 
-    const [view, setView] = useState("TDs");
     
     const copyButtonRef = useRef(null);
+    const [view, setView] = useState("TDs");
     const [language, setLanguage] = useState("fr")
     const [currentTheme, setTheme] = useState(userTheme)
     const [departement, setDepartement] = useState(departementNames[0])
@@ -75,10 +74,6 @@ const Settings = () => {
         return (
             <DropDownCustom items={allThemes} id="themes" title={t('ThemeDD')} current={currentTheme} handle={handleThemeChange}/>
         )
-    }
-
-    const handleLogout = () => {
-        window.location.replace(API_LOGOUT)
     }
 
     const handleCopy = async () => {
@@ -135,10 +130,9 @@ const Settings = () => {
         return (
             <>
                 <div className="margin2">
-                    <h4>{t('Welcome')} {BUNDLE.userProfile.displayName}</h4>
+                    <ThemeSwitch id="theme"/>
                 </div>
                 <div className="margin2">
-                    <ThemeSwitch id="theme"/>
                     <DropDownLng id="lng"/>
                     <hr/>
                 </div>
@@ -157,11 +151,6 @@ const Settings = () => {
                             data-bs-placement="top"
                             title="Copy to clipboard">
                             {t('ICSCopy')}
-                    </button>
-                </div>
-                <div className="margin2">
-                    <button className="btn btn-primary" onClick={handleLogout}>
-                        {t('Logout')}
                     </button>
                 </div>
             </>
