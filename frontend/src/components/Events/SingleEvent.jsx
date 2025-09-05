@@ -117,8 +117,8 @@ const SingleEvent = (props) => {
     const { t } = useTranslation();
 
     const hoursEvents = Day.createHours();
-    let startIndex = hoursEvents.indexOf(props.startTime);
-    let endIndex = hoursEvents.indexOf(props.endTime);
+    let startIndex = parseInt(props.startTime) >= parseInt(hoursEvents[0]) ? hoursEvents.indexOf(props.startTime) : 0;
+    let endIndex = parseInt(props.endTime) <= parseInt(hoursEvents[hoursEvents.length-1]) ? hoursEvents.indexOf(props.endTime) : hoursEvents.length-1;
     let eventHeight = EventUtils.getEventHeight(startIndex, endIndex, hoursEvents.length);
     let eventPosY = EventUtils.getEventPos(startIndex, hoursEvents.length);
 
