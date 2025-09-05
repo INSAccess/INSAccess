@@ -414,7 +414,7 @@ class GetIcsUrlAPIView(APIView):
     def get(self, request):
         """"""
         try:
-            response = Response(f"{request.get_host()}/ics/{request.user.userprofile.ics_uid}")
+            response = Response(f"https://{request.get_host()}/ics/{request.user.userprofile.ics_uid}")
             logger.info("Returned ICS URL for user", extra={"request": request, "status_code": response.status_code})
             return response
         except:
