@@ -39,7 +39,7 @@ const Settings = () => {
     const [departement, setDepartement] = useState(departementNames[0])
     const [year, setYear] = useState(departementYears[departement][0])
 
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (window.bootstrap && copyButtonRef.current) { //used for the copy to clipboard feature

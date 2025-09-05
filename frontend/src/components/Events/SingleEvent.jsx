@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
  */
 const FollowLink = ({asso, link}) => {
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   if (asso) {
     return (
@@ -41,7 +41,7 @@ const FollowLink = ({asso, link}) => {
  */
 const Description = ({asso, desc}) => {
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   if (asso){
     return <div><strong>{t('Description')}</strong><br/>{desc}</div>
@@ -55,20 +55,29 @@ const Description = ({asso, desc}) => {
  * @component
  * @returns {JSX.Element}
  */
-const DeleteButton = ({eventUID, asso, teacher, assoName}) => {
+const DeleteButton = ({handleClose, eventUID, asso, teacher, assoName, setStatusMessage, setSuccessMessage, raiseErrorFlag, raiseSuccessFlag}) => {
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const handleDeleteEvent = async () => {
     try {
       const response = await fetch(API_URL+'/api/delete_evenement/'+eventUID, {
-          method: 'DELETE',
+          method: 'POST',
           headers: { 'Content-Type': 'application/json', 'X-CSRFToken': RandomUtils.getCSRFToken()},
           mode:"cors",
           credentials:'include',
-          body: JSON.stringify({}),
       });
-      const data = await response.json();
+      const data = await response.json()
+
+      if (!response.ok){
+        setStatusMessage(t("DeleteError") + " : " + data.error)
+        raiseErrorFlag(true)
+        handleClose()
+      } else {
+        setSuccessMessage(t("DeleteSuccess"))
+        raiseSuccessFlag(true)
+        handleCLose()
+      }
     } catch (error) {
         console.error(error);
     }
@@ -116,7 +125,9 @@ const SingleEvent = (props) => {
     const [show, setShow] = useState(false);
     const [color, setColor] = useState(props.colors[props.label]);
     const [errorFlag, raiseErrorFlag] = useState(false);
+    const [successFlag, raiseSuccessFlag] = useState(false);
     const [statusMessage, setStatusMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
 
     const BUNDLE = useData()
 
@@ -139,7 +150,7 @@ const SingleEvent = (props) => {
       });
 
       if (!response.ok){
-        setStatusMessage(`Echec de la sauvegarde : ${response.status} ${response.statusText}`)
+        setStatusMessage(`${t("SaveError")} : ${response.statusText}`)
         raiseErrorFlag(true)
       } else {
         BUNDLE.forceUpdate()
@@ -174,15 +185,17 @@ const SingleEvent = (props) => {
             <br/>
             <FollowLink asso={props.asso} link={props.link}/>
             <br/>
-            <DeleteButton eventUID={props.uid} asso={props.asso} teacher={props.teacher[0]} assoName={BUNDLE.assoName}/>
+            <DeleteButton handleClose={handleClose} eventUID={props.uid} asso={props.asso} teacher={props.teacher[0]} assoName={BUNDLE.assoName} raiseSuccessFlag={raiseSuccessFlag} setSuccessMessage={setSuccessMessage} raiseErrorFlag={raiseErrorFlag} setStatusMessage={setStatusMessage}/>
           </Modal.Body>
           <Modal.Footer>
-            {errorFlag && <Alert severity="error" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}
             <Button variant="primary" onClick={handleClose}>
               {t('Close')}
             </Button>
           </Modal.Footer>
         </Modal>
+
+        {errorFlag && <Alert severity="error" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}
+        {successFlag && <Alert severity="success" onClose={() => {raiseSuccessFlag(false)}}>{successMessage}</Alert>}
       </>
     );
 }

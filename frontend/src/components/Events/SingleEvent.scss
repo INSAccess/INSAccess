@@ -32,17 +32,6 @@
   height: auto;
 }
 
-// ---------- COLOR PICKER ------------ //
-
-#event-color-picker {
-  display:flex;
-  justify-content:space-between;
-  height:5%;
-  width:80%;
-}
-
-#event-color-picker .react-colorful {
-  margin:2%;
-  height:20svh;
-  width:20svh; 
+div[role="alert"] {
+  z-index:1050;
 }

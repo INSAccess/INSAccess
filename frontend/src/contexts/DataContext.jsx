@@ -11,8 +11,9 @@ const DataContext = createContext();
 
 export const DataProvider = (props) => {
   const CONFIG = useConfig();
-  const departementNames = CONFIG ? CONFIG["departementNames"] : ["STPI"];
-  const departementYears = CONFIG ? CONFIG["departementYears"] : {"STPI":[1]};
+
+  const { t } = useTranslation();
+
   const [dataAsso, setDataAsso] = useState([]);
   const [dataAgenda, setDataAgenda] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -20,7 +21,7 @@ export const DataProvider = (props) => {
   const [shouldUpdate, setUpdate] = useState(true);
   const [errorFlag, raiseErrorFlag] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
-  const [icsLink, setIcsLink] = useState("Error when loading ics");
+  const [icsLink, setIcsLink] = useState(t("LoadError"));
   const [isAssos, setIsAssos] = useState(false);
   const [assoName, setAssoName] = useState(null);
   const [allLanguages, setAllLanguages] = useState(null);
@@ -31,7 +32,6 @@ export const DataProvider = (props) => {
   const [tds, setTds] = useState({});
   const [updateCounter, setUpdateCounter] = useState(0);
 
-  const { t, i18n } = useTranslation();
   const dayList = [t('Sunday'), t('Monday'), t('Tuesday'), t('Wednesday'), t('Thursday'), t('Friday'), t('Saturday')];
   let dimensions = RandomUtils.useWindowDimensions();
   const currentDate = new Date();
@@ -106,7 +106,7 @@ export const DataProvider = (props) => {
           raiseErrorFlag(true);
         }
       } catch (error) {
-        setStatusMessage("Error loading main data");
+        setStatusMessage(t("LoadError") + " : " + error);
         raiseErrorFlag(true);
       } finally {
         setLoading(false);
@@ -130,7 +130,7 @@ export const DataProvider = (props) => {
         if (result.data) setTds({departments: result.data.departments, user_tds:result.data.user_tds});
 
       } catch (error) {
-        console.error("Error loading TDs:", error);
+        console.error(t("LoadError") + " : " + error);
       } finally {
         setLoadingTds(false);
         setUpdate(false);

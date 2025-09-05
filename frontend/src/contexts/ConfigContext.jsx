@@ -2,10 +2,14 @@ import { createContext, useContext, useState, useEffect } from "react";
 import RandomUtils from '../utils/RandomUtils.jsx'
 import { API_URL } from '../utils/Constants.jsx'
 import Alert from '@mui/material/Alert';
+import { useTranslation } from 'react-i18next'
 
 const ConfigContext = createContext()
 
 export const ConfigProvider = ({ children }) => {
+
+    const { t } = useTranslation();
+
     const [CONFIG, setConfig] = useState(null)
     const [data, setData] = useState({})
     const [loading, setLoading] = useState(true)
@@ -22,7 +26,7 @@ export const ConfigProvider = ({ children }) => {
             }
         
             if (result.error){
-                setStatusMessage(result.error)
+                setStatusMessage(t("ConfigError"))
                 setError(true)
                 raiseErrorFlag(true)
                 setData({})

@@ -73,6 +73,14 @@ const resources = {
       "Delete":"Delete",
       // Other
       "WIP":"Coming soon...",
+      // Errors and Success
+      "LoadError":"Error while loading",
+      "SaveError":"Error while saving",
+      "DeleteError":"Error while deleting",
+      "ConfigError":"Error while loading config",
+      "LoadSuccess":"Loading successful",
+      "SaveSuccess":"Saving successful",
+      "DeleteSuccess":"Delete successful",
     }
   },
   fr: {
@@ -145,6 +153,14 @@ const resources = {
       "Delete":"Supprimer",
       // Other
       "WIP":"Ça arrive bientôt...",
+      // Errors and Success
+      "LoadError":"Erreur pendant le chargement",
+      "SaveError":"Erreur pendant la sauvegarde",
+      "DeleteError":"Erreur pendant la suppression",
+      "ConfigError":"Erreur pendant le chargement de la configuration",
+      "LoadSuccess":"Chargement réussi",
+      "SaveSuccess":"Sauvegarde réussie",
+      "DeleteSuccess":"Suppression réussie",
     }
   }
 };

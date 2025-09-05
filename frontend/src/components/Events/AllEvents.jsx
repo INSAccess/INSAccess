@@ -40,7 +40,7 @@ const TimeBar = () => {
  * @returns {JSX.Element}
  */
 const AllEvents = ({asso}) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const dayList = [t('Sunday'), t('Monday'), t('Tuesday'), t('Wednesday'), t('Thursday'), t('Friday'), t('Saturday'),];
 

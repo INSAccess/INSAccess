@@ -18,7 +18,7 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
     const BUNDLE = useData()
     const updateFunction = BUNDLE.forceUpdate
 
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     // Function to toggle selection of a TD
     const toggleTD = (tdName) => {
