@@ -76,7 +76,6 @@ const resources = {
       "ImageLoadingError" : "Failed to load image",
       "ErrorSavingTD" : "Failed to save TDs",
       "ErrorTemplate" : "An error occured",
-
       // Errors and Success
       "LoadError":"Error while loading",
       "SaveError":"Error while saving",
@@ -85,6 +84,21 @@ const resources = {
       "LoadSuccess":"Loading successful",
       "SaveSuccess":"Saving successful",
       "DeleteSuccess":"Delete successful",
+      // Form
+      "FormTitle":"Event title",
+      "FormDate":"Date",
+      "FormStartHour":"Start hour",
+      "FormEndHour":"End hour",
+      "FormDescription":"Description",
+      "FormLink":"Link",
+      "FormRoom":"Room",
+      "FormIsSubmitting":"Creating...",
+      "FormCreate":"Create event",
+      "FormReset":"Reset",
+      "FormRoomDefault":"Ma H R1 1",
+      "FormLinkDefault":"Link to buy tickets, association linktree, ...",
+      "FormTitleDefault":"The name of your event",
+      "FormDescriptionDefault":"Quick summary of your event",
     }
   },
   fr: {
@@ -160,7 +174,6 @@ const resources = {
       "ImageLoadingError" : "Echec du chargement de l'image",
       "ErrorSavingTD" : "Echec de la sauvegarde des TDs",
       "ErrorTemplate" : "Une erreur est arrivé",
-
       // Errors and Success
       "LoadError":"Erreur pendant le chargement",
       "SaveError":"Erreur pendant la sauvegarde",
@@ -169,6 +182,21 @@ const resources = {
       "LoadSuccess":"Chargement réussi",
       "SaveSuccess":"Sauvegarde réussie",
       "DeleteSuccess":"Suppression réussie",
+      // Form
+      "FormTitle":"Titre de l'événement",
+      "FormDate":"Date",
+      "FormStartHour":"Heure de début",
+      "FormEndHour":"Heure de fin",
+      "FormDescription":"Description",
+      "FormLink":"Lien",
+      "FormRoom":"Salle",
+      "FormIsSubmitting":"Création en cours...",
+      "FormCreate":"Créer l'événement",
+      "FormReset":"Effacer",
+      "FormRoomDefault":"Ma H R1 1",
+      "FormLinkDefault":"Lien de la billeterie, linktree de l'association, ...",
+      "FormTitleDefault":"Le no de votre événement",
+      "FormDescriptionDefault":"Résumé rapide de l'événement",
     }
   }
 };

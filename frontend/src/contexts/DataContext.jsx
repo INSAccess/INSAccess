@@ -12,7 +12,7 @@ const DataContext = createContext();
 export const DataProvider = (props) => {
   const CONFIG = useConfig();
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [dataAsso, setDataAsso] = useState([]);
   const [dataAgenda, setDataAgenda] = useState([]);
