@@ -1,40 +1,38 @@
 from icalendar import Calendar, Event
-from django.contrib.auth.models import User
-from core.models import UserProfile
 from django.http import HttpResponse, JsonResponse
-from core.models import InsaClass
-
+from core.models import UserProfile, InsaClass
 import logging
+
 logger = logging.getLogger(__name__)
 
-
-def generate_ics(request, ics_uid):
-    """The api route for obtaining the ics of the
-    associated user of the given ics uid
+def ics_feed(request, ics_uid):
+    """The API route for obtaining a live ICS feed for the user
+    associated with the given ICS UID.
 
     Keyword arguments:
-    ics_uid -- the ics uid of the user
-    Return: a ics file with all the event of the user
+    ics_uid -- the ICS UID of the user
+    Returns: an ICS calendar feed
     """
     try:
         userprofile = UserProfile.objects.get(ics_uid=ics_uid)
     except UserProfile.DoesNotExist:
         response = JsonResponse({'error': 'Invalid token'}, status=400)
-        logger.error("User not found for ICS generation", extra={"request": request, "status_code": response.status_code})
+        logger.error("User not found for ICS feed generation", extra={"request": request, "status_code": response.status_code})
         return response
 
     user_tds = userprofile.link_td.all()
     classes = InsaClass.objects.filter(link_td__in=user_tds).distinct()
 
     cal = Calendar()
-
-    cal.add("method", "REQUEST")
+    cal.add("method", "PUBLISH")
     cal.add("prodid", "-//Edt/version 1.0")
-    cal.add("x-wr-calname;value=text", "personnal_calendar")
+    cal.add("X-WR-CALNAME", "personnal_calendar")
     cal.add("calscale", "GREGORIAN")
     cal.add("version", "1.0")
+
     for event in classes:
         e = Event()
+        e.add("uid", event.uid)
         e.add("dtstamp", event.time_stamp)
         e.add("dtstart", event.start_hour)
         e.add("dtend", event.end_hour)
@@ -50,15 +48,16 @@ def generate_ics(request, ics_uid):
         nl = "\n"
         e.add("description", f"{nl}{nl}{nl.join(final_description)}{nl}")
 
-        e.add('uid', event.uid)
         e.add("created", event.time_created)
         e.add("last-modified", event.time_last_modified)
         e.add("sequence", event.sequence)
 
         cal.add_component(e)
 
-    response = HttpResponse(cal.to_ical().decode('utf-8'), content_type="text/calendar")
-    response['Content-Disposition'] = 'inline; filename=personnal_calendar.ics'
-    logger.info("ICS calendar generated successfully", extra={"request": request, "status_code": response.status_code})
-    return response
+    response = HttpResponse(
+        cal.to_ical(),
+        content_type="text/calendar; charset=utf-8"
+    )
 
+    logger.info("ICS feed generated successfully", extra={"request": request, "status_code": response.status_code})
+    return response
