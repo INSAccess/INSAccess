@@ -3,10 +3,16 @@ import { ErrorTemplate, Loading } from './Templates.jsx'
 import RandomUtils from '../utils/RandomUtils.jsx'
 import { useState, useEffect } from 'react'
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import './EventCreator.scss'
 import Day from '../utils/Day.jsx'
+import { useData } from '../contexts/DataContext.jsx'; 
 
 const EvenementForm = ({}) => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [errorFlag, setErrorFlag] = useState(false);
+    const [statusMessage, setStatusMessage] = useState("");
+    const { forceUpdate } = useData();
 
     // Function to save evenement to the backend
     const saveEvenement = async ({form}) => {
@@ -19,89 +25,109 @@ const EvenementForm = ({}) => {
                 body: JSON.stringify(form),
             });
             const data = await response.json();
+            setStatusMessage("Événement créé avec succès !");
+            setErrorFlag(true);
+            setIsSubmitting(true);
+            forceUpdate();
+            setTimeout(() => {
+                setIsSubmitting(false);
+            }, 2000);
         } catch (error) {
-            console.error(error)
+            console.error(error);
+            setStatusMessage("Erreur lors de la création de l'événement.");
+            setErrorFlag(true);
+            setIsSubmitting(false);
         }
     };
 
-    let date = new Date()
-    let day = new Day(date)
+    let date = new Date();
+    let day = new Day(date);
 
     function handleSubmit(e) {
-        // prevent the browser from reloading the page
         e.preventDefault();
-    
-        // read form data
         const form = e.target;
         const formData = new FormData(form);
-        // add timestamp field
-
-        //modify the start_hour field to only end with 5 or 0
-        let startHour = formData.get("start_hour")
+        let startHour = formData.get("start_hour");
         if (startHour != undefined && startHour != ""){
             if (startHour[startHour.length-1] != "5" && startHour[startHour.length-1] != "0"){
-                formData.set("start_hour", startHour.replace(/.$/, "0"))
+                formData.set("start_hour", startHour.replace(/.$/, "0"));
             }
         } else {
-            formData.set("start_hour", "08:00")
+            formData.set("start_hour", "08:00");
         }
-
-        //modify the end_hour field to only end with 5 or 0
-        let endHour = formData.get("end_hour")
+        let endHour = formData.get("end_hour");
         if (endHour != undefined && endHour != ""){
             if (endHour[endHour.length-1] != "5" && endHour[endHour.length-1] != "0"){
-                formData.set("end_hour", endHour.replace(/.$/, "5"))
+                formData.set("end_hour", endHour.replace(/.$/, "5"));
             }
         } else {
-            formData.set("end_hour", "18:15")
+            formData.set("end_hour", "18:15");
         }
-
-        
         const formJson = Object.fromEntries(formData.entries());
-        saveEvenement({ form: formJson });;
-        console.log(formJson);
+        saveEvenement({ form: formJson });
     }
 
-
-
     return (
-        <form method="post" onSubmit={handleSubmit}>
-            <label>
-            Titre de l'événement: <input name="title" placeholder="Une valeur initiale" />
-            </label>
-            <hr />
-            <label>
-            Date : <input name="date" type="date" defaultValue={day.getDate()}/>
-            </label>
-            <hr />
-            <label>
-            Heure de début : <input name="start_hour" type="time" defaultValue="08:00"/>
-            </label>
-            <hr />
-            <label>
-            Heure de fin : <input name="end_hour" type="time" defaultValue="18:15"/>
-            </label>
-            <hr />
-            <label>
-            Description : <input name="info" placeholder="Une valeur initiale" />
-            </label>
-            <hr />
-            <label>
-            Lien : <input name="associated_link" placeholder="Une valeur initiale" />
-            </label>
-            <hr />
-            <label>
-            Salle : <input name="location" placeholder="Une valeur initiale" />
-            </label>
-            <hr />
-            <button className="btn btn-primary" type="submit">Créer l'événement</button>
-            <button className="btn btn-primary" type="reset">Effacer</button>
-        </form>
-    )
-}
+        <div style={{ position: 'relative', minHeight: '100vh' }}>
+            <form method="post" onSubmit={handleSubmit}>
+                <label>
+                Titre de l'événement: <input name="title" placeholder="Une valeur initiale" />
+                </label>
+                <hr />
+                <label>
+                Date : <input name="date" type="date" defaultValue={day.getDate()}/>
+                </label>
+                <hr />
+                <label>
+                Heure de début : <input name="start_hour" type="time" defaultValue="08:00"/>
+                </label>
+                <hr />
+                <label>
+                Heure de fin : <input name="end_hour" type="time" defaultValue="18:15"/>
+                </label>
+                <hr />
+                <label>
+                Description : <input name="info" placeholder="Une valeur initiale" />
+                </label>
+                <hr />
+                <label>
+                Lien : <input name="associated_link" placeholder="Une valeur initiale" />
+                </label>
+                <hr />
+                <label>
+                Salle : <input name="location" placeholder="Une valeur initiale" />
+                </label>
+                <hr />
+                <button
+                    className="btn btn-primary"
+                    type="submit"
+                    disabled={isSubmitting}
+                >
+                    {isSubmitting ? 'Création en cours...' : 'Créer l\'événement'}
+                </button>
+                <button className="btn btn-primary" type="reset">Effacer</button>
+            </form>
+            {errorFlag &&
+                <Alert
+                    variant="success"
+                    onClose={() => setErrorFlag(false)}
+                    dismissible
+                    style={{
+                        position: 'fixed',
+                        bottom: 20,
+                        left: 20,
+                        right: 20,
+                        zIndex: 1050
+                    }}
+                >
+                    {statusMessage}
+                </Alert>
+            }
+        </div>
+    );
+};
 
 const EventCreator = () => {
-
     const [isAsso, setAsso] = useState(false);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -115,21 +141,18 @@ const EventCreator = () => {
           setError(result.error);
           setLoading(false);
         };
-    
         loadData();
     }, []);
 
-    const urlLogin = API_URL+"/login"
-    const urlCreate = API_URL+"/create"
+    const urlLogin = API_URL+"authentification/login";
+    const urlCreate = API_URL+"/create";
 
     if (loading){
         return <Loading/>
     }
-
     if (error){
         return <ErrorTemplate message={"Verification de l'identité impossible"}/>
     }
-
     if (!isAsso){
         return (
             <div>
@@ -139,7 +162,7 @@ const EventCreator = () => {
         );
     } else {
         return <EvenementForm url={urlCreate}/>
-    }  
+    }
 }
 
 export default EventCreator;

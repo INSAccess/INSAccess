@@ -3,7 +3,7 @@ from core.views import GetDayAPIView, GetWeekAPIView, GetMonthAPIView,\
     GetYearAPIView, GetTdsAPIView, PostTdsAPIView, GetIsConnectedAPIView, GetEventsAPIView,\
     GetIcsUrlAPIView, GetEvenementsAPIView, GetUserThemeAPIView, PostUserThemeAPIView, GetConfigFileAPIView\
     ,GetEnumThemeAPIView, PostInsaEvenement,GetIsAssociationPublisherAPIView, PostUserColor, GetUserProfileAPIView,\
-    GetUserLanguageAPIView, GetEnumLanguageAPIView, PostUserLanguageAPIView
+    GetUserLanguageAPIView, GetEnumLanguageAPIView, PostUserLanguageAPIView, PostDeleteEventAPIView
 
 urlpatterns = [
     path('get_day/<str:day>/', GetDayAPIView.as_view(), name='get_day'),
@@ -26,5 +26,6 @@ urlpatterns = [
     path('get_config', GetConfigFileAPIView.as_view(), name='get_config'),
     path('post_insa_evenement', PostInsaEvenement.as_view(), name='post_insa_evenement'),
     path('post_user_color', PostUserColor.as_view(), name='post_user_color'),
-    path('get_profile', GetUserProfileAPIView.as_view(), name='get_profile')
+    path('get_profile', GetUserProfileAPIView.as_view(), name='get_profile'),
+    path('post_delete_evenement/<str:uid>', PostDeleteEventAPIView.as_view(), name='post_delete_evenement'),
 ]

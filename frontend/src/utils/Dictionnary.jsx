@@ -70,6 +70,7 @@ const resources = {
       "Description":"Description : ",
       "Associations":"Association(s)",
       "Teachers":"Teacher(s)",
+      "Delete":"Delete",
       // Other
       "WIP":"Coming soon...",
     }
@@ -141,6 +142,7 @@ const resources = {
       "Description":"Description : ",
       "Associations":"Association(s)",
       "Teachers":"Professeur(s)",
+      "Delete":"Supprimer",
       // Other
       "WIP":"Ça arrive bientôt...",
     }
