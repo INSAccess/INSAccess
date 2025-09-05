@@ -154,7 +154,6 @@ const Settings = () => {
                     <ThemeSwitch id="theme"/>
                 </div>
                 <div className="margin2">
-                    <ThemeSwitch id="theme"/>
                     <LanguageSwitch id="lng"/>
                     <hr/>
                 </div>
