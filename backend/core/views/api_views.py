@@ -384,22 +384,23 @@ class GetEventsAPIView(APIView):
             logger.error("Internal server error at get_events" ,extra={"request": request, "status_code": response.status_code})
             return response
 
-class PostDeleteEventAPIView(APIView):
+class DeleteEventAPIView(APIView):
     """change the user associated theme"""
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAssociationPublisher]
 
     def post(self, request, uid):
         """"""
         try:
-            event = InsaEvenement.objects.filter(uid=uid).first()
+            associations = Association.objects.filter(associationpublisher__user=request.user)
+            event = InsaEvenement.objects.filter(uid=uid, association__in=associations).first()
             if event:
-                InsaEvenement.objects.delete(uid=uid)
+                event.delete()
                 response = Response({"success": "Evenement deleted"})
                 logger.info("User deleted association event", extra={"request": request, "status_code": response.status_code})
                 return response
             else:
                 response = Response({"error": "Event doesn't exists"}, status = 400)
-                logger.error(f"User tried to delete with a non-existent event : {theme_name}", extra={"request": request, "status_code": response.status_code})
+                logger.error(f"User tried to delete with a non-existent event : {uid}", extra={"request": request, "status_code": response.status_code})
                 return response
         except:
             response = Response({"error": "Internal server error"}, status = 500)

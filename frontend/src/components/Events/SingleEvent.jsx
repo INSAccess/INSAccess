@@ -61,8 +61,8 @@ const DeleteButton = ({eventUID, asso, teacher, assoName}) => {
 
   const handleDeleteEvent = async () => {
     try {
-      const response = await fetch(API_URL+'/api/post_delete_evenement/'+eventUID, {
-          method: 'POST',
+      const response = await fetch(API_URL+'/api/delete_evenement/'+eventUID, {
+          method: 'DELETE',
           headers: { 'Content-Type': 'application/json', 'X-CSRFToken': RandomUtils.getCSRFToken()},
           mode:"cors",
           credentials:'include',
