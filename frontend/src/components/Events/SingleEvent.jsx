@@ -84,7 +84,7 @@ const DeleteButton = ({handleClose, eventUID, asso, teacher, assoName, setStatus
   }
 
   if (asso && teacher === assoName){
-    return <button className="btn btn-primary" onClick={handleDeleteEvent}>{t('Delete')}</button>
+    return <div style={{marginTop:'2%'}}><button className="btn btn-primary" onClick={handleDeleteEvent}>{t('Delete')}</button></div>
   } else {
     return <></>
   }

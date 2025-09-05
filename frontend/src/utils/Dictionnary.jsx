@@ -84,6 +84,8 @@ const resources = {
       "LoadSuccess":"Loading successful",
       "SaveSuccess":"Saving successful",
       "DeleteSuccess":"Delete successful (reload the page to see the update)",
+      "CreationSuccess":"Creation successful (reload the page to see the update)",
+      "CreationError":"Error during creation",
       // Form
       "FormTitle":"Event title",
       "FormDate":"Date",
@@ -99,6 +101,8 @@ const resources = {
       "FormLinkDefault":"Link to buy tickets, association linktree, ...",
       "FormTitleDefault":"The name of your event",
       "FormDescriptionDefault":"Quick summary of your event",
+      "NotAnAsso":"You are not an association",
+      "ConnectAsAsso":"Connect as association",
     }
   },
   fr: {
@@ -182,6 +186,8 @@ const resources = {
       "LoadSuccess":"Chargement réussi",
       "SaveSuccess":"Sauvegarde réussie",
       "DeleteSuccess":"Suppression réussie (rechargez la page pour mettre à jour les événements)",
+      "CreationSuccess":"Création réussie (rechargez la page pour mettre à jour les événements)",
+      "CreationError":"Erreur lors de la création",
       // Form
       "FormTitle":"Titre de l'événement",
       "FormDate":"Date",
@@ -197,6 +203,8 @@ const resources = {
       "FormLinkDefault":"Lien de la billeterie, linktree de l'association, ...",
       "FormTitleDefault":"Le no de votre événement",
       "FormDescriptionDefault":"Résumé rapide de l'événement",
+      "NotAnAsso":"Vous n'êtes pas une association",
+      "ConnectAsAsso":"Se connecter en tant qu'association",
     }
   }
 };

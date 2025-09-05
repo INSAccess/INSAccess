@@ -28,7 +28,7 @@ const EvenementForm = ({}) => {
                 body: JSON.stringify(form),
             });
             const data = await response.json();
-            setStatusMessage("Événement créé avec succès !");
+            setStatusMessage(t("CreationSuccess"));
             setErrorFlag(true);
             setIsSubmitting(true);
             forceUpdate();
@@ -37,7 +37,7 @@ const EvenementForm = ({}) => {
             }, 2000);
         } catch (error) {
             console.error(error);
-            setStatusMessage("Erreur lors de la création de l'événement.");
+            setStatusMessage(t("CreationError"));
             setErrorFlag(true);
             setIsSubmitting(false);
         }
@@ -207,13 +207,13 @@ const EventCreator = () => {
         return <Loading/>
     }
     if (error){
-        return <ErrorTemplate message={"Verification de l'identité impossible"}/>
+        return <ErrorTemplate message={t("LoadError")}/>
     }
     if (!isAsso){
         return (
             <div>
-                <p>Vous n'êtes pas une association</p>
-                <Button href={urlLogin}>Se connecter en tant qu'association</Button>
+                <p>{t("NotAnAsso")}</p>
+                <Button href={urlLogin}>{t("ConnectAsAsso")}</Button>
             </div>
         );
     } else {
