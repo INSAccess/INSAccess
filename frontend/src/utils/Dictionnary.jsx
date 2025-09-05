@@ -75,8 +75,16 @@ const resources = {
       "WIP":"Coming soon...",
       "ImageLoadingError" : "Failed to load image",
       "ErrorSavingTD" : "Failed to save TDs",
-      "ErrorTemplate" : "An error occured"
+      "ErrorTemplate" : "An error occured",
 
+      // Errors and Success
+      "LoadError":"Error while loading",
+      "SaveError":"Error while saving",
+      "DeleteError":"Error while deleting",
+      "ConfigError":"Error while loading config",
+      "LoadSuccess":"Loading successful",
+      "SaveSuccess":"Saving successful",
+      "DeleteSuccess":"Delete successful",
     }
   },
   fr: {
@@ -151,9 +159,16 @@ const resources = {
       "WIP":"Ça arrive bientôt...",
       "ImageLoadingError" : "Echec du chargement de l'image",
       "ErrorSavingTD" : "Echec de la sauvegarde des TDs",
-      "ErrorTemplate" : "Une erreur est arrivé"
+      "ErrorTemplate" : "Une erreur est arrivé",
 
-
+      // Errors and Success
+      "LoadError":"Erreur pendant le chargement",
+      "SaveError":"Erreur pendant la sauvegarde",
+      "DeleteError":"Erreur pendant la suppression",
+      "ConfigError":"Erreur pendant le chargement de la configuration",
+      "LoadSuccess":"Chargement réussi",
+      "SaveSuccess":"Sauvegarde réussie",
+      "DeleteSuccess":"Suppression réussie",
     }
   }
 };

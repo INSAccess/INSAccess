@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
  */
 const EventsInDay = ({date, data, asso}) => {
   
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const dayList = [t('Sunday'), t('Monday'), t('Tuesday'), t('Wednesday'), t('Thursday'), t('Friday'), t('Saturday'),];
   const monthList = [t('January'), t('February'), t('March'), t('April'), t('May'), t('June'), t('July'), t('August'), t('September'), t('October'), t('November'), t('December')];

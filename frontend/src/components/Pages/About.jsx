@@ -6,7 +6,7 @@ import { minWidth } from "../../utils/Constants";
 
 const MainAbout = () => {
 
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     let dimensions = RandomUtils.useWindowDimensions();
 
