@@ -73,6 +73,10 @@ const resources = {
       "Delete":"Delete",
       // Other
       "WIP":"Coming soon...",
+      "ImageLoadingError" : "Failed to load image",
+      "ErrorSavingTD" : "Failed to save TDs",
+      "ErrorTemplate" : "An error occured"
+
     }
   },
   fr: {
@@ -145,6 +149,11 @@ const resources = {
       "Delete":"Supprimer",
       // Other
       "WIP":"Ça arrive bientôt...",
+      "ImageLoadingError" : "Echec du chargement de l'image",
+      "ErrorSavingTD" : "Echec de la sauvegarde des TDs",
+      "ErrorTemplate" : "Une erreur est arrivé"
+
+
     }
   }
 };

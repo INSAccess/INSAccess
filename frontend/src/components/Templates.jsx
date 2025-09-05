@@ -5,13 +5,16 @@ import { useTranslation } from 'react-i18next';
 /**
  * Custom Error handling component
  * @component
- * @returns {JSX.Element} 
+ * @returns {JSX.Element}
  */
 const ErrorTemplate = ({ message }) => {
+    const { t } = useTranslation();
+
     console.error(message)
+
     return (
         <div>
-            <p>There has been an error</p>
+            <p>{t("ErrorTemplate")}: {message}</p>
         </div>
     );
 }
@@ -19,12 +22,14 @@ const ErrorTemplate = ({ message }) => {
 /**
  * Custom Loading component
  * @component
- * @returns {JSX.Element} 
+ * @returns {JSX.Element}
  */
 const Loading = () => {
+    const { t } = useTranslation();
+
     return (
         <div className='loadingBackground'>
-            <img id="rotating-logo" src={duck} alt='image not found' ></img>
+            <img id="rotating-logo" src={duck} alt={t("ImageLoadingError")} ></img>
         </div>
     )
 }
@@ -36,7 +41,7 @@ const Loading = () => {
  */
 const WorkInProgressTemplate = () => {
 
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     return (
     <div className="WIP">

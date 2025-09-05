@@ -15,7 +15,7 @@ const MainAbout = () => {
             <div className="container">
                 <div className="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
                     {(minWidth >= dimensions.width) ? <></> : <div className="col-12 col-lg-6 col-xl-5">
-                        <img className="img-fluid rounded" loading="lazy" src={duck} alt="couldnt load duck image"></img>
+                        <img className="img-fluid rounded" loading="lazy" src={duck} alt={t("ImageLoadingError")}></img>
                     </div>}
                     <div className="col-12 col-lg-6 col-xl-7">
                         <div className="row justify-content-xl-center">
@@ -34,13 +34,13 @@ const MainAbout = () => {
 /**
  * License component
  * @component
- * @returns {JSX.Element} 
+ * @returns {JSX.Element}
  */
 const License = () => {
     return (
         <p id="license">
-            <a href="https://github.com/INSAccess/INSAccess" property="dct:title" rel="cc:attributionURL">INSAccess</a> by 
-            <span property="cc:attributionName">&nbsp;Raphaël Senellart and Jules Galhardo&nbsp;</span> 
+            <a href="https://github.com/INSAccess/INSAccess" property="dct:title" rel="cc:attributionURL">INSAccess</a> by
+            <span property="cc:attributionName">&nbsp;Raphaël Senellart and Jules Galhardo&nbsp;</span>
             is licensed under&nbsp;
             <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style={{ display: "inline-block" }} >
                 CC BY-NC-SA 4.0
@@ -56,7 +56,7 @@ const License = () => {
 /**
  * Component to display the about page and the licence of the website
  * @component
- * @returns {JSX.Element} 
+ * @returns {JSX.Element}
  */
 const About = () => {
     return (

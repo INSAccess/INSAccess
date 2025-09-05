@@ -6,9 +6,9 @@ import { useTranslation } from 'react-i18next'
 import Alert from '@mui/material/Alert'
 
 /**
- * Component listing the different TDs the user can "subscribe" to. 
+ * Component listing the different TDs the user can "subscribe" to.
  * @component
- * @returns {JSX.Element} 
+ * @returns {JSX.Element}
  */
 function TDSelection({ departementTDs, otherTDs, userTDs }) {
     const [selectedTDs, setSelectedTDs] = useState(new Set(userTDs));
@@ -18,7 +18,7 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
     const BUNDLE = useData()
     const updateFunction = BUNDLE.forceUpdate
 
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     // Function to toggle selection of a TD
     const toggleTD = (tdName) => {
@@ -45,9 +45,9 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
         setStatusMessage(data.success);
         updateFunction()
     } catch (error) {
-        
+
         raiseErrorFlag(true)
-        setStatusMessage("Echec de la sauvegarde des TDs");
+        setStatusMessage(t("ErrorSavingTD"));
     }
     };
 
@@ -72,7 +72,7 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
                         ))}
                     </div>
                 </div>
-                
+
                 {/* Deuxième liste - 12 colonnes sur mobile, 6 sur desktop */}
                 <div className="col-12 col-md-6">
                     <div className='checkbox-list'>
