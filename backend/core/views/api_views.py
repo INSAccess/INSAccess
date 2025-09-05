@@ -354,7 +354,12 @@ class GetIsAssociationPublisherAPIView(APIView):
     def get(self,request):
         """returns True if the user is authenticated else False"""
         try:
-            response = Response(AssociationPublisher.objects.filter(user = request.user).exists())
+            asso_publisher = AssociationPublisher.objects.filter(user = request.user).exists()
+            if not asso_publisher:
+                response = Response({"is_asso" : False, "asso" : None})
+            else:
+                asso = AssociationPublisher.objects.get(user = request.user).association.name
+                response = Response({"is_asso" : True, "asso" : asso})
             logger.info("Checked if user is an association publisher", extra={"request": request, "status_code": response.status_code})
             return response
         except:
@@ -377,6 +382,28 @@ class GetEventsAPIView(APIView):
         except:
             response = Response({"error": "Internal server error"}, status = 500)
             logger.error("Internal server error at get_events" ,extra={"request": request, "status_code": response.status_code})
+            return response
+
+class PostDeleteEventAPIView(APIView):
+    """change the user associated theme"""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, uid):
+        """"""
+        try:
+            event = InsaEvenement.objects.filter(uid=uid).first()
+            if event:
+                InsaEvenement.objects.delete(uid=uid)
+                response = Response({"success": "Evenement deleted"})
+                logger.info("User deleted association event", extra={"request": request, "status_code": response.status_code})
+                return response
+            else:
+                response = Response({"error": "Event doesn't exists"}, status = 400)
+                logger.error(f"User tried to delete with a non-existent event : {theme_name}", extra={"request": request, "status_code": response.status_code})
+                return response
+        except:
+            response = Response({"error": "Internal server error"}, status = 500)
+            logger.error("Internal server error at post_delete_evenement" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class GetIcsUrlAPIView(APIView):

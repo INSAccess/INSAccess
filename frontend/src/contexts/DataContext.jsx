@@ -22,6 +22,7 @@ export const DataProvider = (props) => {
   const [statusMessage, setStatusMessage] = useState("");
   const [icsLink, setIcsLink] = useState("Error when loading ics");
   const [isAssos, setIsAssos] = useState(false);
+  const [assoName, setAssoName] = useState(null);
   const [allLanguages, setAllLanguages] = useState(null);
   const [userLanguage, setUserLanguage] = useState(null);
   const [allThemes, setAllThemes] = useState(null);
@@ -83,13 +84,16 @@ export const DataProvider = (props) => {
         document.getElementById("root").setAttribute("data-theme", resultTheme.data);
         if (resultAsso.data) setDataAsso(resultAsso.data);
         if (resultAgenda.data) setDataAgenda(resultAgenda.data);
-        if (resultIsAssos.data) setIsAssos(resultIsAssos.data);
         if (resultThemes.data) setAllThemes(resultThemes.data);
         if (resultTheme.data) setUserTheme(resultTheme.data);
         if (resultIcs.data) setIcsLink(resultIcs.data);
         if (resultProfile.data) setProfile(resultProfile.data);
         if (resultLanguages.data) setAllLanguages(resultLanguages.data);
         if (resultLanguage.data) setUserLanguage(resultLanguage.data);
+        if (resultIsAssos.data) {
+          setIsAssos(resultIsAssos.data.is_asso);
+          setAssoName(resultIsAssos.data.asso)
+        }
 
         if (resultAsso.error) {
           setStatusMessage(resultAsso.error);
@@ -143,7 +147,7 @@ export const DataProvider = (props) => {
   return (
     <>
       <DataContext.Provider value={{dataAsso, dataAgenda, day, setDay, forceUpdate, changeTheme, changeLanguage, tds, icsLink, isAssos,
-         allThemes, userTheme, loadingTds, userProfile, allLanguages, userLanguage}}>
+         allThemes, userTheme, loadingTds, userProfile, allLanguages, userLanguage, assoName}}>
           {props.children}
       </DataContext.Provider>
       {errorFlag && <Alert severity="error" variant="filled" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}

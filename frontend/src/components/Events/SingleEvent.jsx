@@ -51,6 +51,37 @@ const Description = ({asso, desc}) => {
 }
 
 /**
+ * React component that only returns a delete button if this is an event of the connected association
+ * @component
+ * @returns {JSX.Element}
+ */
+const DeleteButton = ({eventUID, asso, teacher, assoName}) => {
+
+  const { t, i18n } = useTranslation();
+
+  const handleDeleteEvent = async () => {
+    try {
+      const response = await fetch(API_URL+'/api/post_delete_evenement/'+eventUID, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-CSRFToken': RandomUtils.getCSRFToken()},
+          mode:"cors",
+          credentials:'include',
+          body: JSON.stringify({}),
+      });
+      const data = await response.json();
+    } catch (error) {
+        console.error(error);
+    }
+  }
+
+  if (asso && teacher === assoName){
+    return <button className="btn btn-primary" onClick={handleDeleteEvent}>{t('Delete')}</button>
+  } else {
+    return <></>
+  }
+}
+
+/**
  * React component to display a single event
  * @component
  * @returns {JSX.Element}
@@ -92,8 +123,9 @@ const SingleEvent = (props) => {
     useEffect(() => {
       if (props.asso){//put the custom color of the users
         setColor(props.colors[props.teacher[0]]);//Take the color of the first association of the event
+      } else {
+        setColor(props.colors[props.label] || '#d44d44');
       }
-      setColor(props.colors[props.label] || '#d44d44');
     }, [props.colors, props.label, props.startTime, props.endTime, props.teacher, props.room]);
 
     async function saveColor(colorObject){
@@ -140,6 +172,8 @@ const SingleEvent = (props) => {
             <Description asso={props.asso} desc={props.desc}/>
             <br/>
             <FollowLink asso={props.asso} link={props.link}/>
+            <br/>
+            <DeleteButton eventUID={props.uid} asso={props.asso} teacher={props.teacher[0]} assoName={BUNDLE.assoName}/>
           </Modal.Body>
           <Modal.Footer>
             {errorFlag && <Alert severity="error" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}
