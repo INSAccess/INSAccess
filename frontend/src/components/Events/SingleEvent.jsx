@@ -85,11 +85,9 @@ const SingleEvent = (props) => {
     const [show, setShow] = useState(false);
     const [color, setColor] = useState(props.colors[props.label]);
     const [errorFlag, raiseErrorFlag] = useState(false);
-    const [statusMessage, setStatusMessage] = useState("")
+    const [statusMessage, setStatusMessage] = useState("");
 
     const BUNDLE = useData()
-
-
 
     useEffect(() => {
       if (props.asso){//put the custom color of the users
@@ -98,20 +96,13 @@ const SingleEvent = (props) => {
       setColor(props.colors[props.label] || '#d44d44');
     }, [props.colors, props.label, props.startTime, props.endTime, props.teacher, props.room]);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    const handleSetColor = (color) => {
-      setColor(color["hex"])
-    }
-
-    async function saveColor(){
+    async function saveColor(colorObject){
       const response = await fetch(API_URL+"/api/post_user_color", {
           method:'POST',
           headers:{'Content-Type':'application/json', 'X-CSRFToken':RandomUtils.getCSRFToken()},
           mode:'cors',
           credentials:'include',
-          body:JSON.stringify({"color" : color, "title" : props.label})
+          body:JSON.stringify({"color" : colorObject["hex"], "title" : props.label})
       });
 
       if (!response.ok){
@@ -121,7 +112,10 @@ const SingleEvent = (props) => {
         BUNDLE.forceUpdate()
         handleClose()
       }
-  }
+    }
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     return (
       <>
@@ -139,12 +133,9 @@ const SingleEvent = (props) => {
             <div><strong>{t('EndHour')}</strong>{Day.presentableHour(props.endTime)}</div>
             <div><strong>{(props.asso) ? t("Associations") : t("Teachers")} : </strong>{RandomUtils.Join(props.teacher)}</div>
              {!props.asso && (
-              <>
                 <div id="event-color-picker">
-                  <CompactPicker color={color} onChangeComplete={handleSetColor}/>
+                  <CompactPicker color={color} onChangeComplete={saveColor}/>
                 </div>
-                <Button onClick={saveColor}>{t('Save')}</Button>
-              </>
               )}
             <Description asso={props.asso} desc={props.desc}/>
             <br/>
