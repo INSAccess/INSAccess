@@ -10,15 +10,6 @@
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
 
-/*!
- * GSAP 3.13.0
- * https://gsap.com
- *
- * @license Copyright 2008-2025, GreenSock. All rights reserved.
- * Subject to the terms at https://gsap.com/standard-license
- * @author: Jack Doyle, jack@greensock.com
-*/
-
 /**
  * @license React
  * react-dom.production.min.js

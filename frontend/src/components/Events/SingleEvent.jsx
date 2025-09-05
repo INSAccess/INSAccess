@@ -93,7 +93,9 @@ const SingleEvent = (props) => {
       if (props.asso){//put the custom color of the users
         setColor(props.colors[props.teacher[0]]);//Take the color of the first association of the event
       }
+      else {
       setColor(props.colors[props.label] || '#d44d44');
+      }
     }, [props.colors, props.label, props.startTime, props.endTime, props.teacher, props.room]);
 
     async function saveColor(colorObject){
