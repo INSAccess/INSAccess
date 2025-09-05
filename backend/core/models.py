@@ -18,6 +18,18 @@ class EnumSector(models.Model):
     def __str__(self):
         return self.name
 
+class EnumLanguage(models.Model):
+    """Possible values for the sector (e.g., sport, music, etc.)"""
+    name = models.CharField(max_length=255, primary_key=True)
+
+    @classmethod
+    def get_default_language(cls):
+        language, created = cls.objects.get_or_create(name='fr')
+        return language.pk
+
+    def __str__(self):
+        return self.name
+
 class EnumColorTheme(models.Model):
     """Possible values for the color theme of the website"""
     name = models.CharField(max_length= 100, primary_key=True)
@@ -35,6 +47,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     link_td = models.ManyToManyField("GroupTD", through='UserLinkTD', related_name='users')
     color_theme = models.ForeignKey('EnumColorTheme', default=EnumColorTheme.get_default_theme, on_delete = models.SET_NULL, null=True)
+    language = models.ForeignKey('EnumLanguage', default=EnumLanguage.get_default_language, on_delete = models.SET_NULL, null=True)
+
     ics_uid = models.CharField(
         max_length=64,
         unique=True,

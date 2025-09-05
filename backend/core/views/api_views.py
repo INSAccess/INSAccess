@@ -7,7 +7,8 @@ from rest_framework.response import Response
 from core.serializers import InsaClassSerializer, InsaEvenementSerializer, \
     UserColoredEventSerializer, AssociationColoredEventSerializer
 from core.models import InsaClass, Department, GroupTD, UserLinkTD,InsaEvenement\
-    ,EnumColorTheme,Association,AssociationPublisher, Title, UserColoredEvent
+    ,EnumColorTheme,Association,AssociationPublisher, Title, UserColoredEvent, \
+    EnumLanguage
 from core.utils.categorisation import categorise
 from core.utils.fetch_ics import load_config
 from core.permissions import IsAssociationPublisher
@@ -408,6 +409,21 @@ class GetUserThemeAPIView(APIView):
             logger.error("Internal server error at get_user_theme" ,extra={"request": request, "status_code": response.status_code})
             return response
 
+class GetUserLanguageAPIView(APIView):
+    """return the user associated language"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        """"""
+        try:
+            response = Response(request.user.userprofile.language.name)
+            logger.info("Returned user language", extra={"request": request, "status_code": response.status_code})
+            return response
+        except:
+            response = Response({"error": "Internal server error"}, status = 500)
+            logger.error("Internal server error at get_user_language" ,extra={"request": request, "status_code": response.status_code})
+            return response
+
 class GetUserProfileAPIView(APIView):
     """return the user associated theme"""
     permission_classes = [IsAuthenticated]
@@ -440,11 +456,35 @@ class PostUserThemeAPIView(APIView):
                 return response
             else:
                 response = Response({"error": "Theme n'existe pas"}, status = 400)
-                logger.error(f"User tried to update with a non-existent theme : {theme}", extra={"request": request, "status_code": response.status_code})
+                logger.error(f"User tried to update with a non-existent theme : {theme_name}", extra={"request": request, "status_code": response.status_code})
                 return response
         except:
             response = Response({"error": "Internal server error"}, status = 500)
             logger.error("Internal server error at post_user_theme" ,extra={"request": request, "status_code": response.status_code})
+            return response
+
+class PostUserLanguageAPIView(APIView):
+    """change the user associated theme"""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        """"""
+        try:
+            language_name = request.data
+            language = EnumLanguage.objects.filter(name=language_name).first()
+            if language:
+                request.user.userprofile.language = language
+                request.user.userprofile.save()
+                response = Response({"success": "Language actualisé !"})
+                logger.info("User updated language", extra={"request": request, "status_code": response.status_code})
+                return response
+            else:
+                response = Response({"error": "Language doesnt exist"}, status = 400)
+                logger.error(f"User tried to update with a non-existent language : {language_name}", extra={"request": request, "status_code": response.status_code})
+                return response
+        except:
+            response = Response({"error": "Internal server error"}, status = 500)
+            logger.error("Internal server error at post_user_language" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class GetEnumThemeAPIView(APIView):
@@ -463,6 +503,21 @@ class GetEnumThemeAPIView(APIView):
             logger.error("Internal server error at get_enum_theme" ,extra={"request": request, "status_code": response.status_code})
             return response
 
+class GetEnumLanguageAPIView(APIView):
+    """return the themes"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        """"""
+        try:
+            languages = [lang.name for lang in EnumLanguage.objects.all()]
+            response = Response(languages)
+            logger.info("Returned list of available languages", extra={"request": request, "status_code": response.status_code})
+            return response
+        except:
+            response = Response({"error": "Internal server error"}, status = 500)
+            logger.error("Internal server error at get_enum_language" ,extra={"request": request, "status_code": response.status_code})
+            return response
 
 class GetConfigFileAPIView(APIView):
     """API route for returning the list of available departments in the DB"""

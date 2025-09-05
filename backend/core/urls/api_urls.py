@@ -2,7 +2,8 @@ from django.urls import path
 from core.views import GetDayAPIView, GetWeekAPIView, GetMonthAPIView,\
     GetYearAPIView, GetTdsAPIView, PostTdsAPIView, GetIsConnectedAPIView, GetEventsAPIView,\
     GetIcsUrlAPIView, GetEvenementsAPIView, GetUserThemeAPIView, PostUserThemeAPIView, GetConfigFileAPIView\
-    ,GetEnumThemeAPIView, PostInsaEvenement,GetIsAssociationPublisherAPIView, PostUserColor, GetUserProfileAPIView
+    ,GetEnumThemeAPIView, PostInsaEvenement,GetIsAssociationPublisherAPIView, PostUserColor, GetUserProfileAPIView,\
+    GetUserLanguageAPIView, GetEnumLanguageAPIView, PostUserLanguageAPIView
 
 urlpatterns = [
     path('get_day/<str:day>/', GetDayAPIView.as_view(), name='get_day'),
@@ -18,7 +19,10 @@ urlpatterns = [
     path('get_evenements', GetEvenementsAPIView.as_view(), name ='get_evenements'),
     path('get_user_theme', GetUserThemeAPIView.as_view(), name ='get_user_theme'),
     path('get_themes', GetEnumThemeAPIView.as_view(), name='get_themes'),
-    path('post_theme', PostUserThemeAPIView.as_view(), name ='post_theme'),
+    path('get_user_language', GetUserLanguageAPIView.as_view(), name ='get_user_language'),
+    path('get_languages', GetEnumLanguageAPIView.as_view(), name='get_languages'),
+    path('post_user_theme', PostUserThemeAPIView.as_view(), name ='post_user_theme'),
+    path('post_user_language', PostUserLanguageAPIView.as_view(), name ='post_user_language'),
     path('get_config', GetConfigFileAPIView.as_view(), name='get_config'),
     path('post_insa_evenement', PostInsaEvenement.as_view(), name='post_insa_evenement'),
     path('post_user_color', PostUserColor.as_view(), name='post_user_color'),
