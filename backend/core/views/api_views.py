@@ -14,11 +14,26 @@ from core.utils.fetch_ics import load_config
 from core.permissions import IsAssociationPublisher
 from django.db.models import Q
 from django.contrib.auth.models import User
-
+from config.settings import HOST_IP
+import re
 
 
 import logging
 logger = logging.getLogger(__name__)
+
+def sanitize_log_input(value: str, max_length: int = 100) -> str:
+    if value is None:
+        return ""
+
+    safe_value = str(value).strip()
+    safe_value = re.sub(r'[\n\r\t]', '_', safe_value)
+    safe_value = re.sub(r'[^0-9a-zA-Z]+', '_', safe_value)
+    safe_value = re.sub(r'_+', '_', safe_value)
+    safe_value = safe_value.strip('_')
+    if len(safe_value) > max_length:
+        safe_value = safe_value[:max_length] + "..."
+
+    return safe_value
 
 class GetDayAPIView(APIView):
     """The api that returns the event class
@@ -38,7 +53,7 @@ class GetDayAPIView(APIView):
             day_date = datetime.datetime.strptime(day, "%Y-%m-%d").date()
         except ValueError :
             response = Response({"error": "Invalid date format"}, status = 400)
-            logger.error(f"User tried to input this {day} as a date" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"User tried to input this {sanitize_log_input(day)} as a date" ,extra={"request": request, "status_code": response.status_code})
             return response
 
         try:
@@ -53,7 +68,7 @@ class GetDayAPIView(APIView):
             return response
         except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_day: {e}" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get_day: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class GetWeekAPIView(APIView):
@@ -75,7 +90,7 @@ class GetWeekAPIView(APIView):
             day_date = datetime.datetime.strptime(day, "%Y-%m-%d").date()
         except ValueError :
             response = Response({"error": "Invalid date format"}, status = 400)
-            logger.error(f"User tried to input this {day} as a date" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"User tried to input this {sanitize_log_input(day)} as a date" ,extra={"request": request, "status_code": response.status_code})
             return response
 
         try:
@@ -94,7 +109,7 @@ class GetWeekAPIView(APIView):
             return response
         except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_week: {e}" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get_week: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class GetMonthAPIView(APIView):
@@ -116,7 +131,7 @@ class GetMonthAPIView(APIView):
             day_date = datetime.datetime.strptime(day, "%Y-%m-%d").date()
         except ValueError :
             response = Response({"error": "Invalid date format"}, status = 400)
-            logger.error(f"User tried to input this {day} as a date" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"User tried to input this {sanitize_log_input(day)} as a date" ,extra={"request": request, "status_code": response.status_code})
             return response
 
         try:
@@ -137,7 +152,7 @@ class GetMonthAPIView(APIView):
             return response
         except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_month: {e}" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get_month: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 
@@ -160,7 +175,7 @@ class GetYearAPIView(APIView):
             day_date = datetime.datetime.strptime(day, "%Y-%m-%d").date()
         except ValueError :
             response = Response({"error": "Invalid date format"}, status = 400)
-            logger.error(f"User tried to input this {day} as a date" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"User tried to input this {sanitize_log_input(day)} as a date" ,extra={"request": request, "status_code": response.status_code})
             return response
 
         try:
@@ -180,7 +195,7 @@ class GetYearAPIView(APIView):
             return response
         except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_year: {e}" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get_year: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class GetTdsAPIView(APIView):
@@ -232,7 +247,7 @@ class GetTdsAPIView(APIView):
                     "user_tds": user_tds,
                     "all_tds": serialized_tds
                 })
-                logger.warning(f"Department not found {department}, defaulting to all TDs",
+                logger.warning(f"Department not found {sanitize_log_input(department)}, defaulting to all TDs",
                                extra={"request": request, "status_code": response.status_code})
                 return response
 
@@ -254,55 +269,75 @@ class GetTdsAPIView(APIView):
 
         except Exception as e:
             response = Response({"error": "Internal server error"}, status=500)
-            logger.error(f"Internal server error at get_tds: {e}",
+            logger.error(f"Internal server error at get_tds: {str(e)}",
                          extra={"request": request, "status_code": response.status_code})
             return response
 
 class PostTdsAPIView(APIView):
-    """the api route class for saving the selected tds
-    of the request user
-
-    Args:
-        APIView (class): the api class that is inherited by this route
-
-    Returns:
-        response: the serialized data
+    """
+    API route for saving the selected TDs of the authenticated user.
     """
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        """the post route for saving the selected tds
-        of the request user
-
-        Args:
-            request : the request associated with the call of this api
-
-        Returns:
-        response: the serialized success or failure
         """
+        Save the selected TDs for the user.
+        Expects JSON payload: { "selected_tds": [<td_name>, ...] }
+        """
+        user = request.user
         try:
-            selected_tds = request.data.get('selected_tds', [])
+            selected_tds = request.data.get("selected_tds")
 
-            UserLinkTD.objects.filter(user=request.user.userprofile).delete()#remove previous selection
+            if not isinstance(selected_tds, list):
+                response = Response({"error": "selected_tds must be a list"}, status=400)
+                logger.error(
+                    "Invalid payload type for selected_tds",
+                    extra={"request": request, "status_code": response.status_code},
+                )
+                return response
 
-            user_link_tds = []
+            MAX_TDS = 50
+            if len(selected_tds) > MAX_TDS:
+                response = Response({"error": f"Too many TDs selected (max {MAX_TDS})"}, status=400)
+                logger.error(
+                    f"User attempted to select {len(selected_tds)} TDs (limit {MAX_TDS})",
+                    extra={"request": request, "status_code": response.status_code},
+                )
+                return response
 
-            for td_name in selected_tds:
-                try:
-                    td = GroupTD.objects.get(name=td_name)
-                    user_link_tds.append(UserLinkTD(user=request.user.userprofile, name_td=td))
-                except GroupTD.DoesNotExist:
-                    continue  # Skip if GroupTD with this name doesn't exist
+            valid_tds = GroupTD.objects.filter(name__in=selected_tds)
+            valid_names = set(td.name for td in valid_tds)
 
-            UserLinkTD.objects.bulk_create(user_link_tds)
+            invalid_tds = set(selected_tds) - valid_names
+            if invalid_tds:
+                logger.error(
+                    f"User submitted invalid TDs: {list(invalid_tds)}",
+                    extra={"request": request, "status_code": 400},
+                )
+
+            UserLinkTD.objects.filter(user=user.userprofile).delete()
+
+            user_link_tds = [
+                UserLinkTD(user=user.userprofile, name_td=td) for td in valid_tds
+            ]
+            if user_link_tds:
+                UserLinkTD.objects.bulk_create(user_link_tds)
 
             response = Response({"success": "Sélection actualisée !"})
-            logger.info("User updated TD selection", extra={"request": request, "status_code": response.status_code})
+            logger.info(
+                f"User updated TD selection: {len(user_link_tds)} valid, {len(invalid_tds)} invalid",
+                extra={"request": request, "status_code": response.status_code},
+            )
             return response
+
         except Exception as e:
-            response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at post_tds: {e}" ,extra={"request": request, "status_code": response.status_code})
+            response = Response({"error": "Internal server error"}, status=500)
+            logger.error(
+                f"Internal server error at post_tds: {str(e)}",
+                extra={"request": request, "status_code": response.status_code},
+            )
             return response
+
 
 
 class GetEvenementsAPIView(APIView):
@@ -318,7 +353,7 @@ class GetEvenementsAPIView(APIView):
             return response
         except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_evenements: {e}" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get_evenements: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 
@@ -341,7 +376,7 @@ class GetIsConnectedAPIView(APIView):
             return response
         except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_is_connected {e}" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get_is_connected {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class GetIsAssociationPublisherAPIView(APIView):
@@ -359,34 +394,17 @@ class GetIsAssociationPublisherAPIView(APIView):
     def get(self,request):
         """returns True if the user is authenticated else False"""
         try:
-            asso_publisher = AssociationPublisher.objects.filter(user = request.user).exists()
+            asso_publisher = AssociationPublisher.objects.filter(user = request.user).first()
             if not asso_publisher:
                 response = Response({"is_asso" : False, "asso" : None})
             else:
-                asso = AssociationPublisher.objects.get(user = request.user).association.name
+                asso = asso_publisher.association.name
                 response = Response({"is_asso" : True, "asso" : asso})
             logger.info("Checked if user is an association publisher", extra={"request": request, "status_code": response.status_code})
             return response
         except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_is_association_publisher : {e}" ,extra={"request": request, "status_code": response.status_code})
-            return response
-
-class GetEventsAPIView(APIView):
-    """API route for visualizing the description of the events"""
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        """returns a list of event descriptions"""
-        try:
-            events = [categorise(e.desc.name) for e in InsaClass.objects.all()]
-
-            response = Response({"events" : events})
-            logger.info("Categorised and returned INSA class events", extra={"request": request, "status_code": response.status_code})
-            return response
-        except Exception as e:
-            response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_events : {e}" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get_is_association_publisher : {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class DeleteEventAPIView(APIView):
@@ -405,11 +423,11 @@ class DeleteEventAPIView(APIView):
                 return response
             else:
                 response = Response({"error": "Event doesn't exists"}, status = 400)
-                logger.error(f"User tried to delete with a non-existent event : {uid}", extra={"request": request, "status_code": response.status_code})
+                logger.error(f"User tried to delete with a non-existent event : {sanitize_log_input(uid)}", extra={"request": request, "status_code": response.status_code})
                 return response
         except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at post_delete_evenement: {e}" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at post_delete_evenement: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class GetIcsUrlAPIView(APIView):
@@ -421,12 +439,12 @@ class GetIcsUrlAPIView(APIView):
     def get(self, request):
         """"""
         try:
-            response = Response(f"{request.get_host()}/ics/{request.user.userprofile.ics_uid}")
+            response = Response(f"https://{HOST_IP}/ics/{request.user.userprofile.ics_uid}")
             logger.info("Returned ICS URL for user", extra={"request": request, "status_code": response.status_code})
             return response
         except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_ics_url: {e}" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get_ics_url: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class GetUserThemeAPIView(APIView):
@@ -441,7 +459,7 @@ class GetUserThemeAPIView(APIView):
             return response
         except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_user_theme: {e}" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get_user_theme: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class GetUserLanguageAPIView(APIView):
@@ -456,7 +474,7 @@ class GetUserLanguageAPIView(APIView):
             return response
         except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_user_language: {e}" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get_user_language: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class GetUserProfileAPIView(APIView):
@@ -469,9 +487,9 @@ class GetUserProfileAPIView(APIView):
             response = Response({"displayName": request.session.get('attributes', {}).get("first_name", "")})
             logger.info("Returned user profile", extra={"request": request, "status_code": response.status_code})
             return response
-        except:
+        except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error("Internal server error at get_profile" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get_profile: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class PostUserThemeAPIView(APIView):
@@ -491,11 +509,11 @@ class PostUserThemeAPIView(APIView):
                 return response
             else:
                 response = Response({"error": "Theme n'existe pas"}, status = 400)
-                logger.error(f"User tried to update with a non-existent theme : {theme_name}", extra={"request": request, "status_code": response.status_code})
+                logger.error(f"User tried to update with a non-existent theme : {sanitize_log_input(theme_name)}", extra={"request": request, "status_code": response.status_code})
                 return response
-        except:
+        except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error("Internal server error at post_user_theme" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at post_user_theme: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class PostUserLanguageAPIView(APIView):
@@ -515,11 +533,11 @@ class PostUserLanguageAPIView(APIView):
                 return response
             else:
                 response = Response({"error": "Language doesnt exist"}, status = 400)
-                logger.error(f"User tried to update with a non-existent language : {language_name}", extra={"request": request, "status_code": response.status_code})
+                logger.error(f"User tried to update with a non-existent language : {sanitize_log_input(language_name)}", extra={"request": request, "status_code": response.status_code})
                 return response
-        except:
+        except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error("Internal server error at post_user_language" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at post_user_language: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class GetEnumThemeAPIView(APIView):
@@ -533,9 +551,9 @@ class GetEnumThemeAPIView(APIView):
             response = Response(themes)
             logger.info("Returned list of available color themes", extra={"request": request, "status_code": response.status_code})
             return response
-        except:
+        except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error("Internal server error at get_enum_theme" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get_enum_theme: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class GetEnumLanguageAPIView(APIView):
@@ -549,9 +567,9 @@ class GetEnumLanguageAPIView(APIView):
             response = Response(languages)
             logger.info("Returned list of available languages", extra={"request": request, "status_code": response.status_code})
             return response
-        except:
+        except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error("Internal server error at get_enum_language" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get_enum_language: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class GetConfigFileAPIView(APIView):
@@ -565,9 +583,9 @@ class GetConfigFileAPIView(APIView):
             response = Response(CONFIG)
             logger.info("Returned configuration data", extra={"request": request, "status_code": response.status_code})
             return response
-        except:
+        except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error("Internal server error at get_config_file" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get_config_file: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 
@@ -645,9 +663,9 @@ class Users(APIView):
             response = Response(users)
             logger.info("Returned list of the users", extra={"request": request, "status_code": response.status_code})
             return response
-        except:
+        except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error("Internal server error at get users" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get users: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class Friends(APIView):
@@ -678,12 +696,12 @@ class Friends(APIView):
                     result["friends"].append(other_user.username)
                 else:
                     result[pending_type].append(other_user.username)
-
+            logger.info("Fetched list of friends")
             return Response(result)
 
         except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error("Internal server error at GET /friends" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at GET /friends: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
     def delete(self, request):
@@ -694,12 +712,13 @@ class Friends(APIView):
         user = request.user
         data = request.data
 
-        other_user = data.get("other_user")
-        if not other_user:
-            return Response({"error": "Provide other_user_id or other_username"}, status=400)
+        other_username = data.get("other_user")
+        if not other_username:
+            return Response({"error": "Provide a other_user in the delete request"}, status=400)
         try:
-            other_user = User.objects.get(username=other_user)
+            other_user = User.objects.get(username=other_username)
         except User.DoesNotExist:
+            logger.error(f"User tried to delete a relation with non existing user : {sanitize_log_input(other_username)}")
             return Response({"error": "User not found"}, status=404)
 
         try:
@@ -710,12 +729,15 @@ class Friends(APIView):
 
             if relationship:
                 relationship.delete()
-                return Response({"success": f"Relationship with {other_user.username} deleted"})
+                logger.info(f"User removed his relationship with {sanitize_log_input(other_username)}")
+                return Response({"success": f"Relationship with {other_username} deleted"})
             else:
+                logger.error(f"User tried to delete a non existing relation with {sanitize_log_input(other_username)}")
                 return Response({"error": "No such relationship found"}, status=404)
+
         except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error("Internal server error at DELETE /friends" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at DELETE /friends: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
     def post(self, request):
@@ -738,8 +760,10 @@ class Friends(APIView):
         try:
             other_user = User.objects.get(username=other_username)
         except User.DoesNotExist:
+            logger.error(f"User tried to add a relation with non existing user : {sanitize_log_input(other_username)}")
             return Response({"error": "User not found"}, status=404)
         if other_user == user:
+            logger.error(f"User tried to add a relation with itself")
             return Response({"error": "You can't add yourself as a friend"}, status=400)
         try:
             relationship = UserRelationship.objects.filter(
@@ -753,12 +777,14 @@ class Friends(APIView):
                     second_user=other_user,
                     type=UserRelationship.RelationshipType.PENDING
                 )
-                return Response({"success": f"Friend request sent to {other_user.username}"})
+                logger.info(f"User sent a friend request with {sanitize_log_input(other_username)}")
+                return Response({"success": f"Friend request sent to {other_username}"})
 
             elif relationship.type == UserRelationship.RelationshipType.PENDING and relationship.second_user == user:
                 relationship.type = UserRelationship.RelationshipType.FRIEND
                 relationship.save()
-                return Response({"success": f"You are now friends with {other_user.username}"})
+                logger.info(f"User accepted the friend request of {sanitize_log_input(other_username)}")
+                return Response({"success": f"You are now friends with {other_username}"})
 
             else:
                 # Any other case (already FRIEND, or PENDING in the other way)
@@ -781,6 +807,7 @@ class FriendCalendar(APIView):
         try:
             other_user = User.objects.get(username=username)
         except User.DoesNotExist:
+            logger.error(f"User tried to add a relation with non existing user : {sanitize_log_input(username)}")
             return Response({"error": "User not found"}, status=404)
 
         relationship = UserRelationship.objects.filter(
@@ -788,6 +815,7 @@ class FriendCalendar(APIView):
             (Q(first_user=other_user) & Q(second_user=user))) & Q(type = UserRelationship.RelationshipType.FRIEND)
         ).first()
         if not relationship:
+            logger.error(f"User tried to view non friend calendar of : {sanitize_log_input(username)}")
             return Response({"error": "You are not friend with this person"}, status=400)
         try:
             start_of_month = datetime.date.today()
@@ -801,9 +829,9 @@ class FriendCalendar(APIView):
             colors_serializer = UserColoredEventSerializer(UserColoredEvent.objects.filter(user = user).distinct(),
                                                         context={'request': request}, many=False)
             response = Response({"events" : serializer.data, "colors" : colors_serializer.data})
-            logger.info("User fetched events",extra={"request": request, "status_code": response.status_code})
+            logger.info("User fetched friend's events",extra={"request": request, "status_code": response.status_code})
             return response
-        except:
+        except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
-            logger.error("Internal server error at get_month" ,extra={"request": request, "status_code": response.status_code})
+            logger.error(f"Internal server error at get_friend_calendar: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
