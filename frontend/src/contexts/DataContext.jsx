@@ -31,6 +31,10 @@ export const DataProvider = (props) => {
   const [userProfile, setProfile] = useState(null);
   const [tds, setTds] = useState({});
   const [updateCounter, setUpdateCounter] = useState(0);
+  const [userList, setUserList] = useState(["tes", "alice", "bob", "dav", "carole"]);
+  const [friendsList, setFriendsList] = useState(["alice", "bob"]);
+  const [pendingList, setPendingList] = useState(["dav"]);
+  const [receivedList, setReceivedList] = useState(["tes"]);
 
   const dayList = [t('Sunday'), t('Monday'), t('Tuesday'), t('Wednesday'), t('Thursday'), t('Friday'), t('Saturday')];
   let dimensions = RandomUtils.useWindowDimensions();
@@ -51,7 +55,6 @@ export const DataProvider = (props) => {
     setUserLanguage(lang)
   }
 
-
   useEffect(() => {
     if (userLanguage) {
       i18n.changeLanguage(userLanguage);
@@ -65,11 +68,21 @@ export const DataProvider = (props) => {
       if (!shouldUpdate) return;
       if (props.page !== "home") return;
       if (!CONFIG) return;
-
       setLoading(true);
       try {
-        const [resultAsso, resultAgenda, resultTheme, resultIcs, resultIsAssos, resultThemes,
-           resultProfile, resultLanguages, resultLanguage] = await Promise.all([
+        const [
+          resultAsso,
+          resultAgenda,
+          resultTheme,
+          resultIcs,
+          resultIsAssos,
+          resultThemes,
+          resultProfile,
+          resultLanguages,
+          resultLanguage,
+          resultUsers,
+          resultFriends,
+        ] = await Promise.all([
           RandomUtils.fetchData(PATH_ASSO),
           RandomUtils.fetchData(PATH_CALENDAR + day),
           RandomUtils.fetchData(API_URL + "/api/get_user_theme"),
@@ -78,9 +91,12 @@ export const DataProvider = (props) => {
           RandomUtils.fetchData(API_URL + "/api/get_themes"),
           RandomUtils.fetchData(API_URL + "/api/get_profile"),
           RandomUtils.fetchData(API_URL + "/api/get_languages"),
-          RandomUtils.fetchData(API_URL + "/api/get_user_language")
+          RandomUtils.fetchData(API_URL + "/api/get_user_language"),
+          RandomUtils.fetchData(API_URL + "/api/users"),
+          RandomUtils.fetchData(API_URL + "/api/friends"),
         ]);
-
+  
+        // Gestion des données existantes...
         document.getElementById("root").setAttribute("data-theme", resultTheme.data);
         if (resultAsso.data) setDataAsso(resultAsso.data);
         if (resultAgenda.data) setDataAgenda(resultAgenda.data);
@@ -92,19 +108,22 @@ export const DataProvider = (props) => {
         if (resultLanguage.data) setUserLanguage(resultLanguage.data);
         if (resultIsAssos.data) {
           setIsAssos(resultIsAssos.data.is_asso);
-          setAssoName(resultIsAssos.data.asso)
+          setAssoName(resultIsAssos.data.asso);
         }
-
-        if (resultAsso.error) {
-          setStatusMessage(resultAsso.error);
-          raiseErrorFlag(true);
-        } else if (resultAgenda.error) {
-          setStatusMessage(resultAgenda.error);
-          raiseErrorFlag(true);
-        } else if (resultTheme.error) {
-          setStatusMessage(resultTheme.error);
-          raiseErrorFlag(true);
+  
+        // Gestion de userList
+        if (resultUsers.data) {
+          setUserList(resultUsers.data);
         }
+  
+        // Gestion des amis/pendings/received
+        if (resultFriends.data) {
+          const friendsData = resultFriends.data;
+          setFriendsList(friendsData.FRIEND || []);
+          setPendingList(friendsData.PENDING12 || []);
+          setReceivedList(friendsData.PENDING21 || []);
+        }
+  
       } catch (error) {
         setStatusMessage(t("LoadError") + " : " + error);
         raiseErrorFlag(true);
@@ -112,7 +131,6 @@ export const DataProvider = (props) => {
         setLoading(false);
       }
     };
-
     loadMainData();
   }, [shouldUpdate, day, props.page, CONFIG, updateCounter]);
 
@@ -147,7 +165,7 @@ export const DataProvider = (props) => {
   return (
     <>
       <DataContext.Provider value={{dataAsso, dataAgenda, day, setDay, forceUpdate, changeTheme, changeLanguage, tds, icsLink, isAssos,
-         allThemes, userTheme, loadingTds, userProfile, allLanguages, userLanguage, assoName}}>
+         allThemes, userTheme, loadingTds, userProfile, allLanguages, userLanguage, assoName, userList, friendsList, setFriendsList, pendingList, setPendingList, receivedList, setReceivedList}}>
           {props.children}
       </DataContext.Provider>
       {errorFlag && <Alert severity="error" variant="filled" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}

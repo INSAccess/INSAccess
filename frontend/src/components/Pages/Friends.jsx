@@ -1,14 +1,138 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { useData } from '../../contexts/DataContext.jsx';
+import RandomUtils from '../../utils/RandomUtils.jsx';
+import { API_URL } from '../../utils/Constants.jsx'
 import './Friends.scss'
 
 const Friends = () => {
-    const { userTheme } = useData();
+    const { userTheme, userList, friendsList, setFriendsList, pendingList, setPendingList, receivedList, setReceivedList } = useData();
+
+    const [availableUsers, setAvailableUsers] = useState([]);
+    const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [showSuggestions, setShowSuggestions] = useState(false);
+
+    useEffect(() => {
+        // Filtrer les utilisateurs disponibles (pas déjà amis, pas déjà en cours d'invitation)
+        const newAvailableUsers = userList.filter(user =>
+            !friendsList.includes(user) &&
+            !pendingList.includes(user) &&
+            !receivedList.includes(user)
+        );
+        setAvailableUsers(newAvailableUsers);
+    }, [userList, friendsList, pendingList, receivedList]);
     
-    let userList = ["tes", "alice", "bob", "dav", "carole"]
-    let friendsList = ["alice", "bob"]
-    let pendingList = ["dav"]
-    let receivedList = ["tes"]
+    useEffect(() => {
+        if (searchTerm.trim() === "") {
+            setFilteredSuggestions([]);
+            return;
+        }
+        setFilteredSuggestions(
+            availableUsers.filter(user =>
+                user.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+        );
+    }, [availableUsers, searchTerm]);
+   
+
+    const handleCancel = async (username) => {
+        try {
+          const result = await RandomUtils.fetchDataWithMethod(
+            `${API_URL}/api/friends/`,
+            'DELETE',
+            { other_user: username }
+          );
+          if (result.error) {
+            console.error("Erreur lors de l'annulation de l'invitation:", result.error);
+            return;
+          }
+          setPendingList(pendingList.filter(e => e !== username));
+        } catch (error) {
+          console.error("Erreur réseau:", error);
+        }
+      };
+      
+
+    const handleSendInvitation = async (username) => {
+        try {
+          const result = await RandomUtils.fetchDataWithMethod(
+            `${API_URL}/api/friends/`,
+            'POST',
+            { other_user: username }
+          );
+          if (result.error) {
+            console.error("Erreur lors de l'envoi de l'invitation:", result.error);
+            return;
+          }
+          setPendingList(prev => {
+            if (!prev.includes(username)) {
+              return [...prev, username];
+            }
+            return prev;
+          });
+          setSearchTerm("");
+          setShowSuggestions(false);
+        } catch (error) {
+          console.error("Erreur réseau:", error);
+        }
+      };
+      
+
+      const handleAccept = async (username) => {
+        try {
+          const result = await RandomUtils.fetchDataWithMethod(
+            `${API_URL}/api/friends/`,
+            'POST',
+            { other_user: username }
+          );
+          if (result.error) {
+            console.error("Erreur lors de l'acceptation de l'invitation:", result.error);
+            return;
+          }
+          setReceivedList(receivedList.filter(e => e !== username));
+          setFriendsList(prev => {
+            if (!prev.includes(username)) {
+              return [...prev, username];
+            }
+            return prev;
+          });
+        } catch (error) {
+          console.error("Erreur réseau:", error);
+        }
+      };
+      
+
+      const handleDeleteFriend = async (username) => {
+        try {
+          const result = await RandomUtils.fetchDataWithMethod(
+            `${API_URL}/api/friends/`,
+            'DELETE',
+            { other_user: username }
+          );
+          if (result.error) {
+            console.error("Erreur lors de la suppression de l'ami:", result.error);
+            return;
+          }
+          setFriendsList(friendsList.filter(e => e !== username));
+        } catch (error) {
+          console.error("Erreur réseau:", error);
+        }
+      };
+      
+
+    const handleSeeCalendar = (username) => {
+        console.log("See calendar")
+    }
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+        setShowSuggestions(e.target.value.length > 0);
+    }
+
+    const handleSearchBlur = () => {
+        // Délai pour permettre le clic sur une suggestion
+        setTimeout(() => setShowSuggestions(false), 200);
+    }
 
     let friendsItems = []
     for (let i = 0; i < friendsList.length; i++){
@@ -16,10 +140,10 @@ const Friends = () => {
             <li className="list-group-item d-flex justify-content-between align-items-center themed-list-item" key={i}>
                 <span>{friendsList[i]}</span>
                 <div>
-                    <button type="button" className="btn btn-outline-success me-2">
+                    <button type="button" className="btn btn-outline-success me-2" onClick={() => handleSeeCalendar(friendsList[i])}>
                         Voir l'agenda
                     </button>
-                    <button type="button" className="btn btn-outline-danger">
+                    <button type="button" className="btn btn-outline-danger" onClick={() => handleDeleteFriend(friendsList[i])}>
                         Retirer l'ami
                     </button>
                 </div>
@@ -30,8 +154,11 @@ const Friends = () => {
     let pendingItems = []
     for (let i = 0; i < pendingList.length; i++){
         pendingItems.push(
-            <li className="list-group-item themed-list-item" key={i}>
-                {pendingList[i]}
+            <li className="list-group-item d-flex justify-content-between align-items-center themed-list-item" key={i}>
+                <span>{pendingList[i]}</span>
+                <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel(pendingList[i])}>
+                        Annuler
+                </button>
             </li>
         )
     }
@@ -41,7 +168,7 @@ const Friends = () => {
         receivedItems.push(
             <li className="list-group-item d-flex justify-content-between align-items-center themed-list-item" key={i}>
                 <span>{receivedList[i]}</span>
-                <button type="button" className="btn btn-outline-success me-2">
+                <button type="button" className="btn btn-outline-success" onClick={() => handleAccept(receivedList[i])}>
                     Accepter
                 </button>
             </li>
@@ -50,20 +177,64 @@ const Friends = () => {
 
     return (
         <div className="row friends-container" style={{margin:"2%"}} data-theme={userTheme}>
-            <input className="form-control me-2 themed-input" type="search" placeholder="Search" aria-label="Search"/>
+            <div className="search-container">
+                <input 
+                    className="form-control me-2 themed-input" 
+                    type="search" 
+                    placeholder="Rechercher un utilisateur..." 
+                    aria-label="Search"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    onFocus={() => setShowSuggestions(searchTerm.length > 0)}
+                    onBlur={handleSearchBlur}
+                />
+                
+                {showSuggestions && filteredSuggestions.length > 0 && (
+                    <div className="suggestions-dropdown">
+                        {filteredSuggestions.map((user, index) => (
+                            <div 
+                                key={index}
+                                className="suggestion-item"
+                                onClick={() => handleSendInvitation(user)}
+                            >
+                                <span className="suggestion-username">{user}</span>
+                                <button 
+                                    type="button" 
+                                    className="btn btn-outline-primary btn-sm"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleSendInvitation(user);
+                                    }}
+                                >
+                                    Inviter
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+                
+                {showSuggestions && searchTerm.length > 0 && filteredSuggestions.length === 0 && (
+                    <div className="suggestions-dropdown">
+                        <div className="suggestion-item no-results">
+                            Aucun utilisateur trouvé
+                        </div>
+                    </div>
+                )}
+            </div>
+
             <div className="col-md-6">
-                <h2 className="themed-title">Amis</h2>
+                <h2 className="themed-title">Amis ({friendsList.length})</h2>
                 <ul className="list-group themed-list">
                     {friendsItems}
                 </ul>            
             </div>
             <div className="col-md-6">
-                <h2 className="themed-title">Invations envoyées</h2>
+                <h2 className="themed-title">Invitations envoyées ({pendingList.length})</h2>
                 <ul className="list-group themed-list">
                     {pendingItems}
                 </ul>
                 <hr className="themed-hr"/>
-                <h2 className="themed-title">Invations reçues</h2>
+                <h2 className="themed-title">Invitations reçues ({receivedList.length})</h2>
                 <ul className="list-group themed-list">
                     {receivedItems}
                 </ul>
