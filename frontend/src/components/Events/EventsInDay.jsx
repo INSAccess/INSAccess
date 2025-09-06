@@ -25,7 +25,7 @@ const EventsInDay = ({date, data, asso}) => {
   let i = 0;
   let day = new Day(date);
   const infos = day.getDateInfo(dayList, monthList);
-  const eventsOfDay = EventUtils.getEventsOfDay(date, data["events"]);
+  const eventsOfDay = EventUtils.getEventsOfDay(date, data["events"]).sort((a, b) => (parseInt(a.end_hour)-parseInt(a.start_hour)) - (parseInt(b.end_hour)-parseInt(b.start_hour)));
 
   for (let element of eventsOfDay){
     const nbOverlapTotal = EventUtils.getOverlappingEvents(element, eventsOfDay);
