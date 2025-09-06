@@ -32,10 +32,11 @@ export const DataProvider = (props) => {
   const [userProfile, setProfile] = useState(null);
   const [tds, setTds] = useState({});
   const [updateCounter, setUpdateCounter] = useState(0);
-  const [userList, setUserList] = useState(["tes", "alice", "bob", "dav", "carole"]);
-  const [friendsList, setFriendsList] = useState(["alice", "bob"]);
-  const [pendingList, setPendingList] = useState(["dav"]);
-  const [receivedList, setReceivedList] = useState(["tes"]);
+  const [userList, setUserList] = useState([]);
+  const [friendsList, setFriendsList] = useState([]);
+  const [pendingList, setPendingList] = useState([]);
+  const [receivedList, setReceivedList] = useState([]);
+  const [showCalendar, setShowCalendar] = useState(false);
 
   const dayList = [t('Sunday'), t('Monday'), t('Tuesday'), t('Wednesday'), t('Thursday'), t('Friday'), t('Saturday')];
   let dimensions = RandomUtils.useWindowDimensions();
@@ -167,7 +168,7 @@ export const DataProvider = (props) => {
     <>
       <DataContext.Provider value={{dataAsso, dataAgenda, day, setDay, forceUpdate, changeTheme, changeLanguage, tds, icsLink, isAssos,
          allThemes, userTheme, loadingTds, userProfile, allLanguages, userLanguage, assoName, userList, friendsList, setFriendsList, pendingList, 
-         setPendingList, receivedList, setReceivedList, dataFriend, setDataFriend}}>
+         setPendingList, receivedList, setReceivedList, dataFriend, setDataFriend, showCalendar, setShowCalendar}}>
           {props.children}
       </DataContext.Provider>
       {errorFlag && <Alert severity="error" variant="filled" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}

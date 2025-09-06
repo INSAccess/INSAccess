@@ -129,15 +129,30 @@ const AllEvents = ({dataOrigin}) => {
   }
 
   return (
-    <div className="calendar" ref={calendarRef}>
-      <button type="button" className="arrow-left" onClick={() => {handleDay("prev", skipDays)}}></button>
-      <TimeBar />
-      <div className="days">
-        {listDays}
-      </div>
-      <button type="button" className="arrow-right turned" onClick={() => {handleDay("next", skipDays)}}></button>
-    </div>      
+    <>
+      {dataOrigin == "friend" && (
+        <div className="calendar-close-button-wrapper">
+          <button
+            type="button"
+            className="btn btn-primary calendar-close-button"
+            onClick={() => BUNDLE.setShowCalendar(false)}
+          >
+            {t('Welcome')}
+          </button>
+        </div>
+      )}
+  
+      <div className="calendar" ref={calendarRef}>
+        <button type="button" className="arrow-left" onClick={() => {handleDay("prev", skipDays)}}></button>
+        <TimeBar />
+        <div className="days">
+          {listDays}
+        </div>
+        <button type="button" className="arrow-right turned" onClick={() => {handleDay("next", skipDays)}}></button>
+      </div>      
+    </>
   );
+  
 }
 
 export default AllEvents;

@@ -484,7 +484,7 @@ class GetUserProfileAPIView(APIView):
     def get(self,request):
         """"""
         try:
-            response = Response({"displayName": request.session.get('attributes', {}).get("first_name", "")})
+            response = Response({"username":request.user.username, "displayName": request.session.get('attributes', {}).get("first_name", "")})
             logger.info("Returned user profile", extra={"request": request, "status_code": response.status_code})
             return response
         except Exception as e:
