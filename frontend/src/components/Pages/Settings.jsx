@@ -1,7 +1,7 @@
 import TDSelection from '../TDSelection.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
 import { useEffect, useState, useRef } from 'react';
-import { API_URL, minWidth, LANGUAGES } from '../../utils/Constants.jsx'
+import { API_URL, minWidth, REPORT_FORM } from '../../utils/Constants.jsx'
 import EventCreator from '../EventCreator.jsx';
 import Button from 'react-bootstrap/Button';
 import DropDownCustom from '../DropDownCustom.jsx'
@@ -149,14 +149,21 @@ const Settings = () => {
     const OtherParams = () => {
         return (
             <>
-                <div className="margin2">
-                    <ThemeSwitch id="theme"/>
+                <div className="row">
+                    <div className="col-6">
+                        <div className="margin2">
+                            <ThemeSwitch id="theme"/>
+                        </div>
+                        <div className="margin2">
+                            <LanguageSwitch id="lng"/>
+                        </div>
+                    </div>
+                    <div className="col-6 mx-auto">
+                        <a href={REPORT_FORM} target="_blank" rel="noopener noreferrer" type="button" className="btn btn-primary margin2">{t("Report")}</a>
+                    </div>
                 </div>
                 <div className="margin2">
-                    <LanguageSwitch id="lng"/>
                     <hr/>
-                </div>
-                <div className="margin2">
                     <h4>{t('ICSLink')}</h4>
                     <p>{t('ICSText')}</p>
                 </div>
