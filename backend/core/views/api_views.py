@@ -1,5 +1,6 @@
 import datetime
 from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -35,167 +36,50 @@ def sanitize_log_input(value: str, max_length: int = 100) -> str:
 
     return safe_value
 
-class GetDayAPIView(APIView):
-    """The api that returns the event class
-    of the request user for the day
-
-    Args:
-        APIView (class): the api class that is inherited by this route
-
-    Returns:
-        response: the serialized data
-    """
+class GetCalendarAPIView(APIView):
+    """Returns events for the last month and next 5 months for the user's TDs."""
     permission_classes = [IsAuthenticated]
 
     def get(self, request, day):
-        """Returns the Json for the given day (of the format YYYY-MM-DD)"""
+        """Returns the JSON for the month range based on the given day (YYYY-MM-DD)"""
         try:
             day_date = datetime.datetime.strptime(day, "%Y-%m-%d").date()
-        except ValueError :
-            response = Response({"error": "Invalid date format"}, status = 400)
-            logger.error(f"User tried to input this {sanitize_log_input(day)} as a date" ,extra={"request": request, "status_code": response.status_code})
+        except ValueError:
+            response = Response({"error": "Invalid date format"}, status=400)
+            logger.error(
+                f"User tried to input this {sanitize_log_input(day)} as a date",
+                extra={"request": request, "status_code": response.status_code}
+            )
             return response
 
         try:
-            user_tds = request.user.userprofile.link_td.all()
-
-            classes = InsaClass.objects.filter(link_td__in=user_tds, date = day_date).distinct()
-            serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
-            colors_serializer = UserColoredEventSerializer(UserColoredEvent.objects.filter(user = request.user).distinct(),
-                                                        context={'request': request}, many=False)
-            response = Response({"events" : serializer.data, "colors" : colors_serializer.data})
-            logger.info("User fetched events",extra={"request": request, "status_code": response.status_code})
-            return response
-        except Exception as e:
-            response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_day: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
-            return response
-
-class GetWeekAPIView(APIView):
-    """The api that returns the event class
-    of the request user for the week
-
-    Args:
-        APIView (class): the api class that is inherited by this route
-
-    Returns:
-        response: the serialized data
-    """
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, day):
-        """Returns the Json for the week of the given day
-        (of the format YYYY-MM-DD)"""
-        try:
-            day_date = datetime.datetime.strptime(day, "%Y-%m-%d").date()
-        except ValueError :
-            response = Response({"error": "Invalid date format"}, status = 400)
-            logger.error(f"User tried to input this {sanitize_log_input(day)} as a date" ,extra={"request": request, "status_code": response.status_code})
-            return response
-
-        try:
-            start_of_week = day_date - datetime.timedelta(days=day_date.weekday())  # Monday
-            end_of_week = start_of_week + datetime.timedelta(days=6)  # Sunday
+            start_date = (day_date - relativedelta(months=1)).replace(day=1)
+            end_date = (day_date + relativedelta(months=5)).replace(day=1) + relativedelta(months=1) - datetime.timedelta(days=1)
 
             user_tds = request.user.userprofile.link_td.all()
+            classes = InsaClass.objects.filter(
+                link_td__in=user_tds,
+                date__range=[start_date, end_date]
+            ).distinct()
 
-            classes = InsaClass.objects.filter(link_td__in=user_tds,
-                                            date__range =[start_of_week, end_of_week]).distinct()
             serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
-            colors_serializer = UserColoredEventSerializer(UserColoredEvent.objects.filter(user = request.user).distinct(),
-                                                        context={'request': request}, many=False)
-            response = Response({"events" : serializer.data, "colors" : colors_serializer.data})
-            logger.info("User fetched events",extra={"request": request, "status_code": response.status_code})
+            colors_serializer = UserColoredEventSerializer(
+                UserColoredEvent.objects.filter(user=request.user).distinct(),
+                context={'request': request}, many=False
+            )
+
+            response = Response({
+                "events": serializer.data,
+                "colors": colors_serializer.data
+            })
+            logger.info("User fetched events for custom month range",
+                        extra={"request": request, "status_code": response.status_code})
             return response
+
         except Exception as e:
-            response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_week: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
-            return response
-
-class GetMonthAPIView(APIView):
-    """The api that returns the event class
-    of the request user for the month
-
-    Args:
-        APIView (class): the api class that is inherited by this route
-
-    Returns:
-        response: the serialized data
-    """
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, day):
-        """Returns the Json for the month of the given day
-        (of the format YYYY-MM-DD)"""
-        try:
-            day_date = datetime.datetime.strptime(day, "%Y-%m-%d").date()
-        except ValueError :
-            response = Response({"error": "Invalid date format"}, status = 400)
-            logger.error(f"User tried to input this {sanitize_log_input(day)} as a date" ,extra={"request": request, "status_code": response.status_code})
-            return response
-
-        try:
-            start_of_month = day_date.replace(day=1)  # First day of the month
-            end_of_month = (start_of_month + datetime.timedelta(days=32)).replace(day=1)\
-                                        - datetime.timedelta(days=1)  # Last day of the month
-
-
-            user_tds = request.user.userprofile.link_td.all()
-
-            classes = InsaClass.objects.filter(link_td__in=user_tds,
-                                            date__range =[start_of_month, end_of_month]).distinct()
-            serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
-            colors_serializer = UserColoredEventSerializer(UserColoredEvent.objects.filter(user = request.user).distinct(),
-                                                        context={'request': request}, many=False)
-            response = Response({"events" : serializer.data, "colors" : colors_serializer.data})
-            logger.info("User fetched events",extra={"request": request, "status_code": response.status_code})
-            return response
-        except Exception as e:
-            response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_month: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
-            return response
-
-
-class GetYearAPIView(APIView):
-    """The api that returns the event class
-    of the request user for the year
-
-    Args:
-        APIView (class): the api class that is inherited by this route
-
-    Returns:
-        response: the serialized data
-    """
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, day):
-        """Returns the Json for the year of the given day
-        (of the format YYYY-MM-DD)"""
-        try:
-            day_date = datetime.datetime.strptime(day, "%Y-%m-%d").date()
-        except ValueError :
-            response = Response({"error": "Invalid date format"}, status = 400)
-            logger.error(f"User tried to input this {sanitize_log_input(day)} as a date" ,extra={"request": request, "status_code": response.status_code})
-            return response
-
-        try:
-            start_of_year = day_date.replace(month=1,day=1)  # First day of the year
-            end_of_year = (start_of_year + datetime.timedelta(days=400)).replace(day=1,month=1)\
-                                        - datetime.timedelta(days=1)  # Last day of the year
-
-
-            user_tds = request.user.userprofile.link_td.all()
-            classes = InsaClass.objects.filter(link_td__in=user_tds,
-                                            date__range =[start_of_year, end_of_year]).distinct()
-            serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
-            colors_serializer = UserColoredEventSerializer(UserColoredEvent.objects.filter(user = request.user).distinct(),
-                                                        context={'request': request}, many=False)
-            response = Response({"events" : serializer.data, "colors" : colors_serializer.data})
-            logger.info("User fetched events",extra={"request": request, "status_code": response.status_code})
-            return response
-        except Exception as e:
-            response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_year: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
+            response = Response({"error": "Internal server error"}, status=500)
+            logger.error(f"Internal server error at get_calendar: {str(e)}",
+                         extra={"request": request, "status_code": response.status_code})
             return response
 
 class GetTdsAPIView(APIView):
@@ -208,7 +92,6 @@ class GetTdsAPIView(APIView):
         Get TDs for a specific department or all departments if 'all' is passed.
         """
         try:
-            # Fetch user TDs via UserLinkTD
             user_profile = request.user.userprofile
             user_tds_qs = user_profile.link_td.all()
             user_tds = [td.name for td in user_tds_qs]
@@ -237,10 +120,8 @@ class GetTdsAPIView(APIView):
                 })
                 logger.info("All TDs fetched", extra={"request": request, "status_code": response.status_code})
                 return response
-            # Fetch department TDs
             dept_obj = Department.objects.filter(name=department).first()
             if not dept_obj:
-                # Department not found, return all TDs flat
                 all_tds = GroupTD.objects.all()
                 serialized_tds = [td.name for td in all_tds]
                 response = Response({
@@ -589,7 +470,7 @@ class GetConfigFileAPIView(APIView):
             return response
 
 
-class PostUserColor(APIView):
+class PostUserColorAPIView(APIView):
     """Api view for posting the prefered color for an event title"""
     permission_classes = [IsAuthenticated]
 
@@ -611,7 +492,7 @@ class PostUserColor(APIView):
 
 
 
-class PostInsaEvenement(APIView):
+class PostInsaEvenementAPIView(APIView):
     """post route for creating evenement"""
     permission_classes = [IsAuthenticated,IsAssociationPublisher]
 
@@ -620,7 +501,6 @@ class PostInsaEvenement(APIView):
         try:
             data = request.data
 
-            # Récupération et conversion des données
             date = datetime.datetime.strptime(data['date'], '%Y-%m-%d').date()
             start_hour = datetime.datetime.combine(date, datetime.datetime.strptime(data['start_hour'], '%H:%M').time())
             end_hour = datetime.datetime.combine(date, datetime.datetime.strptime(data['end_hour'], '%H:%M').time())
@@ -649,7 +529,7 @@ class PostInsaEvenement(APIView):
             return response
 
 
-class Users(APIView):
+class UsersAPIView(APIView):
     """return the users"""
     permission_classes = [IsAuthenticated]
 
@@ -668,7 +548,7 @@ class Users(APIView):
             logger.error(f"Internal server error at get users: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
-class Friends(APIView):
+class FriendsAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -798,40 +678,50 @@ class Friends(APIView):
             )
             return response
 
-class FriendCalendar(APIView):
+from dateutil.relativedelta import relativedelta
+import datetime
+
+class FriendCalendarAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, username):
-        """"""
         user = request.user
         try:
             other_user = User.objects.get(username=username)
         except User.DoesNotExist:
-            logger.error(f"User tried to add a relation with non existing user : {sanitize_log_input(username)}")
+            logger.error(f"User tried to add a relation with non existing user: {sanitize_log_input(username)}")
             return Response({"error": "User not found"}, status=404)
 
         relationship = UserRelationship.objects.filter(
             ((Q(first_user=user) & Q(second_user=other_user)) |
-            (Q(first_user=other_user) & Q(second_user=user))) & Q(type = UserRelationship.RelationshipType.FRIEND)
+             (Q(first_user=other_user) & Q(second_user=user))) &
+            Q(type=UserRelationship.RelationshipType.FRIEND)
         ).first()
         if not relationship:
-            logger.error(f"User tried to view non friend calendar of : {sanitize_log_input(username)}")
+            logger.error(f"User tried to view non-friend calendar of: {sanitize_log_input(username)}")
             return Response({"error": "You are not friend with this person"}, status=400)
+
         try:
-            start_of_month = datetime.date.today()
-            end_of_month = (start_of_month + datetime.timedelta(days=30))
+            start_date = (datetime.date.today() - relativedelta(months=1)).replace(day=1)
+            end_date = (datetime.date.today() + relativedelta(months=5)).replace(day=1) + relativedelta(months=1) - datetime.timedelta(days=1)
 
             other_user_tds = other_user.userprofile.link_td.all()
 
-            classes = InsaClass.objects.filter(link_td__in=other_user_tds,
-                                            date__range =[start_of_month, end_of_month]).distinct()
+            classes = InsaClass.objects.filter(
+                link_td__in=other_user_tds,
+                date__range=[start_date, end_date]
+            ).distinct()
+
             serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
-            colors_serializer = UserColoredEventSerializer(UserColoredEvent.objects.filter(user = user).distinct(),
-                                                        context={'request': request}, many=False)
-            response = Response({"events" : serializer.data, "colors" : colors_serializer.data})
-            logger.info("User fetched friend's events",extra={"request": request, "status_code": response.status_code})
+            colors_serializer = UserColoredEventSerializer(
+                UserColoredEvent.objects.filter(user=user).distinct(),
+                context={'request': request}, many=False
+            )
+
+            response = Response({"events": serializer.data, "colors": colors_serializer.data})
+            logger.info("User fetched friend's events", extra={"request": request, "status_code": response.status_code})
             return response
         except Exception as e:
-            response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_friend_calendar: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
+            response = Response({"error": "Internal server error"}, status=500)
+            logger.error(f"Internal server error at get_friend_calendar: {str(e)}", extra={"request": request, "status_code": response.status_code})
             return response

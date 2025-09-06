@@ -7,9 +7,9 @@ const baseEventWidth = 93
 
 const LANGUAGES = ["en", "fr"]
 const API_URL = process.env.REACT_APP_API_URL;
-const PATH_CALENDAR = API_URL+'/api/get_year/'
+const PATH_CALENDAR = API_URL+'/api/get_calendar/'
 const PATH_ASSO = API_URL + '/api/get_evenements'
-const API_LOGIN = API_URL+'/authentification/login' 
+const API_LOGIN = API_URL+'/authentification/login'
 const API_LOGOUT = API_URL+'/authentification/logout'
 const API_AUTH = API_URL+'/api/is_connected?format=json'
 
