@@ -70,7 +70,7 @@ class UserProfile(models.Model):
 class UserRelationship(models.Model):
     class RelationshipType(models.TextChoices):
         PENDING12 = "PENDING12", "pending_first_second" #1 waiting for 2
-        BLOCKED21 = "PENDING21", "pending_second_first" #2 waiting for 1
+        PENDING21 = "PENDING21", "pending_second_first" #2 waiting for 1
         FRIEND = "FRIEND", "friend"
 
     first_user = models.ForeignKey(

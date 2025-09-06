@@ -3,13 +3,14 @@ from django.contrib.admin import AdminSite
 from .models import (
     # Core Models
     UserProfile, InsaClass, InsaEvenement, Association, AssociationPublisher,
-    GroupTD, Department, Teacher, Room, UserColoredEvent,
+    GroupTD, Department, Teacher, Room, UserColoredEvent, UserRelationship,
+    Title,
 
     # Enum Models
-    EnumType, EnumSector,EnumColorTheme,
+    EnumType, EnumSector,EnumColorTheme, EnumLanguage,
 
     # Link Models
-     ClassLinkTD, ClassLinkRoom, ClassLinkTeacher, 
+     ClassLinkTD, ClassLinkRoom, ClassLinkTeacher,
     ClassLinkDepart, UserLinkTD
 )
 
@@ -25,15 +26,19 @@ class CustomAdminSite(AdminSite):
 
         custom_order = [
             {"name": "Core Models", "models": [
-                "UserProfile", "InsaClass", "InsaEvenement","AssociationPublisher",
-                "Association", "Department", "Teacher", "Room", "UserColoredEvent"
+                "UserProfile", "UserRelationship", "InsaClass", "InsaEvenement",
+                "AssociationPublisher", "Association", "Department", "Teacher",
+                "Room", "UserColoredEvent", "GroupTD", "Title"
             ]},
-            {"name": "Enums", "models": ["EnumType", "EnumSector", "EnumColor", "EnumColorTheme"]},
+            {"name": "Enums", "models": [
+                "EnumType", "EnumSector", "EnumLanguage", "EnumColorTheme"
+            ]},
             {"name": "Link Tables", "models": [
-                "EvenementLinkEventRoom", "ClassLinkTD", "ClassLinkRoom", 
-                "ClassLinkTeacher", "ClassLinkDepart", "UserLinkTD"
+                "ClassLinkTD", "ClassLinkRoom", "ClassLinkTeacher",
+                "ClassLinkDepart", "UserLinkTD"
             ]}
         ]
+
 
         new_app_list = []
         for section in custom_order:
@@ -42,10 +47,10 @@ class CustomAdminSite(AdminSite):
                 for model in app["models"]:
                     if model["object_name"] in section["models"]:
                         section_models.append(model)
-            
+
             if section_models:
                 new_app_list.append({"name": section["name"], "models": section_models})
-        
+
         return new_app_list
 
 # Create an instance of the custom admin site
@@ -78,6 +83,10 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user',)
     search_fields = ('user__email',)
 
+class UserRelationshipAdmin(admin.ModelAdmin):
+    list_display = ('first_user', 'second_user', 'type')
+    search_fields = ('first_user__username', 'second_user__username', 'type')
+
 class InsaClassAdmin(admin.ModelAdmin):
     list_display = ('desc', 'start_hour', 'end_hour')
     list_filter = ('time_created','desc')
@@ -93,7 +102,7 @@ class InsaEvenementAdmin(admin.ModelAdmin):
     list_display = ('desc', 'start_hour', 'end_hour', 'association')
     list_filter = ('time_created', 'association')
     search_fields = ('desc', 'association__name')
-    
+
 
 class AssociationPublisherAdmin(admin.ModelAdmin):
     list_display = ('association', 'user')
@@ -122,7 +131,7 @@ class GroupTDAdmin(admin.ModelAdmin):
 class UserColoredEventAdmin(admin.ModelAdmin):
     list_display = ('user',)
     search_fields = ('user',)
-    
+
 # === LINK MODELS  === #
 
 @admin.register(ClassLinkTD)
@@ -155,11 +164,14 @@ custom_admin_site.register(Teacher, TeacherAdmin)
 custom_admin_site.register(Room, RoomAdmin)
 custom_admin_site.register(GroupTD, GroupTDAdmin)
 custom_admin_site.register(UserColoredEvent, UserColoredEventAdmin)
+custom_admin_site.register(UserRelationship, UserRelationshipAdmin)
+custom_admin_site.register(Title)
 
 # Enums
 custom_admin_site.register(EnumType)
 custom_admin_site.register(EnumSector)
 custom_admin_site.register(EnumColorTheme)
+custom_admin_site.register(EnumLanguage)
 
 # Link Models
 custom_admin_site.register(ClassLinkTD, ClassLinkTDAdmin)

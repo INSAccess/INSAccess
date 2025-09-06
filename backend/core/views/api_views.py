@@ -8,10 +8,14 @@ from core.serializers import InsaClassSerializer, InsaEvenementSerializer, \
     UserColoredEventSerializer, AssociationColoredEventSerializer
 from core.models import InsaClass, Department, GroupTD, UserLinkTD,InsaEvenement\
     ,EnumColorTheme,Association,AssociationPublisher, Title, UserColoredEvent, \
-    EnumLanguage
+    EnumLanguage, UserRelationship
 from core.utils.categorisation import categorise
 from core.utils.fetch_ics import load_config
 from core.permissions import IsAssociationPublisher
+from django.db.models import Q
+from django.contrib.auth.models import User
+
+
 
 import logging
 logger = logging.getLogger(__name__)
@@ -350,6 +354,7 @@ class GetIsAssociationPublisherAPIView(APIView):
     Returns:
         response: the serialized boolean
     """
+    permission_classes = [IsAuthenticated]
 
     def get(self,request):
         """returns True if the user is authenticated else False"""
@@ -411,6 +416,8 @@ class GetIcsUrlAPIView(APIView):
     """Simple api route for returning the associated ics url of the user
     for calendars
     """
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         """"""
         try:
@@ -549,6 +556,8 @@ class GetEnumLanguageAPIView(APIView):
 
 class GetConfigFileAPIView(APIView):
     """API route for returning the list of available departments in the DB"""
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         """"""
         try:
@@ -564,6 +573,8 @@ class GetConfigFileAPIView(APIView):
 
 class PostUserColor(APIView):
     """Api view for posting the prefered color for an event title"""
+    permission_classes = [IsAuthenticated]
+
     def post(self,request):
         """"""
         try:
@@ -575,7 +586,7 @@ class PostUserColor(APIView):
             logger.info("User colored event updated successfully", extra={"request": request, "status_code": response.status_code})
             return response
         except Exception as e:
-            response = Response({'status': 'error', 'message': str(e)}, status=400)
+            response = Response({"error": "Internal server error"}, status=500)
             logger.error(f"Error updating user colored event: {str(e)}", extra={"request": request, "status_code": response.status_code})
             return response
 
@@ -615,6 +626,144 @@ class PostInsaEvenement(APIView):
             logger.info("Operation successful", extra={"request": request, "status_code": response.status_code})
             return response
         except Exception as e:
-            response = Response({'status': 'error', 'message': str(e)}, status=400)
+            response = Response({"error": "Internal server error"}, status=500)
             logger.error(f"Error occurred: {str(e)}", extra={"request": request, "status_code": response.status_code})
             return response
+
+
+class Users(APIView):
+    """return the users"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        """"""
+        try:
+            users = [user.username for user in User.objects.all()]
+            response = Response(users)
+            logger.info("Returned list of the users", extra={"request": request, "status_code": response.status_code})
+            return response
+        except:
+            response = Response({"error": "Internal server error"}, status = 500)
+            logger.error("Internal server error at get users" ,extra={"request": request, "status_code": response.status_code})
+            return response
+
+class Friends(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """
+        Get the other users, who the request user has a relationship with
+        sorted by relationship type
+        """
+
+        user = request.user
+        try:
+            relationships = UserRelationship.objects.filter(
+                Q(first_user=user) | Q(second_user=user)
+            )
+            result = {}
+
+            for rel in relationships:
+                if rel.first_user == user:
+                    other_user = rel.second_user
+                else:
+                    other_user = rel.first_user
+
+                if rel.type not in result:
+                    result[rel.type] = []
+
+                result[rel.type].append(other_user.username)
+
+            return Response(result)
+
+        except Exception as e:
+            response = Response({"error": "Internal server error"}, status = 500)
+            logger.error("Internal server error at GET /friends" ,extra={"request": request, "status_code": response.status_code})
+            return response
+
+    def delete(self, request):
+        """
+        Delete a relationship between request.user and another user.
+        Expects JSON payload: {"other_user": <username>}
+        """
+        user = request.user
+        data = request.data
+
+        other_user = data.get("other_user")
+        if not other_user:
+            return Response({"error": "Provide other_user_id or other_username"}, status=400)
+        try:
+            other_user = User.objects.get(username=other_user)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=404)
+
+        try:
+            relationship = UserRelationship.objects.filter(
+                (Q(first_user=user) & Q(second_user=other_user)) |
+                (Q(first_user=other_user) & Q(second_user=user))
+            ).first()
+
+            if relationship:
+                relationship.delete()
+                return Response({"success": f"Relationship with {other_user.username} deleted"})
+            else:
+                return Response({"error": "No such relationship found"}, status=404)
+        except Exception as e:
+            response = Response({"error": "Internal server error"}, status = 500)
+            logger.error("Internal server error at DELETE /friends" ,extra={"request": request, "status_code": response.status_code})
+            return response
+
+    def post(self, request):
+        """
+        Send a friend request or accept an existing request.
+        Expects JSON payload: {"other_user": <username>}
+
+        Logic:
+        - If no relationship exists: create one with PENDING12 (request.user → other_user)
+        - If a PENDING21 exists: turn it into FRIEND
+        - Otherwise: return 400 Bad Request
+        """
+        user = request.user
+        data = request.data
+
+        other_username = data.get("other_user")
+        if not other_username:
+            return Response({"error": "Provide other_user username"}, status=400)
+
+        try:
+            other_user = User.objects.get(username=other_username)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=404)
+        if other_user == user:
+            return Response({"error": "You can't add yourself as a friend"}, status=400)
+        try:
+            relationship = UserRelationship.objects.filter(
+                (Q(first_user=user) & Q(second_user=other_user)) |
+                (Q(first_user=other_user) & Q(second_user=user))
+            ).first()
+
+            if not relationship:
+                UserRelationship.objects.create(
+                    first_user=user,
+                    second_user=other_user,
+                    type=UserRelationship.RelationshipType.PENDING12
+                )
+                return Response({"success": f"Friend request sent to {other_user.username}"})
+
+            elif relationship.type == UserRelationship.RelationshipType.PENDING21:
+                relationship.type = UserRelationship.RelationshipType.FRIEND
+                relationship.save()
+                return Response({"success": f"You are now friends with {other_user.username}"})
+
+            else:
+                # Any other case (already FRIEND, or PENDING12 exists)
+                return Response({"error": "Invalid friend request"}, status=400)
+
+        except Exception as e:
+            response = Response({"error": "Internal server error"}, status=500)
+            logger.error(
+                f"Internal server error in POST /friends: {str(e)}",
+                extra={"request": request, "status_code": response.status_code}
+            )
+            return response
+
