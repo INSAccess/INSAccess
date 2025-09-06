@@ -655,24 +655,26 @@ class Friends(APIView):
         Get the other users, who the request user has a relationship with
         sorted by relationship type
         """
-
         user = request.user
         try:
             relationships = UserRelationship.objects.filter(
                 Q(first_user=user) | Q(second_user=user)
-            )
-            result = {}
+            ).all()
+
+            result = {"friends": [], "sent": [], "received": []}
 
             for rel in relationships:
                 if rel.first_user == user:
+                    pending_type = "sent"
                     other_user = rel.second_user
                 else:
+                    pending_type = "received"
                     other_user = rel.first_user
 
-                if rel.type not in result:
-                    result[rel.type] = []
-
-                result[rel.type].append(other_user.username)
+                if rel.type == UserRelationship.RelationshipType.FRIEND:
+                    result["friends"].append(other_user.username)
+                else:
+                    result[pending_type].append(other_user.username)
 
             return Response(result)
 
@@ -746,17 +748,17 @@ class Friends(APIView):
                 UserRelationship.objects.create(
                     first_user=user,
                     second_user=other_user,
-                    type=UserRelationship.RelationshipType.PENDING12
+                    type=UserRelationship.RelationshipType.PENDING
                 )
                 return Response({"success": f"Friend request sent to {other_user.username}"})
 
-            elif relationship.type == UserRelationship.RelationshipType.PENDING21:
+            elif relationship.type == UserRelationship.RelationshipType.PENDING and relationship.second_user == user:
                 relationship.type = UserRelationship.RelationshipType.FRIEND
                 relationship.save()
                 return Response({"success": f"You are now friends with {other_user.username}"})
 
             else:
-                # Any other case (already FRIEND, or PENDING12 exists)
+                # Any other case (already FRIEND, or PENDING in the other way)
                 return Response({"error": "Invalid friend request"}, status=400)
 
         except Exception as e:

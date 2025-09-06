@@ -58,7 +58,6 @@ class UserProfile(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.ics_uid:
-            # Generate a hash-based UID (e.g. using uuid4 + user id)
             raw_value = f"{uuid.uuid4()}-{self.user_id}".encode("utf-8")
             self.ics_uid = hashlib.sha256(raw_value).hexdigest()
         super().save(*args, **kwargs)
@@ -69,9 +68,8 @@ class UserProfile(models.Model):
 
 class UserRelationship(models.Model):
     class RelationshipType(models.TextChoices):
-        PENDING12 = "PENDING12", "pending_first_second" #1 waiting for 2
-        PENDING21 = "PENDING21", "pending_second_first" #2 waiting for 1
-        FRIEND = "FRIEND", "friend"
+        PENDING = "PE", "pending"
+        FRIEND = "FR", "friend"
 
     first_user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="relationships_initiated"
@@ -80,7 +78,7 @@ class UserRelationship(models.Model):
         User, on_delete=models.CASCADE, related_name="relationships_received"
     )
     type = models.CharField(
-        max_length=20,
+        max_length=2,
         choices=RelationshipType.choices,
     )
 
