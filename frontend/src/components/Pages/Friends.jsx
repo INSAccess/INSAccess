@@ -3,16 +3,15 @@ import { useData } from '../../contexts/DataContext.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
 import { API_URL } from '../../utils/Constants.jsx';
 import AllEvents from '../Events/AllEvents.jsx';
+import { useTranslation } from 'react-i18next'
 import './Friends.scss'
 
-function getDisplayName(users, username){
-    for (let element of users){
-        if (element.username == username) return element.displayName
-    }
-    return ""
-}
+
 
 const Friends = () => {
+
+    const { t } = useTranslation();
+
     const { userProfile, userTheme, userList, friendsList, setFriendsList, pendingList, setPendingList, receivedList, setReceivedList, setDataFriend, showCalendar, setShowCalendar } = useData();
 
     const [availableUsers, setAvailableUsers] = useState([]);
@@ -41,7 +40,13 @@ const Friends = () => {
             )
         );
     }, [availableUsers, searchTerm]);
-   
+    
+    function getDisplayName(users, username){
+        for (let element of users){
+            if (element.username == username) return element.displayName
+        }
+        return t("NameError")
+    }
 
     const handleCancel = async (username) => {
         try {
@@ -51,12 +56,12 @@ const Friends = () => {
             { other_user: username }
           );
           if (result.error) {
-            console.error("Erreur lors de l'annulation de l'invitation:", result.error);
+            console.error(t("CancelError"), result.error);
             return;
           }
           setPendingList(pendingList.filter(e => e !== username));
         } catch (error) {
-          console.error("Erreur réseau:", error);
+          console.error(t("CancelError"), error);
         }
       };
       
@@ -69,7 +74,7 @@ const Friends = () => {
             { other_user: username }
           );
           if (result.error) {
-            console.error("Erreur lors de l'envoi de l'invitation:", result.error);
+            console.error(t("SendError"), result.error);
             return;
           }
           setPendingList(prev => {
@@ -81,7 +86,7 @@ const Friends = () => {
           setSearchTerm("");
           setShowSuggestions(false);
         } catch (error) {
-          console.error("Erreur réseau:", error);
+          console.error(t("SendError"), error);
         }
       };
       
@@ -94,7 +99,7 @@ const Friends = () => {
             { other_user: username }
           );
           if (result.error) {
-            console.error("Erreur lors de l'acceptation de l'invitation:", result.error);
+            console.error(t("AcceptError"), result.error);
             return;
           }
           setReceivedList(receivedList.filter(e => e !== username));
@@ -105,7 +110,7 @@ const Friends = () => {
             return prev;
           });
         } catch (error) {
-          console.error("Erreur réseau:", error);
+          console.error(t("AcceptError"), error);
         }
       };
       
@@ -118,12 +123,12 @@ const Friends = () => {
             { other_user: username }
           );
           if (result.error) {
-            console.error("Erreur lors de la suppression de l'ami:", result.error);
+            console.error(t("DeleteError"), result.error);
             return;
           }
           setFriendsList(friendsList.filter(e => e !== username));
         } catch (error) {
-          console.error("Erreur réseau:", error);
+          console.error(t("DeleteError"), error);
         }
       };
       
@@ -153,10 +158,10 @@ const Friends = () => {
                 <span>{getDisplayName(userList, friendsList[i])}</span>
                 <div>
                     <button type="button" className="btn btn-outline-success me-2" onClick={() => handleSeeCalendar(friendsList[i])}>
-                        Agenda
+                        {t("Calendar")}
                     </button>
                     <button type="button" className="btn btn-outline-danger" onClick={() => handleDeleteFriend(friendsList[i])}>
-                        Retirer
+                        {t("Remove")}
                     </button>
                 </div>
             </li>
@@ -169,7 +174,7 @@ const Friends = () => {
             <li className="list-group-item d-flex justify-content-between align-items-center themed-list-item" key={i}>
                 <span>{getDisplayName(userList, pendingList[i])}</span>
                 <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel(pendingList[i])}>
-                        Annuler
+                        {t("Cancel")}
                 </button>
             </li>
         )
@@ -181,7 +186,7 @@ const Friends = () => {
             <li className="list-group-item d-flex justify-content-between align-items-center themed-list-item" key={i}>
                 <span>{getDisplayName(userList, receivedList[i])}</span>
                 <button type="button" className="btn btn-outline-success" onClick={() => handleAccept(receivedList[i])}>
-                    Accepter
+                    {t("Accept")}
                 </button>
             </li>
         )
@@ -223,7 +228,7 @@ const Friends = () => {
                                         handleSendInvitation(user.username);
                                     }}
                                 >
-                                    Inviter
+                                    {t("Invite")}
                                 </button>
                             </div>
                         ))}
@@ -233,14 +238,14 @@ const Friends = () => {
                 {showSuggestions && searchTerm.length > 0 && filteredSuggestions.length === 0 && (
                     <div className="suggestions-dropdown">
                         <div className="suggestion-item no-results">
-                            Aucun utilisateur trouvé
+                            {t("NoUserFound")}
                         </div>
                     </div>
                 )}
             </div>
 
             <div className="col-md-6">
-                <h2 className="themed-title">Amis ({friendsList.length})</h2>
+                <h2 className="themed-title">{t("Friends")} ({friendsList.length})</h2>
                 <ul className="list-group themed-list">
                     {friendsItems}
                 </ul>
@@ -248,12 +253,12 @@ const Friends = () => {
             </div>
             
             <div className="col-md-6">
-                <h2 className="themed-title">Invitations envoyées ({pendingList.length})</h2>
+                <h2 className="themed-title">{t("InviteSent")} ({pendingList.length})</h2>
                 <ul className="list-group themed-list">
                     {pendingItems}
                 </ul>
                 <hr className="themed-hr"/>
-                <h2 className="themed-title">Invitations reçues ({receivedList.length})</h2>
+                <h2 className="themed-title">{t("InviteReceived")} ({receivedList.length})</h2>
                 <ul className="list-group themed-list">
                     {receivedItems}
                 </ul>

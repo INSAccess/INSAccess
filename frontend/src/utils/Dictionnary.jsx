@@ -73,19 +73,23 @@ const resources = {
       "Delete":"Delete",
       // Other
       "WIP":"Coming soon...",
-      "ImageLoadingError" : "Failed to load image",
-      "ErrorSavingTD" : "Failed to save TDs",
-      "ErrorTemplate" : "An error occured",
       // Errors and Success
-      "LoadError":"Error while loading",
-      "SaveError":"Error while saving",
-      "DeleteError":"Error while deleting",
-      "ConfigError":"Error while loading config",
+      "LoadError":"Error while loading ",
+      "SaveError":"Error while saving ",
+      "DeleteError":"Error while deleting ",
+      "ConfigError":"Error while loading config ",
       "LoadSuccess":"Loading successful",
       "SaveSuccess":"Saving successful",
       "DeleteSuccess":"Delete successful (reload the page to see the update)",
       "CreationSuccess":"Creation successful (reload the page to see the update)",
-      "CreationError":"Error during creation",
+      "CreationError":"Error during creation ",
+      "SendError":"Error while sending invitation ",
+      "AcceptError":"Error while accepting invitation ",
+      "CancelError":"Error while canceling invitation ",
+      "NameError":"Error while searching for a user's display name ",
+      "ImageLoadingError" : "Failed to load image ",
+      "ErrorSavingTD" : "Failed to save TDs ",
+      "ErrorTemplate" : "An error occured ",
       // Form
       "FormTitle":"Event title",
       "FormDate":"Date",
@@ -103,6 +107,15 @@ const resources = {
       "FormDescriptionDefault":"Quick summary of your event",
       "NotAnAsso":"You are not an association",
       "ConnectAsAsso":"Connect as association",
+      // Friends
+      "Remove":"Remove",
+      "Cancel":"Cancel",
+      "Accept":"Accept",
+      "Invite":"Invite",
+      "NoUserFound":"No user found",
+      "InviteSent":"Invitations sent",
+      "InviteReceived":"Invitations received",
+      "Return":"Return",
     }
   },
   fr: {
@@ -175,9 +188,6 @@ const resources = {
       "Delete":"Supprimer",
       // Other
       "WIP":"Ça arrive bientôt...",
-      "ImageLoadingError" : "Echec du chargement de l'image",
-      "ErrorSavingTD" : "Echec de la sauvegarde des TDs",
-      "ErrorTemplate" : "Une erreur est arrivé",
       // Errors and Success
       "LoadError":"Erreur pendant le chargement",
       "SaveError":"Erreur pendant la sauvegarde",
@@ -188,6 +198,13 @@ const resources = {
       "DeleteSuccess":"Suppression réussie (rechargez la page pour mettre à jour les événements)",
       "CreationSuccess":"Création réussie (rechargez la page pour mettre à jour les événements)",
       "CreationError":"Erreur lors de la création",
+      "SendError":"Error while sending invitation ",
+      "AcceptError":"Error while accepting invitation ",
+      "CancelError":"Error while canceling invitation ",
+      "NameError":"Error while searching for a user's display name ",
+      "ImageLoadingError" : "Echec du chargement de l'image",
+      "ErrorSavingTD" : "Echec de la sauvegarde des TDs",
+      "ErrorTemplate" : "Une erreur est arrivé",
       // Form
       "FormTitle":"Titre de l'événement",
       "FormDate":"Date",
@@ -205,6 +222,15 @@ const resources = {
       "FormDescriptionDefault":"Résumé rapide de l'événement",
       "NotAnAsso":"Vous n'êtes pas une association",
       "ConnectAsAsso":"Se connecter en tant qu'association",
+      // Friends
+      "Remove":"Retirer",
+      "Cancel":"Annuler",
+      "Accept":"Accepter",
+      "Invite":"Inviter",
+      "NoUserFound":"Aucun utilisateur trouvé",
+      "InviteSent":"Invitations envoyées",
+      "InviteReceived":"Invitations reçues",
+      "Return":"Retour",
     }
   }
 };
