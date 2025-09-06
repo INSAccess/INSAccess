@@ -6,7 +6,7 @@ import AllEvents from '../Events/AllEvents.jsx'
  * @returns {JSX.Element} 
  */
 const Associations = () => {
-  return <AllEvents asso={true} />;
+  return <AllEvents dataOrigin="asso" />;
 };
 
 export default Associations;

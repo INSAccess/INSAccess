@@ -16,6 +16,7 @@ export const DataProvider = (props) => {
 
   const [dataAsso, setDataAsso] = useState([]);
   const [dataAgenda, setDataAgenda] = useState([]);
+  const [dataFriend, setDataFriend] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingTds, setLoadingTds] = useState(false);
   const [shouldUpdate, setUpdate] = useState(true);
@@ -119,9 +120,9 @@ export const DataProvider = (props) => {
         // Gestion des amis/pendings/received
         if (resultFriends.data) {
           const friendsData = resultFriends.data;
-          setFriendsList(friendsData.FRIEND || []);
-          setPendingList(friendsData.PENDING12 || []);
-          setReceivedList(friendsData.PENDING21 || []);
+          setFriendsList(friendsData.friends || []);
+          setPendingList(friendsData.sent || []);
+          setReceivedList(friendsData.received || []);
         }
   
       } catch (error) {
@@ -165,7 +166,8 @@ export const DataProvider = (props) => {
   return (
     <>
       <DataContext.Provider value={{dataAsso, dataAgenda, day, setDay, forceUpdate, changeTheme, changeLanguage, tds, icsLink, isAssos,
-         allThemes, userTheme, loadingTds, userProfile, allLanguages, userLanguage, assoName, userList, friendsList, setFriendsList, pendingList, setPendingList, receivedList, setReceivedList}}>
+         allThemes, userTheme, loadingTds, userProfile, allLanguages, userLanguage, assoName, userList, friendsList, setFriendsList, pendingList, 
+         setPendingList, receivedList, setReceivedList, dataFriend, setDataFriend}}>
           {props.children}
       </DataContext.Provider>
       {errorFlag && <Alert severity="error" variant="filled" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}

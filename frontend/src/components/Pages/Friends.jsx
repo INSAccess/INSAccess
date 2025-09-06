@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useData } from '../../contexts/DataContext.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
-import { API_URL } from '../../utils/Constants.jsx'
+import { API_URL } from '../../utils/Constants.jsx';
+import AllEvents from '../Events/AllEvents.jsx';
 import './Friends.scss'
 
 const Friends = () => {
-    const { userTheme, userList, friendsList, setFriendsList, pendingList, setPendingList, receivedList, setReceivedList } = useData();
+    const { userTheme, userList, friendsList, setFriendsList, pendingList, setPendingList, receivedList, setReceivedList, setDataFriend } = useData();
 
     const [availableUsers, setAvailableUsers] = useState([]);
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [showSuggestions, setShowSuggestions] = useState(false);
+    const [showCalendar, setShowCalendar] = useState(false);
 
     useEffect(() => {
         // Filtrer les utilisateurs disponibles (pas déjà amis, pas déjà en cours d'invitation)
@@ -121,7 +123,23 @@ const Friends = () => {
       
 
     const handleSeeCalendar = (username) => {
-        console.log("See calendar")
+        setDataFriend({
+            "events" : [{
+            "uid": "ADE60616e6e65652d323032352d323032362d3836322d322d30", 
+            "date": "2025-09-05", 
+            "start_hour": "0945", 
+            "end_hour": "1115", 
+            "desc": "tata", 
+            "link_td": ["jsp"], 
+            "link_teacher": ["toto"], 
+            "link_room": ["MA-H-R1-01"], 
+            "link_depart": ["ITI4"]
+            }],
+            "colors": {
+                "jsp":"#123456"
+            }    
+        })
+        setShowCalendar(true);
     }
 
     const handleSearchChange = (e) => {
@@ -175,6 +193,11 @@ const Friends = () => {
         )
     }
 
+    if (showCalendar){
+        return (
+            <AllEvents dataOrigin="friend" />
+        )
+    }
     return (
         <div className="row friends-container" style={{margin:"2%"}} data-theme={userTheme}>
             <div className="search-container">

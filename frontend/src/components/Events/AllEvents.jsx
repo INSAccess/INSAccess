@@ -39,18 +39,21 @@ const TimeBar = () => {
  * @component
  * @returns {JSX.Element}
  */
-const AllEvents = ({asso}) => {
+const AllEvents = ({dataOrigin}) => {
   const { t } = useTranslation();
 
   const dayList = [t('Sunday'), t('Monday'), t('Tuesday'), t('Wednesday'), t('Thursday'), t('Friday'), t('Saturday'),];
 
   const BUNDLE = useData()
   let data = []
-  if (asso){
+  if (dataOrigin == "asso"){
     data = BUNDLE.dataAsso
+  } else if (dataOrigin == "friend"){
+    data = BUNDLE.dataFriend
   } else {
     data = BUNDLE.dataAgenda
   }
+  console.log(data)
   const start = BUNDLE.day
 
   let dimensions = RandomUtils.useWindowDimensions();
@@ -119,7 +122,7 @@ const AllEvents = ({asso}) => {
         key={`${i}-${renderKey}`}
         date={currentDay.getDate()} 
         data={data} 
-        asso={asso}
+        asso={dataOrigin == "asso"}
       />
     );
     currentDay = currentDay.next(1);
