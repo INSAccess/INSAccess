@@ -8,9 +8,10 @@ import Settings from './components/Pages/Settings.jsx';
 import Calendar from './components/Pages/Calendar.jsx';
 import Associations from './components/Pages/Associations.jsx';
 import About from './components/Pages/About.jsx';
-import { ErrorTemplate, WorkInProgressTemplate } from './components/Templates.jsx'
-import logo from './images/Logo_INSA_blanc.svg'
-import { NavBar } from './components/NavBar.jsx'
+import Friends from './components/Pages/Friends.jsx' ;
+import { ErrorTemplate } from './components/Templates.jsx';
+import logo from './images/Logo_INSA_blanc.svg';
+import { NavBar } from './components/NavBar.jsx';
 
 function App() {
   const [page, setPage] = useState("home");
@@ -20,7 +21,7 @@ function App() {
       case "home": return <Calendar/>;
       case "about": return <About />;
       case "settings": return <Settings/>;
-      case "friends": return <WorkInProgressTemplate />;
+      case "friends": return <Friends />;
       case "associations": return <Associations/>;
     }
   }

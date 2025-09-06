@@ -1,0 +1,220 @@
+// Styles pour les boutons (existants)
+.btn.btn-outline-success {
+    background-color: transparent !important;
+    border-color: #198754 !important;
+    color: #198754 !important;
+}
+
+.btn.btn-outline-success:hover {
+    background-color: #198754 !important;
+    border-color: #198754 !important;
+    color: #fff !important;
+}
+
+.btn.btn-outline-danger {
+    background-color: transparent !important;
+    border-color: #dc3545 !important;
+    color: #dc3545 !important;
+}
+
+.btn.btn-outline-danger:hover {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    color: #fff !important;
+}
+
+// Styles par défaut (fallback si pas de data-theme)
+.friends-container {
+    .themed-title {
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .themed-list-item {
+        background-color: #fff;
+        color: #333;
+        border-color: #dee2e6;
+        
+        &:hover {
+            background-color: #f8f9fa;
+        }
+    }
+
+    .themed-input {
+        background-color: #fff;
+        color: #333;
+        border-color: #ced4da;
+        margin-bottom: 0.8rem;
+        
+        &:focus {
+            background-color: #fff;
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        
+        &::placeholder {
+            color: #6c757d;
+        }
+    }
+
+    .themed-hr {
+        border-color: #dee2e6;
+        opacity: 1;
+    }
+}
+
+// Thème light (explicite)
+.friends-container[data-theme="light"] {
+    .themed-title {
+        color: #333;
+        font-weight: 600;
+    }
+
+    .themed-list-item {
+        background-color: #fff;
+        color: #333;
+        border-color: #dee2e6;
+        
+        &:hover {
+            background-color: #f8f9fa;
+        }
+    }
+
+    .themed-input {
+        background-color: #fff;
+        color: #333;
+        border-color: #ced4da;
+        margin-bottom: 0.8rem;
+        
+        &:focus {
+            background-color: #fff;
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        
+        &::placeholder {
+            color: #6c757d;
+        }
+    }
+
+    .themed-hr {
+        border-color: #dee2e6;
+    }
+}
+
+// Thème sombre
+.friends-container[data-theme="dark"] {
+    .themed-title {
+        color: #f8f9fa;
+    }
+
+    .themed-list-item {
+        background-color: #343a40;
+        color: #f8f9fa;
+        border-color: #495057;
+        
+        &:hover {
+            background-color: #495057;
+        }
+    }
+
+    .themed-input {
+        background-color: #495057;
+        color: #f8f9fa;
+        border-color: #6c757d;
+        margin-bottom: 0.8rem;
+        
+        &:focus {
+            background-color: #495057;
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+            color: #f8f9fa;
+        }
+        
+        &::placeholder {
+            color: #adb5bd;
+        }
+    }
+
+    .themed-hr {
+        border-color: #495057;
+    }
+}
+
+// Thème system - utilise les préférences du système
+.friends-container[data-theme="system"] {
+    .themed-title {
+        color: #333;
+        font-weight: 600;
+    }
+
+    .themed-list-item {
+        background-color: #fff;
+        color: #333;
+        border-color: #dee2e6;
+        
+        &:hover {
+            background-color: #f8f9fa;
+        }
+    }
+
+    .themed-input {
+        background-color: #fff;
+        color: #333;
+        border-color: #ced4da;
+        margin-bottom: 0.8rem;
+        
+        &:focus {
+            background-color: #fff;
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        
+        &::placeholder {
+            color: #6c757d;
+        }
+    }
+
+    .themed-hr {
+        border-color: #dee2e6;
+    }
+
+    // Si le système préfère le thème sombre
+    @media (prefers-color-scheme: dark) {
+        .themed-title {
+            color: #f8f9fa;
+        }
+
+        .themed-list-item {
+            background-color: #343a40;
+            color: #f8f9fa;
+            border-color: #495057;
+            
+            &:hover {
+                background-color: #495057;
+            }
+        }
+
+        .themed-input {
+            background-color: #495057;
+            color: #f8f9fa;
+            border-color: #6c757d;
+            
+            &:focus {
+                background-color: #495057;
+                border-color: #86b7fe;
+                box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+                color: #f8f9fa;
+            }
+            
+            &::placeholder {
+                color: #adb5bd;
+            }
+        }
+
+        .themed-hr {
+            border-color: #495057;
+        }
+    }
+}
