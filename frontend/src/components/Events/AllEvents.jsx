@@ -53,7 +53,6 @@ const AllEvents = ({dataOrigin}) => {
   } else {
     data = BUNDLE.dataAgenda
   }
-  console.log(data)
   const start = BUNDLE.day
 
   let dimensions = RandomUtils.useWindowDimensions();
