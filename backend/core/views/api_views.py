@@ -638,7 +638,7 @@ class Users(APIView):
     def get(self,request):
         """"""
         try:
-            users = [user.username for user in User.objects.all()]
+            users = {user.username:user.first_name for user in User.objects.all()}
             response = Response(users)
             logger.info("Returned list of the users", extra={"request": request, "status_code": response.status_code})
             return response
@@ -769,3 +769,38 @@ class Friends(APIView):
             )
             return response
 
+class FriendCalendar(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, username):
+        """"""
+        user = request.user
+        try:
+            other_user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=404)
+
+        relationship = UserRelationship.objects.filter(
+            ((Q(first_user=user) & Q(second_user=other_user)) |
+            (Q(first_user=other_user) & Q(second_user=user))) & Q(type = UserRelationship.RelationshipType.FRIEND)
+        ).first()
+        if not relationship:
+            return Response({"error": "You are not friend with this person"}, status=400)
+        try:
+            start_of_month = datetime.date.today()
+            end_of_month = (start_of_month + datetime.timedelta(days=30))
+
+            other_user_tds = other_user.userprofile.link_td.all()
+
+            classes = InsaClass.objects.filter(link_td__in=other_user_tds,
+                                            date__range =[start_of_month, end_of_month]).distinct()
+            serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
+            colors_serializer = UserColoredEventSerializer(UserColoredEvent.objects.filter(user = user).distinct(),
+                                                        context={'request': request}, many=False)
+            response = Response({"events" : serializer.data, "colors" : colors_serializer.data})
+            logger.info("User fetched events",extra={"request": request, "status_code": response.status_code})
+            return response
+        except:
+            response = Response({"error": "Internal server error"}, status = 500)
+            logger.error("Internal server error at get_month" ,extra={"request": request, "status_code": response.status_code})
+            return response
