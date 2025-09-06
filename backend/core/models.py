@@ -67,6 +67,23 @@ class UserProfile(models.Model):
     def __str__(self):
         return str(self.user)
 
+class UserRelationship(models.Model):
+    class RelationshipType(models.TextChoices):
+        PENDING12 = "PENDING12", "pending_first_second" #1 waiting for 2
+        BLOCKED21 = "PENDING21", "pending_second_first" #2 waiting for 1
+        FRIEND = "FRIEND", "friend"
+
+    first_user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="relationships_initiated"
+    )
+    second_user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="relationships_received"
+    )
+    type = models.CharField(
+        max_length=20,
+        choices=RelationshipType.choices,
+    )
+
 class Event(models.Model):
     """Generic Class for defining events in the calendar"""
     uid = models.CharField(primary_key = True, editable = False, max_length = 256)
