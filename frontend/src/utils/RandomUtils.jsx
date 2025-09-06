@@ -56,6 +56,26 @@ class RandomUtils{
     }
     return { data: json, error: null};
   };
+
+  static async fetchDataWithMethod(url, method, body = null){
+    const initConfig = {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-CSRFToken': RandomUtils.getCSRFToken()
+      },
+      mode: 'cors',
+      credentials: 'include',
+      body: body ? JSON.stringify(body) : null
+    };
+    const response = await fetch(url, initConfig);
+    const json = await response.json();
+    if (!response.ok) {
+      return { data: null, error: json.error };
+    }
+    return { data: json, error: null };
+  };
   
   /**
    * Loads the data from the given path and returns the state of loading (data if success, error message and loading)
