@@ -5,21 +5,27 @@ import { API_URL } from '../../utils/Constants.jsx';
 import AllEvents from '../Events/AllEvents.jsx';
 import './Friends.scss'
 
+function getDisplayName(users, username){
+    for (let element of users){
+        if (element.username == username) return element.displayName
+    }
+    return ""
+}
+
 const Friends = () => {
-    const { userTheme, userList, friendsList, setFriendsList, pendingList, setPendingList, receivedList, setReceivedList, setDataFriend } = useData();
+    const { userProfile, userTheme, userList, friendsList, setFriendsList, pendingList, setPendingList, receivedList, setReceivedList, setDataFriend, showCalendar, setShowCalendar } = useData();
 
     const [availableUsers, setAvailableUsers] = useState([]);
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [showSuggestions, setShowSuggestions] = useState(false);
-    const [showCalendar, setShowCalendar] = useState(false);
 
     useEffect(() => {
-        // Filtrer les utilisateurs disponibles (pas déjà amis, pas déjà en cours d'invitation)
         const newAvailableUsers = userList.filter(user =>
-            !friendsList.includes(user) &&
-            !pendingList.includes(user) &&
-            !receivedList.includes(user)
+            !friendsList.includes(user.username) &&
+            !pendingList.includes(user.username) &&
+            !receivedList.includes(user.username) &&
+            user.username !== userProfile.username
         );
         setAvailableUsers(newAvailableUsers);
     }, [userList, friendsList, pendingList, receivedList]);
@@ -31,7 +37,7 @@ const Friends = () => {
         }
         setFilteredSuggestions(
             availableUsers.filter(user =>
-                user.toLowerCase().includes(searchTerm.toLowerCase())
+                user.username.toLowerCase().includes(searchTerm.toLowerCase())
             )
         );
     }, [availableUsers, searchTerm]);
@@ -122,24 +128,12 @@ const Friends = () => {
       };
       
 
-    const handleSeeCalendar = (username) => {
-        setDataFriend({
-            "events" : [{
-            "uid": "ADE60616e6e65652d323032352d323032362d3836322d322d30", 
-            "date": "2025-09-05", 
-            "start_hour": "0945", 
-            "end_hour": "1115", 
-            "desc": "tata", 
-            "link_td": ["jsp"], 
-            "link_teacher": ["toto"], 
-            "link_room": ["MA-H-R1-01"], 
-            "link_depart": ["ITI4"]
-            }],
-            "colors": {
-                "jsp":"#123456"
-            }    
-        })
-        setShowCalendar(true);
+    const handleSeeCalendar = async (username) => {
+        const friendCalendar = await RandomUtils.fetchData(API_URL + "/api/get_friend_calendar/"+username)
+        if (friendCalendar.data){
+            setDataFriend(friendCalendar.data)
+            setShowCalendar(true);
+        }
     }
 
     const handleSearchChange = (e) => {
@@ -156,13 +150,13 @@ const Friends = () => {
     for (let i = 0; i < friendsList.length; i++){
         friendsItems.push(
             <li className="list-group-item d-flex justify-content-between align-items-center themed-list-item" key={i}>
-                <span>{friendsList[i]}</span>
+                <span>{getDisplayName(userList, friendsList[i])}</span>
                 <div>
                     <button type="button" className="btn btn-outline-success me-2" onClick={() => handleSeeCalendar(friendsList[i])}>
-                        Voir l'agenda
+                        Agenda
                     </button>
                     <button type="button" className="btn btn-outline-danger" onClick={() => handleDeleteFriend(friendsList[i])}>
-                        Retirer l'ami
+                        Retirer
                     </button>
                 </div>
             </li>
@@ -173,7 +167,7 @@ const Friends = () => {
     for (let i = 0; i < pendingList.length; i++){
         pendingItems.push(
             <li className="list-group-item d-flex justify-content-between align-items-center themed-list-item" key={i}>
-                <span>{pendingList[i]}</span>
+                <span>{getDisplayName(userList, pendingList[i])}</span>
                 <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel(pendingList[i])}>
                         Annuler
                 </button>
@@ -185,7 +179,7 @@ const Friends = () => {
     for (let i = 0; i < receivedList.length; i++){
         receivedItems.push(
             <li className="list-group-item d-flex justify-content-between align-items-center themed-list-item" key={i}>
-                <span>{receivedList[i]}</span>
+                <span>{getDisplayName(userList, receivedList[i])}</span>
                 <button type="button" className="btn btn-outline-success" onClick={() => handleAccept(receivedList[i])}>
                     Accepter
                 </button>
@@ -218,15 +212,15 @@ const Friends = () => {
                             <div 
                                 key={index}
                                 className="suggestion-item"
-                                onClick={() => handleSendInvitation(user)}
+                                onClick={() => handleSendInvitation(user.username)}
                             >
-                                <span className="suggestion-username">{user}</span>
+                                <span className="suggestion-username">{user.username}</span>
                                 <button 
                                     type="button" 
                                     className="btn btn-outline-primary btn-sm"
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        handleSendInvitation(user);
+                                        handleSendInvitation(user.username);
                                     }}
                                 >
                                     Inviter
@@ -249,8 +243,10 @@ const Friends = () => {
                 <h2 className="themed-title">Amis ({friendsList.length})</h2>
                 <ul className="list-group themed-list">
                     {friendsItems}
-                </ul>            
+                </ul>
+                <hr className="themed-hr"/> 
             </div>
+            
             <div className="col-md-6">
                 <h2 className="themed-title">Invitations envoyées ({pendingList.length})</h2>
                 <ul className="list-group themed-list">
