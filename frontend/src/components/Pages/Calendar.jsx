@@ -6,7 +6,7 @@ import AllEvents from '../Events/AllEvents.jsx'
  * @returns {JSX.Element} 
  */
 const Calendar = () => {
-  return <AllEvents asso={false}/>
+  return <AllEvents dataOrigin="user"/>
 }
 
 export default Calendar;
