@@ -137,7 +137,7 @@ const AllEvents = ({dataOrigin}) => {
             className="btn btn-primary calendar-close-button"
             onClick={() => BUNDLE.setShowCalendar(false)}
           >
-            {t('Welcome')}
+            {t('Return')}
           </button>
         </div>
       )}
