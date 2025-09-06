@@ -5,7 +5,7 @@ const PORT = 3004;
 // Stockage des tickets en mémoire
 const tickets = new Map();
 const users = {
-  'tes': {
+  'test': {
     password: 'test',
     mail: 'test@test.com',
     supannAffectation: ['ITI41-RI-TD-01', 'ITI41-TIM-TD-02', 'ITI41-TI-TD-02'],

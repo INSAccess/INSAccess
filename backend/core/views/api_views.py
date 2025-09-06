@@ -10,7 +10,6 @@ from core.serializers import InsaClassSerializer, InsaEvenementSerializer, \
 from core.models import InsaClass, Department, GroupTD, UserLinkTD,InsaEvenement\
     ,EnumColorTheme,Association,AssociationPublisher, Title, UserColoredEvent, \
     EnumLanguage, UserRelationship
-from core.utils.categorisation import categorise
 from core.utils.fetch_ics import load_config
 from core.permissions import IsAssociationPublisher
 from django.db.models import Q
@@ -37,11 +36,9 @@ def sanitize_log_input(value: str, max_length: int = 100) -> str:
     return safe_value
 
 class GetCalendarAPIView(APIView):
-    """Returns events for the last month and next 5 months for the user's TDs."""
     permission_classes = [IsAuthenticated]
 
     def get(self, request, day):
-        """Returns the JSON for the month range based on the given day (YYYY-MM-DD)"""
         try:
             day_date = datetime.datetime.strptime(day, "%Y-%m-%d").date()
         except ValueError:
@@ -56,30 +53,39 @@ class GetCalendarAPIView(APIView):
             start_date = (day_date - relativedelta(months=1)).replace(day=1)
             end_date = (day_date + relativedelta(months=5)).replace(day=1) + relativedelta(months=1) - datetime.timedelta(days=1)
 
-            user_tds = request.user.userprofile.link_td.all()
-            classes = InsaClass.objects.filter(
-                link_td__in=user_tds,
-                date__range=[start_date, end_date]
-            ).distinct()
+            # Prefetch user's TDs to reduce queries
+            user_tds_qs = request.user.userprofile.link_td.all()
 
-            serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
-            colors_serializer = UserColoredEventSerializer(
-                UserColoredEvent.objects.filter(user=request.user).distinct(),
-                context={'request': request}, many=False
+            # Prefetch related objects to avoid N+1 queries
+            classes_qs = InsaClass.objects.filter(
+                link_td__in=user_tds_qs,
+                date__range=[start_date, end_date]
+            ).distinct().prefetch_related(
+                'link_td', 'link_teacher', 'link_room', 'link_depart', 'desc'
             )
+
+            # Prefetch user-colored events with related title
+            user_events_qs = UserColoredEvent.objects.filter(user=request.user).select_related('title')
+
+            serializer = InsaClassSerializer(classes_qs, context={'request': request}, many=True)
+            colors_serializer = UserColoredEventSerializer(user_events_qs, context={'request': request}, many=False)
 
             response = Response({
                 "events": serializer.data,
                 "colors": colors_serializer.data
             })
-            logger.info("User fetched events for custom month range",
-                        extra={"request": request, "status_code": response.status_code})
+            logger.info(
+                "User fetched events for custom month range",
+                extra={"request": request, "status_code": response.status_code}
+            )
             return response
 
         except Exception as e:
             response = Response({"error": "Internal server error"}, status=500)
-            logger.error(f"Internal server error at get_calendar: {str(e)}",
-                         extra={"request": request, "status_code": response.status_code})
+            logger.error(
+                f"Internal server error at get_calendar: {str(e)}",
+                extra={"request": request, "status_code": response.status_code}
+            )
             return response
 
 class GetTdsAPIView(APIView):
@@ -678,26 +684,24 @@ class FriendsAPIView(APIView):
             )
             return response
 
-from dateutil.relativedelta import relativedelta
-import datetime
-
 class FriendCalendarAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, username):
+
         user = request.user
         try:
-            other_user = User.objects.get(username=username)
+            # Fetch user with related TDs to avoid extra queries later
+            other_user = User.objects.prefetch_related('userprofile__link_td').get(username=username)
         except User.DoesNotExist:
             logger.error(f"User tried to add a relation with non existing user: {sanitize_log_input(username)}")
             return Response({"error": "User not found"}, status=404)
 
-        relationship = UserRelationship.objects.filter(
+        if not UserRelationship.objects.filter(
             ((Q(first_user=user) & Q(second_user=other_user)) |
              (Q(first_user=other_user) & Q(second_user=user))) &
             Q(type=UserRelationship.RelationshipType.FRIEND)
-        ).first()
-        if not relationship:
+        ).exists():
             logger.error(f"User tried to view non-friend calendar of: {sanitize_log_input(username)}")
             return Response({"error": "You are not friend with this person"}, status=400)
 
@@ -705,22 +709,24 @@ class FriendCalendarAPIView(APIView):
             start_date = (datetime.date.today() - relativedelta(months=1)).replace(day=1)
             end_date = (datetime.date.today() + relativedelta(months=5)).replace(day=1) + relativedelta(months=1) - datetime.timedelta(days=1)
 
-            other_user_tds = other_user.userprofile.link_td.all()
-
-            classes = InsaClass.objects.filter(
-                link_td__in=other_user_tds,
+            # Prefetch classes with all related objects to avoid N+1 queries
+            classes_qs = InsaClass.objects.filter(
+                link_td__in=other_user.userprofile.link_td.all(),
                 date__range=[start_date, end_date]
-            ).distinct()
-
-            serializer = InsaClassSerializer(classes, context={'request': request}, many=True)
-            colors_serializer = UserColoredEventSerializer(
-                UserColoredEvent.objects.filter(user=user).distinct(),
-                context={'request': request}, many=False
+            ).distinct().prefetch_related(
+                'link_td', 'link_teacher', 'link_room', 'link_depart', 'desc'
             )
+
+            # Prefetch user-colored events
+            user_events_qs = UserColoredEvent.objects.filter(user=user).select_related('title')
+
+            serializer = InsaClassSerializer(classes_qs, context={'request': request}, many=True)
+            colors_serializer = UserColoredEventSerializer(user_events_qs, context={'request': request}, many=False)
 
             response = Response({"events": serializer.data, "colors": colors_serializer.data})
             logger.info("User fetched friend's events", extra={"request": request, "status_code": response.status_code})
             return response
+
         except Exception as e:
             response = Response({"error": "Internal server error"}, status=500)
             logger.error(f"Internal server error at get_friend_calendar: {str(e)}", extra={"request": request, "status_code": response.status_code})
