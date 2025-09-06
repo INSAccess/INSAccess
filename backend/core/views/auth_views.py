@@ -23,9 +23,9 @@ def get_frontend_url():
 @login_required
 def finalize(request):
     user, user_created = User.objects.get_or_create(username=request.user)
-    logger.info(request.user.username)
     user_profile, profile_created = UserProfile.objects.get_or_create(user = user)
     user_profile.save()
+
     if profile_created :
         subscribed_tds = request.session.get('attributes', {}).get('supannAffectation', [])
         subscribed_tds = [td.upper() for td in subscribed_tds]
