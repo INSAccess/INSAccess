@@ -31,8 +31,6 @@ const TimeBar = () => {
 /**
  * React component for all the events currently displayed
  * @param {Object} props
- * @param {Day} props.start
- * @param {Array} props.data
  * @param {boolean} props.asso
  *
  * @component

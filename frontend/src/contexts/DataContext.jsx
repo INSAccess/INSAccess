@@ -31,6 +31,7 @@ export const DataProvider = (props) => {
   const [dataFriend, setDataFriend] = useState([]);
   const [colorsAsso, setColorsAsso] = useState([]);
   const [colorsAgenda, setColorsAgenda] = useState([]);
+  const [colorsFriend, setColorsFriend] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingTds, setLoadingTds] = useState(false);
   const [shouldUpdate, setUpdate] = useState(true);
@@ -216,8 +217,10 @@ export const DataProvider = (props) => {
           setShowCalendar,
           colorsAsso,
           colorsAgenda,
+          colorsFriend,
           setColorsAsso,
           setColorsAgenda,
+          setColorsFriend,
         }}
       >
         {props.children}

@@ -20,6 +20,7 @@ const Friends = () => {
     receivedList,
     setReceivedList,
     setDataFriend,
+    setColorsFriend,
     showCalendar,
     setShowCalendar,
   } = useData();
@@ -147,7 +148,8 @@ const Friends = () => {
       API_URL + '/api/calendar/friend/' + username
     );
     if (friendCalendar.data) {
-      setDataFriend(friendCalendar.data);
+      setDataFriend(friendCalendar.data.events);
+      setColorsFriend(friendCalendar.data.colors);
       setShowCalendar(true);
     }
   };
