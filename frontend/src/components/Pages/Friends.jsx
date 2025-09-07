@@ -144,7 +144,7 @@ const Friends = () => {
 
   const handleSeeCalendar = async (username) => {
     const friendCalendar = await RandomUtils.fetchData(
-      API_URL + '/api/get_friend_calendar/' + username
+      API_URL + '/api/calendar/friend/' + username
     );
     if (friendCalendar.data) {
       setDataFriend(friendCalendar.data);

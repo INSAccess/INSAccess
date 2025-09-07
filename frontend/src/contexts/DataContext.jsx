@@ -99,7 +99,7 @@ export const DataProvider = (props) => {
           resultFriends,
         ] = await Promise.all([
           RandomUtils.fetchData(PATH_ASSO_CALENDAR),
-          RandomUtils.fetchData(PATH_USER_CALENDAR + day + '/'),
+          RandomUtils.fetchData(PATH_USER_CALENDAR),
           RandomUtils.fetchData(API_URL + '/api/get_themes'),
           RandomUtils.fetchData(API_URL + '/api/get_profile'),
           RandomUtils.fetchData(API_URL + '/api/get_languages'),

@@ -3,7 +3,6 @@ import RandomUtils from '../utils/RandomUtils.jsx';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
-import './EventCreator.scss';
 import Day from '../utils/Day.jsx';
 import { useData } from '../contexts/DataContext.jsx';
 import { useTranslation } from 'react-i18next';

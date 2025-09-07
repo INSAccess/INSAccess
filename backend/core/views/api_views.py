@@ -56,21 +56,13 @@ def sanitize_log_input(value: str, max_length: int = 100) -> str:
 class GetCalendarAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, day):
+    def get(self, request):
         try:
-            day_date = datetime.datetime.strptime(day, "%Y-%m-%d").date()
-        except ValueError:
-            response = Response({"error": "Invalid date format"}, status=400)
-            logger.error(
-                f"User tried to input this {sanitize_log_input(day)} as a date",
-                extra={"request": request, "status_code": response.status_code},
+            start_date = (datetime.date.today() - relativedelta(months=1)).replace(
+                day=1
             )
-            return response
-
-        try:
-            start_date = (day_date - relativedelta(months=1)).replace(day=1)
             end_date = (
-                (day_date + relativedelta(months=5)).replace(day=1)
+                (datetime.date.today() + relativedelta(months=5)).replace(day=1)
                 + relativedelta(months=1)
                 - datetime.timedelta(days=1)
             )

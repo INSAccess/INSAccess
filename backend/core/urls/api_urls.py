@@ -22,9 +22,9 @@ from core.views import (
 
 urlpatterns = [
     # calendars urls
-    path("get_calendar/<str:day>/", GetCalendarAPIView.as_view(), name="get_calendar"),
+    path("calendar/", GetCalendarAPIView.as_view(), name="get_calendar"),
     path(
-        "get_friend_calendar/<str:username>",
+        "calendar/friend/<str:username>",
         FriendCalendarAPIView.as_view(),
         name="friend_calendar",
     ),
