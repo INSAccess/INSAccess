@@ -1,6 +1,6 @@
 from core.views import auth_views
 from django.urls import path
-import django_cas_ng.views as cas_views
+import django_cas_ng.views as cas_views  # type: ignore
 
 urlpatterns = [
     # CAS Views

@@ -199,6 +199,6 @@ LOCAL_SETTINGS = os.path.join(BASE_DIR, "config/", "local_settings.py")
 
 if os.path.isfile(LOCAL_SETTINGS):
     try:
-        from config.local_settings import *
+        from config.local_settings import *  # noqa: F403
     except ImportError:
         pass
