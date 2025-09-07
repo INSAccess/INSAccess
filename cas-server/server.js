@@ -5,37 +5,48 @@ const PORT = 3004;
 // Stockage des tickets en mémoire
 const tickets = new Map();
 const users = {
-  'test': {
+  test: {
     password: 'test',
     mail: 'test@test.com',
     supannAffectation: ['ITI41-RI-TD-01', 'ITI41-TIM-TD-02', 'ITI41-TI-TD-02'],
-    displayName: 'Test Test'
+    displayName: 'Test Test',
   },
-  'alice': {
+  alice: {
     password: 'alice123',
     mail: 'alice@example.com',
-    supannAffectation: ['ITI41-ANG-PG-TD-01', 'ITI41-RO-TD-01', 'ITI41-FLE-TD-01'],
-    displayName: 'Alice Dupont'
+    supannAffectation: [
+      'ITI41-ANG-PG-TD-01',
+      'ITI41-RO-TD-01',
+      'ITI41-FLE-TD-01',
+    ],
+    displayName: 'Alice Dupont',
   },
-  'bob': {
+  bob: {
     password: 'bob123',
     mail: 'bob@example.com',
-    supannAffectation: ['ITI41-APS-TD-02', 'ITI41-TW2-TD-01', 'ITI41-ESPAGNOL-TD-01'],
-    displayName: 'Bob Martin'
+    supannAffectation: [
+      'ITI41-APS-TD-02',
+      'ITI41-TW2-TD-01',
+      'ITI41-ESPAGNOL-TD-01',
+    ],
+    displayName: 'Bob Martin',
   },
-  'carole': {
+  carole: {
     password: 'carole123',
     mail: 'carol@example.com',
-    supannAffectation: ['ITI41-BD2-TD-01', 'ITI41-ALLEMAND-TD-01', 'ITI41-ML-TD-02'],
-    displayName: 'Carol Durand'
+    supannAffectation: [
+      'ITI41-BD2-TD-01',
+      'ITI41-ALLEMAND-TD-01',
+      'ITI41-ML-TD-02',
+    ],
+    displayName: 'Carol Durand',
   },
-  'dav': {
+  dav: {
     password: 'dave123',
     mail: 'dave@example.com',
     supannAffectation: ['ITI31-TD-GR-01', 'ITI31-FLE-TD-01', 'ITI31-TD-GR-03'],
-    displayName: 'Dave Leroy'
+    displayName: 'Dave Leroy',
   },
-
 };
 
 app.use(express.urlencoded({ extended: true }));
@@ -201,11 +212,15 @@ app.post('/cas/login', (req, res) => {
 
   if (users[username] && users[username].password === password) {
     // Générer un ticket
-    const ticket = `ST-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const ticket = `ST-${Date.now()}-${Math.random()
+      .toString(36)
+      .substr(2, 9)}`;
     tickets.set(ticket, { username, service, timestamp: Date.now() });
 
     // Rediriger avec le ticket
-    const redirectUrl = `${service}${service.includes('?') ? '&' : '?'}ticket=${ticket}`;
+    const redirectUrl = `${service}${
+      service.includes('?') ? '&' : '?'
+    }ticket=${ticket}`;
     res.redirect(redirectUrl);
   } else {
     res.status(401).send('Invalid credentials');
