@@ -1,7 +1,6 @@
 import './App.scss';
 import { ConfigProvider } from './contexts/ConfigContext.jsx';
 import { DataProvider } from './contexts/DataContext.jsx';
-import { AuthProvider } from "./contexts/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { useState } from 'react';
 import Settings from './components/Pages/Settings.jsx';
@@ -29,14 +28,12 @@ function App() {
   try {
     return (
       <div className="App">
-        <AuthProvider>
           <ConfigProvider>
             <DataProvider page={page}>
               <ProtectedRoute><NavBar page={page} setPage={setPage}/></ProtectedRoute>
               <ProtectedRoute>{currentPage(page)}</ProtectedRoute>
             </DataProvider>
           </ConfigProvider>
-        </AuthProvider>
       </div>
     );
   } catch (e) {

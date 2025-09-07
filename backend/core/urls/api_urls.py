@@ -2,7 +2,7 @@ from django.urls import path
 from core.views import(
     GetCalendarAPIView, GetTdsAPIView, PostTdsAPIView, GetIsConnectedAPIView,
     GetIcsUrlAPIView, GetEvenementsAPIView, GetUserThemeAPIView, PostUserThemeAPIView, GetConfigFileAPIView
-    ,GetEnumThemeAPIView, PostInsaEvenementAPIView,GetIsAssociationPublisherAPIView, PostUserColorAPIView, GetUserProfileAPIView,
+    ,GetEnumThemeAPIView, PostInsaEvenementAPIView,GetIsAssociationPublisherAPIView, PostUserColorAPIView, GetUser2ProfileAPIView,
     GetUserLanguageAPIView, GetEnumLanguageAPIView, PostUserLanguageAPIView, DeleteEventAPIView, FriendsAPIView, UsersAPIView,
     FriendCalendarAPIView)
 
@@ -24,7 +24,7 @@ urlpatterns = [
     path('get_config', GetConfigFileAPIView.as_view(), name='get_config'),
     path('post_insa_evenement', PostInsaEvenementAPIView.as_view(), name='post_insa_evenement'),
     path('post_user_color', PostUserColorAPIView.as_view(), name='post_user_color'),
-    path('get_profile', GetUserProfileAPIView.as_view(), name='get_profile'),
+    path('get_profile', GetUser2ProfileAPIView.as_view(), name='get_profile'),
     path('delete_evenement/<str:uid>', DeleteEventAPIView.as_view(), name='post_delete_evenement'),
     path('friends/', FriendsAPIView.as_view(), name='friends'),
     path('users/', UsersAPIView.as_view(), name='users'),

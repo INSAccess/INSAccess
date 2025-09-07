@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import './EventCreator.scss'
 import Day from '../utils/Day.jsx'
-import { useData } from '../contexts/DataContext.jsx'; 
+import { useData } from '../contexts/DataContext.jsx';
 import { useTranslation } from 'react-i18next';
 
 const EvenementForm = ({}) => {
@@ -77,78 +77,78 @@ const EvenementForm = ({}) => {
                     {/* Première ligne : Titre et Date */}
                     <div className="col-md-6">
                         <label htmlFor="title" className="form-label">{t("FormTitle")}</label>
-                        <input 
-                            className="form-control" 
-                            id="title" 
-                            name="title" 
-                            placeholder={t("FormTitleDefault")} 
+                        <input
+                            className="form-control"
+                            id="title"
+                            name="title"
+                            placeholder={t("FormTitleDefault")}
                         />
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="date" className="form-label">{t("FormDate")}</label>
-                        <input 
-                            className="form-control" 
-                            id="date" 
-                            name="date" 
-                            type="date" 
+                        <input
+                            className="form-control"
+                            id="date"
+                            name="date"
+                            type="date"
                             defaultValue={day.getDate()}
                         />
                     </div>
-                    
+
                     {/* Deuxième ligne : Heures */}
                     <div className="col-md-6">
                         <label htmlFor="start_hour" className="form-label">{t("FormStartHour")}</label>
-                        <input 
-                            className="form-control" 
+                        <input
+                            className="form-control"
                             id="start_hour"
-                            name="start_hour" 
-                            type="time" 
+                            name="start_hour"
+                            type="time"
                             defaultValue="08:00"
                         />
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="end_hour" className="form-label">{t("FormEndHour")}</label>
-                        <input 
+                        <input
                             className="form-control"
-                            id="end_hour" 
-                            name="end_hour" 
-                            type="time" 
+                            id="end_hour"
+                            name="end_hour"
+                            type="time"
                             defaultValue="18:15"
                         />
                     </div>
-                    
+
                     {/* Troisième ligne : Description et Lien */}
                     <div className="col-md-6">
                         <label htmlFor="info" className="form-label">{t("FormDescription")}</label>
-                        <input 
+                        <input
                             className="form-control"
                             id="info"
-                            name="info" 
-                            placeholder={t("FormDescriptionDefault")} 
+                            name="info"
+                            placeholder={t("FormDescriptionDefault")}
                         />
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="associated_link" className="form-label">{t("FormLink")}</label>
-                        <input 
+                        <input
                             className="form-control"
                             id="associated_link"
-                            name="associated_link" 
+                            name="associated_link"
                             placeholder={t("FormLinkDefault")}
                         />
                     </div>
-                    
+
                     {/* Quatrième ligne : Salle */}
                     <div className="col-md-12">
                         <label htmlFor="location" className="form-label">{t("FormRoom")}</label>
-                        <input 
+                        <input
                             className="form-control"
                             id="location"
-                            name="location" 
-                            placeholder={t("FormRoomDefault")} 
+                            name="location"
+                            placeholder={t("FormRoomDefault")}
                         />
                     </div>
                 </div>
-                
+
                 {/* Boutons */}
                 <div className="mt-4 d-flex gap-2">
                     <button
@@ -184,31 +184,13 @@ const EvenementForm = ({}) => {
 };
 
 const EventCreator = () => {
-    const [isAsso, setAsso] = useState(false);
+    const {isAsso} = useData();
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const loadData = async () => {
-          const result = await RandomUtils.fetchData(API_URL+"/api/is_association");
-          if (result.data){
-            setAsso(result.data);
-          }
-          setError(result.error);
-          setLoading(false);
-        };
-        loadData();
-    }, []);
 
     const urlLogin = API_URL+"authentification/login";
     const urlCreate = API_URL+"/create";
 
-    if (loading){
-        return <Loading/>
-    }
-    if (error){
-        return <ErrorTemplate message={t("LoadError")}/>
-    }
     if (!isAsso){
         return (
             <div>

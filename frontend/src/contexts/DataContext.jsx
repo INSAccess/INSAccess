@@ -86,18 +86,18 @@ export const DataProvider = (props) => {
           resultFriends,
         ] = await Promise.all([
           RandomUtils.fetchData(PATH_ASSO),
-          RandomUtils.fetchData(PATH_CALENDAR + day),
-          RandomUtils.fetchData(API_URL + "/api/get_user_theme"),
-          RandomUtils.fetchData(API_URL + "/api/get_ics_url"),
-          RandomUtils.fetchData(API_URL + "/api/is_association"),
+          RandomUtils.fetchData(PATH_CALENDAR + day + '/'),
+          RandomUtils.fetchData(API_URL + "/api/get_user_theme"),//
+          RandomUtils.fetchData(API_URL + "/api/get_ics_url"),//
+          RandomUtils.fetchData(API_URL + "/api/is_association"),//
           RandomUtils.fetchData(API_URL + "/api/get_themes"),
-          RandomUtils.fetchData(API_URL + "/api/get_profile"),
+          RandomUtils.fetchData(API_URL + "/api/get_profile"),//
           RandomUtils.fetchData(API_URL + "/api/get_languages"),
-          RandomUtils.fetchData(API_URL + "/api/get_user_language"),
-          RandomUtils.fetchData(API_URL + "/api/users"),
-          RandomUtils.fetchData(API_URL + "/api/friends"),
+          RandomUtils.fetchData(API_URL + "/api/get_user_language"),//
+          RandomUtils.fetchData(API_URL + "/api/users/"),
+          RandomUtils.fetchData(API_URL + "/api/friends/"),
         ]);
-  
+
         // Gestion des données existantes...
         document.getElementById("root").setAttribute("data-theme", resultTheme.data);
         if (resultAsso.data) setDataAsso(resultAsso.data);
@@ -112,12 +112,12 @@ export const DataProvider = (props) => {
           setIsAssos(resultIsAssos.data.is_asso);
           setAssoName(resultIsAssos.data.asso);
         }
-  
+
         // Gestion de userList
         if (resultUsers.data) {
           setUserList(resultUsers.data);
         }
-  
+
         // Gestion des amis/pendings/received
         if (resultFriends.data) {
           const friendsData = resultFriends.data;
@@ -125,7 +125,7 @@ export const DataProvider = (props) => {
           setPendingList(friendsData.sent || []);
           setReceivedList(friendsData.received || []);
         }
-  
+
       } catch (error) {
         setStatusMessage(t("LoadError") + " : " + error);
         raiseErrorFlag(true);
@@ -167,7 +167,7 @@ export const DataProvider = (props) => {
   return (
     <>
       <DataContext.Provider value={{dataAsso, dataAgenda, day, setDay, forceUpdate, changeTheme, changeLanguage, tds, icsLink, isAssos,
-         allThemes, userTheme, loadingTds, userProfile, allLanguages, userLanguage, assoName, userList, friendsList, setFriendsList, pendingList, 
+         allThemes, userTheme, loadingTds, userProfile, allLanguages, userLanguage, assoName, userList, friendsList, setFriendsList, pendingList,
          setPendingList, receivedList, setReceivedList, dataFriend, setDataFriend, showCalendar, setShowCalendar}}>
           {props.children}
       </DataContext.Provider>

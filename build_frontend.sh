@@ -4,6 +4,7 @@ set -e
 FRONTEND_DIR="frontend"
 BACKEND_DIR="backend"
 REACT_APP_API_URL="https://edt.insa-rouen.fr"
+
 echo "[1] Cleaning previous build..."
 rm -rf $FRONTEND_DIR/build
 

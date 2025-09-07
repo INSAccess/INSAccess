@@ -225,14 +225,12 @@ class PostTdsAPIView(APIView):
             )
             return response
 
-
-
 class GetEvenementsAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self,request):
         try:
-            evenements = InsaEvenement.objects.distinct()
+            evenements = InsaEvenement.objects.all()
             serializer = InsaEvenementSerializer(evenements, context={'request': request}, many=True)
             color_serializer = AssociationColoredEventSerializer(Association.objects.all(), context={'request': request}, many=False)
             response = Response({"events" : serializer.data, "colors" : color_serializer.data})
@@ -266,6 +264,78 @@ class GetIsConnectedAPIView(APIView):
             logger.error(f"Internal server error at get_is_connected {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
+class DeleteEventAPIView(APIView):
+    """change the user associated theme"""
+    permission_classes = [IsAuthenticated, IsAssociationPublisher]
+
+    def post(self, request, uid):
+        """"""
+        try:
+            associations = Association.objects.filter(associationpublisher__user=request.user)
+            event = InsaEvenement.objects.filter(uid=uid, association__in=associations).first()
+            if event:
+                event.delete()
+                response = Response({"success": "Evenement deleted"})
+                logger.info("User deleted association event", extra={"request": request, "status_code": response.status_code})
+                return response
+            else:
+                response = Response({"error": "Event doesn't exists"}, status = 400)
+                logger.error(f"User tried to delete with a non-existent event : {sanitize_log_input(uid)}", extra={"request": request, "status_code": response.status_code})
+                return response
+        except Exception as e:
+            response = Response({"error": "Internal server error"}, status = 500)
+            logger.error(f"Internal server error at post_delete_evenement: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
+            return response
+
+class GetUser2ProfileAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        def safe_get(key, func):
+            try:
+                value = func()
+                logger.info(f"Returned {key}", extra={"request": request, "status_code": 200})
+                return value
+            except Exception as e:
+                logger.error(f"Internal server error at {key}: {str(e)}", extra={"request": request, "status_code": 500})
+                return None
+
+        profile = {
+            "ics_url": safe_get("get_ics_url", lambda: f"https://{HOST_IP}/ics/{request.user.userprofile.ics_uid}"),
+            "theme": safe_get("get_user_theme", lambda: request.user.userprofile.color_theme.name),
+            "language": safe_get("get_user_language", lambda: request.user.userprofile.language.name),
+            "username": safe_get("get_profile_username", lambda: request.user.username),
+            "displayName": safe_get("get_profile_displayName", lambda: request.session.get("attributes", {}).get("first_name", "")),
+        }
+
+        def association_info():
+            asso_publisher = AssociationPublisher.objects.filter(user=request.user).first()
+            if asso_publisher:
+                return {"is_asso": True, "asso": asso_publisher.association.name}
+            return {"is_asso": False, "asso": None}
+
+        profile.update(safe_get("get_is_association_publisher", association_info) or {"is_asso": None, "asso": None})
+
+        return Response(profile)
+
+
+class GetIcsUrlAPIView(APIView):
+    """Simple api route for returning the associated ics url of the user
+    for calendars
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """"""
+        try:
+            response = Response(f"https://{HOST_IP}/ics/{request.user.userprofile.ics_uid}")
+            logger.info("Returned ICS URL for user", extra={"request": request, "status_code": response.status_code})
+            return response
+        except Exception as e:
+            response = Response({"error": "Internal server error"}, status = 500)
+            logger.error(f"Internal server error at get_ics_url: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
+            return response
+
 class GetIsAssociationPublisherAPIView(APIView):
     """A small api route for the temporary solution
     for knowing if the user is connected or not
@@ -292,46 +362,6 @@ class GetIsAssociationPublisherAPIView(APIView):
         except Exception as e:
             response = Response({"error": "Internal server error"}, status = 500)
             logger.error(f"Internal server error at get_is_association_publisher : {str(e)}" ,extra={"request": request, "status_code": response.status_code})
-            return response
-
-class DeleteEventAPIView(APIView):
-    """change the user associated theme"""
-    permission_classes = [IsAuthenticated, IsAssociationPublisher]
-
-    def post(self, request, uid):
-        """"""
-        try:
-            associations = Association.objects.filter(associationpublisher__user=request.user)
-            event = InsaEvenement.objects.filter(uid=uid, association__in=associations).first()
-            if event:
-                event.delete()
-                response = Response({"success": "Evenement deleted"})
-                logger.info("User deleted association event", extra={"request": request, "status_code": response.status_code})
-                return response
-            else:
-                response = Response({"error": "Event doesn't exists"}, status = 400)
-                logger.error(f"User tried to delete with a non-existent event : {sanitize_log_input(uid)}", extra={"request": request, "status_code": response.status_code})
-                return response
-        except Exception as e:
-            response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at post_delete_evenement: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
-            return response
-
-class GetIcsUrlAPIView(APIView):
-    """Simple api route for returning the associated ics url of the user
-    for calendars
-    """
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        """"""
-        try:
-            response = Response(f"https://{HOST_IP}/ics/{request.user.userprofile.ics_uid}")
-            logger.info("Returned ICS URL for user", extra={"request": request, "status_code": response.status_code})
-            return response
-        except Exception as e:
-            response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_ics_url: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
 class GetUserThemeAPIView(APIView):
