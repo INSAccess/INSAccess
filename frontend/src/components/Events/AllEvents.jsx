@@ -1,10 +1,10 @@
-import EventsInDay from "./EventsInDay";
-import RandomUtils from "../../utils/RandomUtils";
-import { useState, useEffect, useRef } from "react";
-import { hoursTimeline, minWidth } from "../../utils/Constants";
-import Day from "../../utils/Day"
-import './AllEvents.scss'
-import { useData } from '../../contexts/DataContext.jsx'
+import EventsInDay from './EventsInDay';
+import RandomUtils from '../../utils/RandomUtils';
+import { useState, useEffect, useRef } from 'react';
+import { hoursTimeline, minWidth } from '../../utils/Constants';
+import Day from '../../utils/Day';
+import './AllEvents.scss';
+import { useData } from '../../contexts/DataContext.jsx';
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -17,66 +17,74 @@ const TimeBar = () => {
 
   hours.push(<div key={-1} className="spacer"></div>);
 
-  for (let i = 0; i < hoursTimeline.length; i++){
-    hours.push(<div key={i} className="time-marker">{hoursTimeline[i]}</div>)
+  for (let i = 0; i < hoursTimeline.length; i++) {
+    hours.push(
+      <div key={i} className="time-marker">
+        {hoursTimeline[i]}
+      </div>
+    );
   }
 
-  return (
-    <div className="timeline">
-        {hours}
-    </div>
-  );
-}
-
+  return <div className="timeline">{hours}</div>;
+};
 
 /**
  * React component for all the events currently displayed
  * @param {Object} props
  * @param {Day} props.start
  * @param {Array} props.data
- * @param {boolean} props.asso  
- * 
+ * @param {boolean} props.asso
+ *
  * @component
  * @returns {JSX.Element}
  */
-const AllEvents = ({dataOrigin}) => {
+const AllEvents = ({ dataOrigin }) => {
   const { t } = useTranslation();
 
-  const dayList = [t('Sunday'), t('Monday'), t('Tuesday'), t('Wednesday'), t('Thursday'), t('Friday'), t('Saturday'),];
+  const dayList = [
+    t('Sunday'),
+    t('Monday'),
+    t('Tuesday'),
+    t('Wednesday'),
+    t('Thursday'),
+    t('Friday'),
+    t('Saturday'),
+  ];
 
-  const BUNDLE = useData()
-  let data = []
-  if (dataOrigin == "asso"){
-    data = BUNDLE.dataAsso
-  } else if (dataOrigin == "friend"){
-    data = BUNDLE.dataFriend
+  const BUNDLE = useData();
+  let data = [];
+  if (dataOrigin == 'asso') {
+    data = BUNDLE.dataAsso;
+  } else if (dataOrigin == 'friend') {
+    data = BUNDLE.dataFriend;
   } else {
-    data = BUNDLE.dataAgenda
+    data = BUNDLE.dataAgenda;
   }
-  const start = BUNDLE.day
+  const start = BUNDLE.day;
 
   let dimensions = RandomUtils.useWindowDimensions();
   let day = new Day(start);
 
   const [firstDay, setDay] = useState(day);
   const [renderKey, setRenderKey] = useState(0);
-  
-  let nbDays =  ((minWidth < dimensions.width) ? 6 : 1);
-  let currentDay = (nbDays == 6) ? firstDay.copy().startOfWeek(dayList) : firstDay.copy();
 
-  function handleDay(direction, value){
-    if (direction === "prev"){
-      setDay(firstDay => firstDay.prev(value))
-    } else if (direction === "next"){
-      setDay(firstDay => firstDay.next(value))
+  let nbDays = minWidth < dimensions.width ? 6 : 1;
+  let currentDay =
+    nbDays == 6 ? firstDay.copy().startOfWeek(dayList) : firstDay.copy();
+
+  function handleDay(direction, value) {
+    if (direction === 'prev') {
+      setDay((firstDay) => firstDay.prev(value));
+    } else if (direction === 'next') {
+      setDay((firstDay) => firstDay.next(value));
     }
   }
 
   const calendarRef = useRef(null);
-  let skipDays = (nbDays == 1) ? 1 : 7;
+  let skipDays = nbDays == 1 ? 1 : 7;
 
   useEffect(() => {
-    setRenderKey(prev => prev + 1);
+    setRenderKey((prev) => prev + 1);
   }, [BUNDLE.dataAsso, BUNDLE.dataAgenda]);
 
   useEffect(() => {
@@ -94,32 +102,32 @@ const AllEvents = ({dataOrigin}) => {
 
       if (swipeDistance > minDist) {
         // Swiped left
-        handleDay("next", skipDays);
+        handleDay('next', skipDays);
       } else if (swipeDistance < -minDist) {
         // Swiped right
-        handleDay("prev", skipDays);
+        handleDay('prev', skipDays);
       }
     };
 
     if (calendarRef.current) {
-      calendarRef.current.addEventListener("touchstart", handleTouchStart);
-      calendarRef.current.addEventListener("touchend", handleTouchEnd);
+      calendarRef.current.addEventListener('touchstart', handleTouchStart);
+      calendarRef.current.addEventListener('touchend', handleTouchEnd);
     }
 
     return () => {
       if (calendarRef.current) {
-        calendarRef.current.removeEventListener("touchstart", handleTouchStart);
-        calendarRef.current.removeEventListener("touchend", handleTouchEnd);
+        calendarRef.current.removeEventListener('touchstart', handleTouchStart);
+        calendarRef.current.removeEventListener('touchend', handleTouchEnd);
       }
     };
   }, [nbDays]);
 
-  let listDays = []
-  for (let i = 0; i < nbDays; i++){
+  let listDays = [];
+  for (let i = 0; i < nbDays; i++) {
     listDays.push(
-      <EventsInDay 
+      <EventsInDay
         key={`${i}-${renderKey}`}
-        date={currentDay.getDate()} 
+        date={currentDay.getDate()}
         data={data}
         dataOrigin={dataOrigin}
       />
@@ -129,7 +137,7 @@ const AllEvents = ({dataOrigin}) => {
 
   return (
     <>
-      {dataOrigin == "friend" && (
+      {dataOrigin == 'friend' && (
         <div className="calendar-close-button-wrapper">
           <button
             type="button"
@@ -140,18 +148,27 @@ const AllEvents = ({dataOrigin}) => {
           </button>
         </div>
       )}
-  
+
       <div className="calendar" ref={calendarRef}>
-        <button type="button" className="arrow-left" onClick={() => {handleDay("prev", skipDays)}}></button>
+        <button
+          type="button"
+          className="arrow-left"
+          onClick={() => {
+            handleDay('prev', skipDays);
+          }}
+        ></button>
         <TimeBar />
-        <div className="days">
-          {listDays}
-        </div>
-        <button type="button" className="arrow-right turned" onClick={() => {handleDay("next", skipDays)}}></button>
-      </div>      
+        <div className="days">{listDays}</div>
+        <button
+          type="button"
+          className="arrow-right turned"
+          onClick={() => {
+            handleDay('next', skipDays);
+          }}
+        ></button>
+      </div>
     </>
   );
-  
-}
+};
 
 export default AllEvents;

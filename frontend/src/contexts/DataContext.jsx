@@ -1,8 +1,13 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from 'react';
 import Day from '../utils/Day.jsx';
-import { minWidth, PATH_USER_CALENDAR, PATH_ASSO_CALENDAR, API_URL } from '../utils/Constants.jsx';
+import {
+  minWidth,
+  PATH_USER_CALENDAR,
+  PATH_ASSO_CALENDAR,
+  API_URL,
+} from '../utils/Constants.jsx';
 import RandomUtils from '../utils/RandomUtils.jsx';
-import { Loading } from '../components/Templates.jsx'
+import { Loading } from '../components/Templates.jsx';
 import Alert from '@mui/material/Alert';
 import { useTranslation } from 'react-i18next';
 import { useConfig } from './ConfigContext.jsx';
@@ -23,8 +28,8 @@ export const DataProvider = (props) => {
   const [loadingTds, setLoadingTds] = useState(false);
   const [shouldUpdate, setUpdate] = useState(true);
   const [errorFlag, raiseErrorFlag] = useState(false);
-  const [statusMessage, setStatusMessage] = useState("");
-  const [icsLink, setIcsLink] = useState(t("LoadError"));
+  const [statusMessage, setStatusMessage] = useState('');
+  const [icsLink, setIcsLink] = useState(t('LoadError'));
   const [allLanguages, setAllLanguages] = useState(null);
   const [userLanguage, setUserLanguage] = useState(null);
   const [allThemes, setAllThemes] = useState(null);
@@ -38,23 +43,35 @@ export const DataProvider = (props) => {
   const [receivedList, setReceivedList] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
 
-  const dayList = [t('Sunday'), t('Monday'), t('Tuesday'), t('Wednesday'), t('Thursday'), t('Friday'), t('Saturday')];
+  const dayList = [
+    t('Sunday'),
+    t('Monday'),
+    t('Tuesday'),
+    t('Wednesday'),
+    t('Thursday'),
+    t('Friday'),
+    t('Saturday'),
+  ];
   let dimensions = RandomUtils.useWindowDimensions();
   const currentDate = new Date();
   let firstDay = new Day(currentDate);
-  const [day, setDay] = useState((minWidth < dimensions.width) ? firstDay.startOfWeek(dayList).getDate() : firstDay.getDate());
+  const [day, setDay] = useState(
+    minWidth < dimensions.width
+      ? firstDay.startOfWeek(dayList).getDate()
+      : firstDay.getDate()
+  );
 
   function forceUpdate() {
     setUpdate(true);
-    setUpdateCounter(prev => prev + 1);
+    setUpdateCounter((prev) => prev + 1);
   }
 
   function changeTheme(theme) {
-    setUserTheme(theme)
+    setUserTheme(theme);
   }
 
   function changeLanguage(lang) {
-    setUserLanguage(lang)
+    setUserLanguage(lang);
   }
 
   useEffect(() => {
@@ -68,7 +85,7 @@ export const DataProvider = (props) => {
     window.scrollTo(0, 0);
     const loadMainData = async () => {
       if (!shouldUpdate) return;
-      if (props.page !== "home") return;
+      if (props.page !== 'home') return;
       if (!CONFIG) return;
       setLoading(true);
       try {
@@ -83,25 +100,33 @@ export const DataProvider = (props) => {
         ] = await Promise.all([
           RandomUtils.fetchData(PATH_ASSO_CALENDAR),
           RandomUtils.fetchData(PATH_USER_CALENDAR + day + '/'),
-          RandomUtils.fetchData(API_URL + "/api/get_themes"),
-          RandomUtils.fetchData(API_URL + "/api/get_profile"),
-          RandomUtils.fetchData(API_URL + "/api/get_languages"),
-          RandomUtils.fetchData(API_URL + "/api/users/"),
-          RandomUtils.fetchData(API_URL + "/api/friends/"),
+          RandomUtils.fetchData(API_URL + '/api/get_themes'),
+          RandomUtils.fetchData(API_URL + '/api/get_profile'),
+          RandomUtils.fetchData(API_URL + '/api/get_languages'),
+          RandomUtils.fetchData(API_URL + '/api/users/'),
+          RandomUtils.fetchData(API_URL + '/api/friends/'),
         ]);
 
-        if (resultAsso.data) {setDataAsso(resultAsso.data.events); setColorsAsso(resultAsso.data.colors)}
-        if (resultAgenda.data) {setDataAgenda(resultAgenda.data.events); setColorsAgenda(resultAgenda.data.colors)}
+        if (resultAsso.data) {
+          setDataAsso(resultAsso.data.events);
+          setColorsAsso(resultAsso.data.colors);
+        }
+        if (resultAgenda.data) {
+          setDataAgenda(resultAgenda.data.events);
+          setColorsAgenda(resultAgenda.data.colors);
+        }
         if (resultThemes.data) setAllThemes(resultThemes.data);
         if (resultLanguages.data) setAllLanguages(resultLanguages.data);
-        if (resultProfile.data){
-          const profileData  = resultProfile.data
-          setProfile({username : profileData.username, displayName : profileData.displayName });
+        if (resultProfile.data) {
+          const profileData = resultProfile.data;
+          setProfile({
+            username: profileData.username,
+            displayName: profileData.displayName,
+          });
           setUserTheme(profileData.theme);
           setUserLanguage(profileData.language);
           setIcsLink(profileData.ics_url);
-        };
-
+        }
 
         // Gestion de userList
         if (resultUsers.data) {
@@ -115,9 +140,8 @@ export const DataProvider = (props) => {
           setPendingList(friendsData.sent || []);
           setReceivedList(friendsData.received || []);
         }
-
       } catch (error) {
-        setStatusMessage(t("LoadError") + " : " + error);
+        setStatusMessage(t('LoadError') + ' : ' + error);
         raiseErrorFlag(true);
       } finally {
         setLoading(false);
@@ -130,17 +154,20 @@ export const DataProvider = (props) => {
   useEffect(() => {
     const loadAllTds = async () => {
       if (!CONFIG || !shouldUpdate) return;
-      if (props.page !== "home") return;
+      if (props.page !== 'home') return;
 
       setLoadingTds(true);
       try {
-        const url = API_URL + "/api/get_tds/all?format=json";
+        const url = API_URL + '/api/get_tds/all?format=json';
         const result = await RandomUtils.fetchData(url);
 
-        if (result.data) setTds({departments: result.data.departments, user_tds:result.data.user_tds});
-
+        if (result.data)
+          setTds({
+            departments: result.data.departments,
+            user_tds: result.data.user_tds,
+          });
       } catch (error) {
-        console.error(t("LoadError") + " : " + error);
+        console.error(t('LoadError') + ' : ' + error);
       } finally {
         setLoadingTds(false);
         setUpdate(false);
@@ -156,14 +183,53 @@ export const DataProvider = (props) => {
 
   return (
     <>
-      <DataContext.Provider value={{dataAsso, dataAgenda, day, setDay, forceUpdate, changeTheme,
-          changeLanguage, tds, icsLink, allThemes, userTheme, loadingTds, userProfile,
-          allLanguages, userLanguage, userList, friendsList, setFriendsList, pendingList,
-          setPendingList, receivedList, setReceivedList, dataFriend, setDataFriend, showCalendar,
-          setShowCalendar, colorsAsso, colorsAgenda, setColorsAsso, setColorsAgenda}}>
-          {props.children}
+      <DataContext.Provider
+        value={{
+          dataAsso,
+          dataAgenda,
+          day,
+          setDay,
+          forceUpdate,
+          changeTheme,
+          changeLanguage,
+          tds,
+          icsLink,
+          allThemes,
+          userTheme,
+          loadingTds,
+          userProfile,
+          allLanguages,
+          userLanguage,
+          userList,
+          friendsList,
+          setFriendsList,
+          pendingList,
+          setPendingList,
+          receivedList,
+          setReceivedList,
+          dataFriend,
+          setDataFriend,
+          showCalendar,
+          setShowCalendar,
+          colorsAsso,
+          colorsAgenda,
+          setColorsAsso,
+          setColorsAgenda,
+        }}
+      >
+        {props.children}
       </DataContext.Provider>
-      {errorFlag && <Alert severity="error" variant="filled" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}
+      {errorFlag && (
+        <Alert
+          severity="error"
+          variant="filled"
+          onClose={() => {
+            raiseErrorFlag(false);
+          }}
+        >
+          {statusMessage}
+        </Alert>
+      )}
     </>
   );
 };

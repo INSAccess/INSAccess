@@ -1,37 +1,36 @@
-import { nbDaysPerMonth } from './Constants.jsx'
+import { nbDaysPerMonth } from './Constants.jsx';
 
 /**
  * Class for handling days and dates
  * @constructor
  * @param {string} date - the date of the day
  */
-const Day = class Day{
-
-  date = "2025-01-01";
+const Day = class Day {
+  date = '2025-01-01';
   day = 1;
   month = 1;
   year = 1970;
-  
-  constructor(date){
-    if (date instanceof Date){
-      this.day = date.getDate()
-      this.month = date.getMonth()+1
-      this.year = date.getFullYear()
-      let monthZero = (this.month < 10) ? "0" : ""
-      let dayZero = (this.day < 10) ? "0" : ""
-      this.date = this.year+"-"+monthZero+this.month+"-"+dayZero+this.day
+
+  constructor(date) {
+    if (date instanceof Date) {
+      this.day = date.getDate();
+      this.month = date.getMonth() + 1;
+      this.year = date.getFullYear();
+      let monthZero = this.month < 10 ? '0' : '';
+      let dayZero = this.day < 10 ? '0' : '';
+      this.date =
+        this.year + '-' + monthZero + this.month + '-' + dayZero + this.day;
     } else {
       this.date = date;
       this.update();
     }
-    
   }
 
   /**
    * Setter for the date
-   * @param {string} date 
+   * @param {string} date
    */
-  setDay(date){
+  setDay(date) {
     this.date = date;
     this.update();
   }
@@ -39,23 +38,23 @@ const Day = class Day{
   /**
    * Updates the separate informations on the date
    */
-  update(){
+  update() {
     this.day = parseInt(this.date.slice(8, 10));
     this.month = parseInt(this.date.slice(5, 7));
-    this.year = parseInt(this.date.slice(0, 4))
+    this.year = parseInt(this.date.slice(0, 4));
   }
 
   /**
    * Returns a new Day instance from the day, month and year given
-   * @param {*} day 
-   * @param {*} month 
-   * @param {*} year 
+   * @param {*} day
+   * @param {*} month
+   * @param {*} year
    * @returns {Day}
    */
-  static constructDay(day, month, year){
-    let nDay = (day < 10) ? "0" + day : "" + day;
-    let nMonth = (month < 10) ? "0" + month : "" + month;
-    let newDay = new Day(year+"-"+nMonth+"-"+nDay)
+  static constructDay(day, month, year) {
+    let nDay = day < 10 ? '0' + day : '' + day;
+    let nMonth = month < 10 ? '0' + month : '' + month;
+    let newDay = new Day(year + '-' + nMonth + '-' + nDay);
     return newDay;
   }
 
@@ -64,42 +63,42 @@ const Day = class Day{
    * @param {int} nb_days the number of days to skip
    * @returns {Day}
    */
-  next(nb_days){
-    let day = this.day+nb_days
+  next(nb_days) {
+    let day = this.day + nb_days;
     let month = this.month;
     let year = this.year;
-    let nbDays = nbDaysPerMonth[this.month-1]
-    if (day > nbDays){
-      day -= nbDays
-      month += 1
-      if (month > 12){
-        month = 1
-        year += 1
+    let nbDays = nbDaysPerMonth[this.month - 1];
+    if (day > nbDays) {
+      day -= nbDays;
+      month += 1;
+      if (month > 12) {
+        month = 1;
+        year += 1;
       }
     }
-    let newDay = Day.constructDay(day, month, year)
+    let newDay = Day.constructDay(day, month, year);
     return newDay;
   }
-  
+
   /**
    * Returns the Day that is nb_days before the current Day
    * @param {int} nb_days the number of days to skip
    * @returns {Day}
    */
-  prev(nb_days){
-    let day = this.day-nb_days
+  prev(nb_days) {
+    let day = this.day - nb_days;
     let month = this.month;
     let year = this.year;
-    let nbDays = nbDaysPerMonth[(this.month+10)%12]
-    if (day < 1){
-      day += nbDays
-      month -= 1
-      if (month < 1){
-        month = 12
-        year -= 1
+    let nbDays = nbDaysPerMonth[(this.month + 10) % 12];
+    if (day < 1) {
+      day += nbDays;
+      month -= 1;
+      if (month < 1) {
+        month = 12;
+        year -= 1;
       }
     }
-    let newDay = Day.constructDay(day, month, year)
+    let newDay = Day.constructDay(day, month, year);
     return newDay;
   }
 
@@ -107,7 +106,7 @@ const Day = class Day{
    * Returns a copy of the current Day
    * @returns  {Day}
    */
-  copy(){
+  copy() {
     let res = new Day(this.date);
     return res;
   }
@@ -116,50 +115,50 @@ const Day = class Day{
    * Calucates the start of the current week
    * @returns {Day}
    */
-  startOfWeek(dayList){
+  startOfWeek(dayList) {
     let day = this.copy();
-    while (day.getDayOfWeek(dayList) !== dayList[1]){
+    while (day.getDayOfWeek(dayList) !== dayList[1]) {
       day = day.prev(1);
     }
     return day;
   }
-  
+
   /**
    * Returns a readable hour
-   * @param {string} hour 
+   * @param {string} hour
    * @returns {string}
    */
-  static presentableHour(hour){
-    return hour[0]+hour[1]+":"+hour[2]+hour[3]
+  static presentableHour(hour) {
+    return hour[0] + hour[1] + ':' + hour[2] + hour[3];
   }
 
   /**
    * Uses the Date class to get the day of the week as an integer and then convert it the a readable string
    * @returns {string}
    */
-  getDayOfWeek(dayList){
-    let date = new Date(this.date)
-    return dayList[date.getDay()]
+  getDayOfWeek(dayList) {
+    let date = new Date(this.date);
+    return dayList[date.getDay()];
   }
 
-  getNumberDayOfWeek(){
-    let date = new Date(this.date)
-    return date.getDay()
+  getNumberDayOfWeek() {
+    let date = new Date(this.date);
+    return date.getDay();
   }
 
   /**
    * Uses the Date class to get the month as an integer and then convert it the a readable string
    * @returns {string}
    */
-  getMonthOfYear(monthList){
-    return monthList[this.month-1]
+  getMonthOfYear(monthList) {
+    return monthList[this.month - 1];
   }
 
   /**
    * Getter for the current day
    * @returns {string}
    */
-  getDay(){
+  getDay() {
     return this.day;
   }
 
@@ -167,15 +166,15 @@ const Day = class Day{
    * Getter for the current month
    * @returns {string}
    */
-  getMonth(){
+  getMonth() {
     return this.month;
   }
-  
+
   /**
    * Getter for the current years
    * @returns {string}
    */
-  getYear(){
+  getYear() {
     return this.year;
   }
 
@@ -183,7 +182,7 @@ const Day = class Day{
    * Getter for the current date
    * @returns {string}
    */
-  getDate(){
+  getDate() {
     return this.date;
   }
 
@@ -191,24 +190,28 @@ const Day = class Day{
    * Setter for the current date
    * @param {string} date
    */
-  setDate(date){
+  setDate(date) {
     this.date = date;
-    this.update()
+    this.update();
   }
-  
+
   /**
    * Returns readable informations on the current day
    * @returns {Array}
    */
-  getDateInfo(dayList, monthList){
-      return [this.getDayOfWeek(dayList), this.getDay(), this.getMonthOfYear(monthList)];
+  getDateInfo(dayList, monthList) {
+    return [
+      this.getDayOfWeek(dayList),
+      this.getDay(),
+      this.getMonthOfYear(monthList),
+    ];
   }
 
   /**
    * Returns the current date
    * @returns {string}
    */
-  toString(){
+  toString() {
     return this.date;
   }
 
@@ -216,26 +219,26 @@ const Day = class Day{
    * Static method for creating the array of usable hours of a day
    * @returns {Array}
    */
-  static createHours(){
+  static createHours() {
     let result = [];
-    let string = "";
-    let lastHour = "2015"
+    let string = '';
+    let lastHour = '2015';
     let currentHour = 8;
     let currentMinute = 0;
-    for (let i = 0; i <= 12; i++){
-      for (let j = 0; j < 12; j++){
-        string = "";
-        if (currentHour < 10){
-          string += "0";
+    for (let i = 0; i <= 12; i++) {
+      for (let j = 0; j < 12; j++) {
+        string = '';
+        if (currentHour < 10) {
+          string += '0';
         }
         string += `${currentHour}`;
-        if (currentMinute < 10){
-          string += "0";
+        if (currentMinute < 10) {
+          string += '0';
         }
         string += `${currentMinute}`;
         result.push(string);
         currentMinute += 5;
-        if (string === lastHour){
+        if (string === lastHour) {
           return result;
         }
       }
@@ -244,6 +247,6 @@ const Day = class Day{
     }
     return result;
   }
-} 
+};
 
 export default Day;

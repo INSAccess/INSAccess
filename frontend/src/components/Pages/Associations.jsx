@@ -1,9 +1,9 @@
-import AllEvents from '../Events/AllEvents.jsx'
+import AllEvents from '../Events/AllEvents.jsx';
 
 /**
  * Wrapper component for better readability (semantic)
  * @component
- * @returns {JSX.Element} 
+ * @returns {JSX.Element}
  */
 const Associations = () => {
   return <AllEvents dataOrigin="asso" />;

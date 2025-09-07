@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "EDT",
+  "name": "Emploi du temps",
   "icons": [
     {
       "src": "duck.png",

@@ -7,19 +7,19 @@
   --rotateTime: 2s;
   --dateTextSize: max(3.4svh, 2.1svw);
   --dateHeight: 6svh;
-  
+
   //color theme constants//
 
   /////// SYSTEM COLOR ///////
-  @media (prefers-color-scheme: light){
-    --backgroundColor :white;
+  @media (prefers-color-scheme: light) {
+    --backgroundColor: white;
 
-    --textColor:#333;
-    --contrastTextColor :white;
+    --textColor: #333;
+    --contrastTextColor: white;
     --messageColor: #7c7c7c;
 
     --buttonColor: #db342c;
-    --buttonHoverColor:  #ca2e26;
+    --buttonHoverColor: #ca2e26;
     --buttonActiveColor: #af231c;
 
     --burgerButtonColor: #ad2821;
@@ -30,60 +30,60 @@
     --subSectionBackgroundColor: #f8f9fa;
     --contrastBorderColor: #db342c;
     --hoverHighlight: #f0f0f0;
-    
+
     --eventColor: #d44d44;
     // --eventHoverColor: #ff6b6b;
     // --eventHoverBorderColor: #ff4b4b;
     --eventBgColor: #f3eceb;
 
-    --shadowColorBold:rgba(0, 0, 0, 0.3);
-    --shadowColor:rgba(0, 0, 0, 0.1);
+    --shadowColorBold: rgba(0, 0, 0, 0.3);
+    --shadowColor: rgba(0, 0, 0, 0.1);
 
-    --arrowImg:url("/images/fleche.png");
-    --insaLogo:url("/images/Logo_INSA_noir.png");
+    --arrowImg: url('/images/fleche.png');
+    --insaLogo: url('/images/Logo_INSA_noir.png');
   }
-  
-  @media (prefers-color-scheme: dark){
+
+  @media (prefers-color-scheme: dark) {
     --backgroundColor: #202020;
-  
+
     --textColor: #e0e0e0;
-    --contrastTextColor :white;
+    --contrastTextColor: white;
     --messageColor: #b0b0b0;
-  
+
     --buttonColor: #e05d57;
     --buttonHoverColor: #d54c45;
     --buttonActiveColor: #c13e38;
-  
+
     --burgerButtonColor: #db5048;
     --burgerBackgroundColor: #b33833;
     --burgerBackgroundBorderColor: #a52a25;
-  
+
     --borderColor: #2a2a2a;
     --subSectionBackgroundColor: #1e1e1e;
     --contrastBorderColor: #e05d57;
     --hoverHighlight: #2c2c2c;
-  
+
     --eventColor: #ff6b6b;
     // --eventHoverColor: #ff8787;
     // --eventHoverBorderColor: #ff6b6b;
     --eventBgColor: #292929;
-  
+
     --shadowColorBold: rgba(0, 0, 0, 0.7);
     --shadowColor: rgba(0, 0, 0, 0.3);
-  
-    --arrowImg:url("/images/fleche_w.png");
-    --insaLogo:url("/images/Logo_INSA_blanc.png");
+
+    --arrowImg: url('/images/fleche_w.png');
+    --insaLogo: url('/images/Logo_INSA_blanc.png');
   }
   ///// CUSTOM COLOR //////
   [data-theme='light'] {
-    --backgroundColor :white;
+    --backgroundColor: white;
 
-    --textColor:#333;
-    --contrastTextColor :white;
+    --textColor: #333;
+    --contrastTextColor: white;
     --messageColor: #7c7c7c;
 
     --buttonColor: #db342c;
-    --buttonHoverColor:  #ca2e26;
+    --buttonHoverColor: #ca2e26;
     --buttonActiveColor: #af231c;
 
     --burgerButtonColor: #ad2821;
@@ -94,61 +94,58 @@
     --subSectionBackgroundColor: #f8f9fa;
     --contrastBorderColor: #db342c;
     --hoverHighlight: #f0f0f0;
-    
+
     --eventColor: #d44d44;
     // --eventHoverColor: #ff6b6b;
     // --eventHoverBorderColor: #ff4b4b;
     --eventBgColor: #f3eceb;
 
-    --shadowColorBold:rgba(0, 0, 0, 0.3);
-    --shadowColor:rgba(0, 0, 0, 0.1);
+    --shadowColorBold: rgba(0, 0, 0, 0.3);
+    --shadowColor: rgba(0, 0, 0, 0.1);
 
-    --arrowImg:url("/images/fleche.png");
-    --insaLogo:url("/images/Logo_INSA_noir.png");
+    --arrowImg: url('/images/fleche.png');
+    --insaLogo: url('/images/Logo_INSA_noir.png');
   }
 
   [data-theme='dark'] {
     --backgroundColor: #202020;
-  
+
     --textColor: #e0e0e0;
-    --contrastTextColor :white;
+    --contrastTextColor: white;
     --messageColor: #b0b0b0;
-  
+
     --buttonColor: #e05d57;
     --buttonHoverColor: #d54c45;
     --buttonActiveColor: #c13e38;
-  
+
     --burgerButtonColor: #db5048;
     --burgerBackgroundColor: #b33833;
     --burgerBackgroundBorderColor: #a52a25;
-  
+
     --borderColor: #2a2a2a;
     --subSectionBackgroundColor: #1e1e1e;
     --contrastBorderColor: #e05d57;
     --hoverHighlight: #2c2c2c;
-  
+
     --eventColor: #ff6b6b;
     // --eventHoverColor: #ff8787;
     // --eventHoverBorderColor: #ff6b6b;
     --eventBgColor: #292929;
-  
+
     --shadowColorBold: rgba(0, 0, 0, 0.7);
     --shadowColor: rgba(0, 0, 0, 0.3);
-  
-    --arrowImg:url("/images/fleche_w.png");
-    --insaLogo:url("/images/Logo_INSA_blanc.png");
-  
+
+    --arrowImg: url('/images/fleche_w.png');
+    --insaLogo: url('/images/Logo_INSA_blanc.png');
   }
 }
-
-
 
 //---------------------------------------------------------------//
 //                           UTILS                               //
 //---------------------------------------------------------------//
 
 #rotating-logo {
-  animation: rotation var(--rotateTime) infinite linear
+  animation: rotation var(--rotateTime) infinite linear;
 }
 
 @keyframes rotation {
@@ -157,7 +154,7 @@
   }
   to {
     transform: rotate(359deg);
-  } 
+  }
 }
 
 .logo {
@@ -168,12 +165,12 @@
   left: 4rem;
   visibility: hidden;
   content: var(--insaLogo);
-  @media (max-width : 1200px){
+  @media (max-width: 1200px) {
     visibility: hidden;
   }
 }
 
 * {
   color: (--textColor);
-  user-select:none;
+  user-select: none;
 }
