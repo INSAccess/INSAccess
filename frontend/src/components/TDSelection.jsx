@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { API_URL } from '../utils/Constants';
-import RandomUtils from '../utils/RandomUtils';
+import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils';
 import { useData } from '../contexts/DataContext';
 import { useTranslation } from 'react-i18next';
 import Alert from '@mui/material/Alert';

@@ -143,6 +143,23 @@ const Friends = () => {
     }
   };
 
+  const handleRefuse = async (username) => {
+    try {
+      const result = await RandomUtils.fetchDataWithMethod(
+        `${API_URL}/api/user/friends`,
+        'DELETE',
+        { other_user: username }
+      );
+      if (result.error) {
+        console.error(t('DeleteError'), result.error);
+        return;
+      }
+      setReceivedList(receivedList.filter((e) => e !== username));
+    } catch (error) {
+      console.error(t('DeleteError'), error);
+    }
+  };
+
   const handleSeeCalendar = async (username) => {
     const friendCalendar = await RandomUtils.fetchData(
       API_URL + '/api/calendar/friend/' + username
@@ -178,14 +195,20 @@ const Friends = () => {
             className="btn btn-outline-success me-2"
             onClick={() => handleSeeCalendar(friendsList[i])}
           >
-            {t('Calendar')}
+            <span className="d-none d-md-inline me-2">{t('Calendar')}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-calendar-fill" viewBox="0 0 16 16">
+              <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5"/>
+            </svg>
           </button>
           <button
             type="button"
             className="btn btn-outline-danger"
             onClick={() => handleDeleteFriend(friendsList[i])}
           >
-            {t('Remove')}
+            <span className="d-none d-md-inline me-2">{t('Remove')}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-x-fill" viewBox="0 0 16 16">
+              <path fillRule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m6.146-2.854a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708"/>
+            </svg>
           </button>
         </div>
       </li>
@@ -205,7 +228,10 @@ const Friends = () => {
           className="btn btn-outline-danger"
           onClick={() => handleCancel(pendingList[i])}
         >
-          {t('Cancel')}
+          <span className="d-none d-md-inline me-2">{t('Cancel')}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+          </svg>
         </button>
       </li>
     );
@@ -219,13 +245,29 @@ const Friends = () => {
         key={i}
       >
         <span>{getDisplayName(userList, receivedList[i])}</span>
-        <button
-          type="button"
-          className="btn btn-outline-success"
-          onClick={() => handleAccept(receivedList[i])}
-        >
-          {t('Accept')}
-        </button>
+        <div>
+          <button
+            type="button"
+            className="btn btn-outline-success me-2"
+            onClick={() => handleAccept(receivedList[i])}
+          >
+            <span className="d-none d-md-inline me-2">{t('Accept')}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-add" viewBox="0 0 16 16">
+              <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+              <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+            </svg>
+          </button>
+          <button
+            type="button"
+            className="btn btn-outline-danger"
+            onClick={() => handleRefuse(receivedList[i])}
+          >
+            <span className="d-none d-md-inline me-2">{t('Refuse')}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
+              <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+            </svg>
+          </button>
+        </div>
       </li>
     );
   }

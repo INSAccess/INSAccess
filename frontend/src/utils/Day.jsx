@@ -247,6 +247,39 @@ const Day = class Day {
     }
     return result;
   }
+
+  /**
+   * Static method for creating the array of usable hours of a day
+   * @returns {Array}
+   */
+  static createAllHours() {
+    let result = [];
+    let string = '';
+    let lastHour = '2400';
+    let currentHour = 8;
+    let currentMinute = 0;
+    for (let i = 0; i <= 16; i++) {
+      for (let j = 0; j < 12; j++) {
+        string = '';
+        if (currentHour < 10) {
+          string += '0';
+        }
+        string += `${currentHour}`;
+        if (currentMinute < 10) {
+          string += '0';
+        }
+        string += `${currentMinute}`;
+        result.push(string);
+        currentMinute += 5;
+        if (string === lastHour) {
+          return result;
+        }
+      }
+      currentHour += 1;
+      currentMinute = 0;
+    }
+    return result;
+  }
 };
 
 export default Day;
