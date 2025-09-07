@@ -22,7 +22,7 @@ const baseEventWidth = 93;
 const REPORT_FORM = 'https://forms.gle/LyMsab1YVmbwf3LN7';
 const API_URL = process.env.REACT_APP_API_URL;
 const PATH_USER_CALENDAR = API_URL + '/api/calendar/';
-const PATH_ASSO_CALENDAR = API_URL + '/api/get_evenements';
+const PATH_ASSO_CALENDAR = API_URL + '/api/calendar/events';
 const API_LOGIN = API_URL + '/authentification/login';
 const API_LOGOUT = API_URL + '/authentification/logout';
 const API_AUTH = API_URL + '/api/is_connected?format=json';

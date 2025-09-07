@@ -106,9 +106,9 @@ export const DataProvider = (props) => {
         ] = await Promise.all([
           RandomUtils.fetchData(PATH_ASSO_CALENDAR),
           RandomUtils.fetchData(PATH_USER_CALENDAR),
-          RandomUtils.fetchData(API_URL + '/api/get_themes'),
+          RandomUtils.fetchData(API_URL + '/api/metadata/themes'),
           RandomUtils.fetchData(API_URL + '/api/get_profile'),
-          RandomUtils.fetchData(API_URL + '/api/get_languages'),
+          RandomUtils.fetchData(API_URL + '/api/metadata/languages'),
           RandomUtils.fetchData(API_URL + '/api/users/'),
           RandomUtils.fetchData(API_URL + '/api/friends/'),
         ]);
@@ -161,7 +161,7 @@ export const DataProvider = (props) => {
 
       setLoadingTds(true);
       try {
-        const url = API_URL + '/api/get_tds/all?format=json';
+        const url = API_URL + '/api/metadata/td_groups/all?format=json';
         const result = await RandomUtils.fetchData(url);
 
         if (result.data)
