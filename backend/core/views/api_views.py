@@ -287,7 +287,7 @@ class DeleteEventAPIView(APIView):
             logger.error(f"Internal server error at post_delete_evenement: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
-class GetUser2ProfileAPIView(APIView):
+class GetUserProfileAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -318,96 +318,6 @@ class GetUser2ProfileAPIView(APIView):
 
         return Response(profile)
 
-
-class GetIcsUrlAPIView(APIView):
-    """Simple api route for returning the associated ics url of the user
-    for calendars
-    """
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        """"""
-        try:
-            response = Response(f"https://{HOST_IP}/ics/{request.user.userprofile.ics_uid}")
-            logger.info("Returned ICS URL for user", extra={"request": request, "status_code": response.status_code})
-            return response
-        except Exception as e:
-            response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_ics_url: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
-            return response
-
-class GetIsAssociationPublisherAPIView(APIView):
-    """A small api route for the temporary solution
-    for knowing if the user is connected or not
-
-    Args:
-        APIView (class): the api class that is inherited by this route
-
-    Returns:
-        response: the serialized boolean
-    """
-    permission_classes = [IsAuthenticated]
-
-    def get(self,request):
-        """returns True if the user is authenticated else False"""
-        try:
-            asso_publisher = AssociationPublisher.objects.filter(user = request.user).first()
-            if not asso_publisher:
-                response = Response({"is_asso" : False, "asso" : None})
-            else:
-                asso = asso_publisher.association.name
-                response = Response({"is_asso" : True, "asso" : asso})
-            logger.info("Checked if user is an association publisher", extra={"request": request, "status_code": response.status_code})
-            return response
-        except Exception as e:
-            response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_is_association_publisher : {str(e)}" ,extra={"request": request, "status_code": response.status_code})
-            return response
-
-class GetUserThemeAPIView(APIView):
-    """return the user associated theme"""
-    permission_classes = [IsAuthenticated]
-
-    def get(self,request):
-        """"""
-        try:
-            response = Response(request.user.userprofile.color_theme.name)
-            logger.info("Returned user color theme", extra={"request": request, "status_code": response.status_code})
-            return response
-        except Exception as e:
-            response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_user_theme: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
-            return response
-
-class GetUserLanguageAPIView(APIView):
-    """return the user associated language"""
-    permission_classes = [IsAuthenticated]
-
-    def get(self,request):
-        """"""
-        try:
-            response = Response(request.user.userprofile.language.name)
-            logger.info("Returned user language", extra={"request": request, "status_code": response.status_code})
-            return response
-        except Exception as e:
-            response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_user_language: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
-            return response
-
-class GetUserProfileAPIView(APIView):
-    """return the user associated theme"""
-    permission_classes = [IsAuthenticated]
-
-    def get(self,request):
-        """"""
-        try:
-            response = Response({"username":request.user.username, "displayName": request.session.get('attributes', {}).get("first_name", "")})
-            logger.info("Returned user profile", extra={"request": request, "status_code": response.status_code})
-            return response
-        except Exception as e:
-            response = Response({"error": "Internal server error"}, status = 500)
-            logger.error(f"Internal server error at get_profile: {str(e)}" ,extra={"request": request, "status_code": response.status_code})
-            return response
 
 class PostUserThemeAPIView(APIView):
     """change the user associated theme"""

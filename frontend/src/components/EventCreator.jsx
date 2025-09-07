@@ -185,9 +185,7 @@ const EvenementForm = ({}) => {
 
 const EventCreator = () => {
     const {isAsso} = useData();
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
-
+    const { t } = useTranslation()
     const urlLogin = API_URL+"authentification/login";
     const urlCreate = API_URL+"/create";
 

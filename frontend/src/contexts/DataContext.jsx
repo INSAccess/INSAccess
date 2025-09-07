@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import Day from '../utils/Day.jsx';
-import { minWidth, PATH_CALENDAR, PATH_ASSO, API_URL } from '../utils/Constants.jsx';
+import { minWidth, PATH_USER_CALENDAR, PATH_ASSO_CALENDAR, API_URL } from '../utils/Constants.jsx';
 import RandomUtils from '../utils/RandomUtils.jsx';
 import { Loading } from '../components/Templates.jsx'
 import Alert from '@mui/material/Alert';
@@ -77,43 +77,35 @@ export const DataProvider = (props) => {
         const [
           resultAsso,
           resultAgenda,
-          resultTheme,
-          resultIcs,
-          resultIsAssos,
           resultThemes,
           resultProfile,
           resultLanguages,
-          resultLanguage,
           resultUsers,
           resultFriends,
         ] = await Promise.all([
-          RandomUtils.fetchData(PATH_ASSO),
-          RandomUtils.fetchData(PATH_CALENDAR + day + '/'),
-          RandomUtils.fetchData(API_URL + "/api/get_user_theme"),//
-          RandomUtils.fetchData(API_URL + "/api/get_ics_url"),//
-          RandomUtils.fetchData(API_URL + "/api/is_association"),//
+          RandomUtils.fetchData(PATH_ASSO_CALENDAR),
+          RandomUtils.fetchData(PATH_USER_CALENDAR + day + '/'),
           RandomUtils.fetchData(API_URL + "/api/get_themes"),
-          RandomUtils.fetchData(API_URL + "/api/get_profile"),//
+          RandomUtils.fetchData(API_URL + "/api/get_profile"),
           RandomUtils.fetchData(API_URL + "/api/get_languages"),
-          RandomUtils.fetchData(API_URL + "/api/get_user_language"),//
           RandomUtils.fetchData(API_URL + "/api/users/"),
           RandomUtils.fetchData(API_URL + "/api/friends/"),
         ]);
 
-        // Gestion des données existantes...
-        document.getElementById("root").setAttribute("data-theme", resultTheme.data);
         if (resultAsso.data) {setDataAsso(resultAsso.data.events); setColorsAsso(resultAsso.data.colors)}
         if (resultAgenda.data) {setDataAgenda(resultAgenda.data.events); setColorsAgenda(resultAgenda.data.colors)}
         if (resultThemes.data) setAllThemes(resultThemes.data);
-        if (resultTheme.data) setUserTheme(resultTheme.data);
-        if (resultIcs.data) setIcsLink(resultIcs.data);
-        if (resultProfile.data) setProfile(resultProfile.data);
         if (resultLanguages.data) setAllLanguages(resultLanguages.data);
-        if (resultLanguage.data) setUserLanguage(resultLanguage.data);
-        if (resultIsAssos.data) {
-          setIsAssos(resultIsAssos.data.is_asso);
-          setAssoName(resultIsAssos.data.asso);
-        }
+        if (resultProfile.data){
+          const profileData  = resultProfile.data
+          setProfile({username : profileData.username, displayName : profileData.displayName });
+          setUserTheme(profileData.theme);
+          setUserLanguage(profileData.language);
+          setIsAssos(profileData.is_asso);
+          setAssoName(profileData.asso);
+          setIcsLink(profileData.ics_url);
+        };
+
 
         // Gestion de userList
         if (resultUsers.data) {
