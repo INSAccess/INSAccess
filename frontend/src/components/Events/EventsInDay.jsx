@@ -25,7 +25,7 @@ const EventsInDay = ({date, data, dataOrigin}) => {
   let i = 0;
   let day = new Day(date);
   const infos = day.getDateInfo(dayList, monthList);
-  const eventsOfDay = EventUtils.getEventsOfDay(date, data["events"]).sort((a, b) => (parseInt(a.end_hour)-parseInt(a.start_hour)) - (parseInt(b.end_hour)-parseInt(b.start_hour)));
+  const eventsOfDay = EventUtils.getEventsOfDay(date, data).sort((a, b) => (parseInt(a.end_hour)-parseInt(a.start_hour)) - (parseInt(b.end_hour)-parseInt(b.start_hour)));
 
   for (let element of eventsOfDay){
     const nbOverlapTotal = EventUtils.getOverlappingEvents(element, eventsOfDay);
@@ -37,7 +37,7 @@ const EventsInDay = ({date, data, dataOrigin}) => {
     eventsList.push(
       <SingleEvent key={i} startTime={element.start_hour} endTime={element.end_hour} 
       label={element.desc} teacher={element.link_teacher} room={element.link_room} link={element.link} 
-      width={width} left={left} colors={data["colors"]}
+      width={width} left={left}
       desc={element.info} dataOrigin={dataOrigin} uid={element.uid}/>
     );
 
