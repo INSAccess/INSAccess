@@ -98,7 +98,7 @@ const DeleteButton = ({
     }
   };
 
-  if (asso && teacher === assoName) {
+  if (asso && (teacher == assoName)) {
     return (
       <div style={{ marginTop: '2%' }}>
         <button className="btn btn-primary" onClick={handleDeleteEvent}>

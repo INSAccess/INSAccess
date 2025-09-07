@@ -84,11 +84,7 @@ const EventsInDay = ({ date, data, dataOrigin }) => {
   }
 
   // Doesn't display the end of the week if empty
-  if (
-    eventsList.length == 0 &&
-    (day.getNumberDayOfWeek() == 6 || day.getNumberDayOfWeek() == 7) &&
-    minWidth < dimensions.width
-  ) {
+  if (eventsList.length == 0 && (day.getNumberDayOfWeek() == 6 || day.getNumberDayOfWeek() == 0) && (minWidth < dimensions.width)) {
     return <></>;
   }
   return (

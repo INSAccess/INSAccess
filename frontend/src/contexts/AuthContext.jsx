@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
         }
         if (assoResult.data) {
           setIsAssos(assoResult.data.is_asso);
-          setAssoName(assoResult.data.assoName);
+          setAssoName(assoResult.data.asso);
         }
 
         setError(authResult.error || assoResult.error);
