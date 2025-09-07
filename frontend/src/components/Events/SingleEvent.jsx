@@ -142,10 +142,19 @@ const SingleEvent = (props) => {
   const BUNDLE = useData();
   const { assoName } = useAuth();
 
-  let colors =
-    props.dataOrigin == 'asso' ? BUNDLE.colorsAsso : BUNDLE.colorsAgenda;
-  let setColorsList =
-    props.dataOrigin == 'asso' ? BUNDLE.setColorsAsso : BUNDLE.setColorsAgenda;
+  let colors = []
+  let setColorsList = () => {};
+
+  if (props.dataOrigin == 'asso'){
+    colors = BUNDLE.colorsAsso;
+    setColorsList = BUNDLE.setColorsAsso;
+  } else if (props.dataOrigin == 'user'){
+    colors = BUNDLE.colorsAgenda;
+    setColorsList = BUNDLE.setColorsAgenda;
+  } else {
+    colors = BUNDLE.colorsFriend;
+    setColorsList = BUNDLE.setColorsFriend;
+  }
 
   const hoursEvents = Day.createHours();
   let startIndex =
