@@ -26,90 +26,109 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { useState, useEffect } from "react";
-import { API_URL } from './Constants.jsx'
+            <pre class="prettyprint source linenums"><code>import { useState, useEffect } from 'react';
 
 /**
  * Class for handling random utility functions
  */
-class RandomUtils{
-  
+class RandomUtils {
   /**
    * Implements the max function
-   * @param {Comparable} a 
-   * @param {Comparable} b 
+   * @param {Comparable} a
+   * @param {Comparable} b
    * @returns {Comparable} the max of a and b
    */
-  static max(a, b){
-    return (a > b) ? a : b;
+  static max(a, b) {
+    return a > b ? a : b;
   }
-  
+
   /**
    * Handle for the window dimensions (width and height)
    * @returns {Array}
    */
-  static useWindowDimensions(){
+  static useWindowDimensions() {
     const [dimensions, setDimensions] = useState({
       width: window.innerWidth,
       height: window.innerHeight,
     });
-  
+
     useEffect(() => {
       const handleResize = () => {
         setDimensions({ width: window.innerWidth, height: window.innerHeight });
       };
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
     }, []);
-  
+
     return dimensions;
-  };
+  }
   /**
    * Fetches the data from a given path
-   * @param {string} data_path 
+   * @param {string} dataPath
    * @returns {struct} data, error
    */
-  static async fetchData(data_path){
+  static async fetchData(dataPath) {
     const initConfig = {
-      method:'GET',
-      headers:{'Content-Type':'application/json', 'Accept':'application/json', 'X-CSRFToken':RandomUtils.getCSRFToken()},
-      mode:'cors',
-      credentials:'include'
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'X-CSRFToken': RandomUtils.getCSRFToken(),
+      },
+      mode: 'cors',
+      credentials: 'include',
+    };
+    const response = await fetch(dataPath, initConfig);
+    const json = await response.json();
+
+    if (!response.ok) {
+      return { data: null, error: json.error };
     }
-    try {
-      const response = await fetch(data_path, initConfig);
-      if (!response.ok) {
-        throw new Error("Erreur lors du fetch");
-      }
-      const json = await response.json();
-      return { data: json, error: null };
-    } catch (error) {
-      return { data: null, error: error.message };
+    return { data: json, error: null };
+  }
+
+  static async fetchDataWithMethod(url, method, body = null) {
+    const initConfig = {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'X-CSRFToken': RandomUtils.getCSRFToken(),
+      },
+      mode: 'cors',
+      credentials: 'include',
+      body: body ? JSON.stringify(body) : null,
+    };
+    const response = await fetch(url, initConfig);
+    const json = await response.json();
+    if (!response.ok) {
+      return { data: null, error: json.error };
     }
-  };
-  
+    return { data: json, error: null };
+  }
+
   /**
    * Loads the data from the given path and returns the state of loading (data if success, error message and loading)
-   * @param {string} data_path 
+   * @param {string} dataPath
    * @returns {struct} data, error, loading
    */
-  static LoadData(data_path){
+  static LoadData(dataPath) {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-  
+
     useEffect(() => {
       const loadData = async () => {
-        const result = await RandomUtils.fetchData(data_path);
+        const result = await RandomUtils.fetchData(dataPath);
         setData(result.data);
         setError(result.error);
         setLoading(false);
       };
-  
+
       loadData();
     }, []);
-  
-    return {data, error, loading}
+
+    return { data, error, loading };
   }
 
   /**
@@ -117,31 +136,32 @@ class RandomUtils{
    * @param {*} list List of string or single string to concatenate
    * @returns {string} Concatenation of the strings passed in
    */
-  static Join(list){
-    if (typeof list == 'string'){
-      return list
+  static Join(list) {
+    if (typeof list == 'string') {
+      return list;
     }
-    let res = ""
-    for (let i = 0; i &lt; list.length-1; i++){
-      res += list[i]+', '
+    let res = '';
+    for (let i = 0; i &lt; list.length - 1; i++) {
+      res += list[i] + ', ';
     }
-    res += list[list.length-1]
-    return res
+    res += list[list.length - 1];
+    return res;
   }
 
-  static getCSRFToken(){
+  static getCSRFToken() {
     const cookies = document.cookie.split('; ');
     for (let cookie of cookies) {
-        const [name, value] = cookie.split('=');
-        if (name === 'csrftoken') {
-            return value;
-        }
+      const [name, value] = cookie.split('=');
+      if (name === 'csrftoken') {
+        return value;
+      }
     }
     return null;
-  };
+  }
 }
 
-export default RandomUtils;</code></pre>
+export default RandomUtils;
+</code></pre>
         </article>
     </section>
 
@@ -151,13 +171,13 @@ export default RandomUtils;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#NavBar">NavBar</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EvenementForm">EvenementForm</a></li><li><a href="global.html#EventCreator">EventCreator</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#handleSubmit">handleSubmit</a></li><li><a href="global.html#saveEvenement">saveEvenement</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Jun 07 2025 19:37:34 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Sep 07 2025 13:04:42 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

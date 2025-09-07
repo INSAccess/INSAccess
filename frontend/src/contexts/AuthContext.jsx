@@ -4,6 +4,12 @@ import { API_AUTH, API_URL } from '../utils/Constants.jsx';
 
 const AuthContext = createContext();
 
+/**
+ * Authentication provider component that manages user authentication and association status
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Child components
+ * @returns {JSX.Element} Authentication provider with context
+ */
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [isAssos, setIsAssos] = useState(false);
@@ -45,4 +51,8 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+/**
+ * Custom hook to access authentication context
+ * @returns {Object} Authentication context value containing token, loading, error, isAssos, and assoName
+ */
 export const useAuth = () => useContext(AuthContext);

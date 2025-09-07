@@ -6,6 +6,12 @@ import { useTranslation } from 'react-i18next';
 
 const ConfigContext = createContext();
 
+/**
+ * Configuration provider component that loads and manages application configuration data
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Child components
+ * @returns {JSX.Element} Configuration provider with context
+ */
 export const ConfigProvider = ({ children }) => {
   const { t } = useTranslation();
 
@@ -76,4 +82,8 @@ export const ConfigProvider = ({ children }) => {
   );
 };
 
+/**
+ * Custom hook to access configuration context
+ * @returns {Object|null} Configuration object or null if not loaded
+ */
 export const useConfig = () => useContext(ConfigContext);
