@@ -1,194 +1,254 @@
-# InsAccess
-This web app is designed for INSA Rouen Normandie, aiming to provide a simple class agenda similar to [INSAgenda](https://github.com/INSAgenda). However, its focus is on enabling associations and clubs at INSA to add custom events, along with other student utilities. This project is **not intended to replace INSAgenda** but rather to serve as an alternative for those who wish. Primarily, it is a fun project created as an opportunity to explore web app development.
+# 🎓 InsAccess
 
-# Table of content
-- [Installation](#installation)
-- [Documentation](#doc)
-- [Development](#dev)
-	- [Code Structure](#struct)
-	- [Utility Scripts](#util)
-	- [Static Files and Librairies](#static)
-- [Models](#models)
-- [Production](#prod)
+<div align="center">
 
-# Installation <div id='installation'/>
+**A modern web app for INSA Rouen Normandie students**
 
-### in the backend folder
-- Install docker-compose : https://docs.docker.com/compose/install/
-- Create a Python virtual environment and install dependencies:
-	```
-	python3 -m venv venv
-	source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-	pip install -r requirements.txt
-	```
-- Launch the makefile : `make install`
+*Simplifying class schedules and empowering student associations*
 
-### in the frontend folder
-- In the front folder, run `npm install` to install locally all dependencies related to node and react
-- create 2 environment files : `.env.development` and `.env.production` with the following content (the actual link can differ)
+![Status](https://img.shields.io/badge/status-active-brightgreen)
+![Django](https://img.shields.io/badge/django-4.x-green)
+![React](https://img.shields.io/badge/react-18.x-blue)
+![Docker](https://img.shields.io/badge/docker-compose-blue)
 
-```
-REACT_APP_API_URL="http://localhost:8000"
-```
-> For `.env.production` instead write the address of your website
-
-# Documentation <div id='doc'/>
-
-## Backend
-
-## Frontend
-
-Go into the frontend folder and run `npm run docs`. A new folder named `docs` should be created. You can then open `index.html` to view the documentation
-
-# Development <div id='dev'/>
--  launch the django server by doing
-```
-make up
-```
--  if you want to access the database :
-```
-make dbshell
-```
-- launch the react server (in the /front folder)
-```bash
-npm start
-```
-
-- alternatively you can use `./run_servers.sh` to launch both at the same time. The only downside is that the django server will only launched detached from the termimal. You can still view it with by doing `make up` in another terminal
-
-- A mock cas server can be launched by installing the npm package `cas-server-mock` and running the following command : 
-
-```bash
-npx cas-server-mock --port=3004 --database=./users.json
-```
-
-The database file must contain the list of users in the following format : 
-
-```json
-[
-  {
-    "name":"user",
-    "attributes":{
-      "mail":"example@mail.com",
-      ...
-    }
-  },
-  ...
-]
-```
-
-## Code Structure <div id="struct"/>
-
-### Backend
-
-- **`backend/config/`**  
-  Contains the core configuration of the Django project:  
-  - `settings.py`: Main Django settings (including database, apps, middleware, etc.).  
-  - `urls.py`: The global URL configuration for the project.  
-  - `asgi.py` & `wsgi.py`: Entry points for ASGI/WGI servers.  
-  - `insa_config.json`: Custom configuration settings.
-
-- **`backend/core/`**  
-  This folder serves as the main Django app managing the project’s API logic:  
-  - **`migrations/`**:  
-    Holds migration scripts (e.g., `0001_initial.py`) that manage changes to the database schema.  
-  - **`templates/`**:  
-    Contains the temporary HTML templates used by the auth views (e.g., `login.html`, `profile.html`, `register.html`).  
-  - **`urls/`**:  
-    Contains modular URL configurations:  
-    - `api_urls.py`: API endpoints used by the frontend for data exchange.  
-    - `auth_urls.py`: Endpoints for handling user authentication.  
-    - `ics_urls.py`: Endpoints related to calendar or scheduling functionality.  
-  - **`views/`**:  
-    Contains view functions/classes that define the responses for each endpoint:  
-    - `api_views.py`: Views for the API endpoints.  
-    - `auth_views.py`: Views that handle authentication-related requests.  
-    - `ics_views.py`: Views related to calendar functionalities (e.g., the ics feed).  
-  - **`utils/`**:  
-    Includes utility scripts for tasks such as database insertion (`db_insertion.py`) and data fetching (`fetch.py`).  
-  - Other files in this directory:  
-    - `admin.py`: Configuration for the Django admin interface.  
-    - `apps.py`: App configuration class.  
-    - `models.py`: Database models for the app.  
-    - `serializers.py`: Serializers for API data interchange (used with Django REST Framework : https://www.django-rest-framework.org/).  
-    - `tests.py`: Unit and integration tests for the app.
-    - `categorisation.py`: Tool for categorizing each event in the db
-
-- **Other Directories and Files in `backend/`:**  
-  - **`logs/`**: Log files generated by the application.  
-  - **`scripts/`**: Additional scripts used for development or deployment tasks.
-  - **Project management files:**  
-    - `Dockerfile`, `docker-compose.yml`: Docker configuration files.  
-    - `manage.py`: The Django management script.  
-    - `Pipfile` and `requirements.txt`: Dependency lists.  
-    - `makefile`: Makefile for automating tasks.  
-    - `README.md`: Project overview and documentation.
+</div>
 
 ---
 
-### Frontend
+## 🌟 Overview
 
-- **`frontend/`**  
-  This folder contains the code for the frontend application, which is built with React and then bundled for deployment:  
-  - **`src/`**:  
-    Contains the source code of the React components, contexts, images, and JavaScript files (e.g., components like `NavBar.jsx`, pages like `about.jsx`, and utilities).  
-  - **`public/`**:  
-    Holds static public assets (e.g., `index.html`, images, `manifest.json`, and `robots.txt`).  
-  - **`docs/`**:  
-    Contains compiled documentation
-  - Additional configuration files (like `package.json`, `package-lock.json`) help manage dependencies and documentation for the frontend code.
+InsAccess is a web application designed specifically for INSA Rouen Normandie, providing a clean and intuitive class agenda similar to [Agendas INSA Rouen](https://agendas.insa-rouen.fr). What sets InsAccess apart is its focus on empowering student associations and clubs to add custom events, along with providing essential student utilities.
 
-This structure allows the backend and frontend to be developed and maintained independently while still integrating seamlessly during deployment.
+This project serves as both a practical alternative for students and an exciting exploration into modern web development.
 
-## Utility Scripts<div id='util'/>
-- a short summary on how to use the different modules in `utils`
-	- for `fetch.py` simply `import` `get_data_calendar_data` or `fetch_entire_year` or use in cmd by following this command : `python fetch.py <current_year> <department> <department_year> <date> <period_of_time>` with :
-		- **current_year** the year the scholar year started at (2024 for the year 2024-2025) 
-		- **department** the department ("ITI", "GM", "PERF-II"...)
-		- **department_year** the year in the department (i.e 1, 2, 3, 4, 5)
-		- **date** the date you want to fetch (ex : 10 march 2024 <=> 20240310)
-		- **the period of time** the period you want to fetch (day, week, month)
-	> for day, simply put the day (ex : 20250123 for 2025/01/23), for week, must be the sunday previous to the week you wanna fetch (for the 12 to 16 then fetch at 11), for month, simply fetch at the first day of the month
-	- for `db_insertion.py` simply `import` `insert_list_records` or `insert_record_in_db`
+---
 
-**IMPORTANT** : In order to fetch the events, you must now use the route `/authentification/temp`. The previous methods and scripts either don't exist or don't work anymore. This section of the README will be modified in the future. 
+## 📑 Table of Contents
 
-## Models <div id='models'/>
+- [🚀 Quick Start](#-quick-start)
+- [📚 Documentation](#-documentation)
+- [🛠️ Development](#️-development)
+- [🏗️ Architecture](#️-architecture)
+- [🛠️ Utility Scripts](#️-utility-scripts)
+- [📊 Database Models](#-database-models)
+- [🚢 Production](#-production)
 
-The models are defined in `backend/core/models.py` and are created using Django's ORM. Below are the key models:
+---
 
-### User & Profile
-- **UserProfile**: Extends Django's built-in `User` model to store additional user-related information.
-- **UserLinkTD**: Defines a many-to-many relationship between users and TD groups.
+## 🚀 Quick Start <div id='-quick-start'/>
 
-### Event Models
-These models define events that can be scheduled within the application:
-- **Event**: An abstract base model for events with common fields like `date`, `start_hour`, `end_hour`, and `desc`.
-- **InsaClass**: Represents INSA classes and custom events, linked to rooms, teachers, departments, and TD groups.
-- **InsaEvenement**: Represents events organized by associations, linked to rooms and associations.
+### Backend Setup
 
-### Association Models
-- **Association**: Represents INSA associations with attributes like name, color, type, and sector.
-- **AssociationPublisher**: Defines which users can publish events for their associations.
-- **EnumType**, **EnumSector**, and **EnumColor**: Define the possible values for association attributes.
+1. **Install Docker Compose**
+   ```bash
+   # Follow the official guide
+   https://docs.docker.com/compose/install/
+   ```
 
-### Entity Models
-- **GroupTD**: Represents TD groups.
-- **Department**: Represents academic departments.
-- **Teacher**: Stores teacher names.
-- **Room**: Represents classrooms.
-- **EvenementRoom**: Special rooms designated for events.
+2. **Initialize the backend**
+   ```bash
+   cd backend
+   make install
+   ```
 
-### Relationship Models
-To establish many-to-many relationships between models, these intermediary models are used:
-- **EvenementLinkEventRoom**: Links `InsaEvenement` with `EvenementRoom`.
-- **ClassLinkTD**: Links `InsaClass` with `GroupTD`.
-- **ClassLinkRoom**: Links `InsaClass` with `Room`.
-- **ClassLinkTeacher**: Links `InsaClass` with `Teacher`.
-- **ClassLinkDepart**: Links `InsaClass` with `Department`.
+### Frontend Setup
 
-# Production<div id='prod'/>
-## Front
-First run the command `npm run build` to create the production build. Then run `serve -s build` to launch the server.
-## Back
-Deployment instructions are yet to be completed. :)
+1. **Install dependencies**
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+2. **Launch all services**
+   ```bash
+   make up
+   ```
+
+---
+
+## 📚 Documentation <div id='-documentation'/>
+
+### 🔧 Backend Documentation
+> Coming soon - comprehensive API documentation
+
+### ⚛️ Frontend Documentation
+Generate and view the frontend documentation:
+
+```bash
+cd frontend
+npm run docs
+# Open docs/index.html in your browser
+```
+
+---
+
+## 🛠️ Development <div id='-development'/>
+
+### Essential Commands
+
+| Command | Description |
+|---------|-------------|
+| `make up` | Launch all services (db, django, react) |
+| `make dbshell` | Access the database |
+| `make migrate` | Apply database migrations |
+| `make createsuperuser` | Create a superuser account |
+
+### 🎭 CAS Server Setup
+
+Launch the dummy CAS server for development:
+
+```bash
+cd cas-server
+npm start
+```
+
+> 💡 **Tip**: User templates for the CAS server are located at the top of `server.js`
+
+### 🔄 Database Migrations
+
+When you modify Django models:
+
+```bash
+# With services running
+make migrate
+```
+
+### 👨‍💼 Creating Superusers
+
+Choose your preferred method:
+- **Shell**: `make createsuperuser` (if user doesn't exist)
+- **Admin Interface**: Use Django admin from an admin account
+- **Database**: Directly modify values in the database
+
+---
+
+## 🏗️ Architecture <div id='-architecture'/>
+
+### 📁 Project Structure
+
+```bash
+# View the complete structure
+tree --dirsfirst -F -I "__init__.py|*.svg|*.png|docs|build|__pycache__|.env|node_modules|.git|node_modules|venv"
+```
+
+### 🔙 Backend Architecture
+
+```
+backend/
+├── 🔧 config/                 # Django core configuration
+│   ├── settings.py           # Main settings
+│   ├── urls.py              # Global URL config
+│   ├── insa_config.json     # Custom config
+│   └── local_settings.py    # Local settings (ignored by git)
+│
+├── 🎯 core/                   # Main Django app
+│   ├── migrations/          # Database migrations
+│   ├── templates/           # HTML templates
+│   ├── urls/               # Modular URL configurations
+│   │   ├── api_urls.py     # API endpoints
+│   │   ├── auth_urls.py    # Authentication endpoints
+│   │   └── ics_urls.py     # Calendar endpoints
+│   ├── views/              # Request handlers
+│   │   ├── api_views.py    # API views
+│   │   ├── auth_views.py   # Auth views
+│   │   └── ics_views.py    # Calendar views
+│   ├── utils/              # Utility scripts
+│   │   ├── db_insertion.py # Database utilities
+│   │   └── fetch.py        # Data fetching utilities
+│   ├── models.py           # Database models
+│   ├── serializers.py      # DRF serializers
+│   └── admin.py            # Admin interface
+│
+└── 📁 logs/                  # Application logs
+```
+
+### 🔜 Frontend Architecture
+
+```
+frontend/
+├── 📦 src/                    # Source code
+│   ├── components/           # React components
+│   │   ├── Events/          # Event-related components
+│   │   └── Pages/           # Page components
+│   ├── contexts/            # React contexts
+│   ├── images/              # Static images
+│   └── utils/               # Utility functions
+│       ├── Constants.jsx    # API routes & constants
+│       ├── EventUtils.jsx   # Event display utilities
+│       ├── Day.jsx          # Date management
+│       └── RandomUtils.jsx  # General utilities
+│
+├── 🌍 public/                # Static assets
+├── 📖 docs/                  # Generated documentation
+└── 🏗️ build/                # Compiled output
+```
+
+---
+
+## 🛠️ Utility Scripts <div id='-utility-scripts'/>
+
+### 📊 Data Fetching (`fetch.py`)
+
+**Import usage:**
+```python
+from utils.fetch import get_data_calendar_data, fetch_entire_year
+```
+
+**Command line usage:**
+```bash
+python fetch.py <current_year> <department> <department_year> <date> <period_of_time>
+```
+
+**Parameters:**
+- `current_year`: Scholar year start (2024 for 2024-2025)
+- `department`: Department code ("ITI", "GM", "PERF-II", etc.)
+- `department_year`: Year in department (1, 2, 3, 4, 5)
+- `date`: Target date (format: YYYYMMDD)
+- `period_of_time`: Fetch period (day, week, month)
+
+### 💾 Database Insertion (`db_insertion.py`)
+
+```python
+from utils.db_insertion import insert_list_records, insert_record_in_db
+```
+
+> ⚠️ **Important**: To fetch events, use the route `/authentification/temp`. Previous methods are deprecated.
+
+---
+
+## 📊 Database Models <div id='-database-models'/>
+
+### 👤 User Management
+- **UserProfile**: Extended user information
+- **UserLinkTD**: User-TD group relationships
+
+### 📅 Event System
+- **Event**: Abstract base for all events
+- **InsaClass**: INSA classes and custom events
+- **InsaEvenement**: Association events
+
+### 🏢 Organizations
+- **Association**: Student associations
+- **AssociationPublisher**: Event publishing permissions
+- **EnumType/EnumSector/EnumColor**: Association attributes
+
+### 🏛️ Infrastructure
+- **GroupTD**: TD groups
+- **Department**: Academic departments
+- **Teacher**: Faculty information
+- **Room**: Classrooms
+- **EvenementRoom**: Event-specific rooms
+
+### 🔗 Relationships
+Many-to-many relationship models:
+- **EvenementLinkEventRoom**
+- **ClassLinkTD**
+- **ClassLinkRoom**
+- **ClassLinkTeacher**
+- **ClassLinkDepart**
+
+---
+
+## 🚢 Production <div id='-production'/>
+
+> 🚧 Production deployment guide coming soon!
