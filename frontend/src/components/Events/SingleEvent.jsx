@@ -132,11 +132,10 @@ const SingleEvent = (props) => {
     const BUNDLE = useData()
 
     useEffect(() => {
-      if (props.asso){//put the custom color of the users
+      if (props.dataOrigin == "asso"){//put the custom color of the users
         setColor(props.colors[props.teacher[0]]);//Take the color of the first association of the event
-      }
-      else {
-      setColor(props.colors[props.label] || '#d44d44');
+      } else {
+        setColor(props.colors[props.label] || '#d44d44');
       }
     }, [props.colors, props.label, props.startTime, props.endTime, props.teacher, props.room]);
 
@@ -175,17 +174,17 @@ const SingleEvent = (props) => {
           <Modal.Body>
             <div><strong>{t('StartHour')}</strong>{Day.presentableHour(props.startTime)}</div>
             <div><strong>{t('EndHour')}</strong>{Day.presentableHour(props.endTime)}</div>
-            <div><strong>{(props.asso) ? t("Associations") : t("Teachers")} : </strong>{RandomUtils.Join(props.teacher)}</div>
-             {!props.asso && (
+            <div><strong>{(props.dataOrigin == "asso") ? t("Associations") : t("Teachers")} : </strong>{RandomUtils.Join(props.teacher)}</div>
+             {props.dataOrigin == "user" && (
                 <div id="event-color-picker">
                   <CompactPicker color={color} onChangeComplete={saveColor}/>
                 </div>
               )}
-            <Description asso={props.asso} desc={props.desc}/>
+            <Description asso={props.dataOrigin == "asso"} desc={props.desc}/>
             <br/>
-            <FollowLink asso={props.asso} link={props.link}/>
+            <FollowLink asso={props.dataOrigin == "asso"} link={props.link}/>
             <br/>
-            <DeleteButton handleClose={handleClose} eventUID={props.uid} asso={props.asso} teacher={props.teacher[0]} assoName={BUNDLE.assoName} raiseSuccessFlag={raiseSuccessFlag} setSuccessMessage={setSuccessMessage} raiseErrorFlag={raiseErrorFlag} setStatusMessage={setStatusMessage}/>
+            <DeleteButton handleClose={handleClose} eventUID={props.uid} asso={props.dataOrigin == "asso"} teacher={props.teacher[0]} assoName={BUNDLE.assoName} raiseSuccessFlag={raiseSuccessFlag} setSuccessMessage={setSuccessMessage} raiseErrorFlag={raiseErrorFlag} setStatusMessage={setStatusMessage}/>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={handleClose}>

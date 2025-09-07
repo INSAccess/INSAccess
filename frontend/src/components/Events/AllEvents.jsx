@@ -121,7 +121,7 @@ const AllEvents = ({dataOrigin}) => {
         key={`${i}-${renderKey}`}
         date={currentDay.getDate()} 
         data={data} 
-        asso={dataOrigin == "asso"}
+        dataOrigin={dataOrigin}
       />
     );
     currentDay = currentDay.next(1);
