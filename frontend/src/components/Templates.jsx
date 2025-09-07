@@ -1,22 +1,48 @@
 import duck from '../images/duck.png';
 import './Templates.scss';
 import { useTranslation } from 'react-i18next';
+import { Alert, Button } from 'react-bootstrap';
 
 /**
  * Custom Error handling component
  * @component
  * @returns {JSX.Element}
  */
-const ErrorTemplate = ({ message }) => {
+const ErrorTemplate = ({ message, onRetry }) => {
   const { t } = useTranslation();
 
-  console.error(message);
+  const errorText =
+    typeof message === 'string' && message.trim().length > 0
+      ? message
+      : t('UnexpectedError');
+
+  console.error('ErrorTemplate:', message);
 
   return (
-    <div>
-      <p>
-        {t('ErrorTemplate')}: {message}
-      </p>
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ minHeight: '60vh' }}
+    >
+      <Alert
+        variant="danger"
+        role="alert"
+        className="p-4 shadow-lg rounded-3 w-100"
+        style={{ maxWidth: 600 }}
+      >
+        <h4 className="alert-heading">
+          {t('ErrorTemplateTitle') || t('Error')}
+        </h4>
+        <p className="mb-3">
+          {t('ErrorTemplate')}: {errorText}
+        </p>
+        {onRetry && (
+          <div className="d-flex justify-content-end">
+            <Button variant="outline-light" onClick={onRetry}>
+              {t('Retry')}
+            </Button>
+          </div>
+        )}
+      </Alert>
     </div>
   );
 };

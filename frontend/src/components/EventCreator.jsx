@@ -14,7 +14,6 @@ import Alert from 'react-bootstrap/Alert';
 import Day from '../utils/Day.jsx';
 import { useData } from '../contexts/DataContext.jsx';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../contexts/AuthContext.jsx';
 
 /**
  * @typedef {Object} FormData
@@ -108,7 +107,7 @@ const EvenementForm = ({}) => {
         credentials: 'include',
         body: JSON.stringify(form),
       });
-      const data = await response.json();
+      const data = await parseJsonSafe(response);
       setStatusMessage(t('CreationSuccess'));
       setErrorFlag(true);
       setIsSubmitting(true);
@@ -190,7 +189,15 @@ const EvenementForm = ({}) => {
 
   return (
     <div style={{ position: 'relative', minHeight: '100svh', margin: '2%' }}>
-      <form method="post" onSubmit={handleSubmit}>
+      <form
+        method="post"
+        onSubmit={handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+          }
+        }}
+      >
         <div className="row g-3">
           {/* Première ligne : Titre et Date */}
           <div className="col-md-6">
@@ -338,7 +345,7 @@ const EvenementForm = ({}) => {
  * }
  */
 const EventCreator = () => {
-  const { isAssos } = useAuth();
+  const { isAssos } = useData();
   const { t } = useTranslation();
 
   /**

@@ -44,7 +44,7 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
         credentials: 'include',
         body: JSON.stringify({ selected_tds: Array.from(selectedTDs) }),
       });
-      const data = await response.json();
+      const data = await parseJsonSafe(response);
       setStatusMessage(data.success);
       updateFunction();
     } catch (error) {

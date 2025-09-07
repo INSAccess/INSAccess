@@ -50,7 +50,6 @@ export const ConfigProvider = ({ children }) => {
     if (!loading && !error) {
       let departementYears = {};
       let departementNames = data['department_list'];
-
       for (let depart of data['department_list']) {
         departementYears[depart] = data['years_for_department'];
       }

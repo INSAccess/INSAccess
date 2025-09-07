@@ -29,6 +29,8 @@ export const DataProvider = (props) => {
   const [dataAsso, setDataAsso] = useState([]);
   const [dataAgenda, setDataAgenda] = useState([]);
   const [dataFriend, setDataFriend] = useState([]);
+  const [isAssos, setIsAssos] = useState(false);
+  const [assoName, setAssoName] = useState(null);
   const [colorsAsso, setColorsAsso] = useState([]);
   const [colorsAgenda, setColorsAgenda] = useState([]);
   const [colorsFriend, setColorsFriend] = useState([]);
@@ -139,6 +141,8 @@ export const DataProvider = (props) => {
           setUserTheme(profileData.theme);
           setUserLanguage(profileData.language);
           setIcsLink(profileData.ics_url);
+          setIsAssos(profileData.is_asso);
+          setAssoName(profileData.assoName);
         }
 
         if (resultUsers.data) {
@@ -195,6 +199,8 @@ export const DataProvider = (props) => {
     <>
       <DataContext.Provider
         value={{
+          isAssos,
+          assoName,
           dataAsso,
           dataAgenda,
           day,

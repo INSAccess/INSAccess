@@ -1,28 +1,30 @@
+import { useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { API_LOGIN } from '../utils/Constants.jsx';
 import { ErrorTemplate, Loading } from './Templates.jsx';
 
-/**
- * Component handling the access to the main page. Redirects the user if the authentification fails, or displays an error message
- * @component
- * @returns {JSX.Element}
- */
 const ProtectedRoute = ({ children }) => {
   const { token, loading, error } = useAuth();
 
+  useEffect(() => {
+    if (!loading && !token && !error) {
+      window.location.replace(API_LOGIN);
+    }
+  }, [loading, token, error]);
+
   if (loading) {
     return <Loading />;
-  } else if (!token) {
-    window.location.replace(API_LOGIN);
-  }
-
-  if (token) {
-    return children;
   }
 
   if (error) {
-    return <ErrorTemplate message={error} />;
+    return <ErrorTemplate message={String(error)} />;
   }
+
+  if (!token) {
+    return null;
+  }
+
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

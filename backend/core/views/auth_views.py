@@ -18,7 +18,7 @@ def get_frontend_url():
     if not settings.DEBUG:
         return f"http://{settings.HOST_IP}"
     else:
-        return f"http://{settings.HOST_IP}:8000/"
+        return f"http://{settings.HOST_IP}:3000/"
 
 
 @login_required

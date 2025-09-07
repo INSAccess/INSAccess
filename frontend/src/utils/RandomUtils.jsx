@@ -51,7 +51,7 @@ class RandomUtils {
       credentials: 'include',
     };
     const response = await fetch(dataPath, initConfig);
-    const json = await response.json();
+    const json = await parseJsonSafe(response);
 
     if (!response.ok) {
       return { data: null, error: json.error };
@@ -72,7 +72,7 @@ class RandomUtils {
       body: body ? JSON.stringify(body) : null,
     };
     const response = await fetch(url, initConfig);
-    const json = await response.json();
+    const json = await parseJsonSafe(response);
     if (!response.ok) {
       return { data: null, error: json.error };
     }
@@ -129,6 +129,21 @@ class RandomUtils {
       }
     }
     return null;
+  }
+}
+/**
+ * Safely parses a fetch Response as JSON without converting to text first.
+ * @param {Response} response
+ * @returns {Promise<any>}
+ */
+export async function parseJsonSafe(response) {
+  try {
+    const json = await response.json();
+    return json;
+  } catch (err) {
+    const contentType = response.headers.get('content-type');
+    const errorMsg = `Failed to parse JSON (HTTP ${response.status}, content-type: ${contentType})`;
+    throw new Error(errorMsg);
   }
 }
 
