@@ -139,13 +139,13 @@ const SingleEvent = (props) => {
   const BUNDLE = useData();
   const { assoName } = useAuth();
 
-  let colors = []
+  let colors = [];
   let setColorsList = () => {};
 
-  if (props.dataOrigin == 'asso'){
+  if (props.dataOrigin == 'asso') {
     colors = BUNDLE.colorsAsso;
     setColorsList = BUNDLE.setColorsAsso;
-  } else if (props.dataOrigin == 'user'){
+  } else if (props.dataOrigin == 'user') {
     colors = BUNDLE.colorsAgenda;
     setColorsList = BUNDLE.setColorsAgenda;
   } else {
