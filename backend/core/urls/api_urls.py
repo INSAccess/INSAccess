@@ -28,12 +28,14 @@ urlpatterns = [
         FriendCalendarAPIView.as_view(),
         name="friend_calendar",
     ),
-    path("get_evenements", GetEvenementsAPIView.as_view(), name="get_evenements"),
+    path("calendar/events", GetEvenementsAPIView.as_view(), name="get_evenements"),
     # metadata urls
-    path("get_tds/<str:department>", GetTdsAPIView.as_view(), name="get_tds"),
-    path("get_themes", GetEnumThemeAPIView.as_view(), name="get_themes"),
-    path("get_languages", GetEnumLanguageAPIView.as_view(), name="get_languages"),
-    path("get_config", GetConfigFileAPIView.as_view(), name="get_config"),
+    path(
+        "metadata/td_groups/<str:department>", GetTdsAPIView.as_view(), name="get_tds"
+    ),
+    path("metadata/themes", GetEnumThemeAPIView.as_view(), name="get_themes"),
+    path("metadata/languages", GetEnumLanguageAPIView.as_view(), name="get_languages"),
+    path("metadata/config", GetConfigFileAPIView.as_view(), name="get_config"),
     path("users/", UsersAPIView.as_view(), name="users"),
     # evements urls
     path(

@@ -905,9 +905,9 @@ class FriendCalendarAPIView(APIView):
             )
 
             # Prefetch user-colored events
-            user_events_qs = UserColoredEvent.objects.filter(user=user).select_related(
-                "title"
-            )
+            user_events_qs = UserColoredEvent.objects.filter(
+                user=other_user
+            ).select_related("title")
 
             serializer = InsaClassSerializer(
                 classes_qs, context={"request": request}, many=True

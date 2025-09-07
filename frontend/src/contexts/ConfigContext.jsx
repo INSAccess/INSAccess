@@ -25,7 +25,9 @@ export const ConfigProvider = ({ children }) => {
   // Load the config
   useEffect(() => {
     const loadData = async () => {
-      const result = await RandomUtils.fetchData(API_URL + '/api/get_config');
+      const result = await RandomUtils.fetchData(
+        API_URL + '/api/metadata/config'
+      );
       if (result.data) {
         setData(result.data);
       }
