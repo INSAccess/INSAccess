@@ -50,7 +50,7 @@ urlpatterns = [
     ),
     # user urls
     path("user/profile", GetUserProfileAPIView.as_view(), name="get_profile"),
-    path("user/friends/", FriendsAPIView.as_view(), name="friends"),
+    path("user/friends", FriendsAPIView.as_view(), name="friends"),
     path("user/is_connected", GetIsConnectedAPIView.as_view(), name="is_connected"),
     path(
         "user/is_association",

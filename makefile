@@ -19,4 +19,4 @@ shell:
 	docker-compose exec django sh
 
 build:
-	./build_frontend
+	./build_frontend.sh

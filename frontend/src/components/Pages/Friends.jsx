@@ -65,7 +65,7 @@ const Friends = () => {
   const handleCancel = async (username) => {
     try {
       const result = await RandomUtils.fetchDataWithMethod(
-        `${API_URL}/api/user/friends/`,
+        `${API_URL}/api/user/friends`,
         'DELETE',
         { other_user: username }
       );
@@ -82,7 +82,7 @@ const Friends = () => {
   const handleSendInvitation = async (username) => {
     try {
       const result = await RandomUtils.fetchDataWithMethod(
-        `${API_URL}/api/user/friends/`,
+        `${API_URL}/api/user/friends`,
         'POST',
         { other_user: username }
       );
@@ -106,7 +106,7 @@ const Friends = () => {
   const handleAccept = async (username) => {
     try {
       const result = await RandomUtils.fetchDataWithMethod(
-        `${API_URL}/api/user/friends/`,
+        `${API_URL}/api/user/friends`,
         'POST',
         { other_user: username }
       );
@@ -129,7 +129,7 @@ const Friends = () => {
   const handleDeleteFriend = async (username) => {
     try {
       const result = await RandomUtils.fetchDataWithMethod(
-        `${API_URL}/api/user/friends/`,
+        `${API_URL}/api/user/friends`,
         'DELETE',
         { other_user: username }
       );
