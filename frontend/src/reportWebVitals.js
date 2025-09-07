@@ -1,6 +1,6 @@
 import { API_URL } from './utils/Constants.jsx';
 
-const reportWebVitals = onPerfEntry => {
+const reportWebVitals = (onPerfEntry) => {
   if (onPerfEntry && onPerfEntry instanceof Function) {
     import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
       getCLS(onPerfEntry);
@@ -14,7 +14,7 @@ const reportWebVitals = onPerfEntry => {
 
 function sendToAnalytics(metric) {
   const body = JSON.stringify(metric);
-  const url = API_URL+"/post_analytics";
+  const url = API_URL + '/post_analytics';
 
   // Use `navigator.sendBeacon()` if available, falling back to `fetch()`
   try {
@@ -24,10 +24,9 @@ function sendToAnalytics(metric) {
       fetch(url, { body, method: 'POST', keepalive: true });
     }
   } catch (e) {
-    console.error("Couldn't send vitals to analytics")
-    console.error(e)
+    console.error("Couldn't send vitals to analytics");
+    console.error(e);
   }
-
 }
 
 export { reportWebVitals, sendToAnalytics };

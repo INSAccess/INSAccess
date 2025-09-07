@@ -1,6 +1,6 @@
 .event {
-  display:block;
-  position:absolute;
+  display: block;
+  position: absolute;
   user-select: none;
   margin-left: 3.5%;
   margin-right: 3.5%;
@@ -8,30 +8,32 @@
   border: none;
   border-radius: 8px;
   background: var(--eventColor);
-  color: var(--contrastTextColor) ;
-  box-shadow: 0 4px 8px var(--shadowColorBold); 
+  color: var(--contrastTextColor);
+  box-shadow: 0 4px 8px var(--shadowColorBold);
   transition: all 0.3s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .event:hover {
-    transform: translateY(-3px); 
+    transform: translateY(-3px);
   }
 }
 
-.title{
+.title {
   font-weight: 600;
   margin-bottom: 0.1svw;
   font-size: 1.8svh;
 }
 
-.time, .teacher, .room {
+.time,
+.teacher,
+.room {
   font-weight: 430;
   margin-bottom: 0.1svw;
   font-size: max(0.6svw, 1.7svh);
   height: auto;
 }
 
-div[role="alert"] {
-  z-index:1050;
+div[role='alert'] {
+  z-index: 1050;
 }

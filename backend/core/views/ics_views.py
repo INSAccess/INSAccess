@@ -5,6 +5,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def ics_feed(request, ics_uid):
     """The API route for obtaining a live ICS feed for the user
     associated with the given ICS UID.
@@ -16,8 +17,11 @@ def ics_feed(request, ics_uid):
     try:
         userprofile = UserProfile.objects.get(ics_uid=ics_uid)
     except UserProfile.DoesNotExist:
-        response = JsonResponse({'error': 'Invalid token'}, status=400)
-        logger.error("User not found for ICS feed generation", extra={"request": request, "status_code": response.status_code})
+        response = JsonResponse({"error": "Invalid token"}, status=400)
+        logger.error(
+            "User not found for ICS feed generation",
+            extra={"request": request, "status_code": response.status_code},
+        )
         return response
 
     user_tds = userprofile.link_td.all()
@@ -54,10 +58,10 @@ def ics_feed(request, ics_uid):
 
         cal.add_component(e)
 
-    response = HttpResponse(
-        cal.to_ical(),
-        content_type="text/calendar; charset=utf-8"
-    )
+    response = HttpResponse(cal.to_ical(), content_type="text/calendar; charset=utf-8")
 
-    logger.info("ICS feed generated successfully", extra={"request": request, "status_code": response.status_code})
+    logger.info(
+        "ICS feed generated successfully",
+        extra={"request": request, "status_code": response.status_code},
+    )
     return response

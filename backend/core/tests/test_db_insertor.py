@@ -1,10 +1,19 @@
 from django.test import TestCase
 from core.models import (
-    InsaClass, Title, Room, Teacher, GroupTD, Department,
-    ClassLinkRoom, ClassLinkTeacher, ClassLinkTD, ClassLinkDepart
+    InsaClass,
+    Title,
+    Room,
+    Teacher,
+    GroupTD,
+    Department,
+    ClassLinkRoom,
+    ClassLinkTeacher,
+    ClassLinkTD,
+    ClassLinkDepart,
 )
 from core.utils.db_insertor import insert_list_record
 from datetime import datetime, timedelta, timezone
+
 
 class InsertListRecordTests(TestCase):
     def setUp(self):
@@ -22,7 +31,7 @@ class InsertListRecordTests(TestCase):
             "locations": ["Room A"],
             "teachers": ["Prof. Einstein"],
             "td_tags": ["TD42"],
-            "departments": ["MATH"]
+            "departments": ["MATH"],
         }
 
     def test_insert_new_insaclass(self):
