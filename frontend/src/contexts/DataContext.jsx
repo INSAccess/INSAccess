@@ -83,6 +83,12 @@ export const DataProvider = (props) => {
   }
 
   useEffect(() => {
+    if (userTheme) {
+      document.getElementById('root').setAttribute('data-theme', userTheme);
+    }
+  }, [userTheme]);
+
+  useEffect(() => {
     if (userLanguage) {
       i18n.changeLanguage(userLanguage);
     }
