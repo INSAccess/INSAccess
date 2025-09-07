@@ -116,6 +116,11 @@ const SingleEvent = (props) => {
 
     const { t } = useTranslation();
 
+    const BUNDLE = useData()
+
+    let colors = props.dataOrigin == "asso" ? BUNDLE.colorsAsso : BUNDLE.colorsAgenda
+    let setColorsList = props.dataOrigin == "asso" ? BUNDLE.setColorsAsso : BUNDLE.setColorsAgenda
+
     const hoursEvents = Day.createHours();
     let startIndex = parseInt(props.startTime) >= parseInt(hoursEvents[0]) ? hoursEvents.indexOf(props.startTime) : 0;
     let endIndex = parseInt(props.endTime) <= parseInt(hoursEvents[hoursEvents.length-1]) ? hoursEvents.indexOf(props.endTime) : hoursEvents.length-1;
@@ -123,22 +128,26 @@ const SingleEvent = (props) => {
     let eventPosY = EventUtils.getEventPos(startIndex, hoursEvents.length);
 
     const [show, setShow] = useState(false);
-    const [color, setColor] = useState(props.colors[props.label]);
+    const [color, setColor] = useState(colors[props.label]);
     const [errorFlag, raiseErrorFlag] = useState(false);
     const [successFlag, raiseSuccessFlag] = useState(false);
     const [statusMessage, setStatusMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
 
-    const BUNDLE = useData()
-
     useEffect(() => {
-      if (props.asso){//put the custom color of the users
-        setColor(props.colors[props.teacher[0]]);//Take the color of the first association of the event
+      if (props.dataOrigin == "asso"){//put the custom color of the users
+        setColor(colors[props.teacher[0]]);//Take the color of the first association of the event
+      } else {
+        setColor(colors[props.label] || '#d44d44');
       }
-      else {
-      setColor(props.colors[props.label] || '#d44d44');
-      }
-    }, [props.colors, props.label, props.startTime, props.endTime, props.teacher, props.room]);
+    }, [colors, props.label, props.startTime, props.endTime, props.teacher, props.room]);
+
+    function handleColorChange(colorObject){
+      const newColors = { ...colors };
+      newColors[props.label] = colorObject["hex"];
+
+      setColorsList(newColors)
+    }
 
     async function saveColor(colorObject){
       const response = await fetch(API_URL+"/api/post_user_color", {
@@ -153,7 +162,7 @@ const SingleEvent = (props) => {
         setStatusMessage(`${t("SaveError")} : ${response.statusText}`)
         raiseErrorFlag(true)
       } else {
-        BUNDLE.forceUpdate()
+        handleColorChange(colorObject)
         handleClose()
       }
     }
@@ -175,17 +184,17 @@ const SingleEvent = (props) => {
           <Modal.Body>
             <div><strong>{t('StartHour')}</strong>{Day.presentableHour(props.startTime)}</div>
             <div><strong>{t('EndHour')}</strong>{Day.presentableHour(props.endTime)}</div>
-            <div><strong>{(props.asso) ? t("Associations") : t("Teachers")} : </strong>{RandomUtils.Join(props.teacher)}</div>
-             {!props.asso && (
+            <div><strong>{(props.dataOrigin == "asso") ? t("Associations") : t("Teachers")} : </strong>{RandomUtils.Join(props.teacher)}</div>
+             {props.dataOrigin == "user" && (
                 <div id="event-color-picker">
                   <CompactPicker color={color} onChangeComplete={saveColor}/>
                 </div>
               )}
-            <Description asso={props.asso} desc={props.desc}/>
+            <Description asso={props.dataOrigin == "asso"} desc={props.desc}/>
             <br/>
-            <FollowLink asso={props.asso} link={props.link}/>
+            <FollowLink asso={props.dataOrigin == "asso"} link={props.link}/>
             <br/>
-            <DeleteButton handleClose={handleClose} eventUID={props.uid} asso={props.asso} teacher={props.teacher[0]} assoName={BUNDLE.assoName} raiseSuccessFlag={raiseSuccessFlag} setSuccessMessage={setSuccessMessage} raiseErrorFlag={raiseErrorFlag} setStatusMessage={setStatusMessage}/>
+            <DeleteButton handleClose={handleClose} eventUID={props.uid} asso={props.dataOrigin == "asso"} teacher={props.teacher[0]} assoName={BUNDLE.assoName} raiseSuccessFlag={raiseSuccessFlag} setSuccessMessage={setSuccessMessage} raiseErrorFlag={raiseErrorFlag} setStatusMessage={setStatusMessage}/>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={handleClose}>

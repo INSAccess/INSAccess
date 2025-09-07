@@ -37,7 +37,7 @@ const Friends = () => {
         setFilteredSuggestions(
             availableUsers.filter(user =>
                 user.username.toLowerCase().includes(searchTerm.toLowerCase())
-            )
+            ).slice(0, 6)
         );
     }, [availableUsers, searchTerm]);
     

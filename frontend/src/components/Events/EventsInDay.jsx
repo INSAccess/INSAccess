@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
  * @component
  * @returns {JSX.Element} 
  */
-const EventsInDay = ({date, data, asso}) => {
+const EventsInDay = ({date, data, dataOrigin}) => {
   
   const { t } = useTranslation();
 
@@ -25,7 +25,7 @@ const EventsInDay = ({date, data, asso}) => {
   let i = 0;
   let day = new Day(date);
   const infos = day.getDateInfo(dayList, monthList);
-  const eventsOfDay = EventUtils.getEventsOfDay(date, data["events"]).sort((a, b) => (parseInt(a.end_hour)-parseInt(a.start_hour)) - (parseInt(b.end_hour)-parseInt(b.start_hour)));
+  const eventsOfDay = EventUtils.getEventsOfDay(date, data).sort((a, b) => (parseInt(a.end_hour)-parseInt(a.start_hour)) - (parseInt(b.end_hour)-parseInt(b.start_hour)));
 
   for (let element of eventsOfDay){
     const nbOverlapTotal = EventUtils.getOverlappingEvents(element, eventsOfDay);
@@ -37,8 +37,8 @@ const EventsInDay = ({date, data, asso}) => {
     eventsList.push(
       <SingleEvent key={i} startTime={element.start_hour} endTime={element.end_hour} 
       label={element.desc} teacher={element.link_teacher} room={element.link_room} link={element.link} 
-      width={width} left={left} colors={data["colors"]}
-      desc={element.info} asso={asso} uid={element.uid}/>
+      width={width} left={left}
+      desc={element.info} dataOrigin={dataOrigin} uid={element.uid}/>
     );
 
     placed.push(element)

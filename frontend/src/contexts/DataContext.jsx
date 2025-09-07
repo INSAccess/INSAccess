@@ -17,6 +17,8 @@ export const DataProvider = (props) => {
   const [dataAsso, setDataAsso] = useState([]);
   const [dataAgenda, setDataAgenda] = useState([]);
   const [dataFriend, setDataFriend] = useState([]);
+  const [colorsAsso, setColorsAsso] = useState([]);
+  const [colorsAgenda, setColorsAgenda] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingTds, setLoadingTds] = useState(false);
   const [shouldUpdate, setUpdate] = useState(true);
@@ -100,8 +102,8 @@ export const DataProvider = (props) => {
 
         // Gestion des données existantes...
         document.getElementById("root").setAttribute("data-theme", resultTheme.data);
-        if (resultAsso.data) setDataAsso(resultAsso.data);
-        if (resultAgenda.data) setDataAgenda(resultAgenda.data);
+        if (resultAsso.data) {setDataAsso(resultAsso.data.events); setColorsAsso(resultAsso.data.colors)}
+        if (resultAgenda.data) {setDataAgenda(resultAgenda.data.events); setColorsAgenda(resultAgenda.data.colors)}
         if (resultThemes.data) setAllThemes(resultThemes.data);
         if (resultTheme.data) setUserTheme(resultTheme.data);
         if (resultIcs.data) setIcsLink(resultIcs.data);
@@ -166,9 +168,11 @@ export const DataProvider = (props) => {
 
   return (
     <>
-      <DataContext.Provider value={{dataAsso, dataAgenda, day, setDay, forceUpdate, changeTheme, changeLanguage, tds, icsLink, isAssos,
-         allThemes, userTheme, loadingTds, userProfile, allLanguages, userLanguage, assoName, userList, friendsList, setFriendsList, pendingList,
-         setPendingList, receivedList, setReceivedList, dataFriend, setDataFriend, showCalendar, setShowCalendar}}>
+      <DataContext.Provider value={{dataAsso, dataAgenda, day, setDay, forceUpdate, changeTheme,
+          changeLanguage, tds, icsLink, isAssos, allThemes, userTheme, loadingTds, userProfile,
+          allLanguages, userLanguage, assoName, userList, friendsList, setFriendsList, pendingList,
+          setPendingList, receivedList, setReceivedList, dataFriend, setDataFriend, showCalendar,
+          setShowCalendar, colorsAsso, colorsAgenda, setColorsAsso, setColorsAgenda}}>
           {props.children}
       </DataContext.Provider>
       {errorFlag && <Alert severity="error" variant="filled" onClose={() => {raiseErrorFlag(false)}}>{statusMessage}</Alert>}

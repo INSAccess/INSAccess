@@ -120,8 +120,8 @@ const AllEvents = ({dataOrigin}) => {
       <EventsInDay 
         key={`${i}-${renderKey}`}
         date={currentDay.getDate()} 
-        data={data} 
-        asso={dataOrigin == "asso"}
+        data={data}
+        dataOrigin={dataOrigin}
       />
     );
     currentDay = currentDay.next(1);
