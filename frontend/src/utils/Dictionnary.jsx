@@ -119,6 +119,11 @@ const resources = {
       InviteSent: 'Invitations sent',
       InviteReceived: 'Invitations received',
       Return: 'Return',
+      ErrorTemplateTitle: 'An error occurred',
+      ErrorTemplate: 'Details',
+      Retry: 'Retry',
+      UnexpectedError: 'An unexpected error happened. Please try again later.',
+      Error: 'Error',
     },
   },
   fr: {
@@ -226,7 +231,7 @@ const resources = {
       FormReset: 'Effacer',
       FormRoomDefault: 'Ma H R1 1',
       FormLinkDefault: "Lien de la billeterie, linktree de l'association, ...",
-      FormTitleDefault: 'Le no de votre événement',
+      FormTitleDefault: 'Le nom de votre événement',
       FormDescriptionDefault: "Résumé rapide de l'événement",
       NotAnAsso: "Vous n'êtes pas une association",
       ConnectAsAsso: "Se connecter en tant qu'association",
@@ -239,6 +244,12 @@ const resources = {
       InviteSent: 'Invitations envoyées',
       InviteReceived: 'Invitations reçues',
       Return: 'Retour',
+      ErrorTemplateTitle: 'Une erreur est survenue',
+      ErrorTemplate: 'Détails',
+      Retry: 'Réessayer',
+      UnexpectedError:
+        'Une erreur inattendue est survenue. Veuillez réessayer plus tard.',
+      Error: 'Erreur',
     },
   },
 };

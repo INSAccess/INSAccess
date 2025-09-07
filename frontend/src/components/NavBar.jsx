@@ -44,18 +44,12 @@ export const NavBar = ({ page, setPage }) => {
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary custom-navbar d-none d-lg-block">
         <div className="container-fluid">
           <div className="navbar-left">
-            <a
-              className="navbar-brand"
-              href="#"
-              onClick={(e) => e.preventDefault()}
-            >
-              <img
-                src={logo}
-                alt="Logo INSA"
-                height="40"
-                className="d-inline-block align-text-top"
-              />
-            </a>
+            <img
+              src={logo}
+              alt="Logo INSA"
+              height="40"
+              className="d-inline-block align-text-top"
+            />
 
             <div className="navbar-nav">
               {items.map((item) => (

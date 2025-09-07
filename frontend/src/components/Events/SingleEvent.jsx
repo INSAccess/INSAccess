@@ -11,7 +11,6 @@ import { CompactPicker } from 'react-color';
 import { useData } from '../../contexts/DataContext.jsx';
 import Alert from '@mui/material/Alert';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../contexts/AuthContext.jsx';
 
 /**
  * React component that only returns a button redirecting to a link if this is an association
@@ -82,7 +81,7 @@ const DeleteButton = ({
         mode: 'cors',
         credentials: 'include',
       });
-      const data = await response.json();
+      const data = await parseJsonSafe(response);
 
       if (!response.ok) {
         setStatusMessage(t('DeleteError') + ' : ' + data.error);
@@ -98,7 +97,7 @@ const DeleteButton = ({
     }
   };
 
-  if (asso && (teacher == assoName)) {
+  if (asso && teacher == assoName) {
     return (
       <div style={{ marginTop: '2%' }}>
         <button className="btn btn-primary" onClick={handleDeleteEvent}>
@@ -137,7 +136,7 @@ const SingleEvent = (props) => {
   const { t } = useTranslation();
 
   const BUNDLE = useData();
-  const { assoName } = useAuth();
+  const { assoName } = useData();
 
   let colors = [];
   let setColorsList = () => {};

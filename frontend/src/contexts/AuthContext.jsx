@@ -1,51 +1,64 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import RandomUtils from '../utils/RandomUtils.jsx';
-import { API_AUTH, API_URL } from '../utils/Constants.jsx';
+import { API_AUTH } from '../utils/Constants.jsx';
 
 const AuthContext = createContext();
 
 /**
- * Authentication provider component that manages user authentication and association status
+ * Helper function: retry with exponential backoff
+ * @param {string} path - API endpoint to fetch
+ * @param {number} retries - Number of attempts
+ * @param {number} delay - Initial delay in ms
+ * @returns {Promise<{data: any, error: string|null}>}
+ */
+async function fetchWithRetry(path, retries = 3, delay = 1000) {
+  for (let i = 0; i < retries; i++) {
+    const result = await RandomUtils.fetchData(path);
+    if (!result.error) return result;
+
+    // wait with exponential backoff before retrying
+    await new Promise((res) => setTimeout(res, delay * Math.pow(2, i)));
+  }
+  return { data: null, error: 'Backend unavailable' };
+}
+
+/**
+ * Authentication provider component
  * @param {Object} props - Component props
  * @param {React.ReactNode} props.children - Child components
  * @returns {JSX.Element} Authentication provider with context
  */
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
-  const [isAssos, setIsAssos] = useState(false);
-  const [assoName, setAssoName] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+
     const loadData = async () => {
       try {
-        const [authResult, assoResult] = await Promise.all([
-          RandomUtils.fetchData(API_AUTH),
-          RandomUtils.fetchData(API_URL + '/api/user/is_association'),
-        ]);
+        const authResult = await fetchWithRetry(API_AUTH);
 
-        if (authResult.data) {
-          setToken(authResult.data);
+        if (!cancelled) {
+          if (authResult.data) setToken(authResult.data);
+          setError(authResult.error || null);
         }
-        if (assoResult.data) {
-          setIsAssos(assoResult.data.is_asso);
-          setAssoName(assoResult.data.asso);
-        }
-
-        setError(authResult.error || assoResult.error);
       } catch (err) {
-        setError(err);
+        if (!cancelled) setError(err.message || 'Unknown error');
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
 
     loadData();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (
-    <AuthContext.Provider value={{ token, loading, error, isAssos, assoName }}>
+    <AuthContext.Provider value={{ token, loading, error }}>
       {children}
     </AuthContext.Provider>
   );
@@ -53,6 +66,6 @@ export const AuthProvider = ({ children }) => {
 
 /**
  * Custom hook to access authentication context
- * @returns {Object} Authentication context value containing token, loading, error, isAssos, and assoName
+ * @returns {Object} Authentication context value containing token, loading, and error
  */
 export const useAuth = () => useContext(AuthContext);

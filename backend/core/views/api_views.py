@@ -438,6 +438,19 @@ class GetUserProfileAPIView(APIView):
             ),
         }
 
+        def association_info():
+            asso_publisher = AssociationPublisher.objects.filter(
+                user=request.user
+            ).first()
+            if asso_publisher:
+                return {"is_asso": True, "asso": asso_publisher.association.name}
+            return {"is_asso": False, "asso": None}
+
+        profile.update(
+            safe_get("get_is_association_publisher", association_info)
+            or {"is_asso": None, "asso": None}
+        )
+
         return Response(profile)
 
 
