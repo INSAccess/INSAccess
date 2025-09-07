@@ -68,9 +68,8 @@ const AllEvents = ({ dataOrigin }) => {
   const [firstDay, setDay] = useState(day);
   const [renderKey, setRenderKey] = useState(0);
 
-  let nbDays = minWidth < dimensions.width ? 6 : 1;
-  let currentDay =
-    nbDays == 6 ? firstDay.copy().startOfWeek(dayList) : firstDay.copy();
+  let nbDays = minWidth < dimensions.width ? 7 : 1;
+  let currentDay = nbDays == 7 ? firstDay.copy().startOfWeek(dayList) : firstDay.copy();
 
   function handleDay(direction, value) {
     if (direction === 'prev') {

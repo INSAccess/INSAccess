@@ -26,7 +26,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import Day from './Day.jsx'
+            <pre class="prettyprint source linenums"><code>import Day from './Day.jsx';
 import RandomUtils from './RandomUtils.jsx';
 
 /**
@@ -35,94 +35,95 @@ import RandomUtils from './RandomUtils.jsx';
 class EventUtils {
   /**
    * Returns the height an events should have based on its start time, end time and the number of subdivisions possible
-   * @param {int} start_index the index of the start time of the event in the time array
-   * @param {int} end_index the index of the end time of the event in the time array
-   * @param {int} nb_div the number of subdivisions possible (the length of the time array)
+   * @param {int} startIndex the index of the start time of the event in the time array
+   * @param {int} endIndex the index of the end time of the event in the time array
+   * @param {int} nbDiv the number of subdivisions possible (the length of the time array)
    * @returns {float} the expected height of the event
    */
-  static getEventHeight(start_index, end_index, nb_div){
-    return ((end_index-start_index)/(nb_div+1))*100
+  static getEventHeight(startIndex, endIndex, nbDiv) {
+    return ((endIndex - startIndex) / (nbDiv + 1)) * 100;
   }
 
   /**
    * Returns the position of the event from the top of the div
-   * @param {int} start_index the index of the start time of the event in the time array
-   * @param {int} nb_div the number of subdivisions possible (the length of the time array)
+   * @param {int} startIndex the index of the start time of the event in the time array
+   * @param {int} nbDiv the number of subdivisions possible (the length of the time array)
    * @returns {float} the expected position of the event
    */
-  static getEventPos(start_index, nb_div){
-    return 100*(start_index+1)/(nb_div+1);
+  static getEventPos(startIndex, nbDiv) {
+    return (100 * (startIndex + 1)) / (nbDiv + 1);
   }
 
   /**
    * Returns the number of events happening in the given hour
    * @param {string} hour
-   * @param {Array} events 
+   * @param {Array} events
    * @returns {int} the number of events
    */
-  static getNbEventsAtHour(hour, events){
-    let nb_events = 0;
-    for (let element of events){
-      if (element.start_hour &lt; hour &amp;&amp; element.end_hour > hour){
-        nb_events++;
+  static getNbEventsAtHour(hour, events) {
+    let nbEvents = 0;
+    for (let element of events) {
+      if (element.start_hour &lt; hour &amp;&amp; element.end_hour > hour) {
+        nbEvents++;
       }
     }
-    return nb_events;
+    return nbEvents;
   }
-  
+
   /**
    * Returns the subdivisions of hours happening during an event
    * @param {struct} event
    * @returns {Array}
    */
-  static getHoursOfEvent(event){
-    let hours = []
-    const hours_events = Day.createHours();
-    for (let hour of hours_events){
-      if (hour >= event.start_hour &amp;&amp; hour &lt;= event.end_hour){
+  static getHoursOfEvent(event) {
+    let hours = [];
+    const hoursEvents = Day.createHours();
+    for (let hour of hoursEvents) {
+      if (hour >= event.start_hour &amp;&amp; hour &lt;= event.end_hour) {
         hours.push(hour);
       }
     }
     return hours;
   }
-  
+
   /**
    * Returns the maximum of overlap for an event
-   * @param {struct} event 
-   * @param {Array} events 
+   * @param {struct} event
+   * @param {Array} events
    * @returns {int}
    */
-  static getOverlappingEvents(event, events){
-    let max_overlap = 0;
-    let nb_overlap = 0;
-    let hours_of_event = EventUtils.getHoursOfEvent(event)
-    for (let hour of hours_of_event){
-      nb_overlap = EventUtils.getNbEventsAtHour(hour, events)
-      max_overlap = RandomUtils.max(max_overlap, nb_overlap)
+  static getOverlappingEvents(event, events) {
+    let maxOverlap = 0;
+    let nbOverlap = 0;
+    let hoursOfEvent = EventUtils.getHoursOfEvent(event);
+    for (let hour of hoursOfEvent) {
+      nbOverlap = EventUtils.getNbEventsAtHour(hour, events);
+      maxOverlap = RandomUtils.max(maxOverlap, nbOverlap);
     }
-    return max_overlap;
+    return maxOverlap;
   }
-  
+
   /**
    * Returns a list of all events of a given day
-   * @param {string} date 
-   * @param {json} data 
+   * @param {string} date
+   * @param {json} data
    * @returns {Array}
    */
-  static getEventsOfDay(date, data){
-    const events = []
+  static getEventsOfDay(date, data) {
+    const events = [];
     if (data) {
-      data.forEach(ev => {
+      data.forEach((ev) => {
         if (ev.date === date) {
-          events.push(ev)
+          events.push(ev);
         }
-      })
+      });
     }
     return events;
   }
 }
 
-export default EventUtils;</code></pre>
+export default EventUtils;
+</code></pre>
         </article>
     </section>
 
@@ -132,13 +133,13 @@ export default EventUtils;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#NavBar">NavBar</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EvenementForm">EvenementForm</a></li><li><a href="global.html#EventCreator">EventCreator</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#handleSubmit">handleSubmit</a></li><li><a href="global.html#saveEvenement">saveEvenement</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Jun 07 2025 19:37:34 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Sep 07 2025 13:04:42 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

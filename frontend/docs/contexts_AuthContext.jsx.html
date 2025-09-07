@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/Pages/Associations.jsx</title>
+    <title>JSDoc: Source: contexts/AuthContext.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/Pages/Associations.jsx</h1>
+    <h1 class="page-title">Source: contexts/AuthContext.jsx</h1>
 
     
 
@@ -26,19 +26,64 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import AllEvents from '../Events/AllEvents.jsx';
+            <pre class="prettyprint source linenums"><code>import { createContext, useContext, useState, useEffect } from 'react';
+import RandomUtils from '../utils/RandomUtils.jsx';
+import { API_AUTH, API_URL } from '../utils/Constants.jsx';
+
+const AuthContext = createContext();
 
 /**
- * Wrapper component for better readability (semantic)
- * @component
- * @returns {JSX.Element}
+ * Authentication provider component that manages user authentication and association status
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Child components
+ * @returns {JSX.Element} Authentication provider with context
  */
-const Associations = () => {
-  return &lt;AllEvents dataOrigin="asso" />;
+export const AuthProvider = ({ children }) => {
+  const [token, setToken] = useState(null);
+  const [isAssos, setIsAssos] = useState(false);
+  const [assoName, setAssoName] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [authResult, assoResult] = await Promise.all([
+          RandomUtils.fetchData(API_AUTH),
+          RandomUtils.fetchData(API_URL + '/api/is_association'),
+        ]);
+
+        if (authResult.data) {
+          setToken(authResult.data);
+        }
+        if (assoResult.data) {
+          setIsAssos(assoResult.data.is_asso);
+          setAssoName(assoResult.data.assoName);
+        }
+
+        setError(authResult.error || assoResult.error);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  return (
+    &lt;AuthContext.Provider value={{ token, loading, error, isAssos, assoName }}>
+      {children}
+    &lt;/AuthContext.Provider>
+  );
 };
 
-export default Associations;
-</code></pre>
+/**
+ * Custom hook to access authentication context
+ * @returns {Object} Authentication context value containing token, loading, error, isAssos, and assoName
+ */
+export const useAuth = () => useContext(AuthContext);</code></pre>
         </article>
     </section>
 

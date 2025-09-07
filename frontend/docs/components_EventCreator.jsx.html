@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/EventCreator.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/EventCreator.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @fileoverview Composant React pour la création d'événements INSA.
  * Ce fichier contient les composants pour créer et gérer des événements
  * avec validation d'authentification pour les associations.
@@ -44,11 +72,11 @@ import { useAuth } from '../contexts/AuthContext.jsx';
  * 
  * @example
  * // Utilisation basique du composant
- * <EvenementForm />
+ * &lt;EvenementForm />
  * 
  * @example
  * // Avec une URL personnalisée
- * <EvenementForm url="/custom/create/endpoint" />
+ * &lt;EvenementForm url="/custom/create/endpoint" />
  */
 const EvenementForm = ({}) => {
   const { t } = useTranslation();
@@ -160,9 +188,9 @@ const EvenementForm = ({}) => {
     
     // Normalisation de l'heure de début
     let startHour = formData.get('start_hour');
-    if (startHour != undefined && startHour != '') {
+    if (startHour != undefined &amp;&amp; startHour != '') {
       if (
-        startHour[startHour.length - 1] != '5' &&
+        startHour[startHour.length - 1] != '5' &amp;&amp;
         startHour[startHour.length - 1] != '0'
       ) {
         formData.set('start_hour', startHour.replace(/.$/, '0'));
@@ -173,9 +201,9 @@ const EvenementForm = ({}) => {
     
     // Normalisation de l'heure de fin
     let endHour = formData.get('end_hour');
-    if (endHour != undefined && endHour != '') {
+    if (endHour != undefined &amp;&amp; endHour != '') {
       if (
-        endHour[endHour.length - 1] != '5' &&
+        endHour[endHour.length - 1] != '5' &amp;&amp;
         endHour[endHour.length - 1] != '0'
       ) {
         formData.set('end_hour', endHour.replace(/.$/, '5'));
@@ -189,114 +217,114 @@ const EvenementForm = ({}) => {
   }
 
   return (
-    <div style={{ position: 'relative', minHeight: '100svh', margin: '2%' }}>
-      <form method="post" onSubmit={handleSubmit}>
-        <div className="row g-3">
+    &lt;div style={{ position: 'relative', minHeight: '100svh', margin: '2%' }}>
+      &lt;form method="post" onSubmit={handleSubmit}>
+        &lt;div className="row g-3">
           {/* Première ligne : Titre et Date */}
-          <div className="col-md-6">
-            <label htmlFor="title" className="form-label">
+          &lt;div className="col-md-6">
+            &lt;label htmlFor="title" className="form-label">
               {t('FormTitle')}
-            </label>
-            <input
+            &lt;/label>
+            &lt;input
               className="form-control"
               id="title"
               name="title"
               placeholder={t('FormTitleDefault')}
             />
-          </div>
-          <div className="col-md-6">
-            <label htmlFor="date" className="form-label">
+          &lt;/div>
+          &lt;div className="col-md-6">
+            &lt;label htmlFor="date" className="form-label">
               {t('FormDate')}
-            </label>
-            <input
+            &lt;/label>
+            &lt;input
               className="form-control"
               id="date"
               name="date"
               type="date"
               defaultValue={day.getDate()}
             />
-          </div>
+          &lt;/div>
 
           {/* Deuxième ligne : Heures */}
-          <div className="col-md-6">
-            <label htmlFor="start_hour" className="form-label">
+          &lt;div className="col-md-6">
+            &lt;label htmlFor="start_hour" className="form-label">
               {t('FormStartHour')}
-            </label>
-            <input
+            &lt;/label>
+            &lt;input
               className="form-control"
               id="start_hour"
               name="start_hour"
               type="time"
               defaultValue="08:00"
             />
-          </div>
-          <div className="col-md-6">
-            <label htmlFor="end_hour" className="form-label">
+          &lt;/div>
+          &lt;div className="col-md-6">
+            &lt;label htmlFor="end_hour" className="form-label">
               {t('FormEndHour')}
-            </label>
-            <input
+            &lt;/label>
+            &lt;input
               className="form-control"
               id="end_hour"
               name="end_hour"
               type="time"
               defaultValue="18:15"
             />
-          </div>
+          &lt;/div>
 
           {/* Troisième ligne : Description et Lien */}
-          <div className="col-md-6">
-            <label htmlFor="info" className="form-label">
+          &lt;div className="col-md-6">
+            &lt;label htmlFor="info" className="form-label">
               {t('FormDescription')}
-            </label>
-            <input
+            &lt;/label>
+            &lt;input
               className="form-control"
               id="info"
               name="info"
               placeholder={t('FormDescriptionDefault')}
             />
-          </div>
-          <div className="col-md-6">
-            <label htmlFor="associated_link" className="form-label">
+          &lt;/div>
+          &lt;div className="col-md-6">
+            &lt;label htmlFor="associated_link" className="form-label">
               {t('FormLink')}
-            </label>
-            <input
+            &lt;/label>
+            &lt;input
               className="form-control"
               id="associated_link"
               name="associated_link"
               placeholder={t('FormLinkDefault')}
             />
-          </div>
+          &lt;/div>
 
           {/* Quatrième ligne : Salle */}
-          <div className="col-md-12">
-            <label htmlFor="location" className="form-label">
+          &lt;div className="col-md-12">
+            &lt;label htmlFor="location" className="form-label">
               {t('FormRoom')}
-            </label>
-            <input
+            &lt;/label>
+            &lt;input
               className="form-control"
               id="location"
               name="location"
               placeholder={t('FormRoomDefault')}
             />
-          </div>
-        </div>
+          &lt;/div>
+        &lt;/div>
 
         {/* Boutons */}
-        <div className="mt-4 d-flex gap-2">
-          <button
+        &lt;div className="mt-4 d-flex gap-2">
+          &lt;button
             className="btn btn-primary"
             type="submit"
             disabled={isSubmitting}
           >
             {isSubmitting ? t('FormIsSubmitting') : t('FormCreate')}
-          </button>
-          <button className="btn btn-secondary" type="reset">
+          &lt;/button>
+          &lt;button className="btn btn-secondary" type="reset">
             {t('FormReset')}
-          </button>
-        </div>
-      </form>
-      {errorFlag && (
-        <Alert
+          &lt;/button>
+        &lt;/div>
+      &lt;/form>
+      {errorFlag &amp;&amp; (
+        &lt;Alert
           variant="success"
           onClose={() => setErrorFlag(false)}
           dismissible
@@ -309,9 +337,9 @@ const EvenementForm = ({}) => {
           }}
         >
           {statusMessage}
-        </Alert>
+        &lt;/Alert>
       )}
-    </div>
+    &lt;/div>
   );
 };
 
@@ -325,15 +353,15 @@ const EvenementForm = ({}) => {
  * 
  * @example
  * // Utilisation dans un routeur React
- * <Route path="/create-event" component={EventCreator} />
+ * &lt;Route path="/create-event" component={EventCreator} />
  * 
  * @example
  * // Utilisation directe
  * function App() {
  *   return (
- *     <div>
- *       <EventCreator />
- *     </div>
+ *     &lt;div>
+ *       &lt;EventCreator />
+ *     &lt;/div>
  *   );
  * }
  */
@@ -355,14 +383,36 @@ const EventCreator = () => {
 
   if (!isAssos) {
     return (
-      <div>
-        <p>{t('NotAnAsso')}</p>
-        <Button href={urlLogin}>{t('ConnectAsAsso')}</Button>
-      </div>
+      &lt;div>
+        &lt;p>{t('NotAnAsso')}&lt;/p>
+        &lt;Button href={urlLogin}>{t('ConnectAsAsso')}&lt;/Button>
+      &lt;/div>
     );
   } else {
-    return <EvenementForm url={urlCreate} />;
+    return &lt;EvenementForm url={urlCreate} />;
   }
 };
 
-export default EventCreator;
+export default EventCreator;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EvenementForm">EvenementForm</a></li><li><a href="global.html#EventCreator">EventCreator</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#handleSubmit">handleSubmit</a></li><li><a href="global.html#saveEvenement">saveEvenement</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Sep 07 2025 13:04:42 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
