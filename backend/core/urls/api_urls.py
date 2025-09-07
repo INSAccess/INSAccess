@@ -4,7 +4,7 @@ from core.views import(
     , GetEvenementsAPIView, PostUserThemeAPIView, GetConfigFileAPIView
     ,GetEnumThemeAPIView, PostInsaEvenementAPIView, PostUserColorAPIView, GetUserProfileAPIView,
      GetEnumLanguageAPIView, PostUserLanguageAPIView, DeleteEventAPIView, FriendsAPIView, UsersAPIView,
-    FriendCalendarAPIView, )
+    FriendCalendarAPIView,GetIsAssociationPublisherAPIView )
 
 urlpatterns = [
     #calendars urls
@@ -27,6 +27,7 @@ urlpatterns = [
     path('get_profile', GetUserProfileAPIView.as_view(), name='get_profile'),
     path('friends/', FriendsAPIView.as_view(), name='friends'),
     path('is_connected', GetIsConnectedAPIView.as_view(), name='is_connected'),
+    path('is_association', GetIsAssociationPublisherAPIView.as_view(), name='is_association'),
     path('post_user_theme', PostUserThemeAPIView.as_view(), name ='post_user_theme'),
     path('post_user_language', PostUserLanguageAPIView.as_view(), name ='post_user_language'),
     path('post_user_color', PostUserColorAPIView.as_view(), name='post_user_color'),

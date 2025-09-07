@@ -264,6 +264,34 @@ class GetIsConnectedAPIView(APIView):
             logger.error(f"Internal server error at get_is_connected {str(e)}" ,extra={"request": request, "status_code": response.status_code})
             return response
 
+class GetIsAssociationPublisherAPIView(APIView):
+    """A small api route for the temporary solution
+    for knowing if the user is connected or not
+
+    Args:
+        APIView (class): the api class that is inherited by this route
+
+    Returns:
+        response: the serialized boolean
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        """returns True if the user is authenticated else False"""
+        try:
+            asso_publisher = AssociationPublisher.objects.filter(user = request.user).first()
+            if not asso_publisher:
+                response = Response({"is_asso" : False, "asso" : None})
+            else:
+                asso = asso_publisher.association.name
+                response = Response({"is_asso" : True, "asso" : asso})
+            logger.info("Checked if user is an association publisher", extra={"request": request, "status_code": response.status_code})
+            return response
+        except Exception as e:
+            response = Response({"error": "Internal server error"}, status = 500)
+            logger.error(f"Internal server error at get_is_association_publisher : {str(e)}" ,extra={"request": request, "status_code": response.status_code})
+            return response
+
 class DeleteEventAPIView(APIView):
     """change the user associated theme"""
     permission_classes = [IsAuthenticated, IsAssociationPublisher]
@@ -308,16 +336,7 @@ class GetUserProfileAPIView(APIView):
             "displayName": safe_get("get_profile_displayName", lambda: request.session.get("attributes", {}).get("first_name", "")),
         }
 
-        def association_info():
-            asso_publisher = AssociationPublisher.objects.filter(user=request.user).first()
-            if asso_publisher:
-                return {"is_asso": True, "asso": asso_publisher.association.name}
-            return {"is_asso": False, "asso": None}
-
-        profile.update(safe_get("get_is_association_publisher", association_info) or {"is_asso": None, "asso": None})
-
         return Response(profile)
-
 
 class PostUserThemeAPIView(APIView):
     """change the user associated theme"""

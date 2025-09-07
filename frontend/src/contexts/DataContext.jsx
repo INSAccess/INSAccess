@@ -25,8 +25,6 @@ export const DataProvider = (props) => {
   const [errorFlag, raiseErrorFlag] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
   const [icsLink, setIcsLink] = useState(t("LoadError"));
-  const [isAssos, setIsAssos] = useState(false);
-  const [assoName, setAssoName] = useState(null);
   const [allLanguages, setAllLanguages] = useState(null);
   const [userLanguage, setUserLanguage] = useState(null);
   const [allThemes, setAllThemes] = useState(null);
@@ -101,8 +99,6 @@ export const DataProvider = (props) => {
           setProfile({username : profileData.username, displayName : profileData.displayName });
           setUserTheme(profileData.theme);
           setUserLanguage(profileData.language);
-          setIsAssos(profileData.is_asso);
-          setAssoName(profileData.asso);
           setIcsLink(profileData.ics_url);
         };
 
@@ -161,8 +157,8 @@ export const DataProvider = (props) => {
   return (
     <>
       <DataContext.Provider value={{dataAsso, dataAgenda, day, setDay, forceUpdate, changeTheme,
-          changeLanguage, tds, icsLink, isAssos, allThemes, userTheme, loadingTds, userProfile,
-          allLanguages, userLanguage, assoName, userList, friendsList, setFriendsList, pendingList,
+          changeLanguage, tds, icsLink, allThemes, userTheme, loadingTds, userProfile,
+          allLanguages, userLanguage, userList, friendsList, setFriendsList, pendingList,
           setPendingList, receivedList, setReceivedList, dataFriend, setDataFriend, showCalendar,
           setShowCalendar, colorsAsso, colorsAgenda, setColorsAsso, setColorsAgenda}}>
           {props.children}

@@ -10,6 +10,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useConfig } from '../../contexts/ConfigContext.jsx'
 import { useData } from '../../contexts/DataContext.jsx'
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 
 /**
  * Settings component, handling the theme, the TD selection, ICS link and event creation
@@ -25,7 +26,7 @@ const Settings = () => {
     const BUNDLE = useData()
     let tds = BUNDLE.tds
     let icsLink = BUNDLE.icsLink
-    let isAssos = BUNDLE.isAssos
+    const { isAssos } = useAuth()
     let allThemes = BUNDLE.allThemes
     let userTheme = BUNDLE.userTheme
     let allLanguages = BUNDLE.allLanguages

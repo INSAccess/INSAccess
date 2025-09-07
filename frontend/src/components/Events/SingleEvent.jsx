@@ -11,6 +11,7 @@ import { CompactPicker } from 'react-color';
 import { useData } from '../../contexts/DataContext.jsx'
 import Alert from '@mui/material/Alert';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 
 /**
  * React component that only returns a button redirecting to a link if this is an association
@@ -116,7 +117,8 @@ const SingleEvent = (props) => {
 
     const { t } = useTranslation();
 
-    const BUNDLE = useData()
+    const BUNDLE = useData();
+    const { assoName } = useAuth();
 
     let colors = props.dataOrigin == "asso" ? BUNDLE.colorsAsso : BUNDLE.colorsAgenda
     let setColorsList = props.dataOrigin == "asso" ? BUNDLE.setColorsAsso : BUNDLE.setColorsAgenda
@@ -194,7 +196,7 @@ const SingleEvent = (props) => {
             <br/>
             <FollowLink asso={props.dataOrigin == "asso"} link={props.link}/>
             <br/>
-            <DeleteButton handleClose={handleClose} eventUID={props.uid} asso={props.dataOrigin == "asso"} teacher={props.teacher[0]} assoName={BUNDLE.assoName} raiseSuccessFlag={raiseSuccessFlag} setSuccessMessage={setSuccessMessage} raiseErrorFlag={raiseErrorFlag} setStatusMessage={setStatusMessage}/>
+            <DeleteButton handleClose={handleClose} eventUID={props.uid} asso={props.dataOrigin == "asso"} teacher={props.teacher[0]} assoName={assoName} raiseSuccessFlag={raiseSuccessFlag} setSuccessMessage={setSuccessMessage} raiseErrorFlag={raiseErrorFlag} setStatusMessage={setStatusMessage}/>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={handleClose}>
