@@ -25,7 +25,7 @@ const PATH_USER_CALENDAR = API_URL + '/api/calendar/';
 const PATH_ASSO_CALENDAR = API_URL + '/api/calendar/events';
 const API_LOGIN = API_URL + '/authentification/login';
 const API_LOGOUT = API_URL + '/authentification/logout';
-const API_AUTH = API_URL + '/api/is_connected?format=json';
+const API_AUTH = API_URL + '/api/user/is_connected?format=json';
 
 export {
   hoursTimeline,

@@ -34,7 +34,7 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
   // Function to save selection to the backend
   const saveSelection = async () => {
     try {
-      const response = await fetch(API_URL + '/api/save_tds', {
+      const response = await fetch(API_URL + '/api/user/td_groups', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

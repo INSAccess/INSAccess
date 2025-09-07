@@ -107,10 +107,10 @@ export const DataProvider = (props) => {
           RandomUtils.fetchData(PATH_ASSO_CALENDAR),
           RandomUtils.fetchData(PATH_USER_CALENDAR),
           RandomUtils.fetchData(API_URL + '/api/metadata/themes'),
-          RandomUtils.fetchData(API_URL + '/api/get_profile'),
+          RandomUtils.fetchData(API_URL + '/api/user/profile'),
           RandomUtils.fetchData(API_URL + '/api/metadata/languages'),
-          RandomUtils.fetchData(API_URL + '/api/users/'),
-          RandomUtils.fetchData(API_URL + '/api/friends/'),
+          RandomUtils.fetchData(API_URL + '/api/metadata/users'),
+          RandomUtils.fetchData(API_URL + '/api/user/friends'),
         ]);
 
         if (resultAsso.data) {

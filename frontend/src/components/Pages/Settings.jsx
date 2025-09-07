@@ -53,7 +53,7 @@ const Settings = () => {
     async function handleThemeChange(e) {
       //post theme on backend
       try {
-        const response = await fetch(API_URL + '/api/post_user_theme', {
+        const response = await fetch(API_URL + '/api/user/theme', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ const Settings = () => {
     async function handleLanguageChange(e) {
       //post theme on backend
       try {
-        const response = await fetch(API_URL + '/api/post_user_language', {
+        const response = await fetch(API_URL + '/api/user/language', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

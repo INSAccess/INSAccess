@@ -73,18 +73,15 @@ const DeleteButton = ({
 
   const handleDeleteEvent = async () => {
     try {
-      const response = await fetch(
-        API_URL + '/api/delete_evenement/' + eventUID,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': RandomUtils.getCSRFToken(),
-          },
-          mode: 'cors',
-          credentials: 'include',
-        }
-      );
+      const response = await fetch(API_URL + '/api/events/' + eventUID, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': RandomUtils.getCSRFToken(),
+        },
+        mode: 'cors',
+        credentials: 'include',
+      });
       const data = await response.json();
 
       if (!response.ok) {
@@ -194,7 +191,7 @@ const SingleEvent = (props) => {
   }
 
   async function saveColor(colorObject) {
-    const response = await fetch(API_URL + '/api/post_user_color', {
+    const response = await fetch(API_URL + '/api/user/color', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

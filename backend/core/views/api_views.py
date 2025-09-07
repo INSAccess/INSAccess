@@ -369,7 +369,7 @@ class DeleteEventAPIView(APIView):
 
     permission_classes = [IsAuthenticated, IsAssociationPublisher]
 
-    def post(self, request, uid):
+    def delete(self, request, uid):
         """"""
         try:
             associations = Association.objects.filter(

@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
       try {
         const [authResult, assoResult] = await Promise.all([
           RandomUtils.fetchData(API_AUTH),
-          RandomUtils.fetchData(API_URL + '/api/is_association'),
+          RandomUtils.fetchData(API_URL + '/api/user/is_association'),
         ]);
 
         if (authResult.data) {

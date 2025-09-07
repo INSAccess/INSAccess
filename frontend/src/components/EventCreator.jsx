@@ -36,16 +36,16 @@ import { useAuth } from '../contexts/AuthContext.jsx';
  * Composant formulaire pour la création d'événements INSA.
  * Ce composant permet aux associations de créer de nouveaux événements
  * avec validation des horaires et soumission vers l'API backend.
- * 
+ *
  * @component
  * @param {Object} props - Les propriétés du composant
  * @param {string} [props.url] - URL pour la création (non utilisé dans l'implémentation actuelle)
  * @returns {JSX.Element} Le composant formulaire de création d'événement
- * 
+ *
  * @example
  * // Utilisation basique du composant
  * <EvenementForm />
- * 
+ *
  * @example
  * // Avec une URL personnalisée
  * <EvenementForm url="/custom/create/endpoint" />
@@ -58,31 +58,31 @@ const EvenementForm = ({}) => {
    * @type {boolean}
    */
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   /**
    * Flag d'affichage du message d'état
    * @type {boolean}
    */
   const [errorFlag, setErrorFlag] = useState(false);
-  
+
   /**
    * Message de statut à afficher à l'utilisateur
    * @type {string}
    */
   const [statusMessage, setStatusMessage] = useState('');
-  
+
   const { forceUpdate } = useData();
 
   /**
    * Fonction asynchrone pour sauvegarder un événement vers l'API backend.
    * Envoie les données du formulaire via une requête POST et gère les réponses.
-   * 
+   *
    * @async
    * @function saveEvenement
    * @param {SaveEvenementParams} params - Paramètres de sauvegarde
    * @param {FormData} params.form - Les données du formulaire à sauvegarder
    * @throws {Error} Lance une erreur si la requête échoue
-   * 
+   *
    * @example
    * await saveEvenement({
    *   form: {
@@ -98,7 +98,7 @@ const EvenementForm = ({}) => {
    */
   const saveEvenement = async ({ form }) => {
     try {
-      const response = await fetch(API_URL + '/api/post_insa_evenement', {
+      const response = await fetch(API_URL + '/api/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -129,7 +129,7 @@ const EvenementForm = ({}) => {
    * @type {Date}
    */
   let date = new Date();
-  
+
   /**
    * Instance Day pour le formatage de la date
    * @type {Day}
@@ -140,14 +140,14 @@ const EvenementForm = ({}) => {
    * Gestionnaire de soumission du formulaire.
    * Traite les données du formulaire, valide et normalise les heures,
    * puis appelle la fonction de sauvegarde.
-   * 
+   *
    * Les heures sont automatiquement ajustées :
    * - L'heure de début est arrondie à la dizaine inférieure (ex: 14:23 → 14:20)
    * - L'heure de fin est arrondie à la dizaine supérieure avec 5 minutes (ex: 16:23 → 16:25)
-   * 
+   *
    * @function handleSubmit
    * @param {Event} e - Événement de soumission du formulaire
-   * 
+   *
    * @example
    * // Le formulaire normalise automatiquement les heures :
    * // start_hour: "14:23" devient "14:20"
@@ -157,7 +157,7 @@ const EvenementForm = ({}) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
-    
+
     // Normalisation de l'heure de début
     let startHour = formData.get('start_hour');
     if (startHour != undefined && startHour != '') {
@@ -170,7 +170,7 @@ const EvenementForm = ({}) => {
     } else {
       formData.set('start_hour', '08:00');
     }
-    
+
     // Normalisation de l'heure de fin
     let endHour = formData.get('end_hour');
     if (endHour != undefined && endHour != '') {
@@ -183,7 +183,7 @@ const EvenementForm = ({}) => {
     } else {
       formData.set('end_hour', '18:15');
     }
-    
+
     const formJson = Object.fromEntries(formData.entries());
     saveEvenement({ form: formJson });
   }
@@ -319,14 +319,14 @@ const EvenementForm = ({}) => {
  * Composant principal pour la création d'événements avec vérification d'authentification.
  * Ce composant vérifie si l'utilisateur est une association autorisée avant
  * d'afficher le formulaire de création d'événement.
- * 
+ *
  * @component
  * @returns {JSX.Element} Le composant de création d'événement ou un message d'erreur d'authentification
- * 
+ *
  * @example
  * // Utilisation dans un routeur React
  * <Route path="/create-event" component={EventCreator} />
- * 
+ *
  * @example
  * // Utilisation directe
  * function App() {
@@ -340,13 +340,13 @@ const EvenementForm = ({}) => {
 const EventCreator = () => {
   const { isAssos } = useAuth();
   const { t } = useTranslation();
-  
+
   /**
    * Redirect URL to the login page
    * @type {string}
    */
   const urlLogin = API_URL + 'authentification/login';
-  
+
   /**
    * Event creation URL (not used in current implementation)
    * @type {string}
