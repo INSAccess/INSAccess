@@ -1,4 +1,32 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: contexts/DataContext.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: contexts/DataContext.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { createContext, useContext, useState, useEffect } from 'react';
 import Day from '../utils/Day.jsx';
 import {
   minWidth,
@@ -31,7 +59,6 @@ export const DataProvider = (props) => {
   const [dataFriend, setDataFriend] = useState([]);
   const [colorsAsso, setColorsAsso] = useState([]);
   const [colorsAgenda, setColorsAgenda] = useState([]);
-  const [colorsFriend, setColorsFriend] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingTds, setLoadingTds] = useState(false);
   const [shouldUpdate, setUpdate] = useState(true);
@@ -64,7 +91,7 @@ export const DataProvider = (props) => {
   const currentDate = new Date();
   let firstDay = new Day(currentDate);
   const [day, setDay] = useState(
-    minWidth < dimensions.width
+    minWidth &lt; dimensions.width
       ? firstDay.startOfWeek(dayList).getDate()
       : firstDay.getDate()
   );
@@ -81,12 +108,6 @@ export const DataProvider = (props) => {
   function changeLanguage(lang) {
     setUserLanguage(lang);
   }
-
-  useEffect(() => {
-    if (userTheme) {
-      document.getElementById('root').setAttribute('data-theme', userTheme);
-    }
-  }, [userTheme]);
 
   useEffect(() => {
     if (userLanguage) {
@@ -112,12 +133,12 @@ export const DataProvider = (props) => {
           resultFriends,
         ] = await Promise.all([
           RandomUtils.fetchData(PATH_ASSO_CALENDAR),
-          RandomUtils.fetchData(PATH_USER_CALENDAR),
-          RandomUtils.fetchData(API_URL + '/api/metadata/themes'),
-          RandomUtils.fetchData(API_URL + '/api/user/profile'),
-          RandomUtils.fetchData(API_URL + '/api/metadata/languages'),
-          RandomUtils.fetchData(API_URL + '/api/metadata/users'),
-          RandomUtils.fetchData(API_URL + '/api/user/friends'),
+          RandomUtils.fetchData(PATH_USER_CALENDAR + day + '/'),
+          RandomUtils.fetchData(API_URL + '/api/get_themes'),
+          RandomUtils.fetchData(API_URL + '/api/get_profile'),
+          RandomUtils.fetchData(API_URL + '/api/get_languages'),
+          RandomUtils.fetchData(API_URL + '/api/users/'),
+          RandomUtils.fetchData(API_URL + '/api/friends/'),
         ]);
 
         if (resultAsso.data) {
@@ -168,7 +189,7 @@ export const DataProvider = (props) => {
 
       setLoadingTds(true);
       try {
-        const url = API_URL + '/api/metadata/td_groups/all?format=json';
+        const url = API_URL + '/api/get_tds/all?format=json';
         const result = await RandomUtils.fetchData(url);
 
         if (result.data)
@@ -187,13 +208,13 @@ export const DataProvider = (props) => {
     loadAllTds();
   }, [shouldUpdate, props.page, CONFIG, updateCounter]);
 
-  if (loading && (dataAsso.length == 0 || dataAgenda.length == 0)) {
-    return <Loading />;
+  if (loading &amp;&amp; (dataAsso.length == 0 || dataAgenda.length == 0)) {
+    return &lt;Loading />;
   }
 
   return (
-    <>
-      <DataContext.Provider
+    &lt;>
+      &lt;DataContext.Provider
         value={{
           dataAsso,
           dataAgenda,
@@ -223,16 +244,14 @@ export const DataProvider = (props) => {
           setShowCalendar,
           colorsAsso,
           colorsAgenda,
-          colorsFriend,
           setColorsAsso,
           setColorsAgenda,
-          setColorsFriend,
         }}
       >
         {props.children}
-      </DataContext.Provider>
-      {errorFlag && (
-        <Alert
+      &lt;/DataContext.Provider>
+      {errorFlag &amp;&amp; (
+        &lt;Alert
           severity="error"
           variant="filled"
           onClose={() => {
@@ -240,9 +259,9 @@ export const DataProvider = (props) => {
           }}
         >
           {statusMessage}
-        </Alert>
+        &lt;/Alert>
       )}
-    </>
+    &lt;/>
   );
 };
 
@@ -250,4 +269,26 @@ export const DataProvider = (props) => {
  * Custom hook to access data context
  * @returns {Object} Data context value
  */
-export const useData = () => useContext(DataContext);
+export const useData = () => useContext(DataContext);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EvenementForm">EvenementForm</a></li><li><a href="global.html#EventCreator">EventCreator</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#handleSubmit">handleSubmit</a></li><li><a href="global.html#saveEvenement">saveEvenement</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Sep 07 2025 13:04:42 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

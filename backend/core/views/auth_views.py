@@ -8,6 +8,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def get_frontend_url():
     """
     Returns the frontend URL depending on the environment.
@@ -23,15 +24,16 @@ def get_frontend_url():
 @login_required
 def finalize(request):
     user, user_created = User.objects.get_or_create(username=request.user)
-    logger.info(request.user.username)
-    user_profile, profile_created = UserProfile.objects.get_or_create(user = user)
+    user_profile, profile_created = UserProfile.objects.get_or_create(user=user)
     user_profile.save()
-    if profile_created :
-        subscribed_tds = request.session.get('attributes', {}).get('supannAffectation', [])
+
+    if profile_created:
+        subscribed_tds = request.session.get("attributes", {}).get(
+            "supannAffectation", []
+        )
         subscribed_tds = [td.upper() for td in subscribed_tds]
 
         tds_in_db = GroupTD.objects.filter(name__in=subscribed_tds)
         user_profile.link_td.add(*tds_in_db)
 
     return redirect(get_frontend_url())
-

@@ -26,104 +26,131 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import duck from '../../images/duck.png'
-import './About.scss'
+            <pre class="prettyprint source linenums"><code>import duck from '../../images/duck.png';
+import './About.scss';
+import { useTranslation } from 'react-i18next';
+import RandomUtils from '../../utils/RandomUtils';
+import { minWidth } from '../../utils/Constants';
 
 const MainAbout = () => {
-    return (
-        &lt;section className="py-3 py-md-5">
-        &lt;div className="container">
-            &lt;div className="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
+  const { t } = useTranslation();
+
+  let dimensions = RandomUtils.useWindowDimensions();
+
+  return (
+    &lt;section className="py-3 py-md-5">
+      &lt;div className="container">
+        &lt;div className="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
+          {minWidth >= dimensions.width ? (
+            &lt;>&lt;/>
+          ) : (
             &lt;div className="col-12 col-lg-6 col-xl-5">
-                &lt;img className="img-fluid rounded" loading="lazy" src={duck} alt="couldnt load duck image">&lt;/img>
+              &lt;img
+                className="img-fluid rounded"
+                loading="lazy"
+                src={duck}
+                alt={t('ImageLoadingError')}
+              >&lt;/img>
             &lt;/div>
-            &lt;div className="col-12 col-lg-6 col-xl-7">
-                &lt;div className="row justify-content-xl-center">
-                &lt;div className="col-12 col-xl-11">
-                    &lt;h2 className="mb-3">Qui sommes nous ?&lt;/h2>
-                    &lt;p className="lead fs-4 text-secondary mb-3 text">On est deux étudiants d'ITI 3, un peu tarés sur les bords, motivés pour faire des projets utiles aux étudiants &lt;/p>
-                    &lt;p className="mb-5">Ce projet a pour ambition de faciliter l'accès des étudiants aux cours et aux événements culturels de l'INSA. Tout au long de son développement,
-                                         nous avons bénéficié du soutien précieux de nombreuses personnes.
-                                          Nous tenons particulièrement à remercier Michel Vespier pour ses conseils techniques avisés concernant l'interface du site,
-                                           ainsi que l'INSA pour son soutien constant et pour avoir valorisé ce projet.&lt;/p>
-                    &lt;div className="row gy-4 gy-md-0 gx-xxl-5X">
-                    &lt;div className="col-12 col-md-6">
-                        &lt;div className="d-flex">
-                        &lt;div className="me-4 text-primary">
-                        &lt;svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="red" className="bi bi-database-fill" viewBox="0 0 16 16">
-                        &lt;path d="M3.904 1.777C4.978 1.289 6.427 1 8 1s3.022.289 4.096.777C13.125 2.245 14 2.993 14 4s-.875 1.755-1.904 2.223C11.022 6.711 9.573 7 8 7s-3.022-.289-4.096-.777C2.875 5.755 2 5.007 2 4s.875-1.755 1.904-2.223"/>
-                        &lt;path d="M2 6.161V7c0 1.007.875 1.755 1.904 2.223C4.978 9.71 6.427 10 8 10s3.022-.289 4.096-.777C13.125 8.755 14 8.007 14 7v-.839c-.457.432-1.004.751-1.49.972C11.278 7.693 9.682 8 8 8s-3.278-.307-4.51-.867c-.486-.22-1.033-.54-1.49-.972"/>
-                        &lt;path d="M2 9.161V10c0 1.007.875 1.755 1.904 2.223C4.978 12.711 6.427 13 8 13s3.022-.289 4.096-.777C13.125 11.755 14 11.007 14 10v-.839c-.457.432-1.004.751-1.49.972-1.232.56-2.828.867-4.51.867s-3.278-.307-4.51-.867c-.486-.22-1.033-.54-1.49-.972"/>
-                        &lt;path d="M2 12.161V13c0 1.007.875 1.755 1.904 2.223C4.978 15.711 6.427 16 8 16s3.022-.289 4.096-.777C13.125 14.755 14 14.007 14 13v-.839c-.457.432-1.004.751-1.49.972-1.232.56-2.828.867-4.51.867s-3.278-.307-4.51-.867c-.486-.22-1.033-.54-1.49-.972"/>
-                        &lt;/svg>
-                        &lt;/div>
-                        &lt;div>
-                            &lt;h2 className="h4 mb-3">Direction des services informatiques&lt;/h2>
-                            &lt;p className="text-secondary mb-0">Pendant toute la mise en production du site, la DSI nous a aidé et conseillé sur des points techniques. L'utilisation du CAS et l'hébergement sur le domaine de l'INSA sont aussi grâce à la DSI, et en particulier M. Bonnegent et M. Vasseur.&lt;/p>
-                        &lt;/div>
-                        &lt;/div>
-                    &lt;/div>
-                    &lt;div className="col-12 col-md-6">
-                        &lt;div className="d-flex">
-                        &lt;div className="me-4 text-primary">
-                            &lt;svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="red" className="bi bi-fire" viewBox="0 0 16 16">
-                            &lt;path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16Zm0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15Z" />
-                            &lt;/svg>
-                        &lt;/div>
-                        &lt;div>
-                            &lt;h2 className="h4 mb-3">Service Culture et Vie Etudiante&lt;/h2>
-                            &lt;p className="text-secondary mb-0">Tous les événements des associations sont ajoutés sur le site par le Service Culture, qui font déjà énormément de boulot pour valoriser les engagements associatifs des étudiants les plus motivés. Donc merci beaucoup à Anne Caldin et Marion Beaudesson et désolé pour les heures supp ^^&lt;/p>
-                        &lt;/div>
-                        &lt;/div>
-                    &lt;/div>
-                    &lt;/div>
-                &lt;/div>
-                &lt;/div>
+          )}
+          &lt;div className="col-12 col-lg-6 col-xl-7">
+            &lt;div className="row justify-content-xl-center">
+              &lt;div className="col-12 col-xl-11">
+                &lt;h2 className="mb-3">{t('AboutTitle')}&lt;/h2>
+                &lt;p className="mb-5">{t('AboutContent')}&lt;/p>
+              &lt;/div>
             &lt;/div>
-            &lt;/div>
+          &lt;/div>
         &lt;/div>
-        &lt;/section>
-    );
-}
+      &lt;/div>
+    &lt;/section>
+  );
+};
 
 /**
  * License component
  * @component
- * @returns {JSX.Element} 
+ * @returns {JSX.Element}
  */
 const License = () => {
-    return (
-        &lt;p>
-            &lt;a href="https://github.com/INSAccess/INSAccess" property="dct:title" rel="cc:attributionURL">INSAccess&lt;/a> by 
-            &lt;span property="cc:attributionName">&amp;nbsp;Raphaël Senellart and Jules Galhardo&amp;nbsp;&lt;/span> 
-            is licensed under&amp;nbsp;
-            &lt;a href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style={{ display: "inline-block" }} >
-                CC BY-NC-SA 4.0
-                &lt;img style={{ height: "22px", marginLeft: "3px", verticalAlign: "text-bottom" }} src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt="" />
-                &lt;img style={{ height: "22px", marginLeft: "3px", verticalAlign: "text-bottom" }} src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt="" />
-                &lt;img style={{ height: "22px", marginLeft: "3px", verticalAlign: "text-bottom" }} src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt="" />
-                &lt;img style={{ height: "22px", marginLeft: "3px", verticalAlign: "text-bottom" }} src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt="" />
-            &lt;/a>
-        &lt;/p>
-    )
-}
+  return (
+    &lt;p id="license">
+      &lt;a
+        href="https://github.com/INSAccess/INSAccess"
+        property="dct:title"
+        rel="cc:attributionURL"
+      >
+        INSAccess
+      &lt;/a>{' '}
+      by
+      &lt;span property="cc:attributionName">
+        &amp;nbsp;Raphaël Senellart and Jules Galhardo&amp;nbsp;
+      &lt;/span>
+      is licensed under&amp;nbsp;
+      &lt;a
+        href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1"
+        target="_blank"
+        rel="license noopener noreferrer"
+        style={{ display: 'inline-block' }}
+      >
+        CC BY-NC-SA 4.0
+        &lt;img
+          style={{
+            height: '22px',
+            marginLeft: '3px',
+            verticalAlign: 'text-bottom',
+          }}
+          src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"
+          alt=""
+        />
+        &lt;img
+          style={{
+            height: '22px',
+            marginLeft: '3px',
+            verticalAlign: 'text-bottom',
+          }}
+          src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"
+          alt=""
+        />
+        &lt;img
+          style={{
+            height: '22px',
+            marginLeft: '3px',
+            verticalAlign: 'text-bottom',
+          }}
+          src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"
+          alt=""
+        />
+        &lt;img
+          style={{
+            height: '22px',
+            marginLeft: '3px',
+            verticalAlign: 'text-bottom',
+          }}
+          src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"
+          alt=""
+        />
+      &lt;/a>
+    &lt;/p>
+  );
+};
 
 /**
  * Component to display the about page and the licence of the website
  * @component
- * @returns {JSX.Element} 
+ * @returns {JSX.Element}
  */
 const About = () => {
-    return (
-        &lt;div className='maincontainer'>
-            &lt;MainAbout />
-            &lt;License />
-        &lt;/div>
+  return (
+    &lt;div className="maincontainer">
+      &lt;MainAbout />
+      &lt;License />
+    &lt;/div>
+  );
+};
 
-    )
-}
-
-export default About;</code></pre>
+export default About;
+</code></pre>
         </article>
     </section>
 
@@ -133,13 +160,13 @@ export default About;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#NavBar">NavBar</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EvenementForm">EvenementForm</a></li><li><a href="global.html#EventCreator">EventCreator</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#handleSubmit">handleSubmit</a></li><li><a href="global.html#saveEvenement">saveEvenement</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Jun 07 2025 19:37:34 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Sep 07 2025 13:04:42 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

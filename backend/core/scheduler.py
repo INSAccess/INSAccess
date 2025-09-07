@@ -7,12 +7,13 @@ logger = logging.getLogger(__name__)
 
 scheduler = BackgroundScheduler(timezone="UTC")
 
+
 def start():
     if not scheduler.running:
         scheduler.add_job(
             update_all_years,
             "interval",
-            minutes =15 ,
+            minutes=15,
             id="my_hourly_task",
             replace_existing=True,
         )

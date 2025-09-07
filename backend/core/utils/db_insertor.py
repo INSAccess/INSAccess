@@ -29,19 +29,27 @@ Notes:
     else where.
 
 """
+
 import logging
-from collections import defaultdict
 from itertools import islice
 
 from django.db import transaction
-from django.db.models import Q
 
 from core.models import (
-    InsaClass, Title, Teacher, Room, Department, GroupTD,
-    ClassLinkTeacher, ClassLinkRoom, ClassLinkDepart, ClassLinkTD
+    InsaClass,
+    Title,
+    Teacher,
+    Room,
+    Department,
+    GroupTD,
+    ClassLinkTeacher,
+    ClassLinkRoom,
+    ClassLinkDepart,
+    ClassLinkTD,
 )
 
 logger = logging.getLogger(__name__)
+
 
 # small helper for chunking iterables
 def chunked(iterable, size):
@@ -51,6 +59,7 @@ def chunked(iterable, size):
         if not chunk:
             break
         yield chunk
+
 
 def ensure_name_instances(model, names):
     """
@@ -76,6 +85,7 @@ def ensure_name_instances(model, names):
 
     return existing
 
+
 def insert_list_record(list_of_records, batch_size=500):
     """
     Optimized bulk insert/update of InsaClass records and their link tables.
@@ -100,34 +110,34 @@ def insert_list_record(list_of_records, batch_size=500):
 
     # Collect all related names across records (for bulk ensure)
     all_titles = {rec.get("desc") for rec in list_of_records if rec.get("desc")}
-    all_teacher_names = {name for rec in list_of_records for name in rec.get("teachers", [])}
-    all_room_names = {name for rec in list_of_records for name in rec.get("locations", [])}
-    all_depart_names = {name for rec in list_of_records for name in rec.get("departments", [])}
+    all_teacher_names = {
+        name for rec in list_of_records for name in rec.get("teachers", [])
+    }
+    all_room_names = {
+        name for rec in list_of_records for name in rec.get("locations", [])
+    }
+    all_depart_names = {
+        name for rec in list_of_records for name in rec.get("departments", [])
+    }
     all_td_names = {name for rec in list_of_records for name in rec.get("td_tags", [])}
 
     with transaction.atomic():
-        # 1) Delete classes that no longer exist
         InsaClass.objects.exclude(uid__in=new_uids).delete()
 
-        # 2) Fetch existing classes (those we might update)
-        existing_qs = InsaClass.objects.filter(uid__in=new_uids).select_related('desc')
+        existing_qs = InsaClass.objects.filter(uid__in=new_uids).select_related("desc")
         existing_map = {obj.uid: obj for obj in existing_qs}
-        existing_uids = set(existing_map.keys())
 
-        # 3) Ensure related name tables exist (Title, Teacher, Room, Department, GroupTD)
         title_map = ensure_name_instances(Title, all_titles)
         teacher_map = ensure_name_instances(Teacher, all_teacher_names)
         room_map = ensure_name_instances(Room, all_room_names)
         depart_map = ensure_name_instances(Department, all_depart_names)
         td_map = ensure_name_instances(GroupTD, all_td_names)
 
-        # 4) Partition records: to_create, to_update, to_skip
         to_create = []
         to_update = []
-        classes_to_refresh_uids = []  # uids for which we changed links (created or updated)
+        classes_to_refresh_uids = []
         for uid, rec in records_by_uid.items():
             if uid not in existing_map:
-                # create new InsaClass instance (not saved yet)
                 desc_obj = title_map.get(rec.get("desc"))
                 inst = InsaClass(
                     uid=rec["uid"],
@@ -138,14 +148,13 @@ def insert_list_record(list_of_records, batch_size=500):
                     desc=desc_obj,
                     time_created=rec.get("time_created"),
                     time_last_modified=rec.get("time_last_modified"),
-                    sequence=rec.get("sequence")
+                    sequence=rec.get("sequence"),
                 )
                 to_create.append(inst)
                 classes_to_refresh_uids.append(uid)
             else:
                 existing = existing_map[uid]
                 if existing.sequence != rec.get("sequence"):
-                    # update fields on the instance
                     existing.time_stamp = rec["time_stamp"]
                     existing.start_hour = rec["time_start"]
                     existing.end_hour = rec["time_end"]
@@ -156,51 +165,50 @@ def insert_list_record(list_of_records, batch_size=500):
                     existing.sequence = rec.get("sequence")
                     to_update.append(existing)
                     classes_to_refresh_uids.append(uid)
-                # else: sequence same, skip
 
-        # 5) Bulk create new InsaClass rows (if any)
         created_map = {}
         if to_create:
             InsaClass.objects.bulk_create(to_create, batch_size=batch_size)
-            # bulk_create may not populate all fields like FK objects in memory reliably,
-            # so re-query created objects by uid to get full instances with PKs.
             created_uids = [inst.uid for inst in to_create]
             for obj in InsaClass.objects.filter(uid__in=created_uids):
                 created_map[obj.uid] = obj
 
-        # 6) Bulk update modified InsaClass rows (if any)
         if to_update:
-            # choose the fields you updated
             InsaClass.objects.bulk_update(
                 to_update,
                 fields=[
-                    "time_stamp", "start_hour", "end_hour", "date",
-                    "desc", "time_created", "time_last_modified", "sequence"
+                    "time_stamp",
+                    "start_hour",
+                    "end_hour",
+                    "date",
+                    "desc",
+                    "time_created",
+                    "time_last_modified",
+                    "sequence",
                 ],
-                batch_size=batch_size
+                batch_size=batch_size,
             )
 
-        # Build mapping uid->InsaClass instance for link creation
-        # combine existing_map (for ones not created) and created_map
         class_map = {}
-        # Refresh existing_map objects from DB to ensure correct PKs and state
         if existing_map:
             for obj in InsaClass.objects.filter(uid__in=list(existing_map.keys())):
                 class_map[obj.uid] = obj
         class_map.update(created_map)
 
-        # 7) Recreate link rows for updated/created classes in bulk
         if classes_to_refresh_uids:
-            # find InsaClass instances for these uids
-            classes_for_links = [class_map[uid] for uid in classes_to_refresh_uids if uid in class_map]
+            ClassLinkTeacher.objects.filter(
+                insa_class__uid__in=classes_to_refresh_uids
+            ).delete()
+            ClassLinkRoom.objects.filter(
+                insa_class__uid__in=classes_to_refresh_uids
+            ).delete()
+            ClassLinkDepart.objects.filter(
+                insa_class__uid__in=classes_to_refresh_uids
+            ).delete()
+            ClassLinkTD.objects.filter(
+                insa_class__uid__in=classes_to_refresh_uids
+            ).delete()
 
-            # delete previous links for these in one shot per link table
-            ClassLinkTeacher.objects.filter(insa_class__uid__in=classes_to_refresh_uids).delete()
-            ClassLinkRoom.objects.filter(insa_class__uid__in=classes_to_refresh_uids).delete()
-            ClassLinkDepart.objects.filter(insa_class__uid__in=classes_to_refresh_uids).delete()
-            ClassLinkTD.objects.filter(insa_class__uid__in=classes_to_refresh_uids).delete()
-
-            # prepare lists for bulk_create
             teacher_links = []
             room_links = []
             depart_links = []
@@ -212,7 +220,6 @@ def insert_list_record(list_of_records, batch_size=500):
                     continue
                 rec = records_by_uid[uid]
 
-                # de-duplicate names per record
                 tnames = set(rec.get("teachers", []))
                 rnames = set(rec.get("locations", []))
                 dnames = set(rec.get("departments", []))
@@ -221,7 +228,9 @@ def insert_list_record(list_of_records, batch_size=500):
                 for t in tnames:
                     teacher = teacher_map.get(t)
                     if teacher:
-                        teacher_links.append(ClassLinkTeacher(insa_class=insa_cls, teacher=teacher))
+                        teacher_links.append(
+                            ClassLinkTeacher(insa_class=insa_cls, teacher=teacher)
+                        )
 
                 for r in rnames:
                     room = room_map.get(r)
@@ -231,14 +240,15 @@ def insert_list_record(list_of_records, batch_size=500):
                 for d in dnames:
                     depart = depart_map.get(d)
                     if depart:
-                        depart_links.append(ClassLinkDepart(insa_class=insa_cls, depart=depart))
+                        depart_links.append(
+                            ClassLinkDepart(insa_class=insa_cls, depart=depart)
+                        )
 
                 for td in tdtags:
                     tdobj = td_map.get(td)
                     if tdobj:
                         td_links.append(ClassLinkTD(insa_class=insa_cls, td=tdobj))
 
-            # bulk create in chunks
             for chunk in chunked(teacher_links, batch_size):
                 ClassLinkTeacher.objects.bulk_create(chunk, batch_size=batch_size)
             for chunk in chunked(room_links, batch_size):
@@ -248,8 +258,9 @@ def insert_list_record(list_of_records, batch_size=500):
             for chunk in chunked(td_links, batch_size):
                 ClassLinkTD.objects.bulk_create(chunk, batch_size=batch_size)
 
-    # end atomic
     logger.info(
         "insert_list_record done: created=%d updated=%d total=%d",
-        len(to_create), len(to_update), len(list_of_records)
+        len(to_create),
+        len(to_update),
+        len(list_of_records),
     )

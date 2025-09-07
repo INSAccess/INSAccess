@@ -6,6 +6,7 @@ import traceback
 
 logger = logging.getLogger(__name__)
 
+
 class Command(BaseCommand):
     help = "Run scheduled tasks (runs update_all_years once). Intended to be run from cron."
 

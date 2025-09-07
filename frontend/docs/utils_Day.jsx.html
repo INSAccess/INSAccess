@@ -26,40 +26,39 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { nbDaysPerMonth, dayList, monthList } from './Constants.jsx'
+            <pre class="prettyprint source linenums"><code>import { nbDaysPerMonth } from './Constants.jsx';
 
 /**
  * Class for handling days and dates
  * @constructor
  * @param {string} date - the date of the day
  */
-const Day = class Day{
-
-  date = "2025-01-01";
+const Day = class Day {
+  date = '2025-01-01';
   day = 1;
   month = 1;
   year = 1970;
-  
-  constructor(date){
-    if (date instanceof Date){
-      this.day = date.getDate()
-      this.month = date.getMonth()+1
-      this.year = date.getFullYear()
-      let monthZero = (this.month &lt; 10) ? "0" : ""
-      let dayZero = (this.day &lt; 10) ? "0" : ""
-      this.date = this.year+"-"+monthZero+this.month+"-"+dayZero+this.day
+
+  constructor(date) {
+    if (date instanceof Date) {
+      this.day = date.getDate();
+      this.month = date.getMonth() + 1;
+      this.year = date.getFullYear();
+      let monthZero = this.month &lt; 10 ? '0' : '';
+      let dayZero = this.day &lt; 10 ? '0' : '';
+      this.date =
+        this.year + '-' + monthZero + this.month + '-' + dayZero + this.day;
     } else {
       this.date = date;
       this.update();
     }
-    
   }
 
   /**
    * Setter for the date
-   * @param {string} date 
+   * @param {string} date
    */
-  setDay(date){
+  setDay(date) {
     this.date = date;
     this.update();
   }
@@ -67,23 +66,23 @@ const Day = class Day{
   /**
    * Updates the separate informations on the date
    */
-  update(){
+  update() {
     this.day = parseInt(this.date.slice(8, 10));
     this.month = parseInt(this.date.slice(5, 7));
-    this.year = parseInt(this.date.slice(0, 4))
+    this.year = parseInt(this.date.slice(0, 4));
   }
 
   /**
    * Returns a new Day instance from the day, month and year given
-   * @param {*} day 
-   * @param {*} month 
-   * @param {*} year 
+   * @param {*} day
+   * @param {*} month
+   * @param {*} year
    * @returns {Day}
    */
-  static constructDay(day, month, year){
-    let nDay = (day &lt; 10) ? "0" + day : "" + day;
-    let nMonth = (month &lt; 10) ? "0" + month : "" + month;
-    let newDay = new Day(year+"-"+nMonth+"-"+nDay)
+  static constructDay(day, month, year) {
+    let nDay = day &lt; 10 ? '0' + day : '' + day;
+    let nMonth = month &lt; 10 ? '0' + month : '' + month;
+    let newDay = new Day(year + '-' + nMonth + '-' + nDay);
     return newDay;
   }
 
@@ -92,42 +91,42 @@ const Day = class Day{
    * @param {int} nb_days the number of days to skip
    * @returns {Day}
    */
-  next(nb_days){
-    let day = this.day+nb_days
+  next(nb_days) {
+    let day = this.day + nb_days;
     let month = this.month;
     let year = this.year;
-    let nbDays = nbDaysPerMonth[this.month-1]
-    if (day > nbDays){
-      day -= nbDays
-      month += 1
-      if (month > 12){
-        month = 1
-        year += 1
+    let nbDays = nbDaysPerMonth[this.month - 1];
+    if (day > nbDays) {
+      day -= nbDays;
+      month += 1;
+      if (month > 12) {
+        month = 1;
+        year += 1;
       }
     }
-    let newDay = Day.constructDay(day, month, year)
+    let newDay = Day.constructDay(day, month, year);
     return newDay;
   }
-  
+
   /**
    * Returns the Day that is nb_days before the current Day
    * @param {int} nb_days the number of days to skip
    * @returns {Day}
    */
-  prev(nb_days){
-    let day = this.day-nb_days
+  prev(nb_days) {
+    let day = this.day - nb_days;
     let month = this.month;
     let year = this.year;
-    let nbDays = nbDaysPerMonth[(this.month+10)%12]
-    if (day &lt; 1){
-      day += nbDays
-      month -= 1
-      if (month &lt; 1){
-        month = 12
-        year -= 1
+    let nbDays = nbDaysPerMonth[(this.month + 10) % 12];
+    if (day &lt; 1) {
+      day += nbDays;
+      month -= 1;
+      if (month &lt; 1) {
+        month = 12;
+        year -= 1;
       }
     }
-    let newDay = Day.constructDay(day, month, year)
+    let newDay = Day.constructDay(day, month, year);
     return newDay;
   }
 
@@ -135,7 +134,7 @@ const Day = class Day{
    * Returns a copy of the current Day
    * @returns  {Day}
    */
-  copy(){
+  copy() {
     let res = new Day(this.date);
     return res;
   }
@@ -144,50 +143,50 @@ const Day = class Day{
    * Calucates the start of the current week
    * @returns {Day}
    */
-  startOfWeek(){
+  startOfWeek(dayList) {
     let day = this.copy();
-    while (day.getDayOfWeek() !== dayList[1]){
+    while (day.getDayOfWeek(dayList) !== dayList[1]) {
       day = day.prev(1);
     }
     return day;
   }
-  
+
   /**
    * Returns a readable hour
-   * @param {string} hour 
+   * @param {string} hour
    * @returns {string}
    */
-  static presentableHour(hour){
-    return hour[0]+hour[1]+":"+hour[2]+hour[3]
+  static presentableHour(hour) {
+    return hour[0] + hour[1] + ':' + hour[2] + hour[3];
   }
 
   /**
    * Uses the Date class to get the day of the week as an integer and then convert it the a readable string
    * @returns {string}
    */
-  getDayOfWeek(){
-    let date = new Date(this.date)
-    return dayList[date.getDay()]
+  getDayOfWeek(dayList) {
+    let date = new Date(this.date);
+    return dayList[date.getDay()];
   }
 
-  getNumberDayOfWeek(){
-    let date = new Date(this.date)
-    return date.getDay()
+  getNumberDayOfWeek() {
+    let date = new Date(this.date);
+    return date.getDay();
   }
 
   /**
    * Uses the Date class to get the month as an integer and then convert it the a readable string
    * @returns {string}
    */
-  getMonthOfYear(){
-    return monthList[this.month-1]
+  getMonthOfYear(monthList) {
+    return monthList[this.month - 1];
   }
 
   /**
    * Getter for the current day
    * @returns {string}
    */
-  getDay(){
+  getDay() {
     return this.day;
   }
 
@@ -195,15 +194,15 @@ const Day = class Day{
    * Getter for the current month
    * @returns {string}
    */
-  getMonth(){
+  getMonth() {
     return this.month;
   }
-  
+
   /**
    * Getter for the current years
    * @returns {string}
    */
-  getYear(){
+  getYear() {
     return this.year;
   }
 
@@ -211,7 +210,7 @@ const Day = class Day{
    * Getter for the current date
    * @returns {string}
    */
-  getDate(){
+  getDate() {
     return this.date;
   }
 
@@ -219,24 +218,28 @@ const Day = class Day{
    * Setter for the current date
    * @param {string} date
    */
-  setDate(date){
+  setDate(date) {
     this.date = date;
-    this.update()
+    this.update();
   }
-  
+
   /**
    * Returns readable informations on the current day
    * @returns {Array}
    */
-  getDateInfo(){
-      return [this.getDayOfWeek(), this.getDay(), this.getMonthOfYear()];
+  getDateInfo(dayList, monthList) {
+    return [
+      this.getDayOfWeek(dayList),
+      this.getDay(),
+      this.getMonthOfYear(monthList),
+    ];
   }
 
   /**
    * Returns the current date
    * @returns {string}
    */
-  toString(){
+  toString() {
     return this.date;
   }
 
@@ -244,26 +247,26 @@ const Day = class Day{
    * Static method for creating the array of usable hours of a day
    * @returns {Array}
    */
-  static createHours(){
+  static createHours() {
     let result = [];
-    let string = "";
-    let last_hour = "2015"
+    let string = '';
+    let lastHour = '2015';
     let currentHour = 8;
     let currentMinute = 0;
-    for (let i = 0; i &lt;= 12; i++){
-      for (let j = 0; j &lt; 12; j++){
-        string = "";
-        if (currentHour &lt; 10){
-          string += "0";
+    for (let i = 0; i &lt;= 12; i++) {
+      for (let j = 0; j &lt; 12; j++) {
+        string = '';
+        if (currentHour &lt; 10) {
+          string += '0';
         }
         string += `${currentHour}`;
-        if (currentMinute &lt; 10){
-          string += "0";
+        if (currentMinute &lt; 10) {
+          string += '0';
         }
         string += `${currentMinute}`;
         result.push(string);
         currentMinute += 5;
-        if (string === last_hour){
+        if (string === lastHour) {
           return result;
         }
       }
@@ -272,9 +275,10 @@ const Day = class Day{
     }
     return result;
   }
-} 
+};
 
-export default Day;</code></pre>
+export default Day;
+</code></pre>
         </article>
     </section>
 
@@ -284,13 +288,13 @@ export default Day;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#NavBar">NavBar</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EvenementForm">EvenementForm</a></li><li><a href="global.html#EventCreator">EventCreator</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#handleSubmit">handleSubmit</a></li><li><a href="global.html#saveEvenement">saveEvenement</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Jun 07 2025 19:37:34 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Sep 07 2025 13:04:42 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

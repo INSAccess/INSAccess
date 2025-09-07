@@ -1,27 +1,27 @@
 body {
-    font-family: system-ui, sans-serif;
-    height: 100svh;
-    background: var(--backgroundColor);
+  font-family: system-ui, sans-serif;
+  height: 100svh;
+  background: var(--backgroundColor);
 }
 
 #root {
-    display: block;
-    height: 100%;
-    background: var(--backgroundColor);
-    background-attachment: fixed;
-    
+  display: block;
+  height: 100%;
+  background: var(--backgroundColor);
+  background-attachment: fixed;
 }
 
 .App {
-    display: flex;
-    height: 100%;
-    flex-direction: column;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
 }
 
-.MuiAlert-standard, .MuiAlert-filled {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 98%;
-    margin: 1%;
+.MuiAlert-standard,
+.MuiAlert-filled {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 98%;
+  margin: 1%;
 }
