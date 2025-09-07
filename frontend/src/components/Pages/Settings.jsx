@@ -64,7 +64,6 @@ const Settings = () => {
           body: JSON.stringify(e),
         });
         setTheme(e);
-        document.getElementById('root').setAttribute('data-theme', e);
         BUNDLE.changeTheme(e);
       } catch (error) {
         console.error(error);
