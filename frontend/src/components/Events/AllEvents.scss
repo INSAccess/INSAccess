@@ -2,6 +2,7 @@ $maxWidth: 850px;
 
 .arrow-left,
 .arrow-right {
+  position: relative; // Add this to establish positioning context
   grid-column: 1;
   grid-row: 1;
   display: block;
@@ -18,18 +19,15 @@ $maxWidth: 850px;
 }
 
 .arrow-left::before {
-  //small additionnal hitbox for the left arrow
+  // Hitbox positioned relative to the button
   content: '';
   position: absolute;
   width: 50px;
   height: 50px;
-  top: 13%;
-  left: 4%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  @media (max-width: $maxWidth) {
-    top: 3%;
-    left: 8%;
-  }
+  // Remove the media query positioning - use consistent centering
 }
 
 .days {

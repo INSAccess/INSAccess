@@ -7,7 +7,7 @@
  */
 
 import { API_URL } from '../utils/Constants.jsx';
-import RandomUtils from '../utils/RandomUtils.jsx';
+import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils.jsx';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';

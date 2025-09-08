@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import Day from '../../utils/Day';
 import EventUtils from '../../utils/EventUtils';
-import RandomUtils from '../../utils/RandomUtils';
+import RandomUtils, { parseJsonSafe } from '../../utils/RandomUtils';
 import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -161,6 +161,15 @@ const SingleEvent = (props) => {
     parseInt(props.endTime) <= parseInt(hoursEvents[hoursEvents.length - 1])
       ? hoursEvents.indexOf(props.endTime)
       : hoursEvents.length - 1;
+
+  // Funky cases
+  if (startIndex == 0 && endIndex == 0){
+    endIndex = 1;
+  }
+  if (startIndex == hoursEvents.length - 1 && endIndex == hoursEvents.length - 1){
+    startIndex = hoursEvents.length - 22;
+  }
+
   let eventHeight = EventUtils.getEventHeight(
     startIndex,
     endIndex,

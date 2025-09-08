@@ -142,7 +142,7 @@ export const DataProvider = (props) => {
           setUserLanguage(profileData.language);
           setIcsLink(profileData.ics_url);
           setIsAssos(profileData.is_asso);
-          setAssoName(profileData.assoName);
+          setAssoName(profileData.asso);
         }
 
         if (resultUsers.data) {

@@ -49,7 +49,7 @@ class EventUtils {
    */
   static getHoursOfEvent(event) {
     let hours = [];
-    const hoursEvents = Day.createHours();
+    const hoursEvents = Day.createAllHours();
     for (let hour of hoursEvents) {
       if (hour >= event.start_hour && hour <= event.end_hour) {
         hours.push(hour);

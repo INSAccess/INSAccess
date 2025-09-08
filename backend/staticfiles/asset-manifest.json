@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.95c76062.css",
-    "main.js": "/static/js/main.b796d874.js",
+    "main.css": "/static/css/main.9dfc39e4.css",
+    "main.js": "/static/js/main.3e549007.js",
     "static/media/duck.png": "/static/media/duck.972ab315e1d232dcdad4.png",
     "static/media/Logo_INSA_blanc.svg": "/static/media/Logo_INSA_blanc.90526cfbe37593e13fa71a6e8e435cbc.svg",
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.95c76062.css",
-    "static/js/main.b796d874.js"
+    "static/css/main.9dfc39e4.css",
+    "static/js/main.3e549007.js"
   ]
 }
