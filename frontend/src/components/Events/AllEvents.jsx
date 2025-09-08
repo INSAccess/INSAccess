@@ -58,27 +58,23 @@ const AllEvents = ({ dataOrigin }) => {
   } else {
     data = BUNDLE.dataAgenda;
   }
-  const start = BUNDLE.day;
 
   let dimensions = RandomUtils.useWindowDimensions();
-  let day = new Day(start);
 
-  const [firstDay, setDay] = useState(day);
   const [renderKey, setRenderKey] = useState(0);
 
   let nbDays = minWidth < dimensions.width ? 7 : 1;
-  let currentDay = nbDays == 7 ? firstDay.copy().startOfWeek(dayList) : firstDay.copy();
+  let currentDay = nbDays == 7 ? BUNDLE.day.copy().startOfWeek(dayList) : BUNDLE.day.copy();
 
   function handleDay(direction, value) {
     if (direction === 'prev') {
-      setDay((firstDay) => firstDay.prev(value));
+      BUNDLE.setDay((firstDay) => firstDay.prev(value));
     } else if (direction === 'next') {
-      setDay((firstDay) => firstDay.next(value));
+      BUNDLE.setDay((firstDay) => firstDay.next(value));
     }
   }
 
   const calendarRef = useRef(null);
-  let skipDays = nbDays == 1 ? 1 : 7;
 
   useEffect(() => {
     setRenderKey((prev) => prev + 1);
@@ -99,10 +95,10 @@ const AllEvents = ({ dataOrigin }) => {
 
       if (swipeDistance > minDist) {
         // Swiped left
-        handleDay('next', skipDays);
+        handleDay('next', nbDays);
       } else if (swipeDistance < -minDist) {
         // Swiped right
-        handleDay('prev', skipDays);
+        handleDay('prev', nbDays);
       }
     };
 
@@ -151,7 +147,7 @@ const AllEvents = ({ dataOrigin }) => {
           type="button"
           className="arrow-left"
           onClick={() => {
-            handleDay('prev', skipDays);
+            handleDay('prev', nbDays);
           }}
         ></button>
         <TimeBar />
@@ -160,7 +156,7 @@ const AllEvents = ({ dataOrigin }) => {
           type="button"
           className="arrow-right turned"
           onClick={() => {
-            handleDay('next', skipDays);
+            handleDay('next', nbDays);
           }}
         ></button>
       </div>
