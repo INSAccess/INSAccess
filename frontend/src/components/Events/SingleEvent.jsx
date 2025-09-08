@@ -264,12 +264,12 @@ const SingleEvent = (props) => {
             <strong>{t('EndHour')}</strong>
             {Day.presentableHour(props.endTime)}
           </div>
-          <div>
+          {props.teacher.length > 0 && <div>
             <strong>
               {props.dataOrigin == 'asso' ? t('Associations') : t('Teachers')} :{' '}
             </strong>
             {RandomUtils.Join(props.teacher)}
-          </div>
+          </div>}
           {props.dataOrigin == 'user' && (
             <div id="event-color-picker">
               <CompactPicker color={color} onChangeComplete={saveColor} />
