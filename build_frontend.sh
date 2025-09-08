@@ -4,6 +4,7 @@ set -e
 FRONTEND_DIR="frontend"
 BACKEND_DIR="backend"
 REACT_APP_API_URL="https://edt.insa-rouen.fr"
+#"https://edt.insa-rouen.fr"
 
 echo "[1] Cleaning previous build..."
 rm -rf $FRONTEND_DIR/build
@@ -33,9 +34,13 @@ rsync -av --exclude='*.map' "$FRONTEND_DIR/build/static/" "$BACKEND_DIR/staticfi
 echo "[7] Copying index.html to Django templates..."
 cp "$FRONTEND_DIR/build/index.html" "$BACKEND_DIR/core/templates/index.html"
 
-echo "[8] Copying extra assets "
-rsync -av --exclude='*.map' "$FRONTEND_DIR/build/"*.json "$FRONTEND_DIR/build/"*.ico \
-    "$FRONTEND_DIR/build/"*.png "$FRONTEND_DIR/build/"*.svg "$FRONTEND_DIR/build/"*.webmanifest \
-    "$BACKEND_DIR/staticfiles/" 2>/dev/null || true
+echo "[8] Copying extra assets including robots.txt"
+rsync -av --exclude='*.map' "$FRONTEND_DIR/build/"*.json \
+    "$FRONTEND_DIR/build/"*.ico \
+    "$FRONTEND_DIR/build/"*.png \
+    "$FRONTEND_DIR/build/"*.svg \
+    "$FRONTEND_DIR/build/"*.webmanifest \
+    "$FRONTEND_DIR/build/robots.txt" \
+    "$BACKEND_DIR/staticfiles/static/" 2>/dev/null || true
 
 echo "Done"
