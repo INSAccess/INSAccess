@@ -163,7 +163,7 @@ LOGGING = {
             "format": (
                 "[%(asctime)s] [%(levelname)s] "
                 "[user: %(user_username)s id:%(user_id)s] "
-                "[%(method)s %(path)s] "
+                "[%(method)s %(path)s]"
                 "[ua: %(user_agent)s] - %(message)s"
             ),
             "style": "%",
