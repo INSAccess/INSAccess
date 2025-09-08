@@ -125,6 +125,18 @@ const resources = {
       Retry: 'Retry',
       UnexpectedError: 'An unexpected error happened. Please try again later.',
       Error: 'Error',
+      Preferences: 'Preferences',
+      Support: 'Support',
+      SupportSummary:
+        'If you encounter issues, please fill out the form below.',
+      Title: 'Title',
+      Details: 'Details',
+      'Submit Report': 'Submit Report',
+      'Submitting...': 'Submitting...',
+      ReportSent: 'Your report has been sent successfully.',
+      ReportError:
+        'An error occurred while sending your report. Please try again.',
+      ReportBug: 'Report a bug',
     },
   },
   fr: {
@@ -252,6 +264,18 @@ const resources = {
       UnexpectedError:
         'Une erreur inattendue est survenue. Veuillez réessayer plus tard.',
       Error: 'Erreur',
+      Preferences: 'Préférences',
+      Support: 'Support',
+      SupportSummary:
+        'Si vous rencontrez des problèmes, veuillez remplir le formulaire ci-dessous.',
+      Title: 'Titre',
+      Details: 'Détails',
+      'Submit Report': 'Envoyer le rapport',
+      'Submitting...': 'Envoi...',
+      ReportSent: 'Votre rapport a été envoyé avec succès.',
+      ReportError:
+        "Une erreur est survenue lors de l'envoi de votre rapport. Veuillez réessayer.",
+      ReportBug: 'Signalez un bug',
     },
   },
 };

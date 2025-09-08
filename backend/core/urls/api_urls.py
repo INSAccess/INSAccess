@@ -18,6 +18,7 @@ from core.views import (
     UsersAPIView,
     FriendCalendarAPIView,
     GetIsAssociationPublisherAPIView,
+    BugReportAPIView,
 )
 
 urlpatterns = [
@@ -65,4 +66,5 @@ urlpatterns = [
     ),
     path("user/color", PostUserColorAPIView.as_view(), name="post_user_color"),
     path("user/td_groups", PostTdsAPIView.as_view(), name="save_tds"),
+    path("user/bug", BugReportAPIView.as_view(), name="bug_report"),
 ]
