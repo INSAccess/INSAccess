@@ -3,7 +3,7 @@ import threading
 from typing import Optional
 
 _request_local = threading.local()
-_MAX_UA_LEN = 30  # keep logs compact
+_MAX_UA_LEN = 30
 
 
 def _safe_truncate(s: Optional[str], max_len: int = _MAX_UA_LEN) -> Optional[str]:
@@ -14,13 +14,7 @@ def _safe_truncate(s: Optional[str], max_len: int = _MAX_UA_LEN) -> Optional[str
 
 
 class RequestLogFilter(logging.Filter):
-    """
-    Adds request context to LogRecord. Always provides safe defaults so
-    formatting never fails outside a request.
-    """
-
     def filter(self, record):
-        # status_code removed on purpose
         record.path = getattr(_request_local, "path", None)
         record.method = getattr(_request_local, "method", None)
 
@@ -41,16 +35,12 @@ class RequestLogFilter(logging.Filter):
 
 class RequestLogMiddleware:
     """
-    Store request context on thread-local for the RequestLogFilter.
+    Store request context on thread-local for RequestLogFilter to read.
+    NOTE: no addFilter here — filter will be registered in LOGGING config.
     """
 
     def __init__(self, get_response):
         self.get_response = get_response
-
-        root_logger = logging.getLogger()
-        if not getattr(root_logger, "_request_log_filter_installed", False):
-            root_logger.addFilter(RequestLogFilter())
-            root_logger._request_log_filter_installed = True
 
     def __call__(self, request):
         _request_local.path = getattr(request, "path", None)
@@ -66,12 +56,6 @@ class RequestLogMiddleware:
             response = self.get_response(request)
             return response
         finally:
-            for attr in (
-                "path",
-                "method",
-                "user",
-                "user_agent",
-                "user_ip",
-            ):
+            for attr in ("path", "method", "user", "user_agent", "user_ip"):
                 if hasattr(_request_local, attr):
                     delattr(_request_local, attr)

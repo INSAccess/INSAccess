@@ -150,7 +150,6 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DJANGO_LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "INFO")
-
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -164,7 +163,7 @@ LOGGING = {
             "format": (
                 "[%(asctime)s] [%(levelname)s] "
                 "[user: %(user_username)s id:%(user_id)s] "
-                "[%(method)s %(path)s]"
+                "[%(method)s %(path)s] "
                 "[ua: %(user_agent)s] - %(message)s"
             ),
             "style": "%",
