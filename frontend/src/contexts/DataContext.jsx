@@ -67,8 +67,8 @@ export const DataProvider = (props) => {
   let firstDay = new Day(currentDate);
   const [day, setDay] = useState(
     minWidth < dimensions.width
-      ? firstDay.startOfWeek(dayList).getDate()
-      : firstDay.getDate()
+      ? firstDay.startOfWeek(dayList)
+      : firstDay
   );
 
   function forceUpdate() {

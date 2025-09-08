@@ -51,50 +51,12 @@ import { useTranslation } from 'react-i18next';
  */
 const EvenementForm = ({}) => {
   const { t } = useTranslation();
-
-  /**
-   * État de soumission du formulaire
-   * @type {boolean}
-   */
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  /**
-   * Flag d'affichage du message d'état
-   * @type {boolean}
-   */
   const [errorFlag, setErrorFlag] = useState(false);
-
-  /**
-   * Message de statut à afficher à l'utilisateur
-   * @type {string}
-   */
   const [statusMessage, setStatusMessage] = useState('');
 
   const { forceUpdate } = useData();
 
-  /**
-   * Fonction asynchrone pour sauvegarder un événement vers l'API backend.
-   * Envoie les données du formulaire via une requête POST et gère les réponses.
-   *
-   * @async
-   * @function saveEvenement
-   * @param {SaveEvenementParams} params - Paramètres de sauvegarde
-   * @param {FormData} params.form - Les données du formulaire à sauvegarder
-   * @throws {Error} Lance une erreur si la requête échoue
-   *
-   * @example
-   * await saveEvenement({
-   *   form: {
-   *     title: "Conférence Tech",
-   *     date: "2023-12-01",
-   *     start_hour: "14:00",
-   *     end_hour: "16:00",
-   *     info: "Conférence sur les nouvelles technologies",
-   *     associated_link: "https://example.com",
-   *     location: "Amphithéâtre A"
-   *   }
-   * });
-   */
   const saveEvenement = async ({ form }) => {
     try {
       const response = await fetch(API_URL + '/api/events', {
@@ -123,35 +85,9 @@ const EvenementForm = ({}) => {
     }
   };
 
-  /**
-   * Date courante pour l'initialisation du formulaire
-   * @type {Date}
-   */
   let date = new Date();
-
-  /**
-   * Instance Day pour le formatage de la date
-   * @type {Day}
-   */
   let day = new Day(date);
 
-  /**
-   * Gestionnaire de soumission du formulaire.
-   * Traite les données du formulaire, valide et normalise les heures,
-   * puis appelle la fonction de sauvegarde.
-   *
-   * Les heures sont automatiquement ajustées :
-   * - L'heure de début est arrondie à la dizaine inférieure (ex: 14:23 → 14:20)
-   * - L'heure de fin est arrondie à la dizaine supérieure avec 5 minutes (ex: 16:23 → 16:25)
-   *
-   * @function handleSubmit
-   * @param {Event} e - Événement de soumission du formulaire
-   *
-   * @example
-   * // Le formulaire normalise automatiquement les heures :
-   * // start_hour: "14:23" devient "14:20"
-   * // end_hour: "16:23" devient "16:25"
-   */
   function handleSubmit(e) {
     e.preventDefault();
     const form = e.target;
