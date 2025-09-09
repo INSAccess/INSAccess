@@ -52,6 +52,7 @@ export const DataProvider = (props) => {
   const [pendingList, setPendingList] = useState([]);
   const [receivedList, setReceivedList] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [currentFriend, setCurrentFriend] = useState("")
 
   const dayList = [
     t('Sunday'),
@@ -233,6 +234,8 @@ export const DataProvider = (props) => {
           setColorsAsso,
           setColorsAgenda,
           setColorsFriend,
+          currentFriend, 
+          setCurrentFriend,
         }}
       >
         {props.children}

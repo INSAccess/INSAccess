@@ -77,11 +77,31 @@ $maxWidth: 850px;
 
 .calendar-close-button-wrapper {
   display: flex;
-  justify-content: center;
-  margin: 1rem 1rem 0.5rem 1rem;
-}
+  justify-content: space-between;
+  align-items: center; 
+  gap: 1rem; 
+  padding: 0.6rem 1rem;
+  margin: 0.4rem 1rem 0.5rem 1rem;
+  background-color: var(--subSectionBackgroundColor);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px var(--shadowColorBold);
 
-.calendar-close-button {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
+  #friend-name {
+    color: var(--contrastTextColor);
+    font-weight: 500; 
+    flex: 1;
+  }
+
+  .calendar-close-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 6px; 
+    white-space: nowrap; 
+    transition: all 0.2s ease; 
+  }
+
+  .calendar-close-button:hover {
+    transform: translateY(-1px); 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
 }
