@@ -132,6 +132,7 @@ const AllEvents = ({ dataOrigin }) => {
     <>
       {dataOrigin == 'friend' && (
         <div className="calendar-close-button-wrapper">
+          <span id="friend-name">{t('Seeing')} {BUNDLE.currentFriend}</span>
           <button
             type="button"
             className="btn btn-primary calendar-close-button"
