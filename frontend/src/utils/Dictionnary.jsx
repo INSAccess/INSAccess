@@ -19,7 +19,7 @@ const resources = {
       Events: 'Events',
       Settings: 'Settings',
       Friends: 'Friends',
-      About: 'About',
+      Help: 'Help',
       // Days
       Sunday: 'Sun',
       Monday: 'Mon',
@@ -140,11 +140,11 @@ const resources = {
       // Manual
       Manual_Title:'User Manual',
       Manual_ChooseClasses: 'Choose your classes',
-      Manual_ChooseClassesContent: '1°) Got to Settings / TD List \n2°) Select your department and year (ex: ITI 4) \n3°) Select your TD groups (if you are in doubt, or to simplify the task, look for the TD groups by clicking on the class on agendas.insa-rouen.fr) \n4°) IMPORTANT : Save your selection by clicking on the button at the bottom of the page',
+      Manual_ChooseClassesContent: '1) Got to Settings / TD List \n2) Select your department and year (ex: ITI 4) \n3) Select your TD groups (if you are in doubt, or to simplify the task, look for the TD groups by clicking on the class on agendas.insa-rouen.fr) \n4) IMPORTANT : Save your selection by clicking on the button at the bottom of the page',
       Manual_ICS: 'See your calendar on your personnal app',
       Manual_ICSContent: "Our site is ICS enabled, which means that by clicking on the link in Settings / Other / ICS, you can import your INSA calendar into applications such as Google Calendar, etc. (the calendar will update automatically at regular intervals).",
-      Manual_Friends: 'Friends',
-      Manual_FriendsContent: "To add friends: \n1°) Go to Friends, search for the user's INSA username (not their first and last name). If you are searching for Bernard Dupont, search for bdupont. \n2°) Once invited, the user must accept the request so that both users can see each other's calendars (remember to refresh the page if the invitation does not appear).",
+      Manual_Friends: 'Add friends',
+      Manual_FriendsContent: "1) Go to Friends, search for the user's INSA username (not their first and last name). If you are searching for Bernard Dupont, search for bdupont. \n2) Once invited, the user must accept the request so that both users can see each other's calendars (remember to refresh the page if the invitation does not appear).",
       Manual_Personnalize: 'Personnalization',
       Manual_PersonnalizeContent: 'Dans Paramètres / Autre, vous pouvez changer le thème et la langue du site',
       //FAQ
@@ -177,7 +177,7 @@ const resources = {
       Events: 'Evenements',
       Settings: 'Parametres',
       Friends: 'Amis',
-      About: 'A propos',
+      Help: 'Aide',
       // Days
       Sunday: 'Dim',
       Monday: 'Lun',
@@ -301,11 +301,11 @@ const resources = {
       // Manual
       Manual_Title:'Manuel utilisateur',
       Manual_ChooseClasses: 'Choisir ses cours',
-      Manual_ChooseClassesContent: '1°) Allez dans Paramètres / Liste des TDs \n2°) Selectionnez votre département et année (ex: ITI 4) \n3°) Selectionnez les groupes de TD qui vous appartient (si vous avez un doute, ou tout simplement pour vous facilitez la tache, regardez quel sont les groupes de TD pour chaque cours en cliquant dessus sur agendas.insa-rouen.fr ) \n4°) IMPORTANT : appuyez sur le bouton de sauvegarde en rouge en bas de la page ',
-      Manual_Webview: 'Consultez votre agenda sur votre application personnelle',
-      Manual_WebviewContent: "Notre site est ICS enabled, c'est à dire que grâce au lien dans Paramètres / Autre / Ics, vous pouvez importer votre agenda de l'INSA sur des application comme Google Calendar etc (l'agenda se mettra a jour automatiquement périodiquement)",
-      Manual_Friends: 'Amis',
-      Manual_FriendsContent: "Pour rajouter des amis : \n1°) Allez dans Amis, cherchez le `username` INSA de l'utilisateur (pas le prenom nom), si vous cherchez `Bernard Dupont`, cherchez `bdupont` \n2°) Une fois invité, l'utilisateur dois accepter la demande pour que les 2 utilisateurs puissent voir l'agenda de l'autre (pensez a rechargez la page si l'invitation n'apparrait pas)",
+      Manual_ChooseClassesContent: '1) Allez dans Paramètres / Liste des TDs \n2) Selectionnez votre département et année (ex: ITI 4) \n3) Selectionnez les groupes de TD qui vous appartient (si vous avez un doute, ou tout simplement pour vous facilitez la tache, regardez quel sont les groupes de TD pour chaque cours en cliquant dessus sur agendas.insa-rouen.fr ) \n4) IMPORTANT : appuyez sur le bouton de sauvegarde en rouge en bas de la page ',
+      Manual_ICS: 'Consultez votre agenda sur votre application personnelle',
+      Manual_ICSContent: "Notre site est ICS enabled, c'est à dire que grâce au lien dans Paramètres / Autre / ICS, vous pouvez importer votre agenda de l'INSA sur des application comme Google Calendar etc (l'agenda se mettra a jour automatiquement périodiquement)",
+      Manual_Friends: 'Ajouter des amis',
+      Manual_FriendsContent: "1) Allez dans Amis, cherchez le username INSA de l'utilisateur (pas le prenom nom), si vous cherchez Bernard Dupont, tapez bdupont \n2) Une fois invité, l'utilisateur dois accepter la demande pour que les 2 utilisateurs puissent voir l'agenda de l'autre (pensez a rechargez la page si l'invitation n'apparrait pas)",
       Manual_Personnalize: 'Personnalisation',
       Manual_PersonnalizeContent: 'Dans Paramètres / Autre, vous pouvez changer le thème et la langue du site',
       //FAQ

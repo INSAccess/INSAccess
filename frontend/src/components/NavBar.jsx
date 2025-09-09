@@ -15,7 +15,7 @@ export const NavBar = ({ page, setPage }) => {
     { name: t('Events'), href: 'associations' },
     { name: t('Settings'), href: 'settings' },
     { name: t('Friends'), href: 'friends' },
-    { name: t('About'), href: 'about' },
+    { name: t('Help'), href: 'help' },
   ];
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
