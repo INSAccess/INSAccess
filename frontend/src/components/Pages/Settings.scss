@@ -39,14 +39,14 @@
 .btn_view {
   flex: 1;
   color: var(--contrastTextColor) !important;
-  background-color: var(--buttonHoverColor) !important;
+  background-color: var(--buttonColor) !important;
   height: 60%;
   margin-inline: 2px;
   transition: all 0.3s ease;
 }
 
 .btn_view:hover {
-  background-color: var(--buttonColor) !important;
+  background-color: var(--buttonHoverColor) !important;
   box-shadow: 0 3px 3px var(--buttonHoverColor);
 }
 

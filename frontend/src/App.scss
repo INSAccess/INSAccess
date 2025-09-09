@@ -18,13 +18,13 @@
     --contrastTextColor: white;
     --messageColor: #7c7c7c;
 
-    --buttonColor: #db342c;
-    --buttonHoverColor: #ca2e26;
-    --buttonActiveColor: #af231c;
+    --buttonColor: #e75351;
+    --buttonHoverColor: #f0554f;
+    --buttonActiveColor: #c62828;
 
-    --burgerButtonColor: #ad2821;
+    --burgerButtonColor: #e75351;
     --burgerBackgroundColor: #db342c;
-    --burgerBackgroundBorderColor: #d40b00;
+    --burgerBackgroundBorderColor: #e74343;
 
     --borderColor: #dbdbdb;
     --subSectionBackgroundColor: #f8f9fa;
@@ -32,8 +32,6 @@
     --hoverHighlight: #f0f0f0;
 
     --eventColor: #d44d44;
-    // --eventHoverColor: #ff6b6b;
-    // --eventHoverBorderColor: #ff4b4b;
     --eventBgColor: #f3eceb;
 
     --shadowColorBold: rgba(0, 0, 0, 0.3);
@@ -50,13 +48,13 @@
     --contrastTextColor: white;
     --messageColor: #b0b0b0;
 
-    --buttonColor: #e05d57;
-    --buttonHoverColor: #d54c45;
+    --buttonColor: #ef5350;
+    --buttonHoverColor: #ef5350;
     --buttonActiveColor: #c13e38;
 
-    --burgerButtonColor: #db5048;
-    --burgerBackgroundColor: #b33833;
-    --burgerBackgroundBorderColor: #a52a25;
+    --burgerButtonColor: #ef5350;
+    --burgerBackgroundColor: #d32f2f;
+    --burgerBackgroundBorderColor: #b71c1c;
 
     --borderColor: #2a2a2a;
     --subSectionBackgroundColor: #1e1e1e;
@@ -64,8 +62,6 @@
     --hoverHighlight: #2c2c2c;
 
     --eventColor: #ff6b6b;
-    // --eventHoverColor: #ff8787;
-    // --eventHoverBorderColor: #ff6b6b;
     --eventBgColor: #292929;
 
     --shadowColorBold: rgba(0, 0, 0, 0.7);
@@ -82,13 +78,13 @@
     --contrastTextColor: white;
     --messageColor: #7c7c7c;
 
-    --buttonColor: #db342c;
-    --buttonHoverColor: #ca2e26;
-    --buttonActiveColor: #af231c;
+    --buttonColor: #e75351;
+    --buttonHoverColor: #f0554f;
+    --buttonActiveColor: #c62828;
 
-    --burgerButtonColor: #ad2821;
+    --burgerButtonColor: #e75351;
     --burgerBackgroundColor: #db342c;
-    --burgerBackgroundBorderColor: #d40b00;
+    --burgerBackgroundBorderColor: #e74343;
 
     --borderColor: #dbdbdb;
     --subSectionBackgroundColor: #f8f9fa;
@@ -96,8 +92,6 @@
     --hoverHighlight: #f0f0f0;
 
     --eventColor: #d44d44;
-    // --eventHoverColor: #ff6b6b;
-    // --eventHoverBorderColor: #ff4b4b;
     --eventBgColor: #f3eceb;
 
     --shadowColorBold: rgba(0, 0, 0, 0.3);
@@ -114,22 +108,49 @@
     --contrastTextColor: white;
     --messageColor: #b0b0b0;
 
-    --buttonColor: #e05d57;
-    --buttonHoverColor: #d54c45;
+    --buttonColor: #ef5350;
+    --buttonHoverColor: #ef5350;
     --buttonActiveColor: #c13e38;
 
-    --burgerButtonColor: #db5048;
-    --burgerBackgroundColor: #b33833;
-    --burgerBackgroundBorderColor: #a52a25;
+    --burgerButtonColor: #ef5350;
+    --burgerBackgroundColor: #d32f2f;
+    --burgerBackgroundBorderColor: #b71c1c;
 
     --borderColor: #2a2a2a;
     --subSectionBackgroundColor: #1e1e1e;
     --contrastBorderColor: #e05d57;
     --hoverHighlight: #2c2c2c;
 
-    --eventColor: #ff6b6b;
-    // --eventHoverColor: #ff8787;
-    // --eventHoverBorderColor: #ff6b6b;
+    --eventColor: #6bb0ff;
+    --eventBgColor: #292929;
+
+    --shadowColorBold: rgba(0, 0, 0, 0.7);
+    --shadowColor: rgba(0, 0, 0, 0.3);
+
+    --arrowImg: url('/images/fleche_w.png');
+    --insaLogo: url('/images/Logo_INSA_blanc.png');
+  }
+  [data-theme='dark-blue'] {
+    --backgroundColor: #202020;
+
+    --textColor: #e0e0e0;
+    --contrastTextColor: white;
+    --messageColor: #b0b0b0;
+
+    --buttonColor: #42a5f5;
+    --buttonHoverColor: #64b5f6;
+    --buttonActiveColor: #1e88e5;
+
+    --burgerButtonColor: #42a5f5;
+    --burgerBackgroundColor: #2196f3;
+    --burgerBackgroundBorderColor: #1e88e5;
+
+    --borderColor: #2a2a2a;
+    --subSectionBackgroundColor: #1e1e1e;
+    --contrastBorderColor: #42a5f5;
+    --hoverHighlight: #2c2c2c;
+
+    --eventColor: #64b5f6;
     --eventBgColor: #292929;
 
     --shadowColorBold: rgba(0, 0, 0, 0.7);
@@ -171,6 +192,6 @@
 }
 
 * {
-  color: (--textColor);
+  color: var(--textColor);
   user-select: none;
 }
