@@ -71,11 +71,6 @@
     border: 1px solid var(--borderColor);
     box-shadow: 0 0.125rem 0.25rem var(--shadowColor);
     transition: all 0.3s ease;
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0.5rem 1rem var(--shadowColorBold);
-      border-color: var(--contrastBorderColor);
-    }
     .card-title {
       color: var(--textColor);
       font-weight: 600;
@@ -117,14 +112,7 @@
     .row {
       .about-image {
         .img-fluid {
-          border: 1px solid var(--borderColor);
-          box-shadow: 0 0.125rem 0.25rem var(--shadowColor);
           transition: all 0.3s ease;
-          
-          &:hover {
-            box-shadow: 0 0.5rem 1rem var(--shadowColorBold);
-            border-color: var(--contrastBorderColor);
-          }
         }
       }
       

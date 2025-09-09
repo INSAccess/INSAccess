@@ -2,9 +2,9 @@ import duck from '../../images/duck.png';
 import { useTranslation } from 'react-i18next';
 import RandomUtils from '../../utils/RandomUtils';
 import { minWidth } from '../../utils/Constants';
-import './About.scss';
+import './Help.scss';
 
-const MainAbout = () => {
+const About = () => {
   const { t } = useTranslation();
 
   let dimensions = RandomUtils.useWindowDimensions();
@@ -255,15 +255,15 @@ const License = () => {
  * @component
  * @returns {JSX.Element}
  */
-const About = () => {
+const Help = () => {
   return (
     <div className="maincontainer">
       <FAQ />
       <Manual />
-      <MainAbout />
+      <About />
       <License />
     </div>
   );
 };
 
-export default About;
+export default Help;
