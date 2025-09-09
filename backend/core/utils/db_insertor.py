@@ -14,9 +14,6 @@ Date Created:
 Version:
     1.0.0
 
-License:
-    No License
-
 Usage:
 
 
