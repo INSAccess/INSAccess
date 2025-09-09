@@ -137,6 +137,15 @@ const resources = {
       ReportError:
         'An error occurred while sending your report. Please try again.',
       ReportBug: 'Report a bug',
+      // Manual
+      Manual_ChooseClasses: 'Choose your classes',
+      Manual_ChooseClassesContent: 'Lorem Ipsum English version',
+      Manual_Webview: 'See your calendar on your personnal app',
+      Manual_WebviewContent: 'Lorem Ipsum English version',
+      Manual_Friends: 'Friends',
+      Manual_FriendsContent: 'Lorem Ipsum English version',
+      Manual_Personnalize: 'Personnalization',
+      Manual_PersonnalizeContent: 'Lorem Ipsum English version',
     },
   },
   fr: {
@@ -276,6 +285,15 @@ const resources = {
       ReportError:
         "Une erreur est survenue lors de l'envoi de votre rapport. Veuillez réessayer.",
       ReportBug: 'Signalez un bug',
+      // Manual
+      Manual_ChooseClasses: 'Choisir ses cours',
+      Manual_ChooseClassesContent: '1°) Allez dans Paramètres / Liste des TDs \n2°) Selectionnez votre département et année (ex: ITI 4) \n3°) Selectionnez les groupes de TD qui vous appartient (si vous avez un doute, ou tout simplement pour vous facilitez la tache, regardez quel sont les groupes de TD pour chaque cours en cliquant dessus sur agendas.insa-rouen.fr ) \n4°) IMPORTANT : appuyez sur le bouton de sauvegarde en rouge en bas de la page ',
+      Manual_Webview: 'Consultez votre agenda sur votre application personnelle',
+      Manual_WebviewContent: "Notre site est ICS enabled, c'est à dire que grâce au lien dans Paramètres / Autre / Ics, vous pouvez importer votre agenda de l'INSA sur des application comme Google Calendar etc (l'agenda se mettra a jour automatiquement périodiquement)",
+      Manual_Friends: 'Amis',
+      Manual_FriendsContent: "Pour rajouter des amis : \n1°) allez dans Amis, cherchez le `username` INSA de l'utilisateur (pas le prenom nom), si vous cherchez `Bernard Dupont`, cherchez `bdupont` \n2°) une fois invité, l'utilisateur dois accepter la demande pour que les 2 utilisateurs puissent voir l'agenda de l'autre (pensez a rechargez la page si l'invitation n'apparrait pas)",
+      Manual_Personnalize: 'Personnalisation',
+      Manual_PersonnalizeContent: 'Dans Paramètres / Autre, vous pouvez changer le thème et la langue du site',
     },
   },
 };

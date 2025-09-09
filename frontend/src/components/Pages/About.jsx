@@ -119,19 +119,24 @@ const Manual = () => {
   const { t } = useTranslation();
   const manualSections = [
     {
-      id: 'getting-started',
-      title: t('Manual_GettingStarted', 'Getting Started'),
-      content: t('Manual_GettingStartedContent', 'Learn the basics of using INSAccess platform with this step-by-step guide.'),
+      id: 'choose-classes',
+      title: t('Manual_ChooseClasses'),
+      content: t('Manual_ChooseClassesContent'),
     },
     {
-      id: 'navigation',
-      title: t('Manual_Navigation', 'Navigation Guide'),
-      content: t('Manual_NavigationContent', 'Discover how to navigate through the platform efficiently.'),
+      id: 'webview',
+      title: t('Manual_Webview'),
+      content: t('Manual_WebviewContent'),
     },
     {
-      id: 'features',
-      title: t('Manual_Features', 'Key Features'),
-      content: t('Manual_FeaturesContent', 'Explore the main features and capabilities of the platform.'),
+      id: 'friends',
+      title: t('Manual_Friends'),
+      content: t('Manual_FriendsContent'),
+    },
+    {
+      id: 'personnalize',
+      title: t('Manual_Personnalize'),
+      content: t('Manual_PersonnalizeContent'),
     }
   ];
 
@@ -154,7 +159,7 @@ const Manual = () => {
                   <div className="d-flex align-items-center mb-3">
                     <h5 className="card-title mb-0">{section.title}</h5>
                   </div>
-                  <p className="card-text manual-card-text mb-3">{section.content}</p>
+                  <p className="card-text manual-card-text mb-3" style={{whiteSpace: "pre-wrap"}}>{section.content}</p>
                 </div>
               </div>
             </div>
