@@ -10,24 +10,24 @@ const MainAbout = () => {
   let dimensions = RandomUtils.useWindowDimensions();
 
   return (
-    <section className="py-3 py-md-5">
+    <section className="about-section py-3 py-md-5">
       <div className="container">
         <div className="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
           {minWidth >= dimensions.width ? (
             <></>
           ) : (
-            <div className="col-12 col-lg-6 col-xl-5">
+            <div className="col-12 col-lg-6 col-xl-5 about-image">
               <img
                 className="img-fluid rounded"
                 loading="lazy"
                 src={duck}
                 alt={t('ImageLoadingError')}
-              ></img>
+              />
             </div>
           )}
           <div className="col-12 col-lg-6 col-xl-7">
             <div className="row justify-content-xl-center">
-              <div className="col-12 col-xl-11">
+              <div className="col-12 col-xl-11 about-content">
                 <h2 className="mb-3">{t('AboutTitle')}</h2>
                 <p className="mb-5">{t('AboutContent')}</p>
               </div>
@@ -50,23 +50,28 @@ const FAQ = () => {
   const faqItems = [
     {
       id: 'faq1',
-      question: t('FAQ_Question1', 'What is INSAccess?'),
-      answer: t('FAQ_Answer1', 'INSAccess is a platform designed to provide accessible information and services.')
+      question: t('FAQ_TdNotFound_Question'),
+      answer: t('FAQ_TdNotFound_Answer')
     },
     {
       id: 'faq2',
-      question: t('FAQ_Question2', 'How do I get started?'),
-      answer: t('FAQ_Answer2', 'Simply create an account and follow the onboarding process to begin using our services.')
+      question: t('FAQ_AssoPublisher_Question'),
+      answer: t('FAQ_AssoPublisherAnswer')
     },
     {
       id: 'faq3',
-      question: t('FAQ_Question3', 'Is INSAccess free to use?'),
-      answer: t('FAQ_Answer3', 'Yes, INSAccess offers free access to core features with optional premium upgrades.')
+      question: t('FAQ_Webview_Question'),
+      answer: t('FAQ_Webview_Answer')
     },
     {
       id: 'faq4',
-      question: t('FAQ_Question4', 'How can I contact support?'),
-      answer: t('FAQ_Answer4', 'You can reach our support team through the contact form or by emailing support@insaccess.com')
+      question: t('FAQ_FriendNotFound_Question'),
+      answer: t('FAQ_FriendNotFound_Answer')
+    },
+    {
+      id: 'faq5',
+      question: t('FAQ_WhyDuck_Question'),
+      answer: t('FAQ_WhyDuck_Answer')
     }
   ];
 
@@ -75,7 +80,7 @@ const FAQ = () => {
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <h2 className="mb-4 text-center">{t('FAQ_Title', 'Frequently Asked Questions')}</h2>
+            <h2 className="mb-4 text-center">{t('FAQ_Title')}</h2>
             <div className="accordion custom-accordion" id="faqAccordion">
               {faqItems.map((item, index) => (
                 <div className="accordion-item custom-accordion-item" key={item.id}>
@@ -124,9 +129,9 @@ const Manual = () => {
       content: t('Manual_ChooseClassesContent'),
     },
     {
-      id: 'webview',
-      title: t('Manual_Webview'),
-      content: t('Manual_WebviewContent'),
+      id: 'ics',
+      title: t('Manual_ICS'),
+      content: t('Manual_ICSContent'),
     },
     {
       id: 'friends',
@@ -145,10 +150,7 @@ const Manual = () => {
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <h2 className="mb-4 text-center">{t('Manual_Title', 'User Manual')}</h2>
-            <p className="text-center mb-5 manual-description">
-              {t('Manual_Description', 'Everything you need to know to get the most out of INSAccess')}
-            </p>
+            <h2 className="mb-4 text-center">{t('Manual_Title')}</h2>
           </div>
         </div>
         <div className="row g-4">

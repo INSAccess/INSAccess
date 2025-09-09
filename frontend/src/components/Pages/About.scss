@@ -109,6 +109,72 @@
   }
 }
 
+// About section styles
+.about-section {
+  background-color: var(--backgroundColor);
+  
+  .container {
+    .row {
+      .about-image {
+        .img-fluid {
+          border: 1px solid var(--borderColor);
+          box-shadow: 0 0.125rem 0.25rem var(--shadowColor);
+          transition: all 0.3s ease;
+          
+          &:hover {
+            box-shadow: 0 0.5rem 1rem var(--shadowColorBold);
+            border-color: var(--contrastBorderColor);
+          }
+        }
+      }
+      
+      .about-content {
+        h1, h2, h3, h4, h5, h6 {
+          color: var(--textColor);
+          font-weight: 600;
+        }
+        
+        p {
+          color: var(--messageColor);
+          line-height: 1.6;
+        }
+      }
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    .about-content {
+      h2 {
+        font-size: 1.75rem;
+      }
+      
+      p {
+        font-size: 0.95rem;
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    .about-content {
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem !important;
+      }
+      
+      p {
+        font-size: 0.9rem;
+        margin-bottom: 2rem !important;
+      }
+    }
+  }
+}
+
 // General theme-aware styles
 .maincontainer {
   background-color: var(--backgroundColor);
