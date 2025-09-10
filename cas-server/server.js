@@ -41,7 +41,7 @@ const users = {
     ],
     displayName: 'Carol Durand',
   },
-  dav: {
+  Dav: {
     password: 'dave123',
     mail: 'dave@example.com',
     supannAffectation: ['ITI31-TD-GR-01', 'ITI31-FLE-TD-01', 'ITI31-TD-GR-03'],
