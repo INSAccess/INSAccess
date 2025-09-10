@@ -194,6 +194,8 @@ const SingleEvent = (props) => {
     } else {
       if (props.label && colors[props.label]) {
         setColor(colors[props.label]);
+      } else {
+        setColor(null)
       }
     }
   }, [
