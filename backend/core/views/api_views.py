@@ -535,6 +535,7 @@ class GetEnumThemeAPIView(APIView):
         """"""
         try:
             themes = [theme.name for theme in EnumColorTheme.objects.all()]
+            themes.sort()
             response = Response(themes)
             logger.info(
                 "Returned list of available color themes",

@@ -137,6 +137,7 @@ const resources = {
       ReportError:
         'An error occurred while sending your report. Please try again.',
       ReportBug: 'Report a bug',
+      Seeing: 'Seeing',
       // Manual
       Manual_Title: 'User Manual',
       Manual_ChooseClasses: 'Choose your classes',
@@ -308,6 +309,7 @@ const resources = {
       ReportError:
         "Une erreur est survenue lors de l'envoi de votre rapport. Veuillez réessayer.",
       ReportBug: 'Signalez un bug',
+      Seeing: 'Regarde',
       // Manual
       Manual_Title: 'Manuel utilisateur',
       Manual_ChooseClasses: 'Choisir ses cours',

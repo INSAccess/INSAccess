@@ -131,7 +131,7 @@
     --insaLogo: url('/images/Logo_INSA_blanc.png');
   }
   [data-theme='dark-violet'] {
-    --backgroundColor: #121212;
+    --backgroundColor: #202020;
     --textColor: #e0d7f8;
     --contrastTextColor: #ffffff;
     --messageColor: #b39ddb;
@@ -150,7 +150,7 @@
     --hoverHighlight: #2c2c2c;
 
     --eventColor: #9575cd;
-    --eventBgColor: #1e1a2e;
+    --eventBgColor: #262626;
 
     --shadowColorBold: rgba(0, 0, 0, 0.7);
     --shadowColor: rgba(0, 0, 0, 0.3);
@@ -187,6 +187,92 @@
     --arrowImg: url('/images/fleche_w.png');
     --insaLogo: url('/images/Logo_INSA_blanc.png');
   }
+  [data-theme='dark-sunset'] {
+    --backgroundColor: #2b1a0f;
+    --textColor: #f5e1c8;
+    --contrastTextColor: #ffffff;
+    --messageColor: #d9a066;
+
+    --buttonColor: #ff8c42;
+    --buttonHoverColor: #ffa766;
+    --buttonActiveColor: #e57b23;
+
+    --burgerButtonColor: #ff8c42;
+    --burgerBackgroundColor: #4b2f1f;
+    --burgerBackgroundBorderColor: #914c22;
+
+    --borderColor: #593d2b;
+    --subSectionBackgroundColor: #3c2213;
+    --contrastBorderColor: #ff8c42;
+    --hoverHighlight: #482916;
+
+    --eventColor: #ffb46b;
+    --eventBgColor: #3c2213;
+
+    --shadowColorBold: rgba(0, 0, 0, 0.7);
+    --shadowColor: rgba(0, 0, 0, 0.3);
+
+    --arrowImg: url('/images/fleche_w.png');
+    --insaLogo: url('/images/Logo_INSA_blanc.png');
+  }
+
+  [data-theme='dark-ocean'] {
+    --backgroundColor: #0a1e26;
+    --textColor: #b0e0f5;
+    --contrastTextColor: #ffffff;
+    --messageColor: #00acc1;
+
+    --buttonColor: #0097a7;
+    --buttonHoverColor: #00acc1;
+    --buttonActiveColor: #006064;
+
+    --burgerButtonColor: #0097a7;
+    --burgerBackgroundColor: #003b49;
+    --burgerBackgroundBorderColor: #006064;
+
+    --borderColor: #004551;
+    --subSectionBackgroundColor: #00282f;
+    --contrastBorderColor: #0097a7;
+    --hoverHighlight: #003b49;
+
+    --eventColor: #00bcd4;
+    --eventBgColor: #00282f;
+
+    --shadowColorBold: rgba(0, 0, 0, 0.7);
+    --shadowColor: rgba(0, 0, 0, 0.3);
+
+    --arrowImg: url('/images/fleche_w.png');
+    --insaLogo: url('/images/Logo_INSA_blanc.png');
+  }
+  [data-theme='dark-forest'] {
+    --backgroundColor: #0f1f12;
+    --textColor: #c8f5d9;
+    --contrastTextColor: #ffffff;
+    --messageColor: #66bb6a;
+
+    --buttonColor: #43a047;
+    --buttonHoverColor: #66bb6a;
+    --buttonActiveColor: #2e7d32;
+
+    --burgerButtonColor: #43a047;
+    --burgerBackgroundColor: #1b3a21;
+    --burgerBackgroundBorderColor: #2e7d32;
+
+    --borderColor: #1c3522;
+    --subSectionBackgroundColor: #10210f;
+    --contrastBorderColor: #43a047;
+    --hoverHighlight: #1b3a21;
+
+    --eventColor: #66bb6a;
+    --eventBgColor: #10210f;
+
+    --shadowColorBold: rgba(0, 0, 0, 0.7);
+    --shadowColor: rgba(0, 0, 0, 0.3);
+
+    --arrowImg: url('/images/fleche_w.png');
+    --insaLogo: url('/images/Logo_INSA_blanc.png');
+  }
+
   [data-theme='light-blue'] {
     --backgroundColor: #f4f9ff;
     --textColor: #1e3a5f;
