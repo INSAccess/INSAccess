@@ -1,4 +1,4 @@
-# 🎓 InsAccess
+# InsAccess
 
 <div align="center">
 
@@ -15,7 +15,7 @@
 
 ---
 
-## 🌟 Overview
+## Overview
 
 InsAccess is a web application designed specifically for INSA Rouen Normandie, providing a clean and intuitive class agenda similar to [Agendas INSA Rouen](https://agendas.insa-rouen.fr). What sets InsAccess apart is its focus on empowering student associations and clubs to add custom events, along with providing essential student utilities.
 
@@ -23,19 +23,19 @@ This project serves as both a practical alternative for students and an exciting
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-- [🚀 Quick Start](#-quick-start)
-- [📚 Documentation](#-documentation)
-- [🛠️ Development](#️-development)
-- [🏗️ Architecture](#️-architecture)
-- [🛠️ Utility Scripts](#️-utility-scripts)
-- [📊 Database Models](#-database-models)
-- [🚢 Production](#-production)
+- [Quick Start](#-quick-start)
+- [Documentation](#-documentation)
+- [Development](#️-development)
+- [Architecture](#️-architecture)
+- [Utility Scripts](#️-utility-scripts)
+- [Database Models](#-database-models)
+- [Production](#-production)
 
 ---
 
-## 🚀 Quick Start <div id='-quick-start'/>
+## Quick Start <div id='-quick-start'/>
 
 ### Backend Setup
 
@@ -66,12 +66,12 @@ This project serves as both a practical alternative for students and an exciting
 
 ---
 
-## 📚 Documentation <div id='-documentation'/>
+## Documentation <div id='-documentation'/>
 
-### 🔧 Backend Documentation
+### Backend Documentation
 > Coming soon - comprehensive API documentation
 
-### ⚛️ Frontend Documentation
+### Frontend Documentation
 Generate and view the frontend documentation:
 
 ```bash
@@ -82,7 +82,7 @@ npm run docs
 
 ---
 
-## 🛠️ Development <div id='-development'/>
+## Development <div id='-development'/>
 
 ### Essential Commands
 
@@ -93,7 +93,7 @@ npm run docs
 | `make migrate` | Apply database migrations |
 | `make createsuperuser` | Create a superuser account |
 
-### 🎭 CAS Server Setup
+### CAS Server Setup
 
 Launch the dummy CAS server for development:
 
@@ -102,9 +102,9 @@ cd cas-server
 npm start
 ```
 
-> 💡 **Tip**: User templates for the CAS server are located at the top of `server.js`
+> 💡 User templates for the CAS server are located at the top of `server.js`
 
-### 🔄 Database Migrations
+### Database Migrations
 
 When you modify Django models:
 
@@ -113,37 +113,38 @@ When you modify Django models:
 make migrate
 ```
 
-### 👨‍💼 Creating Superusers
+### Creating Superusers
 
-Choose your preferred method:
+There are three methods available : 
+
 - **Shell**: `make createsuperuser` (if user doesn't exist)
-- **Admin Interface**: Use Django admin from an admin account
+- **Admin Interface**: Use the Django admin panel and go to the User section (check *users* at `/admin/default`)
 - **Database**: Directly modify values in the database
 
 ---
 
-## 🏗️ Architecture <div id='-architecture'/>
+## Architecture <div id='-architecture'/>
 
-### 📁 Project Structure
+### Project Structure
 
 ```bash
 # View the complete structure
 tree --dirsfirst -F -I "__init__.py|*.svg|*.png|docs|build|__pycache__|.env|node_modules|.git|node_modules|venv"
 ```
 
-### 🔙 Backend Architecture
+### Backend Architecture
 
 ```
 backend/
-├── 🔧 config/                 # Django core configuration
-│   ├── settings.py           # Main settings
+├── config/                  # Django core configuration
+│   ├── settings.py          # Main settings
 │   ├── urls.py              # Global URL config
 │   ├── insa_config.json     # Custom config
 │   └── local_settings.py    # Local settings (ignored by git)
 │
-├── 🎯 core/                   # Main Django app
-│   ├── migrations/          # Database migrations
-│   ├── templates/           # HTML templates
+├── core/                   # Main Django app
+│   ├── migrations/         # Database migrations
+│   ├── templates/          # HTML templates
 │   ├── urls/               # Modular URL configurations
 │   │   ├── api_urls.py     # API endpoints
 │   │   ├── auth_urls.py    # Authentication endpoints
@@ -159,35 +160,35 @@ backend/
 │   ├── serializers.py      # DRF serializers
 │   └── admin.py            # Admin interface
 │
-└── 📁 logs/                  # Application logs
+└── logs/                   # Application logs
 ```
 
-### 🔜 Frontend Architecture
+### Frontend Architecture
 
 ```
 frontend/
-├── 📦 src/                    # Source code
-│   ├── components/           # React components
-│   │   ├── Events/          # Event-related components
-│   │   └── Pages/           # Page components
-│   ├── contexts/            # React contexts
-│   ├── images/              # Static images
-│   └── utils/               # Utility functions
-│       ├── Constants.jsx    # API routes & constants
-│       ├── EventUtils.jsx   # Event display utilities
-│       ├── Day.jsx          # Date management
-│       └── RandomUtils.jsx  # General utilities
+├── src/                    # Source code
+│   ├── components/         # React components
+│   │   ├── Events/         # Event-related components
+│   │   └── Pages/          # Page components
+│   ├── contexts/           # React contexts
+│   ├── images/             # Static images
+│   └── utils/              # Utility functions
+│       ├── Constants.jsx   # API routes & constants
+│       ├── EventUtils.jsx  # Event display utilities
+│       ├── Day.jsx         # Date management
+│       └── RandomUtils.jsx # General utilities
 │
-├── 🌍 public/                # Static assets
-├── 📖 docs/                  # Generated documentation
-└── 🏗️ build/                # Compiled output
+├── public/                 # Static assets
+├── docs/                   # Generated documentation
+└── build/                  # Compiled output
 ```
 
 ---
 
-## 🛠️ Utility Scripts <div id='-utility-scripts'/>
+## Utility Scripts <div id='-utility-scripts'/>
 
-### 📊 Data Fetching (`fetch.py`)
+### Data Fetching (`fetch.py`)
 
 **Import usage:**
 ```python
@@ -206,40 +207,40 @@ python fetch.py <current_year> <department> <department_year> <date> <period_of_
 - `date`: Target date (format: YYYYMMDD)
 - `period_of_time`: Fetch period (day, week, month)
 
-### 💾 Database Insertion (`db_insertion.py`)
+### Database Insertion (`db_insertion.py`)
 
 ```python
 from utils.db_insertion import insert_list_records, insert_record_in_db
 ```
 
-> ⚠️ **Important**: To fetch events, use the route `/authentification/temp`. Previous methods are deprecated.
-
 ---
 
-## 📊 Database Models <div id='-database-models'/>
+## Database Models <div id='-database-models'/>
 
-### 👤 User Management
+![Models](models.svg)
+
+### User Management
 - **UserProfile**: Extended user information
 - **UserLinkTD**: User-TD group relationships
 
-### 📅 Event System
+### Event System
 - **Event**: Abstract base for all events
 - **InsaClass**: INSA classes and custom events
 - **InsaEvenement**: Association events
 
-### 🏢 Organizations
+### Organizations
 - **Association**: Student associations
 - **AssociationPublisher**: Event publishing permissions
 - **EnumType/EnumSector/EnumColor**: Association attributes
 
-### 🏛️ Infrastructure
+### Infrastructure
 - **GroupTD**: TD groups
 - **Department**: Academic departments
 - **Teacher**: Faculty information
 - **Room**: Classrooms
 - **EvenementRoom**: Event-specific rooms
 
-### 🔗 Relationships
+### Relationships
 Many-to-many relationship models:
 - **EvenementLinkEventRoom**
 - **ClassLinkTD**
@@ -249,6 +250,20 @@ Many-to-many relationship models:
 
 ---
 
-## 🚢 Production <div id='-production'/>
+## Production <div id='-production'/>
 
-> 🚧 Production deployment guide coming soon!
+> Production deployment guide coming soon!
+
+### Association publishers
+
+In order to enable an user to create evenements as an association, there are a few steps to do as an administrator.
+
+> Everything explained in the next steps will be executed in the tabs of the admin panel of django 
+
+1) Beforehand, create an adequate type and sector in the enum tab.
+
+2) Create the desired association with a custom color.
+
+3) Create an association publisher by linking an association and a user.
+
+> ⚠️ **Important**: The user must have been connected at least once to the app for his userprofile to be created. Otherwise you won't be able to select the user.
