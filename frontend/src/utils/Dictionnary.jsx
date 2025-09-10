@@ -19,7 +19,7 @@ const resources = {
       Events: 'Events',
       Settings: 'Settings',
       Friends: 'Friends',
-      About: 'About',
+      Help: 'Help',
       // Days
       Sunday: 'Sun',
       Monday: 'Mon',
@@ -125,6 +125,50 @@ const resources = {
       Retry: 'Retry',
       UnexpectedError: 'An unexpected error happened. Please try again later.',
       Error: 'Error',
+      Preferences: 'Preferences',
+      Support: 'Support',
+      SupportSummary:
+        'If you encounter issues, please fill out the form below.',
+      Title: 'Title',
+      Details: 'Details',
+      'Submit Report': 'Submit Report',
+      'Submitting...': 'Submitting...',
+      ReportSent: 'Your report has been sent successfully.',
+      ReportError:
+        'An error occurred while sending your report. Please try again.',
+      ReportBug: 'Report a bug',
+      // Manual
+      Manual_Title: 'User Manual',
+      Manual_ChooseClasses: 'Choose your classes',
+      Manual_ChooseClassesContent:
+        '1) Got to Settings / TD List \n2) Select your department and year (ex: ITI 4) \n3) Select your TD groups (if you are in doubt, or to simplify the task, look for the TD groups by clicking on the class on agendas.insa-rouen.fr) \n4) IMPORTANT : Save your selection by clicking on the button at the bottom of the page',
+      Manual_ICS: 'See your calendar on your personnal app',
+      Manual_ICSContent:
+        'Our site is ICS enabled, which means that by clicking on the link in Settings / Other / ICS, you can import your INSA calendar into applications such as Google Calendar, etc. (the calendar will update automatically at regular intervals).',
+      Manual_Friends: 'Add friends',
+      Manual_FriendsContent:
+        "1) Go to Friends, search for the user's INSA username (not their first and last name). If you are searching for Bernard Dupont, search for bdupont. \n2) Once invited, the user must accept the request so that both users can see each other's calendars (remember to refresh the page if the invitation does not appear).",
+      Manual_Personnalize: 'Personnalization',
+      Manual_PersonnalizeContent:
+        'Dans Paramètres / Autre, vous pouvez changer le thème et la langue du site',
+      //FAQ
+      FAQ_Title: 'FAQ',
+      FAQ_TdNotFound_Question: "I can't find some of my classes !",
+      FAQ_TdNotFound_Answer:
+        "For each class, there is a TD group associated. We use this to enable you to 'subscribe' to these classes. But sometimes, as these groups are written by hand, there can be some errors and we can't do anything on our side. We are actively working on a solution (temporary or permanent).",
+      FAQ_AssoPublisher_Question: 'How can I publish events ?',
+      FAQ_AssoPublisherAnswer:
+        "If you are eligible (an association, a club, or an INSA Service for exemple) you can contact the DSI to be flagged as a publisher. You must have beforehand visited the website at least once (for your account to be created via CAS) and there must be someone legally responsible for the CAS account you'll be using. When all this is done, there will be an extra tab in the Settings page for you to create and publish an event.",
+      FAQ_Webview_Question: 'Is the calendar available to download ?',
+      FAQ_Webview_Answer:
+        "The app is not available on Google Play or App Store but you can create a webview for yourself, as most navigators allow you to add a page to your homescreen. The way to do this can vary depending on your phone's model and the version of your navigator.",
+      FAQ_FriendNotFound_Question:
+        "I can't find my friends in the research bar",
+      FAQ_FriendNotFound_Answer:
+        "First, check if you used the username of your friend and not their full name (Alice Durand would be adurand). Then, if you still can't find your friend, even with the right username, maybe they never connected to our website. The users are created when first connecting with CAS so they must first have visited they app at least once before they are visible in the list",
+      FAQ_WhyDuck_Question: 'Why are there duck everywhere ?',
+      FAQ_WhyDuck_Answer:
+        "Ducks are the emblem of the ITI department. This comes from a story every developper know. When you are stuck with a problem and you can't find the solution, it often helps to talk about it with someone. And as many people know ITI student don't have friends, so we use a rubber duck instead :) .",
     },
   },
   fr: {
@@ -143,7 +187,7 @@ const resources = {
       Events: 'Evenements',
       Settings: 'Parametres',
       Friends: 'Amis',
-      About: 'A propos',
+      Help: 'Aide',
       // Days
       Sunday: 'Dim',
       Monday: 'Lun',
@@ -252,6 +296,51 @@ const resources = {
       UnexpectedError:
         'Une erreur inattendue est survenue. Veuillez réessayer plus tard.',
       Error: 'Erreur',
+      Preferences: 'Préférences',
+      Support: 'Support',
+      SupportSummary:
+        'Si vous rencontrez des problèmes, veuillez remplir le formulaire ci-dessous.',
+      Title: 'Titre',
+      Details: 'Détails',
+      'Submit Report': 'Envoyer le rapport',
+      'Submitting...': 'Envoi...',
+      ReportSent: 'Votre rapport a été envoyé avec succès.',
+      ReportError:
+        "Une erreur est survenue lors de l'envoi de votre rapport. Veuillez réessayer.",
+      ReportBug: 'Signalez un bug',
+      // Manual
+      Manual_Title: 'Manuel utilisateur',
+      Manual_ChooseClasses: 'Choisir ses cours',
+      Manual_ChooseClassesContent:
+        '1) Allez dans Paramètres / Liste des TDs \n2) Selectionnez votre département et année (ex: ITI 4) \n3) Selectionnez les groupes de TD qui vous appartient (si vous avez un doute, ou tout simplement pour vous facilitez la tache, regardez quel sont les groupes de TD pour chaque cours en cliquant dessus sur agendas.insa-rouen.fr ) \n4) IMPORTANT : appuyez sur le bouton de sauvegarde en rouge en bas de la page ',
+      Manual_ICS: 'Consultez votre agenda sur votre application personnelle',
+      Manual_ICSContent:
+        "Notre site est ICS enabled, c'est à dire que grâce au lien dans Paramètres / Autre / ICS, vous pouvez importer votre agenda de l'INSA sur des application comme Google Calendar etc (l'agenda se mettra a jour automatiquement périodiquement)",
+      Manual_Friends: 'Ajouter des amis',
+      Manual_FriendsContent:
+        "1) Allez dans Amis, cherchez le username INSA de l'utilisateur (pas le prenom nom), si vous cherchez Bernard Dupont, tapez bdupont \n2) Une fois invité, l'utilisateur dois accepter la demande pour que les 2 utilisateurs puissent voir l'agenda de l'autre (pensez a rechargez la page si l'invitation n'apparrait pas)",
+      Manual_Personnalize: 'Personnalisation',
+      Manual_PersonnalizeContent:
+        'Dans Paramètres / Autre, vous pouvez changer le thème et la langue du site',
+      //FAQ
+      FAQ_Title: 'FAQ',
+      FAQ_TdNotFound_Question: "Je n'arrive pas à trouver mes cours !",
+      FAQ_TdNotFound_Answer:
+        "À chaque cours correspond un groupe TD. Nous utilisons ce système pour vous permettre de vous « inscrire » à ces cours. Cependant, ces groupes étant créés manuellement, des erreurs peuvent parfois se produire et nous ne pouvons rien y faire de notre côté. Nous travaillons activement à la mise en place d'une solution (temporaire ou permanente).",
+      FAQ_AssoPublisher_Question:
+        'Comment est-ce que je peux publier des événements ?',
+      FAQ_AssoPublisherAnswer:
+        "Si vous êtes éligible (une association, un club ou un service INSA par exemple), vous pouvez contacter le DSI pour être référencé en tant qu'éditeur. Vous devez avoir préalablement visité le site web au moins une fois (pour que votre compte soit créé via CAS) et il doit y avoir une personne légalement responsable du compte CAS que vous utiliserez. Une fois toutes ces étapes effectuées, un onglet supplémentaire apparaîtra dans la page Paramètres pour vous permettre de créer et de publier un événement.",
+      FAQ_Webview_Question: "Est-ce que je peux télécharger l'application ?",
+      FAQ_Webview_Answer:
+        "L'application n'est pas disponible sur Google Play ou l'App Store, mais vous pouvez créer une vue Web pour vous-même, car la plupart des navigateurs vous permettent d'ajouter une page à votre écran d'accueil. La manière de procéder peut varier en fonction du modèle de votre téléphone et de la version de votre navigateur.",
+      FAQ_FriendNotFound_Question:
+        "Je n'arrive pas à trouver mes amis dans la barre de recherche",
+      FAQ_FriendNotFound_Answer:
+        "Tout d'abord, vérifiez que vous avez bien utilisé le nom d'utilisateur de votre ami et non son nom complet (Alice Durand serait adurand). Ensuite, si vous ne trouvez toujours pas votre ami, même avec le bon nom d'utilisateur, il se peut qu'il ne se soit jamais connecté à notre site web. Les utilisateurs sont créés lors de leur première connexion à CAS, ils doivent donc avoir visité l'application au moins une fois avant d'apparaître dans la liste.",
+      FAQ_WhyDuck_Question: 'Pourquoi il y a des canards partout ?',
+      FAQ_WhyDuck_Answer:
+        "Les canards sont l'emblème du département ITI. Ça vient d'une histoire que tous les développeurs connaissent. Lorsque vous êtes bloqué sur un problème et que vous ne trouvez pas la solution, il est souvent utile d'en parler à quelqu'un. Et comme beaucoup le savent, les ITI n'ont pas d'amis, alors on utilise un canard en plastique à la place :) .",
     },
   },
 };

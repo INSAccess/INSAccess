@@ -11,6 +11,5 @@ drf-yasg
 icalendar
 django-ipware
 django-cas-ng==4.3.0
-apscheduler
 gunicorn
 whitenoise>=6.0

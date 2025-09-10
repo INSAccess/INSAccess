@@ -6,10 +6,9 @@ import { useState } from 'react';
 import Settings from './components/Pages/Settings.jsx';
 import Calendar from './components/Pages/Calendar.jsx';
 import Associations from './components/Pages/Associations.jsx';
-import About from './components/Pages/About.jsx';
+import Help from './components/Pages/Help.jsx';
 import Friends from './components/Pages/Friends.jsx';
 import { ErrorTemplate } from './components/Templates.jsx';
-import logo from './images/Logo_INSA_blanc.svg';
 import { NavBar } from './components/NavBar.jsx';
 
 function App() {
@@ -19,8 +18,8 @@ function App() {
     switch (pageName) {
       case 'home':
         return <Calendar />;
-      case 'about':
-        return <About />;
+      case 'help':
+        return <Help />;
       case 'settings':
         return <Settings />;
       case 'friends':
@@ -46,7 +45,6 @@ function App() {
   } catch (e) {
     return (
       <div className="App">
-        <img className="logo" src={logo} />
         <ErrorTemplate message={e} />
       </div>
     );

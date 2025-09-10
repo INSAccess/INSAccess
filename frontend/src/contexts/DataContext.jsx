@@ -52,6 +52,7 @@ export const DataProvider = (props) => {
   const [pendingList, setPendingList] = useState([]);
   const [receivedList, setReceivedList] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [currentFriend, setCurrentFriend] = useState('');
 
   const dayList = [
     t('Sunday'),
@@ -66,9 +67,7 @@ export const DataProvider = (props) => {
   const currentDate = new Date();
   let firstDay = new Day(currentDate);
   const [day, setDay] = useState(
-    minWidth < dimensions.width
-      ? firstDay.startOfWeek(dayList).getDate()
-      : firstDay.getDate()
+    minWidth < dimensions.width ? firstDay.startOfWeek(dayList) : firstDay
   );
 
   function forceUpdate() {
@@ -233,6 +232,8 @@ export const DataProvider = (props) => {
           setColorsAsso,
           setColorsAgenda,
           setColorsFriend,
+          currentFriend,
+          setCurrentFriend,
         }}
       >
         {props.children}

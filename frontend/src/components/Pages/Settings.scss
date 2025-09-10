@@ -1,5 +1,3 @@
-//----- BOOTSTRAP OVERRIDE------//
-
 .btn,
 .btn-primary {
   border-color: var(--contrastBorderColor) !important;
@@ -29,8 +27,6 @@
   background-color: var(--buttonActiveColor) !important;
 }
 
-//----------------------View NavBar---------------------------//
-
 .view {
   width: 100%;
   display: flex;
@@ -43,14 +39,14 @@
 .btn_view {
   flex: 1;
   color: var(--contrastTextColor) !important;
-  background-color: var(--buttonHoverColor) !important;
+  background-color: var(--buttonColor) !important;
   height: 60%;
   margin-inline: 2px;
   transition: all 0.3s ease;
 }
 
 .btn_view:hover {
-  background-color: var(--buttonColor) !important;
+  background-color: var(--buttonHoverColor) !important;
   box-shadow: 0 3px 3px var(--buttonHoverColor);
 }
 
@@ -58,13 +54,9 @@
   box-shadow: 5px 5px 3px var(--buttonColor);
 }
 
-//-----------------------------------------------------------//
-
 .margin2 {
   margin: 2%;
 }
-
-//-----------------------------------------------------------//
 
 .dropdown_container {
   display: flex;
@@ -82,16 +74,14 @@
   background-color: var(--backgroundColor);
 }
 
-/* Modification principale : adaptation responsive */
 .checkbox-list {
   padding: 20px;
-  margin-bottom: 20px; /* Espacement vertical sur mobile */
+  margin-bottom: 20px;
   background-color: var(--subSectionBackgroundColor);
   border-radius: 8px;
   box-shadow: 0 4px 10px var(--shadowColorBold);
 }
 
-/* Espacement horizontal seulement sur desktop */
 @media (min-width: 768px) {
   .checkbox-list {
     margin-bottom: 0;
@@ -140,18 +130,18 @@
 
 .copy-container {
   display: flex;
-  flex-wrap: wrap; /* ✅ Allow wrapping on small screens */
-  align-items: center; /* ✅ Fix alignment */
+  flex-wrap: wrap;
+  align-items: center;
   width: 100%;
-  max-width: 500px; /* ✅ Reasonable fixed max width */
+  max-width: 500px;
   margin: 2rem auto;
   background: var(--subSectionBackgroundColor);
   border: 1px solid var(--borderColor);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 12px var(--shadowColor);
-  gap: 4px; /* Optional: spacing between input and button when wrapped */
-  padding: 4px; /* Optional: inner spacing */
+  gap: 4px;
+  padding: 4px;
 }
 
 .copy-input {
@@ -169,4 +159,67 @@
 
 .copy-button {
   min-width: 70px;
+}
+
+.settings {
+  color: var(--textColor);
+  background-color: var(--backgroundColor);
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.settings-section {
+  background: var(--subSectionBackgroundColor);
+  border: 1px solid var(--borderColor);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px var(--shadowColor);
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--textColor);
+}
+
+.setting-item {
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.copy-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 1rem 0;
+  background: var(--subSectionBackgroundColor);
+  border: 1px solid var(--borderColor);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--shadowColor);
+  gap: 4px;
+  padding: 4px;
+}
+
+.copy-input {
+  flex: 1;
+  border: none;
+  padding: 12px 16px;
+  font-size: 1rem;
+  background: transparent;
+  color: var(--textColor);
+  min-width: 0;
+}
+
+.copy-input:focus {
+  outline: none;
+}
+
+.copy-button {
+  min-width: 80px;
+  flex-shrink: 0;
 }

@@ -16,9 +16,7 @@ class Command(BaseCommand):
             update_all_years()
             logger.info("run_scheduled_tasks: update_all_years finished successfully")
         except Exception as exc:
-            # Log stacktrace to both logger and stderr so cron logs it
             logger.exception("run_scheduled_tasks: update_all_years failed")
             self.stderr.write(self.style.ERROR("Scheduled task failed: %s" % exc))
             traceback.print_exc(file=sys.stderr)
-            # non-zero exit so cron/systemd knows something went wrong
             sys.exit(1)

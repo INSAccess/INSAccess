@@ -19,7 +19,6 @@ const departementYears = {
 const minWidth = 850;
 const baseEventWidth = 93;
 
-const REPORT_FORM = 'https://forms.gle/LyMsab1YVmbwf3LN7';
 const API_URL = process.env.REACT_APP_API_URL;
 const PATH_USER_CALENDAR = API_URL + '/api/calendar/';
 const PATH_ASSO_CALENDAR = API_URL + '/api/calendar/events';
@@ -40,5 +39,4 @@ export {
   API_AUTH,
   departementNames,
   departementYears,
-  REPORT_FORM,
 };

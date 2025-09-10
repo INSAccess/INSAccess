@@ -4,6 +4,8 @@ from dateutil.relativedelta import relativedelta
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.core.mail import mail_admins
+from django.conf import settings
 
 from core.serializers import (
     InsaClassSerializer,
@@ -945,3 +947,48 @@ class FriendCalendarAPIView(APIView):
                 extra={"request": request, "status_code": response.status_code},
             )
             return response
+
+
+class BugReportAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    """
+    API endpoint to receive bug reports from frontend.
+    Expects JSON with `title` and `details`.
+    Sends an email to all ADMINS in settings.ADMINS.
+    """
+
+    def post(self, request):
+        data = request.data
+        user = request.user
+
+        title = data.get("title", "").strip()
+        details = data.get("details", "").strip()
+
+        if not title or not details:
+            logger.warning(
+                f"User {user.username} submitted incomplete bug report: "
+                f"title='{sanitize_log_input(title)}', details='{sanitize_log_input(details)}'"
+            )
+            return Response({"error": "Title and details are required."}, status=400)
+
+        subject = (
+            f"{settings.EMAIL_SUBJECT_PREFIX}Bug Report: {title} by {user.username}"
+        )
+        message = (
+            f"Bug Details:\n{details}\n\nReported by: {user.username} ({user.email})"
+        )
+
+        try:
+            mail_admins(subject=subject, message=message, fail_silently=False)
+            logger.info(
+                f"User {user.username} submitted bug report successfully: "
+                f"title='{sanitize_log_input(title)}'"
+            )
+            return Response({"success": "Bug report sent successfully."}, status=200)
+        except Exception as e:
+            logger.error(
+                f"Failed to send bug report email from user {user.username}: {str(e)}",
+                extra={"request": request.data},
+            )
+            return Response({"error": f"Failed to send email: {str(e)}"}, status=500)

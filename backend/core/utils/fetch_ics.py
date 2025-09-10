@@ -4,8 +4,9 @@ import os
 import json
 import itertools
 import logging
-from datetime import datetime
+import datetime
 from icalendar import Calendar
+
 
 CONFIG_PATH = os.path.join(
     os.path.dirname((os.path.dirname(os.path.dirname(__file__)))),
@@ -141,10 +142,17 @@ def get_academic_year():
     """returns the current academic year
     for instance if the academic years are 2024-2025 then it returns
     2024"""
-    current_date = datetime.now()
+    current_date = datetime.datetime.now()
     if current_date.month > 7:  # if the summer vacations are over
         return current_date.year
     return current_date.year - 1
+
+
+def filter_next_week(data: list) -> list:
+    """Return all events in the next 7 days"""
+    start_date = datetime.date.today()
+    end_date = start_date + datetime.timedelta(days=7)
+    return [event for event in data if start_date <= event.get("date") <= end_date]
 
 
 if __name__ == "__main__":

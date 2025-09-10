@@ -163,10 +163,13 @@ const SingleEvent = (props) => {
       : hoursEvents.length - 1;
 
   // Funky cases
-  if (startIndex == 0 && endIndex == 0){
+  if (startIndex == 0 && endIndex == 0) {
     endIndex = 1;
   }
-  if (startIndex == hoursEvents.length - 1 && endIndex == hoursEvents.length - 1){
+  if (
+    startIndex == hoursEvents.length - 1 &&
+    endIndex == hoursEvents.length - 1
+  ) {
     startIndex = hoursEvents.length - 22;
   }
 
@@ -178,18 +181,20 @@ const SingleEvent = (props) => {
   let eventPosY = EventUtils.getEventPos(startIndex, hoursEvents.length);
 
   const [show, setShow] = useState(false);
-  const [color, setColor] = useState(colors[props.label]);
+  const [color, setColor] = useState(null);
   const [errorFlag, raiseErrorFlag] = useState(false);
   const [successFlag, raiseSuccessFlag] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-
   useEffect(() => {
-    if (props.dataOrigin == 'asso') {
-      //put the custom color of the users
-      setColor(colors[props.teacher[0]]); //Take the color of the first association of the event
+    if (props.dataOrigin === 'asso') {
+      if (props.teacher?.[0] && colors[props.teacher[0]]) {
+        setColor(colors[props.teacher[0]]);
+      }
     } else {
-      setColor(colors[props.label] || '#d44d44');
+      if (props.label && colors[props.label]) {
+        setColor(colors[props.label]);
+      }
     }
   }, [
     colors,
@@ -203,7 +208,6 @@ const SingleEvent = (props) => {
   function handleColorChange(colorObject) {
     const newColors = { ...colors };
     newColors[props.label] = colorObject['hex'];
-
     setColorsList(newColors);
   }
 
@@ -241,7 +245,8 @@ const SingleEvent = (props) => {
           width: `${props.width}%`,
           top: `${eventPosY}%`,
           left: `${props.left}%`,
-          backgroundColor: color,
+          backgroundColor: color || 'var(--eventColor)',
+          color: 'var(--contrastTextColor)',
         }}
         onClick={handleShow}
       >
@@ -251,7 +256,11 @@ const SingleEvent = (props) => {
         </p>
       </button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        container={document.getElementById('root')}
+      >
         <Modal.Header>
           <Modal.Title>{props.label}</Modal.Title>
         </Modal.Header>
@@ -264,15 +273,28 @@ const SingleEvent = (props) => {
             <strong>{t('EndHour')}</strong>
             {Day.presentableHour(props.endTime)}
           </div>
-          <div>
-            <strong>
-              {props.dataOrigin == 'asso' ? t('Associations') : t('Teachers')} :{' '}
-            </strong>
-            {RandomUtils.Join(props.teacher)}
-          </div>
+          {props.teacher.length > 0 && (
+            <div>
+              <strong>
+                {props.dataOrigin == 'asso' ? t('Associations') : t('Teachers')}{' '}
+                :{' '}
+              </strong>
+              {RandomUtils.Join(props.teacher)}
+            </div>
+          )}
           {props.dataOrigin == 'user' && (
             <div id="event-color-picker">
-              <CompactPicker color={color} onChangeComplete={saveColor} />
+              <div
+                style={{
+                  padding: '10px',
+                  borderRadius: '8px',
+                }}
+              >
+                <CompactPicker
+                  color={color || '#F44E3B'}
+                  onChangeComplete={saveColor}
+                />
+              </div>
             </div>
           )}
           <Description asso={props.dataOrigin == 'asso'} desc={props.desc} />

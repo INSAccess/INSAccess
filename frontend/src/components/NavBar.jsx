@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import logo from '../images/Logo_INSA_blanc.svg';
 import '../utils/Dictionnary';
 import { useState } from 'react';
 import './NavBar.scss';
@@ -15,7 +14,7 @@ export const NavBar = ({ page, setPage }) => {
     { name: t('Events'), href: 'associations' },
     { name: t('Settings'), href: 'settings' },
     { name: t('Friends'), href: 'friends' },
-    { name: t('About'), href: 'about' },
+    { name: t('Help'), href: 'help' },
   ];
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -44,12 +43,7 @@ export const NavBar = ({ page, setPage }) => {
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary custom-navbar d-none d-lg-block">
         <div className="container-fluid">
           <div className="navbar-left">
-            <img
-              src={logo}
-              alt="Logo INSA"
-              height="40"
-              className="d-inline-block align-text-top"
-            />
+            <div className="logo-insa"></div>
 
             <div className="navbar-nav">
               {items.map((item) => (

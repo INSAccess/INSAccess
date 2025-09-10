@@ -18,13 +18,13 @@
     --contrastTextColor: white;
     --messageColor: #7c7c7c;
 
-    --buttonColor: #db342c;
-    --buttonHoverColor: #ca2e26;
-    --buttonActiveColor: #af231c;
+    --buttonColor: #e75351;
+    --buttonHoverColor: #f0554f;
+    --buttonActiveColor: #c62828;
 
-    --burgerButtonColor: #ad2821;
+    --burgerButtonColor: #e75351;
     --burgerBackgroundColor: #db342c;
-    --burgerBackgroundBorderColor: #d40b00;
+    --burgerBackgroundBorderColor: #e74343;
 
     --borderColor: #dbdbdb;
     --subSectionBackgroundColor: #f8f9fa;
@@ -32,8 +32,6 @@
     --hoverHighlight: #f0f0f0;
 
     --eventColor: #d44d44;
-    // --eventHoverColor: #ff6b6b;
-    // --eventHoverBorderColor: #ff4b4b;
     --eventBgColor: #f3eceb;
 
     --shadowColorBold: rgba(0, 0, 0, 0.3);
@@ -50,13 +48,13 @@
     --contrastTextColor: white;
     --messageColor: #b0b0b0;
 
-    --buttonColor: #e05d57;
-    --buttonHoverColor: #d54c45;
+    --buttonColor: #ef5350;
+    --buttonHoverColor: #ef5350;
     --buttonActiveColor: #c13e38;
 
-    --burgerButtonColor: #db5048;
-    --burgerBackgroundColor: #b33833;
-    --burgerBackgroundBorderColor: #a52a25;
+    --burgerButtonColor: #ef5350;
+    --burgerBackgroundColor: #d32f2f;
+    --burgerBackgroundBorderColor: #b71c1c;
 
     --borderColor: #2a2a2a;
     --subSectionBackgroundColor: #1e1e1e;
@@ -64,8 +62,6 @@
     --hoverHighlight: #2c2c2c;
 
     --eventColor: #ff6b6b;
-    // --eventHoverColor: #ff8787;
-    // --eventHoverBorderColor: #ff6b6b;
     --eventBgColor: #292929;
 
     --shadowColorBold: rgba(0, 0, 0, 0.7);
@@ -82,13 +78,13 @@
     --contrastTextColor: white;
     --messageColor: #7c7c7c;
 
-    --buttonColor: #db342c;
-    --buttonHoverColor: #ca2e26;
-    --buttonActiveColor: #af231c;
+    --buttonColor: #e75351;
+    --buttonHoverColor: #f0554f;
+    --buttonActiveColor: #c62828;
 
-    --burgerButtonColor: #ad2821;
+    --burgerButtonColor: #e75351;
     --burgerBackgroundColor: #db342c;
-    --burgerBackgroundBorderColor: #d40b00;
+    --burgerBackgroundBorderColor: #e74343;
 
     --borderColor: #dbdbdb;
     --subSectionBackgroundColor: #f8f9fa;
@@ -96,8 +92,6 @@
     --hoverHighlight: #f0f0f0;
 
     --eventColor: #d44d44;
-    // --eventHoverColor: #ff6b6b;
-    // --eventHoverBorderColor: #ff4b4b;
     --eventBgColor: #f3eceb;
 
     --shadowColorBold: rgba(0, 0, 0, 0.3);
@@ -114,23 +108,247 @@
     --contrastTextColor: white;
     --messageColor: #b0b0b0;
 
-    --buttonColor: #e05d57;
-    --buttonHoverColor: #d54c45;
+    --buttonColor: #ef5350;
+    --buttonHoverColor: #ef5350;
     --buttonActiveColor: #c13e38;
 
-    --burgerButtonColor: #db5048;
-    --burgerBackgroundColor: #b33833;
-    --burgerBackgroundBorderColor: #a52a25;
+    --burgerButtonColor: #ef5350;
+    --burgerBackgroundColor: #d32f2f;
+    --burgerBackgroundBorderColor: #b71c1c;
 
     --borderColor: #2a2a2a;
     --subSectionBackgroundColor: #1e1e1e;
     --contrastBorderColor: #e05d57;
     --hoverHighlight: #2c2c2c;
 
-    --eventColor: #ff6b6b;
-    // --eventHoverColor: #ff8787;
-    // --eventHoverBorderColor: #ff6b6b;
+    --eventColor: #6bb0ff;
     --eventBgColor: #292929;
+
+    --shadowColorBold: rgba(0, 0, 0, 0.7);
+    --shadowColor: rgba(0, 0, 0, 0.3);
+
+    --arrowImg: url('/images/fleche_w.png');
+    --insaLogo: url('/images/Logo_INSA_blanc.png');
+  }
+  [data-theme='dark-violet'] {
+    --backgroundColor: #121212;
+    --textColor: #e0d7f8;
+    --contrastTextColor: #ffffff;
+    --messageColor: #b39ddb;
+
+    --buttonColor: #7e57c2;
+    --buttonHoverColor: #9575cd;
+    --buttonActiveColor: #5e35b1;
+
+    --burgerButtonColor: #7e57c2;
+    --burgerBackgroundColor: #673ab7;
+    --burgerBackgroundBorderColor: #5e35b1;
+
+    --borderColor: #2a2a2a;
+    --subSectionBackgroundColor: #1e1e1e;
+    --contrastBorderColor: #7e57c2;
+    --hoverHighlight: #2c2c2c;
+
+    --eventColor: #9575cd;
+    --eventBgColor: #1e1a2e;
+
+    --shadowColorBold: rgba(0, 0, 0, 0.7);
+    --shadowColor: rgba(0, 0, 0, 0.3);
+
+    --arrowImg: url('/images/fleche_w.png');
+    --insaLogo: url('/images/Logo_INSA_blanc.png');
+  }
+  [data-theme='dark-blue'] {
+    --backgroundColor: #202020;
+
+    --textColor: #e0e0e0;
+    --contrastTextColor: #ffffff;
+    --messageColor: #b0b0b0;
+
+    --buttonColor: #3a8dde;
+    --buttonHoverColor: #5aa9f4;
+    --buttonActiveColor: #1f6fc2;
+
+    --burgerButtonColor: #3a8dde;
+    --burgerBackgroundColor: #2f81e0;
+    --burgerBackgroundBorderColor: #1f6fc2;
+
+    --borderColor: #2a2a2a;
+    --subSectionBackgroundColor: #1a1a1a;
+    --contrastBorderColor: #3a8dde;
+    --hoverHighlight: #2c2c2c;
+
+    --eventColor: #5aa9f4;
+    --eventBgColor: #262626;
+
+    --shadowColorBold: rgba(0, 0, 0, 0.7);
+    --shadowColor: rgba(0, 0, 0, 0.3);
+
+    --arrowImg: url('/images/fleche_w.png');
+    --insaLogo: url('/images/Logo_INSA_blanc.png');
+  }
+  [data-theme='light-blue'] {
+    --backgroundColor: #f4f9ff;
+    --textColor: #1e3a5f;
+    --contrastTextColor: #ffffff;
+    --messageColor: #3a8dde;
+
+    --buttonColor: #3a8dde;
+    --buttonHoverColor: #5aa9f4;
+    --buttonActiveColor: #1f6fc2;
+
+    --burgerButtonColor: #3a8dde;
+    --burgerBackgroundColor: #5aa9f4;
+    --burgerBackgroundBorderColor: #1f6fc2;
+
+    --borderColor: #cce0f9;
+    --subSectionBackgroundColor: #e6f0fb;
+    --contrastBorderColor: #3a8dde;
+    --hoverHighlight: #edf6ff;
+
+    --eventColor: #1f6fc2;
+    --eventBgColor: #e6f0fb;
+
+    --shadowColorBold: rgba(0, 0, 0, 0.25);
+    --shadowColor: rgba(0, 0, 0, 0.1);
+
+    --arrowImg: url('/images/fleche.png');
+    --insaLogo: url('/images/Logo_INSA_noir.png');
+  }
+
+  [data-theme='light-violet'] {
+    --backgroundColor: #faf7ff;
+    --textColor: #3a2a60;
+    --contrastTextColor: #ffffff;
+    --messageColor: #7e57c2;
+
+    --buttonColor: #7e57c2;
+    --buttonHoverColor: #9575cd;
+    --buttonActiveColor: #5e35b1;
+
+    --burgerButtonColor: #7e57c2;
+    --burgerBackgroundColor: #9575cd;
+    --burgerBackgroundBorderColor: #5e35b1;
+
+    --borderColor: #e2d9f3;
+    --subSectionBackgroundColor: #f0e8fc;
+    --contrastBorderColor: #7e57c2;
+    --hoverHighlight: #f6f0ff;
+
+    --eventColor: #5e35b1;
+    --eventBgColor: #f0e8fc;
+
+    --shadowColorBold: rgba(0, 0, 0, 0.25);
+    --shadowColor: rgba(0, 0, 0, 0.1);
+
+    --arrowImg: url('/images/fleche.png');
+    --insaLogo: url('/images/Logo_INSA_noir.png');
+  }
+  [data-theme='ocean'] {
+    --backgroundColor: #e0f7fa;
+    --textColor: #02475e;
+    --contrastTextColor: #ffffff;
+    --messageColor: #017374;
+
+    --buttonColor: #0097a7;
+    --buttonHoverColor: #00acc1;
+    --buttonActiveColor: #006064;
+
+    --burgerButtonColor: #0097a7;
+    --burgerBackgroundColor: #00acc1;
+    --burgerBackgroundBorderColor: #006064;
+
+    --borderColor: #b2ebf2;
+    --subSectionBackgroundColor: #b2ebf2;
+    --contrastBorderColor: #0097a7;
+    --hoverHighlight: #d0f0f4;
+
+    --eventColor: #00bcd4;
+    --eventBgColor: #b2ebf2;
+
+    --shadowColorBold: rgba(0, 0, 0, 0.25);
+    --shadowColor: rgba(0, 0, 0, 0.1);
+
+    --arrowImg: url('/images/fleche.png');
+    --insaLogo: url('/images/Logo_INSA_noir.png');
+  }
+  [data-theme='sunset'] {
+    --backgroundColor: #fff3e0;
+    --textColor: #4e342e;
+    --contrastTextColor: #ffffff;
+    --messageColor: #8d6e63;
+
+    --buttonColor: #fb8c00;
+    --buttonHoverColor: #ffa726;
+    --buttonActiveColor: #ef6c00;
+
+    --burgerButtonColor: #fb8c00;
+    --burgerBackgroundColor: #ffa726;
+    --burgerBackgroundBorderColor: #ef6c00;
+
+    --borderColor: #ffccbc;
+    --subSectionBackgroundColor: #ffe0b2;
+    --contrastBorderColor: #fb8c00;
+    --hoverHighlight: #ffecb3;
+
+    --eventColor: #ffb74d;
+    --eventBgColor: #ffe0b2;
+
+    --shadowColorBold: rgba(0, 0, 0, 0.3);
+    --shadowColor: rgba(0, 0, 0, 0.1);
+
+    --arrowImg: url('/images/fleche.png');
+    --insaLogo: url('/images/Logo_INSA_noir.png');
+  }
+  [data-theme='forest'] {
+    --backgroundColor: #f1f8e9;
+    --textColor: #1b5e20;
+    --contrastTextColor: #ffffff;
+    --messageColor: #4caf50;
+
+    --buttonColor: #43a047;
+    --buttonHoverColor: #66bb6a;
+    --buttonActiveColor: #2e7d32;
+
+    --burgerButtonColor: #43a047;
+    --burgerBackgroundColor: #66bb6a;
+    --burgerBackgroundBorderColor: #2e7d32;
+
+    --borderColor: #c8e6c9;
+    --subSectionBackgroundColor: #dcedc8;
+    --contrastBorderColor: #43a047;
+    --hoverHighlight: #e8f5e9;
+
+    --eventColor: #66bb6a;
+    --eventBgColor: #dcedc8;
+
+    --shadowColorBold: rgba(0, 0, 0, 0.25);
+    --shadowColor: rgba(0, 0, 0, 0.1);
+
+    --arrowImg: url('/images/fleche.png');
+    --insaLogo: url('/images/Logo_INSA_noir.png');
+  }
+  [data-theme='matrix'] {
+    --backgroundColor: #000000;
+    --textColor: #00ff00;
+    --contrastTextColor: #000000;
+    --messageColor: #33ff33;
+
+    --buttonColor: #00aa00;
+    --buttonHoverColor: #00cc44;
+    --buttonActiveColor: #009900;
+
+    --burgerButtonColor: #00aa00;
+    --burgerBackgroundColor: #003300;
+    --burgerBackgroundBorderColor: #00ff00;
+
+    --borderColor: #004400;
+    --subSectionBackgroundColor: #001100;
+    --contrastBorderColor: #00ff00;
+    --hoverHighlight: #002200;
+
+    --eventColor: #33ff33;
+    --eventBgColor: #002200;
 
     --shadowColorBold: rgba(0, 0, 0, 0.7);
     --shadowColor: rgba(0, 0, 0, 0.3);
@@ -154,19 +372,6 @@
   }
   to {
     transform: rotate(359deg);
-  }
-}
-
-.logo {
-  position: absolute;
-  top: 0;
-  size: 0%;
-  max-width: 300px;
-  left: 4rem;
-  visibility: hidden;
-  content: var(--insaLogo);
-  @media (max-width: 1200px) {
-    visibility: hidden;
   }
 }
 

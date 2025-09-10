@@ -23,6 +23,7 @@ const Friends = () => {
     setColorsFriend,
     showCalendar,
     setShowCalendar,
+    setCurrentFriend,
   } = useData();
 
   const [availableUsers, setAvailableUsers] = useState([]);
@@ -56,10 +57,12 @@ const Friends = () => {
   }, [availableUsers, searchTerm]);
 
   function getDisplayName(users, username) {
-    for (let element of users) {
-      if (element.username == username) return element.displayName;
+    try {
+      let user = users.filter(e => e.username == username)[0].displayName
+      return user
+    } catch (e){
+      return t('NameError');
     }
-    return t('NameError');
   }
 
   const handleCancel = async (username) => {
@@ -167,6 +170,7 @@ const Friends = () => {
     if (friendCalendar.data) {
       setDataFriend(friendCalendar.data.events);
       setColorsFriend(friendCalendar.data.colors);
+      setCurrentFriend(getDisplayName(userList, username));
       setShowCalendar(true);
     }
   };

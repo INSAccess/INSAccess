@@ -1,28 +1,15 @@
 //---------------------------------------------------------------//
 //                           NAVBAR                              //
 //---------------------------------------------------------------//
-
+.logo-insa {
+  width: 80px;
+  height: 50px;
+  background: var(--insaLogo) no-repeat left;
+  background-size: contain;
+}
 .custom-navbar {
   border-bottom: 1px solid var(--borderColor);
   background-color: var(--backgroundColor) !important;
-
-  .navbar-brand img {
-    // Logo adaptatif selon le thème
-    @media (prefers-color-scheme: light) {
-      filter: brightness(0); // Logo noir sur fond clair
-    }
-    @media (prefers-color-scheme: dark) {
-      filter: brightness(0) invert(1); // Logo blanc sur fond sombre
-    }
-
-    // Override pour les thèmes personnalisés
-    [data-theme='light'] & {
-      filter: brightness(0);
-    }
-    [data-theme='dark'] & {
-      filter: brightness(0) invert(1);
-    }
-  }
 
   .container-fluid {
     display: flex;

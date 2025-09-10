@@ -1,16 +1,16 @@
 import TDSelection from '../TDSelection.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
 import { useEffect, useState, useRef } from 'react';
-import { API_URL, minWidth, REPORT_FORM } from '../../utils/Constants.jsx';
+import { API_URL, minWidth } from '../../utils/Constants.jsx';
 import EventCreator from '../EventCreator.jsx';
-import Button from 'react-bootstrap/Button';
+import SupportModal from '../SupportModal.jsx';
 import DropDownCustom from '../DropDownCustom.jsx';
 import './Settings.scss';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useConfig } from '../../contexts/ConfigContext.jsx';
 import { useData } from '../../contexts/DataContext.jsx';
 import { useTranslation } from 'react-i18next';
-
+import { Button } from 'react-bootstrap';
 /**
  * Settings component, handling the theme, the TD selection, ICS link and event creation
  * @component
@@ -112,10 +112,6 @@ const Settings = () => {
     );
   };
 
-  const handleLogout = () => {
-    window.location.replace(API_LOGOUT);
-  };
-
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(icsLink);
@@ -176,54 +172,52 @@ const Settings = () => {
 
   const OtherParams = () => {
     return (
-      <>
-        <div className="row">
-          <div className="col-6">
-            <div className="margin2">
+      <div className="settings container-fluid">
+        {/* Preferences Section */}
+        <section className="settings-section">
+          <h3 className="section-title">{t('Preferences')}</h3>
+          <div className="d-flex flex-wrap gap-3">
+            <div className="setting-item">
               <ThemeSwitch id="theme" />
             </div>
-            <div className="margin2">
+            <div className="setting-item">
               <LanguageSwitch id="lng" />
             </div>
           </div>
-          <div className="col-6 mx-auto">
-            <a
-              href={REPORT_FORM}
-              target="_blank"
-              rel="noopener noreferrer"
-              type="button"
-              className="btn btn-primary margin2"
-            >
-              {t('Report')}
-            </a>
-          </div>
-        </div>
-        <div className="margin2">
-          <hr />
-          <h4>{t('ICSLink')}</h4>
+        </section>
+
+        {/* Bug Report Section */}
+        <section className="settings-section">
+          <h3 className="section-title">{t('Support')}</h3>
+          <SupportModal />
+        </section>
+
+        {/* ICS Feed Section */}
+        <section className="settings-section">
+          <h3 className="section-title">{t('ICSLink')}</h3>
           <p>{t('ICSText')}</p>
-        </div>
-        <div className="copy-container">
-          <input
-            type="text"
-            id="copyInput"
-            className="copy-input"
-            value={icsLink}
-            readOnly
-          ></input>
-          <button
-            ref={copyButtonRef}
-            className="btn btn-primary copy-button"
-            style={{ margin: '4px' }}
-            onClick={handleCopy}
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="Copy to clipboard"
-          >
-            {t('ICSCopy')}
-          </button>
-        </div>
-      </>
+
+          <div className="copy-container">
+            <input
+              type="text"
+              id="copyInput"
+              className="copy-input"
+              value={icsLink}
+              readOnly
+            />
+            <button
+              ref={copyButtonRef}
+              className="btn btn-primary copy-button"
+              onClick={handleCopy}
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title={t('CopyToClipboard')}
+            >
+              {t('ICSCopy')}
+            </button>
+          </div>
+        </section>
+      </div>
     );
   };
 
