@@ -9,7 +9,6 @@ import Associations from './components/Pages/Associations.jsx';
 import Help from './components/Pages/Help.jsx';
 import Friends from './components/Pages/Friends.jsx';
 import { ErrorTemplate } from './components/Templates.jsx';
-import logo from './images/Logo_INSA_blanc.svg';
 import { NavBar } from './components/NavBar.jsx';
 
 function App() {
@@ -46,7 +45,6 @@ function App() {
   } catch (e) {
     return (
       <div className="App">
-        <img className="logo" src={logo} />
         <ErrorTemplate message={e} />
       </div>
     );

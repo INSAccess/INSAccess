@@ -284,10 +284,17 @@ const SingleEvent = (props) => {
           )}
           {props.dataOrigin == 'user' && (
             <div id="event-color-picker">
-              <CompactPicker
-                color={color || '#F44E3B'}
-                onChangeComplete={saveColor}
-              />
+              <div
+                style={{
+                  padding: '10px',
+                  borderRadius: '8px',
+                }}
+              >
+                <CompactPicker
+                  color={color || '#F44E3B'}
+                  onChangeComplete={saveColor}
+                />
+              </div>
             </div>
           )}
           <Description asso={props.dataOrigin == 'asso'} desc={props.desc} />
