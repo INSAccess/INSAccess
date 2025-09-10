@@ -12,10 +12,6 @@ const ProtectedRoute = ({ children }) => {
     }
   }, [loading, token, error]);
 
-  if (loading) {
-    return <Loading />;
-  }
-
   if (error) {
     return <ErrorTemplate message={String(error)} />;
   }
