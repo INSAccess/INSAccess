@@ -217,6 +217,8 @@ from utils.db_insertion import insert_list_records, insert_record_in_db
 
 ## Database Models <div id='-database-models'/>
 
+![Models](models.svg)
+
 ### User Management
 - **UserProfile**: Extended user information
 - **UserLinkTD**: User-TD group relationships
