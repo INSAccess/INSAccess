@@ -136,7 +136,7 @@ const SingleEvent = (props) => {
   const { t } = useTranslation();
 
   const BUNDLE = useData();
-  const { assoName, userTheme } = useData();
+  const { assoName } = useData();
 
   let colors = [];
   let setColorsList = () => {};
@@ -181,21 +181,20 @@ const SingleEvent = (props) => {
   let eventPosY = EventUtils.getEventPos(startIndex, hoursEvents.length);
 
   const [show, setShow] = useState(false);
-  const [color, setColor] = useState(colors[props.label]);
+  const [color, setColor] = useState(null);
   const [errorFlag, raiseErrorFlag] = useState(false);
   const [successFlag, raiseSuccessFlag] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   useEffect(() => {
-    const rootStyles = getComputedStyle(document.documentElement);
-    const defaultEventColor = rootStyles
-      .getPropertyValue('--eventColor')
-      .trim();
-
     if (props.dataOrigin === 'asso') {
-      setColor(colors[props.teacher[0]] || defaultEventColor);
+      if (props.teacher?.[0] && colors[props.teacher[0]]) {
+        setColor(colors[props.teacher[0]]);
+      }
     } else {
-      setColor(colors[props.label] || defaultEventColor);
+      if (props.label && colors[props.label]) {
+        setColor(colors[props.label]);
+      }
     }
   }, [
     colors,
@@ -204,13 +203,11 @@ const SingleEvent = (props) => {
     props.endTime,
     props.teacher,
     props.room,
-    userTheme,
   ]);
 
   function handleColorChange(colorObject) {
     const newColors = { ...colors };
     newColors[props.label] = colorObject['hex'];
-
     setColorsList(newColors);
   }
 
@@ -248,7 +245,8 @@ const SingleEvent = (props) => {
           width: `${props.width}%`,
           top: `${eventPosY}%`,
           left: `${props.left}%`,
-          backgroundColor: color,
+          backgroundColor: color || 'var(--eventColor)',
+          color: 'var(--contrastTextColor)',
         }}
         onClick={handleShow}
       >
@@ -258,7 +256,11 @@ const SingleEvent = (props) => {
         </p>
       </button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        container={document.getElementById('root')}
+      >
         <Modal.Header>
           <Modal.Title>{props.label}</Modal.Title>
         </Modal.Header>
@@ -282,7 +284,10 @@ const SingleEvent = (props) => {
           )}
           {props.dataOrigin == 'user' && (
             <div id="event-color-picker">
-              <CompactPicker color={color} onChangeComplete={saveColor} />
+              <CompactPicker
+                color={color || '#F44E3B'}
+                onChangeComplete={saveColor}
+              />
             </div>
           )}
           <Description asso={props.dataOrigin == 'asso'} desc={props.desc} />

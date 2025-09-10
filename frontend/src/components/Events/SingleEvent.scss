@@ -8,7 +8,7 @@
   border: none;
   border-radius: 8px;
   background: var(--eventColor);
-  color: var(--contrastTextColor);
+  color: var(--contrastTextColor) !important;
   box-shadow: 0 4px 8px var(--shadowColorBold);
   transition: all 0.3s ease;
 }
@@ -36,4 +36,52 @@
 
 div[role='alert'] {
   z-index: 1050;
+}
+// Override Bootstrap Modal with CSS variables
+.modal-content {
+  background-color: var(--backgroundColor) !important;
+  color: var(--textColor) !important;
+  border: 1px solid var(--borderColor) !important;
+  box-shadow: 0 4px 12px var(--shadowColorBold) !important;
+  border-radius: 12px !important;
+}
+
+.modal-header,
+.modal-footer {
+  background-color: var(--subSectionBackgroundColor) !important;
+  border-color: var(--borderColor) !important;
+  color: var(--textColor) !important;
+}
+
+.modal-title {
+  color: var(--textColor) !important;
+  font-weight: bold;
+}
+
+.modal-body {
+  background-color: var(--backgroundColor) !important;
+  color: var(--messageColor) !important;
+}
+
+.modal-backdrop.show {
+  background-color: var(--shadowColor) !important;
+}
+
+// Buttons inside modal
+.modal .btn-primary {
+  background-color: var(--buttonColor) !important;
+  border-color: var(--buttonColor) !important;
+  color: var(--contrastTextColor) !important;
+
+  &:hover {
+    background-color: var(--buttonHoverColor) !important;
+    border-color: var(--buttonHoverColor) !important;
+  }
+
+  &:active,
+  &:focus {
+    background-color: var(--buttonActiveColor) !important;
+    border-color: var(--buttonActiveColor) !important;
+    box-shadow: 0 0 0 0.2rem var(--shadowColor) !important;
+  }
 }

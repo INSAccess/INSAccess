@@ -69,9 +69,14 @@ const SupportModal = () => {
       </Button>
 
       {/* 🔹 Modal itself */}
-      <Modal show={show} onHide={handleClose} centered>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        container={document.getElementById('root')}
+        centered
+      >
         <div className="support-modal">
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title>{t('Support')}</Modal.Title>
           </Modal.Header>
 
