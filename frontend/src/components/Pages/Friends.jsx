@@ -281,9 +281,7 @@ const Friends = () => {
   }
   return (
     <div
-      className="row friends-container"
-      style={{ margin: '2%' }}
-      data-theme={userTheme}
+      className="row friends-container mx-0"
     >
       <div className="search-container">
         <input

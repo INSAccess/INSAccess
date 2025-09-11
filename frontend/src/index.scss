@@ -1,19 +1,19 @@
 body {
   font-family: system-ui, sans-serif;
-  height: 100svh;
-  background: var(--backgroundColor);
+  min-height: 100svh;
+  background-color: var(--backgroundColor);
 }
 
 #root {
   display: block;
-  height: 100%;
-  background: var(--backgroundColor);
+  height: 100svh;
+  background-color: var(--backgroundColor);
   background-attachment: fixed;
 }
 
 .App {
   display: flex;
-  height: 100%;
+  height: 100svh;
   flex-direction: column;
 }
 

@@ -23,8 +23,14 @@
   color: #fff !important;
 }
 
-// Styles par défaut (fallback si pas de data-theme)
+// Styles utilisant les variables CSS définies dans index.scss
 .friends-container {
+  background: var(--backgroundColor);
+  width: 100%;
+  max-width: 100%;
+  padding: 1rem !important;
+  box-sizing: border-box;
+  
   .search-container {
     position: relative;
     width: 100%;
@@ -65,7 +71,7 @@
 
     &.no-results {
       cursor: default;
-      color: #6c757d;
+      color: var(--messageColor);
       font-style: italic;
 
       &:hover {
@@ -79,12 +85,12 @@
     }
 
     .btn-outline-primary {
-      border-color: #0d6efd;
-      color: #0d6efd;
+      border-color: var(--buttonColor);
+      color: var(--buttonColor);
       background-color: transparent;
 
       &:hover {
-        background-color: #0d6efd;
+        background-color: var(--buttonColor);
         color: var(--contrastTextColor);
       }
     }
@@ -107,7 +113,7 @@
     border-color: var(--borderColor);
 
     &:hover {
-      background-color: var(--subSectionBackgroundColor);
+      background-color: var(--hoverHighlight);
     }
   }
 
@@ -119,8 +125,9 @@
 
     &:focus {
       background-color: var(--backgroundColor);
-      border-color: #86b7fe;
-      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+      border-color: var(--buttonColor);
+      box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--buttonColor) 25%, transparent);
+      color: var(--textColor);
     }
 
     &::placeholder {
@@ -131,143 +138,5 @@
   .themed-hr {
     border-color: var(--borderColor);
     opacity: 1;
-  }
-}
-
-// Thème light (explicite)
-.friends-container[data-theme='light'] {
-  .suggestions-dropdown {
-    background: var(--backgroundColor);
-    border-color: var(--borderColor);
-    box-shadow: 0 0.5rem 1rem var(--shadowColorBold);
-  }
-
-  .suggestion-item {
-    border-bottom-color: var(--subSectionBackgroundColor);
-    color: var(--textColor);
-
-    &:hover {
-      background-color: var(--subSectionBackgroundColor);
-    }
-
-    &.no-results {
-      color: #6c757d;
-    }
-
-    .btn-outline-primary {
-      border-color: #0d6efd;
-      color: #0d6efd;
-      background-color: transparent;
-
-      &:hover {
-        background-color: #0d6efd;
-        color: var(--contrastTextColor);
-      }
-    }
-  }
-
-  .themed-title {
-    color: var(--textColor);
-    font-weight: 600;
-  }
-
-  .themed-list-item {
-    background-color: var(--backgroundColor);
-    color: var(--textColor);
-    border-color: var(--borderColor);
-
-    &:hover {
-      background-color: var(--subSectionBackgroundColor);
-    }
-  }
-
-  .themed-input {
-    background-color: var(--backgroundColor);
-    color: var(--textColor);
-    border-color: var(--borderColor);
-    margin-bottom: 0.8rem;
-
-    &:focus {
-      background-color: var(--backgroundColor);
-      border-color: #86b7fe;
-      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-    }
-
-    &::placeholder {
-      color: var(--messageColor);
-    }
-  }
-
-  .themed-hr {
-    border-color: var(--borderColor);
-  }
-}
-
-// Thème sombre
-.friends-container[data-theme='dark'] {
-  .suggestions-dropdown {
-    background: #343a40;
-    border-color: #495057;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
-  }
-
-  .suggestion-item {
-    color: #f8f9fa;
-    border-bottom-color: #495057;
-
-    &:hover {
-      background-color: #495057;
-    }
-
-    &.no-results {
-      color: #adb5bd;
-    }
-
-    .btn-outline-primary {
-      border-color: #0d6efd;
-      color: #0d6efd;
-      background-color: transparent;
-
-      &:hover {
-        background-color: #0d6efd;
-        color: var(--contrastTextColor);
-      }
-    }
-  }
-
-  .themed-title {
-    color: #f8f9fa;
-  }
-
-  .themed-list-item {
-    background-color: #343a40;
-    color: #f8f9fa;
-    border-color: #495057;
-
-    &:hover {
-      background-color: #495057;
-    }
-  }
-
-  .themed-input {
-    background-color: #495057;
-    color: #f8f9fa;
-    border-color: #6c757d;
-    margin-bottom: 0.8rem;
-
-    &:focus {
-      background-color: #495057;
-      border-color: #86b7fe;
-      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-      color: #f8f9fa;
-    }
-
-    &::placeholder {
-      color: #adb5bd;
-    }
-  }
-
-  .themed-hr {
-    border-color: #495057;
   }
 }
