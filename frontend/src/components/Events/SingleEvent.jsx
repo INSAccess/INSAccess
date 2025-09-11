@@ -195,7 +195,7 @@ const SingleEvent = (props) => {
       if (props.label && colors[props.label]) {
         setColor(colors[props.label]);
       } else {
-        setColor(null)
+        setColor(null);
       }
     }
   }, [
@@ -247,7 +247,7 @@ const SingleEvent = (props) => {
           width: `${props.width}%`,
           top: `${eventPosY}%`,
           left: `${props.left}%`,
-          backgroundColor: color || 'var(--eventColor)',
+          background: color || 'var(--eventColor)',
           color: 'var(--contrastTextColor)',
         }}
         onClick={handleShow}

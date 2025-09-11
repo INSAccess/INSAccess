@@ -159,7 +159,7 @@ const resources = {
         "For each class, there is a TD group associated. We use this to enable you to 'subscribe' to these classes. But sometimes, as these groups are written by hand, there can be some errors and we can't do anything on our side. We are actively working on a solution (temporary or permanent).",
       FAQ_AssoPublisher_Question: 'How can I publish events ?',
       FAQ_AssoPublisherAnswer:
-        "If you are eligible (an association, a club, or an INSA Service for exemple) you can contact the DSI to be flagged as a publisher. You must have beforehand visited the website at least once (for your account to be created via CAS) and there must be someone legally responsible for the CAS account you'll be using. When all this is done, there will be an extra tab in the Settings page for you to create and publish an event.",
+        "If you are eligible (an association, a club, or an INSA Service for exemple) you can contact the DSI (via https://support.insa-rouen.fr/) to be flagged as a publisher. You must have beforehand visited the website at least once (for your account to be created via CAS) and there must be someone legally responsible for the CAS account you'll be using. When all this is done, there will be an extra tab in the Settings page for you to create and publish an event.",
       FAQ_Webview_Question: 'Is the calendar available to download ?',
       FAQ_Webview_Answer:
         "The app is not available on Google Play or App Store but you can create a webview for yourself, as most navigators allow you to add a page to your homescreen. The way to do this can vary depending on your phone's model and the version of your navigator.",
@@ -332,7 +332,7 @@ const resources = {
       FAQ_AssoPublisher_Question:
         'Comment est-ce que je peux publier des événements ?',
       FAQ_AssoPublisherAnswer:
-        "Si vous êtes éligible (une association, un club ou un service INSA par exemple), vous pouvez contacter le DSI pour être référencé en tant qu'éditeur. Vous devez avoir préalablement visité le site web au moins une fois (pour que votre compte soit créé via CAS) et il doit y avoir une personne légalement responsable du compte CAS que vous utiliserez. Une fois toutes ces étapes effectuées, un onglet supplémentaire apparaîtra dans la page Paramètres pour vous permettre de créer et de publier un événement.",
+        "Si vous êtes éligible (une association, un club ou un service INSA par exemple), vous pouvez contacter le DSI (via https://support.insa-rouen.fr/) pour être référencé en tant qu'éditeur. Vous devez avoir préalablement visité le site web au moins une fois (pour que votre compte soit créé via CAS) et il doit y avoir une personne légalement responsable du compte CAS que vous utiliserez. Une fois toutes ces étapes effectuées, un onglet supplémentaire apparaîtra dans la page Paramètres pour vous permettre de créer et de publier un événement.",
       FAQ_Webview_Question: "Est-ce que je peux télécharger l'application ?",
       FAQ_Webview_Answer:
         "L'application n'est pas disponible sur Google Play ou l'App Store, mais vous pouvez créer une vue Web pour vous-même, car la plupart des navigateurs vous permettent d'ajouter une page à votre écran d'accueil. La manière de procéder peut varier en fonction du modèle de votre téléphone et de la version de votre navigateur.",
