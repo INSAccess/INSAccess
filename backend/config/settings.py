@@ -104,6 +104,7 @@ CAS_RENAME_ATTRIBUTES = {
     "mail": "email",
     "displayName": "first_name",
 }
+CAS_FORCE_CHANGE_USERNAME_CASE = "lower"
 
 WSGI_APPLICATION = "config.wsgi.application"
 
