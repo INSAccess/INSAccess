@@ -3,7 +3,6 @@ import os
 import sys
 from pathlib import Path
 from corsheaders.defaults import default_headers
-from core.utils.logging import RequestFilter
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -33,13 +32,13 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
-    "core.utils.middleware_log.RequestLogMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django_cas_ng.middleware.CASMiddleware",
+    "core.utils.middleware_log.RequestLogMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -151,22 +150,21 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DJANGO_LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "INFO")
-
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "filters": {
         "request_filter": {
-            "()": RequestFilter,
+            "()": "core.utils.middleware_log.RequestLogFilter",
         },
     },
     "formatters": {
-        "with_request": {
+        "simple_request": {
             "format": (
-                "[%(userip)s] - [%(user)s] - [%(sessionid)s] - "
-                "[%(asctime)s] - [%(method)s %(path)s %(status_code)s] - "
-                "[%(message)s] - "
-                "[%(user_agent)s]"
+                "[%(asctime)s] [%(levelname)s] "
+                "[user: %(user_username)s id:%(user_id)s] "
+                "[%(method)s %(path)s] "
+                "[ua: %(user_agent)s] - %(message)s"
             ),
             "style": "%",
         },
@@ -175,14 +173,14 @@ LOGGING = {
         "console_stdout": {
             "class": "logging.StreamHandler",
             "level": "INFO",
-            "formatter": "with_request",
+            "formatter": "simple_request",
             "filters": ["request_filter"],
             "stream": sys.stdout,
         },
         "console_stderr": {
             "class": "logging.StreamHandler",
             "level": "ERROR",
-            "formatter": "with_request",
+            "formatter": "simple_request",
             "filters": ["request_filter"],
             "stream": sys.stderr,
         },
@@ -190,7 +188,7 @@ LOGGING = {
     "loggers": {
         "": {
             "handlers": ["console_stdout", "console_stderr"],
-            "level": DJANGO_LOG_LEVEL,
+            "level": "INFO",
         },
     },
 }
