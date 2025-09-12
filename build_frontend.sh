@@ -4,6 +4,7 @@ set -e
 FRONTEND_DIR="frontend"
 BACKEND_DIR="backend"
 REACT_APP_API_URL="https://edt.insa-rouen.fr"
+REACT_APP_GIT_VERSION="0.3.5"
 #"https://edt.insa-rouen.fr"
 
 echo "[1] Cleaning previous build..."
@@ -17,6 +18,7 @@ echo "[3] Building frontend"
 export NODE_OPTIONS="--max_old_space_size=4096"
 export GENERATE_SOURCEMAP=false
 export REACT_APP_API_URL="$REACT_APP_API_URL"
+export REACT_APP_GIT_VERSION="$REACT_APP_GIT_VERSION"
 npm run build
 
 cd ..

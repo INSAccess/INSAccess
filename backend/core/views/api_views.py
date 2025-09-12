@@ -5,7 +5,6 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.core.mail import mail_admins
-from django.conf import settings
 
 from core.serializers import (
     InsaClassSerializer,
@@ -973,9 +972,7 @@ class BugReportAPIView(APIView):
             )
             return Response({"error": "Title and details are required."}, status=400)
 
-        subject = (
-            f"{settings.EMAIL_SUBJECT_PREFIX}Bug Report: {title} by {user.username}"
-        )
+        subject = f"Bug Report: {title} by {user.username}"
         message = (
             f"Bug Details:\n{details}\n\nReported by: {user.username} ({user.email})"
         )

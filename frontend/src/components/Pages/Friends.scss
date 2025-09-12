@@ -22,6 +22,9 @@
   border-color: #dc3545 !important;
   color: #fff !important;
 }
+.badge {
+  background-color: var(--buttonActiveColor) !important;
+}
 
 // Styles utilisant les variables CSS définies dans index.scss
 .friends-container {
@@ -30,7 +33,7 @@
   max-width: 100%;
   padding: 1rem !important;
   box-sizing: border-box;
-  
+
   .search-container {
     position: relative;
     width: 100%;
@@ -126,7 +129,8 @@
     &:focus {
       background-color: var(--backgroundColor);
       border-color: var(--buttonColor);
-      box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--buttonColor) 25%, transparent);
+      box-shadow: 0 0 0 0.25rem
+        color-mix(in srgb, var(--buttonColor) 25%, transparent);
       color: var(--textColor);
     }
 
