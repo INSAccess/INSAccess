@@ -287,7 +287,7 @@ const Friends = () => {
         <input
           className="form-control me-2 themed-input"
           type="search"
-          placeholder="Rechercher un utilisateur..."
+          placeholder={t("Search")}
           aria-label="Search"
           value={searchTerm}
           onChange={handleSearchChange}
