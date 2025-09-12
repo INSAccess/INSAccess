@@ -4,7 +4,7 @@ set -e
 FRONTEND_DIR="frontend"
 BACKEND_DIR="backend"
 REACT_APP_API_URL="https://edt.insa-rouen.fr"
-REACT_APP_GIT_VERSION="0.3.5"
+REACT_APP_GIT_VERSION="0.3.6"
 #"https://edt.insa-rouen.fr"
 
 echo "[1] Cleaning previous build..."

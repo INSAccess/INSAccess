@@ -152,7 +152,7 @@ const resources = {
         "1) Go to Friends, search for the user's INSA username (not their first and last name). If you are searching for Bernard Dupont, search for bdupont. \n2) Once invited, the user must accept the request so that both users can see each other's calendars (remember to refresh the page if the invitation does not appear).",
       Manual_Personnalize: 'Personnalization',
       Manual_PersonnalizeContent:
-        'Dans Paramètres / Autre, vous pouvez changer le thème et la langue du site',
+        'In Settings / Other, you can change the site’s theme and language.',
       //FAQ
       FAQ_Title: 'FAQ',
       FAQ_TdNotFound_Question: "I can't find some of my classes !",
