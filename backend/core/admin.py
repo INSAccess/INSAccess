@@ -34,9 +34,9 @@ class CustomAdminSite(AdminSite):
     site_title = "INSAccess Admin"
     index_title = "Welcome to INSAccess Admin Panel"
 
-    def get_app_list(self, request):
+    def get_app_list(self, request, app_label=None):
         """Customize admin sections"""
-        app_list = super().get_app_list(request)
+        app_list = super().get_app_list(request, app_label)
 
         custom_order = [
             {
