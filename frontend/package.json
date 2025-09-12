@@ -52,6 +52,7 @@
     ]
   },
   "devDependencies": {
-    "globals": "^15.15.0"
+    "globals": "^15.15.0",
+    "react-git-info": "^2.0.1"
   }
 }

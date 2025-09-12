@@ -332,7 +332,7 @@ const Friends = () => {
 
       <div className="col-md-6">
         <h2 className="themed-title">
-          {t('Friends')} ({friendsList.length})
+          {t('Friends')} <span className="badge rounded-pill text-bg-secondary">{friendsList.length}</span>
         </h2>
         <ul className="list-group themed-list">{friendsItems}</ul>
         <hr className="themed-hr" />
@@ -340,12 +340,12 @@ const Friends = () => {
 
       <div className="col-md-6">
         <h2 className="themed-title">
-          {t('InviteSent')} ({pendingList.length})
+          {t('InviteSent')} <span className="badge rounded-pill text-bg-secondary">{pendingList.length}</span>
         </h2>
         <ul className="list-group themed-list">{pendingItems}</ul>
         <hr className="themed-hr" />
         <h2 className="themed-title">
-          {t('InviteReceived')} ({receivedList.length})
+          {t('InviteReceived')} <span className="badge rounded-pill text-bg-secondary">{receivedList.length}</span>
         </h2>
         <ul className="list-group themed-list">{receivedItems}</ul>
       </div>

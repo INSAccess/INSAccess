@@ -178,6 +178,8 @@ const Manual = () => {
  * @returns {JSX.Element}
  */
 const License = () => {
+  const version = process.env.REACT_APP_GIT_VERSION;
+
   return (
     <div className="license-section py-4">
       <div className="container">
@@ -191,7 +193,7 @@ const License = () => {
                 className="license-link"
               >
                 INSAccess
-              </a>{' '}
+              </a>{version != undefined && ` v${version}`}{' '}
               by
               <span property="cc:attributionName">
                 &nbsp;Raphaël Senellart and Jules Galhardo&nbsp;
