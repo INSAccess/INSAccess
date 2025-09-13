@@ -5,6 +5,7 @@ import SingleEvent from './SingleEvent';
 import { baseEventWidth, minWidth } from '../../utils/Constants';
 import './EventsInDay.scss';
 import { useTranslation } from 'react-i18next';
+import { CustomDatePicker } from '../DatePicker.jsx'
 
 /**
  * React component that displays all the event of a given day
@@ -90,9 +91,16 @@ const EventsInDay = ({ date, data, dataOrigin }) => {
   return (
     <div className="day">
       <div className="date">
-        <p className="date-day">{infos[0]}</p>
-        <p className="date-num">{infos[1]}</p>
-        <p className="date-month">{infos[2]}</p>
+        {minWidth >= dimensions.width && (
+          <div className="mobile-datepicker">
+            <CustomDatePicker isMobile={true}/>
+          </div>
+        )}
+        <div className="date-content">
+          <p className="date-day">{infos[0]}</p>
+          <p className="date-num">{infos[1]}</p>
+          <p className="date-month">{infos[2]}</p>
+        </div>
       </div>
       <div className="events">{eventsList}</div>
     </div>

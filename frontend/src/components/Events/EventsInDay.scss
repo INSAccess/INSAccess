@@ -10,9 +10,26 @@
   height: var(--dateHeight);
   display: flex;
   justify-content: center;
-  align-items: center center;
+  align-items: center;
   margin: 1svh;
   gap: 0.5svw;
+  position: relative;
+}
+
+.mobile-datepicker {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-65%);
+  z-index: 10;
+}
+
+.date-content {
+  display: flex;
+  gap: 0.5svw;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 }
 
 .date-num,
@@ -31,4 +48,18 @@
 .date-day,
 .date-month {
   font-weight: 100;
+}
+
+@media (max-width: 768px) {
+  .mobile-datepicker {
+    left: 0;
+
+    .position-absolute {
+      transform: translateX(-8%) !important;
+    }
+  }
+  
+  .date {
+    padding: 0 40px 0 40px;
+  }
 }

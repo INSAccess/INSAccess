@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import '../utils/Dictionnary';
+import '../utils/Dictionnary.jsx';
 import { useState } from 'react';
 import './NavBar.scss';
 import { API_LOGOUT } from '../utils/Constants.jsx';
 import { useData } from '../contexts/DataContext.jsx';
+import { CustomDatePicker } from './DatePicker.jsx'
 
 export const NavBar = ({ page, setPage }) => {
   const BUNDLE = useData();
@@ -63,6 +64,7 @@ export const NavBar = ({ page, setPage }) => {
           </div>
 
           <div className="navbar-right">
+            <CustomDatePicker isMobile={false}/>
             <div id="welcome">
               {t('Welcome') + ' ' + displayName}
               <svg

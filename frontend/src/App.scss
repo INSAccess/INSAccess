@@ -37,8 +37,8 @@
     --shadowColorBold: rgba(0, 0, 0, 0.3);
     --shadowColor: rgba(0, 0, 0, 0.1);
 
-    --arrowImg: url('/images/fleche.png');
-    --insaLogo: url('/images/Logo_INSA_noir.png');
+    --arrowImg: url('./images/fleche.png');
+    --insaLogo: url('./images/Logo_INSA_noir.png');
   }
 
   @media (prefers-color-scheme: dark) {
@@ -67,8 +67,8 @@
     --shadowColorBold: rgba(0, 0, 0, 0.7);
     --shadowColor: rgba(0, 0, 0, 0.3);
 
-    --arrowImg: url('/images/fleche_w.png');
-    --insaLogo: url('/images/Logo_INSA_blanc.png');
+    --arrowImg: url('./images/fleche_w.png');
+    --insaLogo: url('./images/Logo_INSA_blanc.png');
   }
   ///// CUSTOM COLOR //////
   [data-theme='light'] {
@@ -97,8 +97,8 @@
     --shadowColorBold: rgba(0, 0, 0, 0.3);
     --shadowColor: rgba(0, 0, 0, 0.1);
 
-    --arrowImg: url('/images/fleche.png');
-    --insaLogo: url('/images/Logo_INSA_noir.png');
+    --arrowImg: url('./images/fleche.png');
+    --insaLogo: url('./images/Logo_INSA_noir.png');
   }
 
   [data-theme='dark'] {
@@ -127,8 +127,8 @@
     --shadowColorBold: rgba(0, 0, 0, 0.7);
     --shadowColor: rgba(0, 0, 0, 0.3);
 
-    --arrowImg: url('/images/fleche_w.png');
-    --insaLogo: url('/images/Logo_INSA_blanc.png');
+    --arrowImg: url('./images/fleche_w.png');
+    --insaLogo: url('./images/Logo_INSA_blanc.png');
   }
   [data-theme='dark-violet'] {
     --backgroundColor: #202020;
@@ -155,8 +155,8 @@
     --shadowColorBold: rgba(0, 0, 0, 0.7);
     --shadowColor: rgba(0, 0, 0, 0.3);
 
-    --arrowImg: url('/images/fleche_w.png');
-    --insaLogo: url('/images/Logo_INSA_blanc.png');
+    --arrowImg: url('./images/fleche_w.png');
+    --insaLogo: url('./images/Logo_INSA_blanc.png');
   }
   [data-theme='dark-blue'] {
     --backgroundColor: #202020;
@@ -184,8 +184,8 @@
     --shadowColorBold: rgba(0, 0, 0, 0.7);
     --shadowColor: rgba(0, 0, 0, 0.3);
 
-    --arrowImg: url('/images/fleche_w.png');
-    --insaLogo: url('/images/Logo_INSA_blanc.png');
+    --arrowImg: url('./images/fleche_w.png');
+    --insaLogo: url('./images/Logo_INSA_blanc.png');
   }
   [data-theme='dark-sunset'] {
     --backgroundColor: #2b1a0f;
@@ -212,8 +212,8 @@
     --shadowColorBold: rgba(0, 0, 0, 0.7);
     --shadowColor: rgba(0, 0, 0, 0.3);
 
-    --arrowImg: url('/images/fleche_w.png');
-    --insaLogo: url('/images/Logo_INSA_blanc.png');
+    --arrowImg: url('./images/fleche_w.png');
+    --insaLogo: url('./images/Logo_INSA_blanc.png');
   }
 
   [data-theme='dark-ocean'] {
@@ -241,8 +241,8 @@
     --shadowColorBold: rgba(0, 0, 0, 0.7);
     --shadowColor: rgba(0, 0, 0, 0.3);
 
-    --arrowImg: url('/images/fleche_w.png');
-    --insaLogo: url('/images/Logo_INSA_blanc.png');
+    --arrowImg: url('./images/fleche_w.png');
+    --insaLogo: url('./images/Logo_INSA_blanc.png');
   }
   [data-theme='dark-forest'] {
     --backgroundColor: #0f1f12;
@@ -269,8 +269,8 @@
     --shadowColorBold: rgba(0, 0, 0, 0.7);
     --shadowColor: rgba(0, 0, 0, 0.3);
 
-    --arrowImg: url('/images/fleche_w.png');
-    --insaLogo: url('/images/Logo_INSA_blanc.png');
+    --arrowImg: url('./images/fleche_w.png');
+    --insaLogo: url('./images/Logo_INSA_blanc.png');
   }
 
   [data-theme='light-blue'] {
@@ -298,8 +298,8 @@
     --shadowColorBold: rgba(0, 0, 0, 0.25);
     --shadowColor: rgba(0, 0, 0, 0.1);
 
-    --arrowImg: url('/images/fleche.png');
-    --insaLogo: url('/images/Logo_INSA_noir.png');
+    --arrowImg: url('./images/fleche.png');
+    --insaLogo: url('./images/Logo_INSA_noir.png');
   }
 
   [data-theme='light-violet'] {
@@ -327,8 +327,8 @@
     --shadowColorBold: rgba(0, 0, 0, 0.25);
     --shadowColor: rgba(0, 0, 0, 0.1);
 
-    --arrowImg: url('/images/fleche.png');
-    --insaLogo: url('/images/Logo_INSA_noir.png');
+    --arrowImg: url('./images/fleche.png');
+    --insaLogo: url('./images/Logo_INSA_noir.png');
   }
   [data-theme='ocean'] {
     --backgroundColor: #e0f7fa;
@@ -355,8 +355,8 @@
     --shadowColorBold: rgba(0, 0, 0, 0.25);
     --shadowColor: rgba(0, 0, 0, 0.1);
 
-    --arrowImg: url('/images/fleche.png');
-    --insaLogo: url('/images/Logo_INSA_noir.png');
+    --arrowImg: url('./images/fleche.png');
+    --insaLogo: url('./images/Logo_INSA_noir.png');
   }
   [data-theme='sunset'] {
     --backgroundColor: #fff3e0;
@@ -383,8 +383,8 @@
     --shadowColorBold: rgba(0, 0, 0, 0.3);
     --shadowColor: rgba(0, 0, 0, 0.1);
 
-    --arrowImg: url('/images/fleche.png');
-    --insaLogo: url('/images/Logo_INSA_noir.png');
+    --arrowImg: url('./images/fleche.png');
+    --insaLogo: url('./images/Logo_INSA_noir.png');
   }
   [data-theme='forest'] {
     --backgroundColor: #f1f8e9;
@@ -411,8 +411,8 @@
     --shadowColorBold: rgba(0, 0, 0, 0.25);
     --shadowColor: rgba(0, 0, 0, 0.1);
 
-    --arrowImg: url('/images/fleche.png');
-    --insaLogo: url('/images/Logo_INSA_noir.png');
+    --arrowImg: url('./images/fleche.png');
+    --insaLogo: url('./images/Logo_INSA_noir.png');
   }
   [data-theme='matrix'] {
     --backgroundColor: #000000;
@@ -439,8 +439,8 @@
     --shadowColorBold: rgba(0, 0, 0, 0.7);
     --shadowColor: rgba(0, 0, 0, 0.3);
 
-    --arrowImg: url('/images/fleche_w.png');
-    --insaLogo: url('/images/Logo_INSA_blanc.png');
+    --arrowImg: url('./images/fleche_w.png');
+    --insaLogo: url('./images/Logo_INSA_blanc.png');
   }
 }
 
