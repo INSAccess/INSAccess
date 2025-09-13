@@ -92,7 +92,6 @@ const resources = {
       NameError: "Error while searching for a user's display name ",
       ImageLoadingError: 'Failed to load image ',
       ErrorSavingTD: 'Failed to save TDs ',
-      ErrorTemplate: 'An error occured ',
       // Form
       FormTitle: 'Event title',
       FormDate: 'Date',
@@ -264,7 +263,6 @@ const resources = {
       NameError: "Error while searching for a user's display name ",
       ImageLoadingError: "Echec du chargement de l'image",
       ErrorSavingTD: 'Echec de la sauvegarde des TDs',
-      ErrorTemplate: 'Une erreur est arrivé',
       // Form
       FormTitle: "Titre de l'événement",
       FormDate: 'Date',

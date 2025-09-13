@@ -178,7 +178,7 @@ const Manual = () => {
  * @returns {JSX.Element}
  */
 const License = () => {
-  const version = process.env.REACT_APP_GIT_VERSION;
+  const version = import.meta.env.VITE_GIT_VERSION;
 
   return (
     <div className="license-section py-4">
