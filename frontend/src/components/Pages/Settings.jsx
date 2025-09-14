@@ -1,4 +1,5 @@
 import TDSelection from '../TDSelection.jsx';
+import AssoSelection from '../AssoSelection.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
 import { useEffect, useState, useRef } from 'react';
 import { API_URL, minWidth } from '../../utils/Constants.jsx';
@@ -241,9 +242,11 @@ const Settings = () => {
             )}
           </>
         );
+      case 'assos':
+        return <AssoSelection />;
       case 'create':
         return <EventCreator />;
-      case 'autre':
+      case 'other':
         return <OtherParams />;
     }
   }
@@ -253,33 +256,18 @@ const Settings = () => {
   return (
     <div className="settings">
       <div className="view">
-        <Button
-          className="btn-view"
-          style={{ flex: view == 'TDs' ? '2' : '1' }}
-          onClick={() => {
-            setView('TDs');
-          }}
-        >
+        <Button className={`btn-view ${view == 'TDs' ? 'active' : ''}`} onClick={() => setView('TDs')}>
           {dimensions.width > minWidth ? t('TDList') : t('TDListShort')}
         </Button>
+        <Button className={`btn-view ${view == 'assos' ? 'active' : ''}`} onClick={() => setView('assos')}>
+          {dimensions.width > minWidth ? t('AssoList') : t('AssoListShort')}
+        </Button>
         {isAssos && (
-          <Button
-            className="btn-view"
-            style={{ flex: view === 'create' ? '2' : '1' }}
-            onClick={() => setView('create')}
-          >
-            {dimensions.width > minWidth
-              ? t('CreateEvent')
-              : t('CreateEventShort')}
+          <Button className={`btn-view ${view == 'create' ? 'active' : ''}`} onClick={() => setView('create')}>
+            {dimensions.width > minWidth ? t('CreateEvent') : t('CreateEventShort')}
           </Button>
         )}
-        <Button
-          className="btn-view"
-          style={{ flex: view == 'autre' ? '2' : '1' }}
-          onClick={() => {
-            setView('autre');
-          }}
-        >
+        <Button className={`btn-view ${view == 'other' ? 'active' : ''}`} onClick={() => setView('other')}>
           {t('OtherSettings')}
         </Button>
       </div>

@@ -46,8 +46,10 @@ export const DataProvider = (props) => {
   const [userTheme, setUserTheme] = useState(null);
   const [userProfile, setProfile] = useState(null);
   const [tds, setTds] = useState({});
+  const [userAssos, setUserAssos] = useState(["Dev"]);
   const [updateCounter, setUpdateCounter] = useState(0);
   const [userList, setUserList] = useState([]);
+  const [assoList, setAssoList] = useState(["Dev", "Amir"]);
   const [friendsList, setFriendsList] = useState([]);
   const [pendingList, setPendingList] = useState([]);
   const [receivedList, setReceivedList] = useState([]);
@@ -234,6 +236,8 @@ export const DataProvider = (props) => {
           setColorsFriend,
           currentFriend,
           setCurrentFriend,
+          userAssos, 
+          assoList,
         }}
       >
         {props.children}
