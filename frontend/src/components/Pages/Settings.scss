@@ -27,6 +27,15 @@
   background-color: var(--buttonActiveColor) !important;
 }
 
+.subsection {
+  background: var(--subSectionBackgroundColor);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px var(--shadowColor);
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  margin-top: 0.4rem;
+}
+
 .view {
   width: 100%;
   display: flex;
@@ -36,7 +45,7 @@
   margin-top: 2svh;
 }
 
-.btn_view {
+.btn-view {
   flex: 1;
   color: var(--contrastTextColor) !important;
   background-color: var(--buttonColor) !important;
@@ -45,12 +54,12 @@
   transition: all 0.3s ease;
 }
 
-.btn_view:hover {
+.btn-view:hover {
   background-color: var(--buttonHoverColor) !important;
   box-shadow: 0 3px 3px var(--buttonHoverColor);
 }
 
-.btn_view:active {
+.btn-view:active {
   box-shadow: 5px 5px 3px var(--buttonColor);
 }
 
@@ -58,9 +67,9 @@
   margin: 2%;
 }
 
-.dropdown_container {
+.dropdown-container {
   display: flex;
-  margin: 2%;
+  margin: 1.5%;
   flex-wrap: wrap;
 }
 
@@ -77,9 +86,6 @@
 .checkbox-list {
   padding: 20px;
   margin-bottom: 20px;
-  background-color: var(--subSectionBackgroundColor);
-  border-radius: 8px;
-  box-shadow: 0 4px 10px var(--shadowColorBold);
 }
 
 @media (min-width: 768px) {
@@ -110,14 +116,14 @@
   transform: scale(1.5);
 }
 
-.button_validate {
+.button-validate {
   background-color: var(--buttonColor);
   padding: 10px 20px;
   cursor: pointer;
   width: 100%;
 }
 
-.button_validate:hover {
+.button-validate:hover {
   background-color: var(--buttonHoverColor);
 }
 
@@ -134,75 +140,9 @@
   align-items: center;
   width: 100%;
   max-width: 500px;
-  margin: 2rem auto;
-  background: var(--subSectionBackgroundColor);
   border: 1px solid var(--borderColor);
   border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px var(--shadowColor);
   gap: 4px;
-  padding: 4px;
-}
-
-.copy-input {
-  flex: 1;
-  border: none;
-  padding: 12px 16px;
-  font-size: 1rem;
-  background: transparent;
-  color: var(--textColor);
-}
-
-.copy-input:focus {
-  outline: none;
-}
-
-.copy-button {
-  min-width: 70px;
-}
-
-.settings {
-  color: var(--textColor);
-  background-color: var(--backgroundColor);
-  width: 100%;
-  padding: 1rem;
-  box-sizing: border-box;
-}
-
-.settings-section {
-  background: var(--subSectionBackgroundColor);
-  border: 1px solid var(--borderColor);
-  border-radius: 12px;
-  box-shadow: 0 4px 10px var(--shadowColor);
-  padding: 1rem;
-  margin-bottom: 2rem;
-}
-
-.section-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  color: var(--textColor);
-}
-
-.setting-item {
-  margin-right: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.copy-container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  width: 100%;
-  max-width: 500px;
-  margin: 1rem 0;
-  background: var(--subSectionBackgroundColor);
-  border: 1px solid var(--borderColor);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px var(--shadowColor);
-  gap: 4px;
-  padding: 4px;
 }
 
 .copy-input {
@@ -220,6 +160,36 @@
 }
 
 .copy-button {
-  min-width: 80px;
+  min-width: 70px;
   flex-shrink: 0;
+  margin-right: 0.2rem;
 }
+
+.settings {
+  color: var(--textColor);
+  background-color: var(--backgroundColor);
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.settings-section {
+  border: 1px solid var(--borderColor);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px var(--shadowColor);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--textColor);
+}
+
+.setting-item {
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+}
+

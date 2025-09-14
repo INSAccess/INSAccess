@@ -58,7 +58,7 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
       <div className="row">
         {/* Première liste - 12 colonnes sur mobile, 6 sur desktop */}
         <div className="col-12 col-md-6">
-          <div className="checkbox-list">
+          <div className="checkbox-list subsection">
             <h1>{t('TDLikely')}</h1>
             {departementTDs.map((td) => (
               <li key={td}>
@@ -77,7 +77,7 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
 
         {/* Deuxième liste - 12 colonnes sur mobile, 6 sur desktop */}
         <div className="col-12 col-md-6">
-          <div className="checkbox-list">
+          <div className="checkbox-list subsection">
             <h1>{t('TDNotLikely')}</h1>
             {otherTDs.map((td) => (
               <li key={td}>
@@ -93,9 +93,9 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
             ))}
           </div>
         </div>
-        <div className="validate">
+        <div className="validate subsection">
           <button
-            className="button_validate btn btn-primary"
+            className="button-validate btn btn-primary"
             onClick={saveSelection}
           >
             {t('Save')}

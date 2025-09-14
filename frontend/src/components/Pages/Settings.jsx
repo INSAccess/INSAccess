@@ -174,7 +174,7 @@ const Settings = () => {
     return (
       <div className="settings container-fluid">
         {/* Preferences Section */}
-        <section className="settings-section">
+        <section className="settings-section subsection">
           <h3 className="section-title">{t('Preferences')}</h3>
           <div className="d-flex flex-wrap gap-3">
             <div className="setting-item">
@@ -187,13 +187,13 @@ const Settings = () => {
         </section>
 
         {/* Bug Report Section */}
-        <section className="settings-section">
+        <section className="settings-section subsection">
           <h3 className="section-title">{t('Support')}</h3>
           <SupportModal />
         </section>
 
         {/* ICS Feed Section */}
-        <section className="settings-section">
+        <section className="settings-section subsection">
           <h3 className="section-title">{t('ICSLink')}</h3>
           <p>{t('ICSText')}</p>
 
@@ -226,7 +226,7 @@ const Settings = () => {
       case 'TDs':
         return (
           <>
-            <div className="dropdown_container">
+            <div className="dropdown-container subsection">
               <DropDownDepart />
               <DropDownYear />
             </div>
@@ -254,7 +254,7 @@ const Settings = () => {
     <div className="settings">
       <div className="view">
         <Button
-          className="btn_view"
+          className="btn-view"
           style={{ flex: view == 'TDs' ? '2' : '1' }}
           onClick={() => {
             setView('TDs');
@@ -264,7 +264,7 @@ const Settings = () => {
         </Button>
         {isAssos && (
           <Button
-            className="btn_view"
+            className="btn-view"
             style={{ flex: view === 'create' ? '2' : '1' }}
             onClick={() => setView('create')}
           >
@@ -274,7 +274,7 @@ const Settings = () => {
           </Button>
         )}
         <Button
-          className="btn_view"
+          className="btn-view"
           style={{ flex: view == 'autre' ? '2' : '1' }}
           onClick={() => {
             setView('autre');
