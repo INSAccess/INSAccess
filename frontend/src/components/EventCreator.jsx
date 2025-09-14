@@ -119,6 +119,13 @@ const EvenementForm = ({}) => {
       formData.set('end_hour', '18:15');
     }
 
+    startHour = formData.get('start_hour');
+    endHour = formData.get('end_hour')
+    if (parseInt(startHour.replace(/:/, '')) > parseInt(endHour.replace(/:/, ''))){
+      formData.set('start_hour', endHour);
+      formData.set('end_hour', startHour);
+    }
+
     const formJson = Object.fromEntries(formData.entries());
     saveEvenement({ form: formJson });
   }
