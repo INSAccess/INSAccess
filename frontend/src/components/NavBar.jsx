@@ -13,8 +13,8 @@ export const NavBar = ({ page, setPage }) => {
   const items = [
     { name: t('Calendar'), href: 'home' },
     { name: t('Events'), href: 'associations' },
-    { name: t('Settings'), href: 'settings' },
     { name: t('Friends'), href: 'friends' },
+    { name: t('Settings'), href: 'settings' },
     { name: t('Help'), href: 'help' },
   ];
 
