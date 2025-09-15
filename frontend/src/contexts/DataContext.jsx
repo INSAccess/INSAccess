@@ -46,10 +46,10 @@ export const DataProvider = (props) => {
   const [userTheme, setUserTheme] = useState(null);
   const [userProfile, setProfile] = useState(null);
   const [tds, setTds] = useState({});
-  const [userAssos, setUserAssos] = useState(["Dev"]);
+  const [userAssos, setUserAssos] = useState([]);
   const [updateCounter, setUpdateCounter] = useState(0);
   const [userList, setUserList] = useState([]);
-  const [assoList, setAssoList] = useState(["Dev", "Amir"]);
+  const [assoList, setAssoList] = useState([]);
   const [friendsList, setFriendsList] = useState([]);
   const [pendingList, setPendingList] = useState([]);
   const [receivedList, setReceivedList] = useState([]);
@@ -113,6 +113,7 @@ export const DataProvider = (props) => {
           resultLanguages,
           resultUsers,
           resultFriends,
+          resultAssociations,
         ] = await Promise.all([
           RandomUtils.fetchData(PATH_ASSO_CALENDAR),
           RandomUtils.fetchData(PATH_USER_CALENDAR),
@@ -121,6 +122,7 @@ export const DataProvider = (props) => {
           RandomUtils.fetchData(API_URL + '/api/metadata/languages'),
           RandomUtils.fetchData(API_URL + '/api/metadata/users'),
           RandomUtils.fetchData(API_URL + '/api/user/friends'),
+          RandomUtils.fetchData(API_URL + '/api/metadata/associations'),
         ]);
 
         if (resultAsso.data) {
@@ -146,6 +148,11 @@ export const DataProvider = (props) => {
           setAssoName(profileData.asso);
         }
 
+        if (resultAssociations.data) {
+          setUserAssos(resultAssociations.data.user_associations);
+          setAssoList(resultAssociations.data.all_associations);
+        }
+
         if (resultUsers.data) {
           setUserList(resultUsers.data);
         }
@@ -164,7 +171,7 @@ export const DataProvider = (props) => {
       }
     };
     loadMainData();
-  }, [shouldUpdate, day, props.page, CONFIG, updateCounter]);
+  }, [shouldUpdate, props.page, CONFIG, updateCounter]);
 
   useEffect(() => {
     const loadAllTds = async () => {
@@ -236,7 +243,7 @@ export const DataProvider = (props) => {
           setColorsFriend,
           currentFriend,
           setCurrentFriend,
-          userAssos, 
+          userAssos,
           assoList,
         }}
       >
