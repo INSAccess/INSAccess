@@ -1,10 +1,7 @@
 from django.shortcuts import redirect
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from core.models import UserProfile, GroupTD
 from django.conf import settings
-from django.contrib.auth.signals import user_logged_in
-from django.dispatch import receiver
 
 import logging
 
@@ -26,15 +23,11 @@ def get_frontend_url():
 @login_required
 def finalize(request):
     user_profile, profile_created = UserProfile.objects.get_or_create(user=request.user)
-    user_profile.save()
-
+    subscribed_tds = request.session.get("attributes", {}).get("supannAffectation", [])
+    subscribed_tds = [td.upper() for td in subscribed_tds]
     if profile_created:
-        subscribed_tds = request.session.get("attributes", {}).get(
-            "supannAffectation", []
-        )
-        subscribed_tds = [td.upper() for td in subscribed_tds]
-
+        user_profile.save()
         tds_in_db = GroupTD.objects.filter(name__in=subscribed_tds)
         user_profile.link_td.add(*tds_in_db)
-
+    logger.info(f"User logged in with {subscribed_tds} as his td_groups")
     return redirect(get_frontend_url())
