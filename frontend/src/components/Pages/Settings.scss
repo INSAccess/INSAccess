@@ -48,8 +48,9 @@
   color: var(--contrastTextColor) !important;
   background-color: var(--buttonColor) !important;
   height: 60%;
-  margin-inline: 2px;
+  margin-inline: 0.1rem;
   transition: all 0.3s ease;
+  text-align: center;
 }
 
 .btn-view.active {
@@ -73,7 +74,7 @@
 }
 
 .margin2 {
-  margin: 2%;
+  margin: 0.1rem;
 }
 
 .dropdown-container {

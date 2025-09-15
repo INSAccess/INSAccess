@@ -78,6 +78,8 @@ const resources = {
       Delete: 'Delete',
       // Other
       WIP: 'Coming soon...',
+      ToastInfoTitle: 'Important',
+      ToastInfoContent: 'Some classes were not given a TD group when first created by the administration and consequently don\'t show up on the list of available TDs. We are currently working on the issue, thank you for your understanding.',
       // Errors and Success
       LoadError: 'Error while loading ',
       SaveError: 'Error while saving ',
@@ -252,6 +254,8 @@ const resources = {
       Delete: 'Supprimer',
       // Other
       WIP: 'Ça arrive bientôt...',
+      ToastInfoTitle: 'Important',
+      ToastInfoContent: 'Certains cours n\'ont pas de groupes de TD qui leur ont été associés par l\'administration, ils n\'apparaissent donc pas encore sur l\'agenda. On travaille activement dessus, merci pour votre compréhension.',
       // Errors and Success
       LoadError: 'Erreur pendant le chargement',
       SaveError: 'Erreur pendant la sauvegarde',
