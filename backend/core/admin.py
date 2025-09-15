@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite
 from .models import (
-    # Core Models
     UserProfile,
     InsaClass,
     InsaEvenement,
@@ -14,31 +13,28 @@ from .models import (
     UserColoredEvent,
     UserRelationship,
     Title,
-    # Enum Models
     EnumType,
     EnumSector,
     EnumColorTheme,
     EnumLanguage,
-    # Link Models
     ClassLinkTD,
     ClassLinkRoom,
     ClassLinkTeacher,
     ClassLinkDepart,
     UserLinkTD,
+    UserLinkAssociation,
 )
 
 
-# === Custom Admin Site === #
 class CustomAdminSite(AdminSite):
     site_header = "INSAccess Admin Dashboard"
     site_title = "INSAccess Admin"
     index_title = "Welcome to INSAccess Admin Panel"
 
     def get_app_list(self, request):
-        """Customize admin sections"""
         app_list = super().get_app_list(request)
 
-        custom_order = [
+        sections = [
             {
                 "name": "Core Models",
                 "models": [
@@ -68,65 +64,63 @@ class CustomAdminSite(AdminSite):
                     "ClassLinkTeacher",
                     "ClassLinkDepart",
                     "UserLinkTD",
+                    "UserLinkAssociation",
                 ],
             },
         ]
 
-        new_app_list = []
-        for section in custom_order:
-            section_models = []
-            for app in app_list:
-                for model in app["models"]:
-                    if model["object_name"] in section["models"]:
-                        section_models.append(model)
-
+        ordered_apps = []
+        for section in sections:
+            section_models = [
+                model
+                for app in app_list
+                for model in app["models"]
+                if model["object_name"] in section["models"]
+            ]
             if section_models:
-                new_app_list.append({"name": section["name"], "models": section_models})
+                ordered_apps.append({"name": section["name"], "models": section_models})
 
-        return new_app_list
+        return ordered_apps
 
 
-# Create an instance of the custom admin site
 custom_admin_site = CustomAdminSite(name="custom_admin")
 
-# === Register Models with the Custom Admin === #
 
-# === INLINE MODELS === #
+# === Inlines === #
+class BaseInline(admin.TabularInline):
+    extra = 1
 
 
-class ClassLinkTDInline(admin.TabularInline):
+class ClassLinkTDInline(BaseInline):
     model = ClassLinkTD
-    extra = 1
 
 
-class ClassLinkRoomInline(admin.TabularInline):
+class ClassLinkRoomInline(BaseInline):
     model = ClassLinkRoom
-    extra = 1
 
 
-class ClassLinkTeacherInline(admin.TabularInline):
+class ClassLinkTeacherInline(BaseInline):
     model = ClassLinkTeacher
-    extra = 1
 
 
-class ClassLinkDepartInline(admin.TabularInline):
+class ClassLinkDepartInline(BaseInline):
     model = ClassLinkDepart
-    extra = 1
 
 
-# === CORE MODELS === #
-
-
+# === Core Models === #
+@admin.register(UserProfile, site=custom_admin_site)
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ("user",)
     search_fields = ("user__email",)
 
 
+@admin.register(UserRelationship, site=custom_admin_site)
 class UserRelationshipAdmin(admin.ModelAdmin):
     list_display = ("first_user", "second_user", "type")
     search_fields = ("first_user__username", "second_user__username", "type")
 
 
+@admin.register(InsaClass, site=custom_admin_site)
 class InsaClassAdmin(admin.ModelAdmin):
     list_display = ("desc", "start_hour", "end_hour")
     list_filter = ("time_created", "desc")
@@ -139,102 +133,89 @@ class InsaClassAdmin(admin.ModelAdmin):
     ]
 
 
+@admin.register(Association, site=custom_admin_site)
 class AssociationAdmin(admin.ModelAdmin):
     list_display = ("name", "color", "type", "sector")
     search_fields = ("name", "type", "sector")
 
 
+@admin.register(InsaEvenement, site=custom_admin_site)
 class InsaEvenementAdmin(admin.ModelAdmin):
     list_display = ("desc", "start_hour", "end_hour", "association")
     list_filter = ("time_created", "association")
     search_fields = ("desc", "association__name")
 
 
+@admin.register(AssociationPublisher, site=custom_admin_site)
 class AssociationPublisherAdmin(admin.ModelAdmin):
     list_display = ("association", "user")
     search_fields = ("association__name", "user__email")
 
 
+@admin.register(Department, site=custom_admin_site)
 class DepartmentAdmin(admin.ModelAdmin):
     list_display = ("name",)
     search_fields = ("name",)
 
 
+@admin.register(Teacher, site=custom_admin_site)
 class TeacherAdmin(admin.ModelAdmin):
     list_display = ("name",)
     search_fields = ("name",)
 
 
+@admin.register(Room, site=custom_admin_site)
 class RoomAdmin(admin.ModelAdmin):
     list_display = ("name",)
     search_fields = ("name",)
 
 
-class EvenementRoomAdmin(admin.ModelAdmin):
-    list_display = ("name",)
-    search_fields = ("name",)
-
-
+@admin.register(GroupTD, site=custom_admin_site)
 class GroupTDAdmin(admin.ModelAdmin):
     list_display = ("name",)
     search_fields = ("name",)
 
 
+@admin.register(UserColoredEvent, site=custom_admin_site)
 class UserColoredEventAdmin(admin.ModelAdmin):
     list_display = ("user",)
     search_fields = ("user",)
 
 
-# === LINK MODELS  === #
+custom_admin_site.register(Title)
 
 
-@admin.register(ClassLinkTD)
+# === Enums === #
+for enum_model in [EnumType, EnumSector, EnumColorTheme, EnumLanguage]:
+    custom_admin_site.register(enum_model)
+
+
+# === Link Models === #
+@admin.register(ClassLinkTD, site=custom_admin_site)
 class ClassLinkTDAdmin(admin.ModelAdmin):
     list_display = ("insa_class", "td")
 
 
-@admin.register(ClassLinkRoom)
+@admin.register(ClassLinkRoom, site=custom_admin_site)
 class ClassLinkRoomAdmin(admin.ModelAdmin):
     list_display = ("insa_class", "room")
 
 
-@admin.register(ClassLinkTeacher)
+@admin.register(ClassLinkTeacher, site=custom_admin_site)
 class ClassLinkTeacherAdmin(admin.ModelAdmin):
     list_display = ("insa_class", "teacher")
 
 
-@admin.register(ClassLinkDepart)
+@admin.register(ClassLinkDepart, site=custom_admin_site)
 class ClassLinkDepartAdmin(admin.ModelAdmin):
     list_display = ("insa_class", "depart")
 
 
-@admin.register(UserLinkTD)
+@admin.register(UserLinkTD, site=custom_admin_site)
 class UserLinkTDAdmin(admin.ModelAdmin):
     list_display = ("user", "name_td")
 
 
-custom_admin_site.register(UserProfile, UserProfileAdmin)
-custom_admin_site.register(InsaClass, InsaClassAdmin)
-custom_admin_site.register(Association, AssociationAdmin)
-custom_admin_site.register(InsaEvenement, InsaEvenementAdmin)
-custom_admin_site.register(AssociationPublisher, AssociationPublisherAdmin)
-custom_admin_site.register(Department, DepartmentAdmin)
-custom_admin_site.register(Teacher, TeacherAdmin)
-custom_admin_site.register(Room, RoomAdmin)
-custom_admin_site.register(GroupTD, GroupTDAdmin)
-custom_admin_site.register(UserColoredEvent, UserColoredEventAdmin)
-custom_admin_site.register(UserRelationship, UserRelationshipAdmin)
-custom_admin_site.register(Title)
-
-# Enums
-custom_admin_site.register(EnumType)
-custom_admin_site.register(EnumSector)
-custom_admin_site.register(EnumColorTheme)
-custom_admin_site.register(EnumLanguage)
-
-# Link Models
-custom_admin_site.register(ClassLinkTD, ClassLinkTDAdmin)
-custom_admin_site.register(ClassLinkRoom, ClassLinkRoomAdmin)
-custom_admin_site.register(ClassLinkTeacher, ClassLinkTeacherAdmin)
-custom_admin_site.register(ClassLinkDepart, ClassLinkDepartAdmin)
-custom_admin_site.register(UserLinkTD, UserLinkTDAdmin)
+@admin.register(UserLinkAssociation, site=custom_admin_site)
+class UserLinkAssociationAdmin(admin.ModelAdmin):
+    list_display = ("user", "name_assos")

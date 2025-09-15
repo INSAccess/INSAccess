@@ -11,7 +11,6 @@ import Alert from '@mui/material/Alert';
  * @returns {JSX.Element}
  */
 function AssoSelection() {
-
   const { userAssos, assoList, forceUpdate } = useData();
   const { t } = useTranslation();
 
@@ -33,7 +32,7 @@ function AssoSelection() {
   // Function to save selection to the backend
   const saveSelection = async () => {
     try {
-      const response = await fetch(API_URL + '/api/user/assos_groups', {
+      const response = await fetch(API_URL + '/api/user/associations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
