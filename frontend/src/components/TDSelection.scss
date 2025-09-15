@@ -1,0 +1,18 @@
+#info-btn {
+    height: 80%;
+}
+
+.toast {
+    background-color: var(--eventColor);
+
+    .toast-header {
+        color: var(--contrastTextColor);
+        background-color: var(--subSectionBackgroundColor);
+        font-weight: bold;
+    }
+
+    .toast-body {
+        color: var(--textColor);
+        background-color: var(--subSectionBackgroundColor);
+    }
+}
