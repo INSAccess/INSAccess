@@ -16,20 +16,17 @@
   position: relative;
 }
 
-.mobile-datepicker {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-65%);
-  z-index: 10;
-}
-
 .date-content {
   display: flex;
   gap: 0.5svw;
   align-items: center;
   justify-content: center;
-  flex: 1;
+  flex: 3;
+  margin-top: auto;
+}
+
+.mobile-datepicker {
+  transform: translate(-15%, -25%);
 }
 
 .date-num,
@@ -48,18 +45,4 @@
 .date-day,
 .date-month {
   font-weight: 100;
-}
-
-@media (max-width: 768px) {
-  .mobile-datepicker {
-    left: 0;
-
-    .position-absolute {
-      transform: translateX(-8%) !important;
-    }
-  }
-  
-  .date {
-    padding: 0 40px 0 40px;
-  }
 }

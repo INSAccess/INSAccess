@@ -91,12 +91,12 @@ const EventsInDay = ({ date, data, dataOrigin }) => {
   return (
     <div className="day">
       <div className="date">
-        {minWidth >= dimensions.width && (
-          <div className="mobile-datepicker">
-            <CustomDatePicker isMobile={true}/>
-          </div>
-        )}
         <div className="date-content">
+          {minWidth >= dimensions.width && (
+            <div className="mobile-datepicker">
+              <CustomDatePicker isMobile={true}/>
+            </div>
+          )}
           <p className="date-day">{infos[0]}</p>
           <p className="date-num">{infos[1]}</p>
           <p className="date-month">{infos[2]}</p>
