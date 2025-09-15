@@ -38,8 +38,9 @@ export const CustomDatePicker = ({ isMobile = false }) => {
           style={{
             top: '100%',
             left: '50%',
-            transform: 'translateX(-50%)',
+            transform: 'translateX(-40%)',
             marginTop: '8px',
+            zIndex: '1040',
           }}
         >
           <div onClick={(e) => e.stopPropagation()}>
