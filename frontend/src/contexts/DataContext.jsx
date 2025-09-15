@@ -85,6 +85,32 @@ export const DataProvider = (props) => {
     setUserLanguage(lang);
   }
 
+  const refreshAssociations = async () => {
+    try {
+      const resultAssociations = await RandomUtils.fetchData(
+        API_URL + '/api/metadata/associations'
+      );
+      if (resultAssociations?.data) {
+        setUserAssos(resultAssociations.data.user_associations);
+        setAssoList(resultAssociations.data.all_associations);
+      }
+    } catch (err) {
+      console.error('Failed to refresh associations', err);
+    }
+  };
+
+  const refreshAssoCalendar = async () => {
+    try {
+      const resultAsso = await RandomUtils.fetchData(PATH_ASSO_CALENDAR);
+      if (resultAsso?.data) {
+        setDataAsso(resultAsso.data.events);
+        setColorsAsso(resultAsso.data.colors);
+      }
+    } catch (err) {
+      console.error('Failed to refresh asso calendar', err);
+    }
+  };
+
   useEffect(() => {
     if (userTheme) {
       document.getElementById('root').setAttribute('data-theme', userTheme);
@@ -245,6 +271,8 @@ export const DataProvider = (props) => {
           setCurrentFriend,
           userAssos,
           assoList,
+          refreshAssociations,
+          refreshAssoCalendar,
         }}
       >
         {props.children}

@@ -1,35 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { API_URL } from '../utils/Constants';
 import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils';
 import { useData } from '../contexts/DataContext';
 import { useTranslation } from 'react-i18next';
 import Alert from '@mui/material/Alert';
 
-/**
- * Component listing the different Assos the user can "subscribe" to.
- * @component
- * @returns {JSX.Element}
- */
 function AssoSelection() {
-  const { userAssos, assoList, forceUpdate } = useData();
+  const { userAssos, assoList, refreshAssociations, refreshAssoCalendar } =
+    useData();
   const { t } = useTranslation();
 
-  const [selectedAssos, setSelectedAssos] = useState(new Set(userAssos));
+  const [selectedAssos, setSelectedAssos] = useState(new Set());
   const [statusMessage, setStatusMessage] = useState(' ');
   const [errorFlag, raiseErrorFlag] = useState(false);
 
-  // Function to toggle selection of a Asso
-  const toggleAsso = (assoName) => {
+  const normalizeAsso = (asso) => {
+    if (!asso) return '';
+    if (typeof asso === 'string') return asso;
+    return (
+      asso.name ?? asso.label ?? asso.id ?? asso.slug ?? JSON.stringify(asso)
+    );
+  };
+
+  useEffect(() => {
+    const normalized = (userAssos || []).map(normalizeAsso);
+    setSelectedAssos(new Set(normalized));
+  }, [userAssos]);
+
+  const toggleAsso = (label) => {
     const updatedAssos = new Set(selectedAssos);
-    if (updatedAssos.has(assoName)) {
-      updatedAssos.delete(assoName);
+    if (updatedAssos.has(label)) {
+      updatedAssos.delete(label);
     } else {
-      updatedAssos.add(assoName);
+      updatedAssos.add(label);
     }
     setSelectedAssos(updatedAssos);
   };
-
-  // Function to save selection to the backend
   const saveSelection = async () => {
     try {
       const response = await fetch(API_URL + '/api/user/associations', {
@@ -43,8 +49,11 @@ function AssoSelection() {
         body: JSON.stringify({ selected_assos: Array.from(selectedAssos) }),
       });
       const data = await parseJsonSafe(response);
-      setStatusMessage(data.success);
-      forceUpdate();
+
+      setStatusMessage(data?.success ?? t('Saved'));
+
+      await refreshAssociations();
+      await refreshAssoCalendar();
     } catch (error) {
       raiseErrorFlag(true);
       setStatusMessage(t('ErrorSavingAsso'));
@@ -57,18 +66,21 @@ function AssoSelection() {
         <div className="col-12">
           <div className="checkbox-list subsection">
             <h1>{t('AssoSelect')}</h1>
-            {assoList.map((asso) => (
-              <li key={asso}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={selectedAssos.has(asso)}
-                    onChange={() => toggleAsso(asso)}
-                  />
-                  {asso}
-                </label>
-              </li>
-            ))}
+            {(assoList || []).map((assoItem) => {
+              const label = normalizeAsso(assoItem);
+              return (
+                <li key={label}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={selectedAssos.has(label)}
+                      onChange={() => toggleAsso(label)}
+                    />
+                    {label}
+                  </label>
+                </li>
+              );
+            })}
           </div>
         </div>
 
