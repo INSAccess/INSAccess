@@ -55,6 +55,7 @@ export const DataProvider = (props) => {
   const [receivedList, setReceivedList] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
   const [currentFriend, setCurrentFriend] = useState('');
+  const [userAutoSync, setUserAutoSync] = useState(false);
 
   const dayList = [
     t('Sunday'),
@@ -84,6 +85,18 @@ export const DataProvider = (props) => {
   function changeLanguage(lang) {
     setUserLanguage(lang);
   }
+
+  function changeAutoSync(enabled) {
+    setUserAutoSync(enabled);
+  }
+
+  const updateUserTDs = (newTds) => {
+    setTds((prev) => ({
+      ...prev,
+      user_tds: newTds,
+    }));
+    forceUpdate();
+  };
 
   const refreshAssociations = async () => {
     try {
@@ -172,6 +185,7 @@ export const DataProvider = (props) => {
           setIcsLink(profileData.ics_url);
           setIsAssos(profileData.is_asso);
           setAssoName(profileData.asso);
+          setUserAutoSync(profileData.cas_autosync);
         }
 
         if (resultAssociations.data) {
@@ -273,6 +287,9 @@ export const DataProvider = (props) => {
           assoList,
           refreshAssociations,
           refreshAssoCalendar,
+          userAutoSync,
+          changeAutoSync,
+          updateUserTDs,
         }}
       >
         {props.children}

@@ -21,6 +21,8 @@ from core.views import (
     BugReportAPIView,
     GetAssociationAPIView,
     PostAssociationAPIView,
+    ChangeCasSyncAPIView,
+    UpdateUsingCasTDAPIView,
 )
 
 urlpatterns = [
@@ -77,4 +79,12 @@ urlpatterns = [
         "user/associations", PostAssociationAPIView.as_view(), name="save_associations"
     ),
     path("user/bug", BugReportAPIView.as_view(), name="bug_report"),
+    path(
+        "user/cas_autosync/<str:enable>",
+        ChangeCasSyncAPIView.as_view(),
+        name="change cas_autosync",
+    ),
+    path(
+        "user/cas_sync", UpdateUsingCasTDAPIView.as_view(), name="update_td_using_cas"
+    ),
 ]

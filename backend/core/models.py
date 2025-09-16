@@ -80,6 +80,7 @@ class UserProfile(models.Model):
         editable=False,
         default="",
     )
+    cas_auto_sync = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if not self.ics_uid:

@@ -23,13 +23,13 @@ const Settings = () => {
   const departementYears = CONFIG ? CONFIG['departementYears'] : { STPI: [1] };
 
   const BUNDLE = useData();
-  let tds = BUNDLE.tds;
   let icsLink = BUNDLE.icsLink;
   const { isAssos } = useData();
   let allThemes = BUNDLE.allThemes;
   let userTheme = BUNDLE.userTheme;
   let allLanguages = BUNDLE.allLanguages;
   let userLanguage = BUNDLE.userLanguage;
+  const { tds, userAutoSync, changeAutoSync, updateUserTDs } = useData();
 
   const [view, setView] = useState('TDs');
 
@@ -47,6 +47,55 @@ const Settings = () => {
       new window.bootstrap.Tooltip(copyButtonRef.current);
     }
   }, []);
+
+  const handleCasAutoSyncChange = async (enabled) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/api/user/cas_autosync/${enabled}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': RandomUtils.getCSRFToken(),
+          },
+          mode: 'cors',
+          credentials: 'include',
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to update autosync: ${response.status}`);
+      }
+
+      changeAutoSync(enabled);
+    } catch (error) {
+      console.error('Failed to update autosync', error);
+    }
+  };
+  const handleSyncUsingCas = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/user/cas_sync`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': RandomUtils.getCSRFToken(),
+        },
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to sync TDs: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.synced_tds && Array.isArray(data.synced_tds)) {
+        updateUserTDs(data.synced_tds);
+      }
+    } catch (error) {
+      console.error('Failed to sync TDs', error);
+    }
+  };
 
   // Switch between dark, light or system theme
   const ThemeSwitch = () => {
@@ -227,9 +276,35 @@ const Settings = () => {
         return (
           <>
             <div className="dropdown-container subsection">
-              <DropDownDepart />
-              <DropDownYear />
+              <div className="dropdown-item-wrap">
+                <DropDownDepart />
+              </div>
+              <div className="dropdown-item-wrap">
+                <DropDownYear />
+              </div>
+              <div className="dropdown-item-wrap">
+                <div className="cas-autosync-wrapper">
+                  <label className="cas-autosync">
+                    <input
+                      type="checkbox"
+                      checked={userAutoSync}
+                      onChange={(e) =>
+                        handleCasAutoSyncChange(e.target.checked)
+                      }
+                    />
+                    <span>{t('CasAutoSync')}</span>
+                  </label>
+
+                  <button
+                    className="btn btn-primary cas-sync-btn"
+                    onClick={handleSyncUsingCas}
+                  >
+                    {t('SyncNow')}
+                  </button>
+                </div>
+              </div>
             </div>
+
             {tds.departments[departement + year] && (
               <TDSelection
                 departementTDs={

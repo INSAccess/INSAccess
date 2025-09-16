@@ -17,7 +17,7 @@ def get_frontend_url():
     if not settings.DEBUG:
         return f"http://{settings.HOST_IP}"
     else:
-        return f"http://{settings.HOST_IP}:8000/"
+        return f"http://{settings.HOST_IP}:3000/"
 
 
 @login_required
@@ -25,7 +25,7 @@ def finalize(request):
     user_profile, profile_created = UserProfile.objects.get_or_create(user=request.user)
     subscribed_tds = request.session.get("attributes", {}).get("supannAffectation", [])
     subscribed_tds = [td.upper() for td in subscribed_tds]
-    if profile_created:
+    if profile_created or user_profile.cas_auto_sync:
         user_profile.save()
         tds_in_db = GroupTD.objects.filter(name__in=subscribed_tds)
         user_profile.link_td.add(*tds_in_db)

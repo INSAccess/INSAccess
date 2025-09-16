@@ -507,9 +507,7 @@ class GetUserProfileAPIView(APIView):
         def safe_get(key, func):
             try:
                 value = func()
-                logger.info(
-                    f"Returned {key}", extra={"request": request, "status_code": 200}
-                )
+
                 return value
             except Exception as e:
                 logger.error(
@@ -533,6 +531,9 @@ class GetUserProfileAPIView(APIView):
             "displayName": safe_get(
                 "get_profile_displayName",
                 lambda: request.session.get("attributes", {}).get("first_name", ""),
+            ),
+            "cas_autosync": safe_get(
+                "get_user_cas_autosync", lambda: request.user.userprofile.cas_auto_sync
             ),
         }
 
@@ -1087,3 +1088,46 @@ class BugReportAPIView(APIView):
                 extra={"request": request.data},
             )
             return Response({"error": f"Failed to send email: {str(e)}"}, status=500)
+
+
+class ChangeCasSyncAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, enable):
+        try:
+            user_profile = request.user.userprofile
+            enabled = enable == "true"
+            user_profile.cas_auto_sync = enabled
+            user_profile.save()
+            return Response({"success": "Preferences saved successfully"}, status=200)
+        except Exception as e:
+            logger.error(
+                f"Failed to update user cas_autosync: {str(e)}",
+                extra={"request": request.data},
+            )
+            return Response(
+                {"error": f"Failed to update cas preferences: {str(e)}"}, status=500
+            )
+
+
+class UpdateUsingCasTDAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            user_profile = request.user.userprofile
+            subscribed_tds = request.session.get("attributes", {}).get(
+                "supannAffectation", []
+            )
+            tds_in_db = GroupTD.objects.filter(name__in=subscribed_tds)
+            user_profile.link_td.add(*tds_in_db)
+            user_profile.save()
+            return Response({"synced_tds": [td.name for td in tds_in_db]}, status=200)
+        except Exception as e:
+            logger.error(
+                f"Failed to update user cas_autosync: {str(e)}",
+                extra={"request": request.data},
+            )
+            return Response(
+                {"error": f"Failed to update cas preferences: {str(e)}"}, status=500
+            )

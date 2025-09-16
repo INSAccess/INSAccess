@@ -79,7 +79,8 @@ const resources = {
       // Other
       WIP: 'Coming soon...',
       ToastInfoTitle: 'Important',
-      ToastInfoContent: 'Some classes were not given a TD group when first created by the administration and consequently don\'t show up on the list of available TDs. We are currently working on the issue, thank you for your understanding.',
+      ToastInfoContent:
+        "Some classes were not given a TD group when first created by the administration and consequently don't show up on the list of available TDs. We are currently working on the issue, thank you for your understanding.",
       // Errors and Success
       LoadError: 'Error while loading ',
       SaveError: 'Error while saving ',
@@ -144,6 +145,10 @@ const resources = {
       ReportBug: 'Report a bug',
       Seeing: 'Seeing',
       Search: 'Search for a friend...',
+      CasAutoSync: 'Sync my TDs with CAS at login',
+      SyncNow: 'Sync now',
+      SyncSuccess: 'TDs synced successfully',
+      SyncError: 'Failed to sync TDs',
       // Manual
       Manual_Title: 'User Manual',
       Manual_ChooseClasses: 'Choose your classes',
@@ -255,7 +260,8 @@ const resources = {
       // Other
       WIP: 'Ça arrive bientôt...',
       ToastInfoTitle: 'Important',
-      ToastInfoContent: 'Certains cours n\'ont pas de groupes de TD qui leur ont été associés par l\'administration, ils n\'apparaissent donc pas encore sur l\'agenda. On travaille activement dessus, merci pour votre compréhension.',
+      ToastInfoContent:
+        "Certains cours n'ont pas de groupes de TD qui leur ont été associés par l'administration, ils n'apparaissent donc pas encore sur l'agenda. On travaille activement dessus, merci pour votre compréhension.",
       // Errors and Success
       LoadError: 'Erreur pendant le chargement',
       SaveError: 'Erreur pendant la sauvegarde',
@@ -268,10 +274,11 @@ const resources = {
       CreationSuccess:
         'Création réussie (rechargez la page pour mettre à jour les événements)',
       CreationError: 'Erreur lors de la création',
-      SendError: 'Erreur lors de l\'envoi de l\'invitation ',
-      AcceptError: 'Erreur lors de l\'acceptation de l\'invitation ',
-      CancelError: 'Erreur lors de l\'annulation de l\'invitation ',
-      NameError: "Erreur pendant la recherche du nom d'affichage de l'utilisateur ",
+      SendError: "Erreur lors de l'envoi de l'invitation ",
+      AcceptError: "Erreur lors de l'acceptation de l'invitation ",
+      CancelError: "Erreur lors de l'annulation de l'invitation ",
+      NameError:
+        "Erreur pendant la recherche du nom d'affichage de l'utilisateur ",
       ImageLoadingError: "Echec du chargement de l'image",
       ErrorSavingTD: 'Echec de la sauvegarde des TDs',
       ErrorSavingAsso: 'Echec de la sauvegarde des associations',
@@ -322,6 +329,10 @@ const resources = {
       ReportBug: 'Signalez un bug',
       Seeing: 'Regarde',
       Search: 'Rechercher un ami...',
+      CasAutoSync: 'Synchroniser mes TDs avec CAS à la connexion',
+      SyncNow: 'Synchroniser',
+      SyncSuccess: 'TDs synchronisés avec succès',
+      SyncError: 'Échec de la synchronisation des TDs',
       // Manual
       Manual_Title: 'Manuel utilisateur',
       Manual_ChooseClasses: 'Choisir ses cours',
