@@ -4,7 +4,7 @@ import RandomUtils from '../../utils/RandomUtils.jsx';
 import { useEffect, useState, useRef } from 'react';
 import { API_URL, minWidth } from '../../utils/Constants.jsx';
 import EventCreator from '../EventCreator.jsx';
-import SupportModal from '../SupportModal.jsx';
+import SupportForm from '../SupportForm.jsx';
 import DropDownCustom from '../DropDownCustom.jsx';
 import './Settings.scss';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -187,12 +187,6 @@ const Settings = () => {
           </div>
         </section>
 
-        {/* Bug Report Section */}
-        <section className="settings-section subsection">
-          <h3 className="section-title">{t('Support')}</h3>
-          <SupportModal />
-        </section>
-
         {/* ICS Feed Section */}
         <section className="settings-section subsection">
           <h3 className="section-title">{t('ICSLink')}</h3>
@@ -217,6 +211,11 @@ const Settings = () => {
               {t('ICSCopy')}
             </button>
           </div>
+        </section>
+        {/* Bug Report Section */}
+        <section className="settings-section subsection">
+          <h3 className="section-title">{t('Support')}</h3>
+          <SupportForm />
         </section>
       </div>
     );
@@ -256,18 +255,32 @@ const Settings = () => {
   return (
     <div className="settings">
       <div className="view">
-        <Button className={`btn-view ${view == 'TDs' ? 'active' : ''}`} onClick={() => setView('TDs')}>
+        <Button
+          className={`btn-view ${view == 'TDs' ? 'active' : ''}`}
+          onClick={() => setView('TDs')}
+        >
           {dimensions.width > minWidth ? t('TDList') : t('TDListShort')}
         </Button>
-        <Button className={`btn-view ${view == 'assos' ? 'active' : ''}`} onClick={() => setView('assos')}>
+        <Button
+          className={`btn-view ${view == 'assos' ? 'active' : ''}`}
+          onClick={() => setView('assos')}
+        >
           {dimensions.width > minWidth ? t('AssoList') : t('AssoListShort')}
         </Button>
         {isAssos && (
-          <Button className={`btn-view ${view == 'create' ? 'active' : ''}`} onClick={() => setView('create')}>
-            {dimensions.width > minWidth ? t('CreateEvent') : t('CreateEventShort')}
+          <Button
+            className={`btn-view ${view == 'create' ? 'active' : ''}`}
+            onClick={() => setView('create')}
+          >
+            {dimensions.width > minWidth
+              ? t('CreateEvent')
+              : t('CreateEventShort')}
           </Button>
         )}
-        <Button className={`btn-view ${view == 'other' ? 'active' : ''}`} onClick={() => setView('other')}>
+        <Button
+          className={`btn-view ${view == 'other' ? 'active' : ''}`}
+          onClick={() => setView('other')}
+        >
           {t('OtherSettings')}
         </Button>
       </div>

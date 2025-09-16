@@ -1,0 +1,103 @@
+/* SupportForm.scss - simple, clean, pretty */
+
+.support-inline {
+  background: var(--backgroundColor);
+  color: var(--textColor);
+  border: 1px solid var(--borderColor);
+  border-radius: 12px;
+  padding: 1.2rem;
+  max-width: 720px;
+  width: 100%;
+  box-shadow: 0 4px 12px var(--shadowColor);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    sans-serif;
+
+  .support-summary {
+    margin-bottom: 1rem;
+    color: var(--messageColor);
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  form {
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      color: var(--textColor);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      font-size: 0.95rem;
+      color: var(--textColor);
+      background: var(--backgroundColor);
+      border: 1px solid var(--borderColor);
+      border-radius: 8px;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--contrastBorderColor);
+      box-shadow: 0 0 0 4px rgba(219, 52, 44, 0.08);
+    }
+
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .status-message {
+      margin: 0.5rem 0 0.75rem;
+      font-size: 0.92rem;
+    }
+    .status-message.success {
+      color: var(--eventColor);
+    }
+    .status-message.error {
+      color: var(--buttonActiveColor);
+    }
+
+    .btn.btn-primary {
+      width: 100%;
+      padding: 0.6rem 0.9rem;
+      font-weight: 600;
+      border-radius: 8px;
+      border: 1px solid var(--buttonColor);
+      background: var(--buttonColor);
+      color: var(--contrastTextColor);
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    .btn.btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+/* Small screens */
+@media (max-width: 520px) {
+  .support-inline {
+    padding: 0.9rem;
+    border-radius: 10px;
+
+    .support-summary {
+      font-size: 0.92rem;
+    }
+
+    form {
+      .form-control {
+        padding: 0.5rem 0.65rem;
+        font-size: 0.94rem;
+      }
+      .btn.btn-primary {
+        padding: 0.55rem;
+        font-size: 0.94rem;
+      }
+    }
+  }
+}
