@@ -318,7 +318,7 @@ class PostTdsAPIView(APIView):
                 )
                 return response
 
-            MAX_TDS = 50
+            MAX_TDS = 100
             if len(selected_tds) > MAX_TDS:
                 response = Response(
                     {"error": f"Too many TDs selected (max {MAX_TDS})"}, status=400

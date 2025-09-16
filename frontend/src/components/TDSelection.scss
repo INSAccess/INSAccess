@@ -1,18 +1,53 @@
 #info-btn {
-    height: 80%;
+  height: 80%;
+  font-weight: bold;
+  border-radius: 15%;
+  width: 2.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  position: relative;
+  z-index: 2; // stays clickable even with overlay
 }
 
-.toast {
-    background-color: var(--eventColor);
+.info-section {
+  position: relative; // makes the popup position relative to this container
+}
 
-    .toast-header {
-        color: var(--contrastTextColor);
-        background-color: var(--subSectionBackgroundColor);
-        font-weight: bold;
-    }
+.info-popup {
+  position: absolute;
+  top: 120%; /* just below the button */
+  right: 0;
+  z-index: 10;
+  min-width: 220px;
 
-    .toast-body {
-        color: var(--textColor);
-        background-color: var(--subSectionBackgroundColor);
-    }
+  background-color: var(--subSectionBackgroundColor);
+  color: var(--textColor);
+  border: 1px solid var(--borderColor);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  box-shadow: 0 4px 12px var(--shadowColorBold);
+
+  animation: fadeIn 0.2s ease-out;
+}
+
+.info-popup strong {
+  display: block;
+  color: var(--contrastBorderColor);
+  margin-bottom: 0.25rem;
+}
+
+/* fade animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
