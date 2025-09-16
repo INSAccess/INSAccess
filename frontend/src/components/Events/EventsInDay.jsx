@@ -5,7 +5,7 @@ import SingleEvent from './SingleEvent';
 import { baseEventWidth, minWidth } from '../../utils/Constants';
 import './EventsInDay.scss';
 import { useTranslation } from 'react-i18next';
-import { CustomDatePicker } from '../DatePicker.jsx'
+import { CustomDatePicker } from '../DatePicker.jsx';
 
 /**
  * React component that displays all the event of a given day
@@ -85,7 +85,11 @@ const EventsInDay = ({ date, data, dataOrigin }) => {
   }
 
   // Doesn't display the end of the week if empty
-  if (eventsList.length == 0 && (day.getNumberDayOfWeek() == 6 || day.getNumberDayOfWeek() == 0) && (minWidth < dimensions.width)) {
+  if (
+    eventsList.length == 0 &&
+    (day.getNumberDayOfWeek() == 6 || day.getNumberDayOfWeek() == 0) &&
+    minWidth < dimensions.width
+  ) {
     return <></>;
   }
   return (
@@ -93,8 +97,8 @@ const EventsInDay = ({ date, data, dataOrigin }) => {
       <div className="date">
         <div className="date-content">
           {minWidth >= dimensions.width && (
-            <div className="mobile-datepicker">
-              <CustomDatePicker isMobile={true}/>
+            <div className="mobile-datepicker" aria-label="date picker">
+              <CustomDatePicker isMobile={true} />
             </div>
           )}
           <p className="date-day">{infos[0]}</p>

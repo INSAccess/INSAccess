@@ -64,7 +64,8 @@ const AllEvents = ({ dataOrigin }) => {
   const [renderKey, setRenderKey] = useState(0);
 
   let nbDays = minWidth < dimensions.width ? 7 : 1;
-  let currentDay = nbDays == 7 ? BUNDLE.day.copy().startOfWeek(dayList) : BUNDLE.day.copy();
+  let currentDay =
+    nbDays == 7 ? BUNDLE.day.copy().startOfWeek(dayList) : BUNDLE.day.copy();
 
   function handleDay(direction, value) {
     if (direction === 'prev') {
@@ -132,7 +133,9 @@ const AllEvents = ({ dataOrigin }) => {
     <>
       {dataOrigin == 'friend' && (
         <div className="calendar-close-button-wrapper">
-          <span id="friend-name">{t('Seeing')} {BUNDLE.currentFriend}</span>
+          <span id="friend-name">
+            {t('Seeing')} {BUNDLE.currentFriend}
+          </span>
           <button
             type="button"
             className="btn btn-primary calendar-close-button"
@@ -147,6 +150,7 @@ const AllEvents = ({ dataOrigin }) => {
         <button
           type="button"
           className="arrow-left"
+          aria-label="arrow-left"
           onClick={() => {
             handleDay('prev', nbDays);
           }}
@@ -156,6 +160,7 @@ const AllEvents = ({ dataOrigin }) => {
         <button
           type="button"
           className="arrow-right turned"
+          aria-label="arrow-right"
           onClick={() => {
             handleDay('next', nbDays);
           }}

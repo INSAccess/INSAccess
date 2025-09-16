@@ -18,6 +18,7 @@ export const CustomDatePicker = ({ isMobile = false }) => {
         } d-flex align-items-center gap-2`}
         type="button"
         onClick={() => setShowDatePicker(!showDatePicker)}
+        aria-label="Open calendar"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -40,16 +41,16 @@ export const CustomDatePicker = ({ isMobile = false }) => {
             left: '50%',
             transform: 'translateX(-40%)',
             marginTop: '8px',
-            zIndex: '1040',
           }}
         >
-          <div onClick={(e) => e.stopPropagation()}>
+          <div onClick={(e) => e.stopPropagation()} aria-label="date picker">
             <DatePicker
               selected={day ? new Date(day) : null}
               onChange={(date) => {
                 setDay(new Day(date));
                 setShowDatePicker(false);
               }}
+              aria-label="date picker"
               inline
             />
           </div>
