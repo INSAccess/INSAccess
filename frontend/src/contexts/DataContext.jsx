@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import Day from '../utils/Day.jsx';
 import {
   minWidth,
+  dayList,
   PATH_USER_CALENDAR,
   PATH_ASSO_CALENDAR,
   API_URL,
@@ -48,16 +49,6 @@ export const DataProvider = (props) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [currentFriend, setCurrentFriend] = useState('');
   const [userAutoSync, setUserAutoSync] = useState(false);
-
-  const dayList = [
-    t('Sunday'),
-    t('Monday'),
-    t('Tuesday'),
-    t('Wednesday'),
-    t('Thursday'),
-    t('Friday'),
-    t('Saturday'),
-  ];
 
   let dimensions = RandomUtils.useWindowDimensions();
   const currentDate = new Date();

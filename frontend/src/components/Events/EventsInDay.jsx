@@ -2,9 +2,13 @@ import EventUtils from '../../utils/EventUtils';
 import RandomUtils from '../../utils/RandomUtils';
 import Day from '../../utils/Day';
 import SingleEvent from './SingleEvent';
-import { baseEventWidth, minWidth } from '../../utils/Constants';
+import {
+  baseEventWidth,
+  minWidth,
+  dayList,
+  monthList,
+} from '../../utils/Constants';
 import './EventsInDay.scss';
-import { useTranslation } from 'react-i18next';
 import { CustomDatePicker } from '../DatePicker.jsx';
 
 /**
@@ -13,32 +17,6 @@ import { CustomDatePicker } from '../DatePicker.jsx';
  * @returns {JSX.Element}
  */
 const EventsInDay = ({ date, data, dataOrigin }) => {
-  const { t } = useTranslation();
-
-  const dayList = [
-    t('Sunday'),
-    t('Monday'),
-    t('Tuesday'),
-    t('Wednesday'),
-    t('Thursday'),
-    t('Friday'),
-    t('Saturday'),
-  ];
-  const monthList = [
-    t('January'),
-    t('February'),
-    t('March'),
-    t('April'),
-    t('May'),
-    t('June'),
-    t('July'),
-    t('August'),
-    t('September'),
-    t('October'),
-    t('November'),
-    t('December'),
-  ];
-
   const eventsList = [];
   const placed = [];
   let dimensions = RandomUtils.useWindowDimensions();

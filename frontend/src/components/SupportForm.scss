@@ -1,5 +1,3 @@
-/* SupportForm.scss - simple, clean, pretty */
-
 .support-inline {
   background: var(--backgroundColor);
   color: var(--textColor);
@@ -79,7 +77,6 @@
   }
 }
 
-/* Small screens */
 @media (max-width: 520px) {
   .support-inline {
     padding: 0.9rem;

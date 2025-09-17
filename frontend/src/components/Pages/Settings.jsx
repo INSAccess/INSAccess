@@ -97,10 +97,8 @@ const Settings = () => {
     }
   };
 
-  // Switch between dark, light or system theme
   const ThemeSwitch = () => {
     async function handleThemeChange(e) {
-      //post theme on backend
       try {
         const response = await fetch(API_URL + '/api/user/theme', {
           method: 'POST',
@@ -132,7 +130,6 @@ const Settings = () => {
 
   const LanguageSwitch = () => {
     async function handleLanguageChange(e) {
-      //post theme on backend
       try {
         const response = await fetch(API_URL + '/api/user/language', {
           method: 'POST',
@@ -166,17 +163,14 @@ const Settings = () => {
     try {
       await navigator.clipboard.writeText(icsLink);
 
-      // Get the tooltip instance (or create it if needed)
       let tooltip = window.bootstrap.Tooltip.getInstance(copyButtonRef.current);
       if (!tooltip) {
         tooltip = new window.bootstrap.Tooltip(copyButtonRef.current);
       }
 
-      // Update the tooltip text by changing the attribute
       copyButtonRef.current.setAttribute('data-bs-original-title', 'Copied!');
       tooltip.show();
 
-      // Reset the tooltip text after 2 seconds
       setTimeout(() => {
         copyButtonRef.current.setAttribute(
           'data-bs-original-title',

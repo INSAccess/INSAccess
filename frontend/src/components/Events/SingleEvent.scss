@@ -37,6 +37,7 @@
 div[role='alert'] {
   z-index: 1050;
 }
+
 // Override Bootstrap Modal with CSS variables
 .modal-content {
   background-color: var(--backgroundColor) !important;

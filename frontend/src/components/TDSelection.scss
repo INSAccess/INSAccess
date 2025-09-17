@@ -8,16 +8,16 @@
   align-items: center;
   padding: 0;
   position: relative;
-  z-index: 2; // stays clickable even with overlay
+  z-index: 2;
 }
 
 .info-section {
-  position: relative; // makes the popup position relative to this container
+  position: relative;
 }
 
 .info-popup {
   position: absolute;
-  top: 120%; /* just below the button */
+  top: 120%;
   right: 0;
   z-index: 10;
   min-width: 220px;
@@ -40,7 +40,6 @@
   margin-bottom: 0.25rem;
 }
 
-/* fade animation */
 @keyframes fadeIn {
   from {
     opacity: 0;

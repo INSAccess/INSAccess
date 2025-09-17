@@ -25,12 +25,36 @@ const PATH_ASSO_CALENDAR = API_URL + '/api/calendar/events';
 const API_LOGIN = API_URL + '/authentification/login';
 const API_LOGOUT = API_URL + '/authentification/logout';
 const API_AUTH = API_URL + '/api/user/is_connected?format=json';
-
+const dayList = [
+  t('Sunday'),
+  t('Monday'),
+  t('Tuesday'),
+  t('Wednesday'),
+  t('Thursday'),
+  t('Friday'),
+  t('Saturday'),
+];
+const monthList = [
+  t('January'),
+  t('February'),
+  t('March'),
+  t('April'),
+  t('May'),
+  t('June'),
+  t('July'),
+  t('August'),
+  t('September'),
+  t('October'),
+  t('November'),
+  t('December'),
+];
 export {
   hoursTimeline,
   minWidth,
   nbDaysPerMonth,
   baseEventWidth,
+  dayList,
+  monthList,
   API_URL,
   PATH_ASSO_CALENDAR,
   PATH_USER_CALENDAR,
