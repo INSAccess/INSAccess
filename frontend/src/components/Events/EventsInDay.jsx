@@ -2,15 +2,10 @@ import EventUtils from '../../utils/EventUtils';
 import RandomUtils from '../../utils/RandomUtils';
 import Day from '../../utils/Day';
 import SingleEvent from './SingleEvent';
-import {
-  baseEventWidth,
-  minWidth,
-  dayList,
-  monthList,
-} from '../../utils/Constants';
+import { baseEventWidth, minWidth } from '../../utils/Constants';
 import './EventsInDay.scss';
 import { CustomDatePicker } from '../DatePicker.jsx';
-
+import { useTranslation } from 'react-i18next';
 /**
  * React component that displays all the event of a given day
  * @component
@@ -20,7 +15,30 @@ const EventsInDay = ({ date, data, dataOrigin }) => {
   const eventsList = [];
   const placed = [];
   let dimensions = RandomUtils.useWindowDimensions();
-
+  const { t } = useTranslation();
+  const monthList = [
+    t('January'),
+    t('February'),
+    t('March'),
+    t('April'),
+    t('May'),
+    t('June'),
+    t('July'),
+    t('August'),
+    t('September'),
+    t('October'),
+    t('November'),
+    t('December'),
+  ];
+  const dayList = [
+    t('Sunday'),
+    t('Monday'),
+    t('Tuesday'),
+    t('Wednesday'),
+    t('Thursday'),
+    t('Friday'),
+    t('Saturday'),
+  ];
   let i = 0;
   let day = new Day(date);
   const infos = day.getDateInfo(dayList, monthList);

@@ -1,7 +1,7 @@
 import EventsInDay from './EventsInDay';
 import RandomUtils from '../../utils/RandomUtils';
 import { useState, useEffect, useRef } from 'react';
-import { hoursTimeline, minWidth, dayList } from '../../utils/Constants';
+import { hoursTimeline, minWidth } from '../../utils/Constants';
 import './AllEvents.scss';
 import { useData } from '../../contexts/DataContext.jsx';
 import { useTranslation } from 'react-i18next';
@@ -37,7 +37,15 @@ const TimeBar = () => {
  */
 const AllEvents = ({ dataOrigin }) => {
   const { t } = useTranslation();
-
+  const dayList = [
+    t('Sunday'),
+    t('Monday'),
+    t('Tuesday'),
+    t('Wednesday'),
+    t('Thursday'),
+    t('Friday'),
+    t('Saturday'),
+  ];
   const BUNDLE = useData();
   let data = [];
   if (dataOrigin == 'asso') {
