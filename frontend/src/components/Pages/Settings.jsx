@@ -4,7 +4,6 @@ import RandomUtils from '../../utils/RandomUtils.jsx';
 import { useEffect, useState, useRef } from 'react';
 import { API_URL, minWidth } from '../../utils/Constants.jsx';
 import EventCreator from '../EventCreator.jsx';
-import SupportForm from '../SupportForm.jsx';
 import DropDownCustom from '../DropDownCustom.jsx';
 import './Settings.scss';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -254,12 +253,7 @@ const Settings = () => {
               {t('ICSCopy')}
             </button>
           </div>
-        </section>
-        {/* Bug Report Section */}
-        <section className="settings-section subsection">
-          <h3 className="section-title">{t('Support')}</h3>
-          <SupportForm />
-        </section>
+        </section>        
       </div>
     );
   };

@@ -96,15 +96,17 @@ const EvenementForm = () => {
 
     const formJson = Object.fromEntries(formData.entries());
 
+    // Swap if start > end
+    if (startHour > endHour) {
+      let temp = startHour.copy();
+      setStartHour(endHour);
+      setEndHour(temp);
+    }
+
     // Add Date & Time as formatted strings
     formJson.date = eventDate.toISOString().split('T')[0];
     formJson.start_hour = startHour.toTimeString().slice(0, 5);
-    formJson.end_hour = endHour.toTimeString().slice(0, 5);
-
-    // Swap if start > end
-    if (startHour > endHour) {
-      [startHour, endHour] = [endHour, startHour];
-    }
+    formJson.end_hour = endHour.toTimeString().slice(0, 5);    
 
     if (!validateForm(formJson)) return; // Prevent submit if validation fails
 

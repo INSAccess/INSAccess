@@ -2,6 +2,7 @@ import duck from '../../images/duck.png';
 import { useTranslation } from 'react-i18next';
 import RandomUtils from '../../utils/RandomUtils';
 import { minWidth } from '../../utils/Constants';
+import SupportForm from '../SupportForm.jsx';
 import './Help.scss';
 
 const About = () => {
@@ -260,6 +261,7 @@ const License = () => {
 const Help = () => {
   return (
     <div className="maincontainer">
+      <SupportForm />
       <FAQ />
       <Manual />
       <About />

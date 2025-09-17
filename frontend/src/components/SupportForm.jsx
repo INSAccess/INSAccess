@@ -5,7 +5,7 @@ import { API_URL } from '../utils/Constants.jsx';
 import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils.jsx';
 import './SupportForm.scss';
 
-const SupportForm = ({ className = '' }) => {
+const SupportForm = () => {
   const { t } = useTranslation();
   const [formData, setFormData] = useState({ title: '', details: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,51 +51,58 @@ const SupportForm = ({ className = '' }) => {
   };
 
   return (
-    <div className={`support-inline ${className}`}>
-      <p className="support-summary">{t('SupportSummary')}</p>
+    <div className="container-fluid py-3 support-section">
+      <div className="row justify-content-center">
+        <div className="col-12 col-lg-10 col-xl-8">
+            <h2 className="section-title text-center">{t('Support')}</h2>
+            <div className="support-inline mx-auto">
+              <p className="support-summary">{t('SupportSummary')}</p>
 
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="bugTitle">
-          <Form.Label>{t('Title')}</Form.Label>
-          <Form.Control
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-            ref={titleRef}
-            placeholder={t('Title')}
-          />
-        </Form.Group>
+              <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="bugTitle">
+                  <Form.Label>{t('SupportTitle')}</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    required
+                    ref={titleRef}
+                    placeholder={t('SupportTitleDefault')}
+                  />
+                </Form.Group>
 
-        <Form.Group className="mb-3" controlId="bugDetails">
-          <Form.Label>{t('Details')}</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={4}
-            name="details"
-            value={formData.details}
-            onChange={handleChange}
-            required
-            placeholder={t('Details')}
-          />
-        </Form.Group>
+                <Form.Group className="mb-3" controlId="bugDetails">
+                  <Form.Label>{t('SupportDetails')}</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={4}
+                    name="details"
+                    value={formData.details}
+                    onChange={handleChange}
+                    required
+                    placeholder={t('SupportDetailsDefault')}
+                  />
+                </Form.Group>
 
-        {statusMessage && (
-          <p className={`status-message ${errorFlag ? 'error' : 'success'}`}>
-            {statusMessage}
-          </p>
-        )}
+                {statusMessage && (
+                  <p className={`status-message ${errorFlag ? 'error' : 'success'}`}>
+                    {statusMessage}
+                  </p>
+                )}
 
-        <Button
-          type="submit"
-          className="btn btn-primary w-100"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? t('Submitting...') : t('Submit Report')}
-        </Button>
-      </Form>
-    </div>
+                <Button
+                  type="submit"
+                  className="btn btn-primary w-100"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? t('Submitting...') : t('Submit Report')}
+                </Button>
+              </Form>
+            </div>
+          </div>
+        </div>
+      </div>
   );
 };
 

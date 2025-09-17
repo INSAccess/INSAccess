@@ -62,7 +62,7 @@
 
 // Manual Section Styles
 .manual-section {
-  background-color: var(--backgroundColor);
+  background-color: var(--subSectionBackgroundColor);
   .manual-description {
     color: var(--messageColor);
   }
@@ -106,7 +106,7 @@
 
 // About section styles
 .about-section {
-  background-color: var(--backgroundColor);
+  background-color: var(--subSectionBackgroundColor);
 
   .container {
     .row {
