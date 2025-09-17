@@ -17,8 +17,6 @@ const DataContext = createContext();
 /**
  * Data provider component that manages application state and data fetching
  * @param {Object} props - Component props
- * @param {React.ReactNode} props.children - Child components
- * @param {string} props.page - Current page identifier
  * @returns {JSX.Element} Data provider with context
  */
 export const DataProvider = (props) => {
@@ -47,7 +45,6 @@ export const DataProvider = (props) => {
   const [userProfile, setProfile] = useState(null);
   const [tds, setTds] = useState({});
   const [userAssos, setUserAssos] = useState([]);
-  const [updateCounter, setUpdateCounter] = useState(0);
   const [userList, setUserList] = useState([]);
   const [assoList, setAssoList] = useState([]);
   const [friendsList, setFriendsList] = useState([]);
@@ -66,6 +63,7 @@ export const DataProvider = (props) => {
     t('Friday'),
     t('Saturday'),
   ];
+
   let dimensions = RandomUtils.useWindowDimensions();
   const currentDate = new Date();
   let firstDay = new Day(currentDate);
@@ -75,7 +73,6 @@ export const DataProvider = (props) => {
 
   function forceUpdate() {
     setUpdate(true);
-    setUpdateCounter((prev) => prev + 1);
   }
 
   function changeTheme(theme) {
@@ -140,7 +137,6 @@ export const DataProvider = (props) => {
     window.scrollTo(0, 0);
     const loadMainData = async () => {
       if (!shouldUpdate) return;
-      if (props.page !== 'home') return;
       if (!CONFIG) return;
       setLoading(true);
       try {
@@ -211,12 +207,11 @@ export const DataProvider = (props) => {
       }
     };
     loadMainData();
-  }, [shouldUpdate, props.page, CONFIG, updateCounter]);
+  }, [shouldUpdate, CONFIG]);
 
   useEffect(() => {
     const loadAllTds = async () => {
       if (!CONFIG || !shouldUpdate) return;
-      if (props.page !== 'home') return;
 
       setLoadingTds(true);
       try {
@@ -237,7 +232,7 @@ export const DataProvider = (props) => {
     };
 
     loadAllTds();
-  }, [shouldUpdate, props.page, CONFIG, updateCounter]);
+  }, [shouldUpdate, CONFIG]);
 
   if (loading && (dataAsso.length == 0 || dataAgenda.length == 0)) {
     return <Loading />;

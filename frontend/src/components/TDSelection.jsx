@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { API_URL } from '../utils/Constants';
 import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils';
 import { useData } from '../contexts/DataContext';
@@ -22,6 +22,10 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
   const updateFunction = BUNDLE.forceUpdate;
 
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setSelectedTDs(new Set(userTDs));
+  }, [userTDs]);
 
   // Function to toggle selection of a TD
   const toggleTD = (tdName) => {

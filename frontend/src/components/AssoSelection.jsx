@@ -17,9 +17,6 @@ function AssoSelection() {
   const normalizeAsso = (asso) => {
     if (!asso) return '';
     if (typeof asso === 'string') return asso;
-    return (
-      asso.name ?? asso.label ?? asso.id ?? asso.slug ?? JSON.stringify(asso)
-    );
   };
 
   useEffect(() => {
@@ -36,6 +33,7 @@ function AssoSelection() {
     }
     setSelectedAssos(updatedAssos);
   };
+
   const saveSelection = async () => {
     try {
       const response = await fetch(API_URL + '/api/user/associations', {
