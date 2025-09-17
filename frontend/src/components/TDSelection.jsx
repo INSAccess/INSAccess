@@ -19,7 +19,8 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
   const [infoOpen, setInfoOpen] = useState(false);
 
   const BUNDLE = useData();
-  const updateFunction = BUNDLE.forceUpdate;
+  const refreshUserCalendar = BUNDLE.refreshUserCalendar;
+  const updateUserTDs = BUNDLE.updateUserTDs;
 
   const { t } = useTranslation();
 
@@ -27,7 +28,6 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
     setSelectedTDs(new Set(userTDs));
   }, [userTDs]);
 
-  // Function to toggle selection of a TD
   const toggleTD = (tdName) => {
     const updatedTDs = new Set(selectedTDs);
     if (updatedTDs.has(tdName)) {
@@ -38,7 +38,6 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
     setSelectedTDs(updatedTDs);
   };
 
-  // Function to save selection to the backend
   const saveSelection = async () => {
     try {
       const response = await fetch(API_URL + '/api/user/td_groups', {
@@ -53,7 +52,8 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
       });
       const data = await parseJsonSafe(response);
       setStatusMessage(data.success);
-      updateFunction();
+      updateUserTDs(selectedTDs);
+      refreshUserCalendar();
     } catch (error) {
       raiseErrorFlag(true);
       setStatusMessage(t('ErrorSavingTD'));
@@ -63,7 +63,6 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
   return (
     <div className="container-fluid">
       <div className="row">
-        {/* Première liste - 12 colonnes sur mobile, 6 sur desktop */}
         <div className="col-12 col-md-6">
           <div className="checkbox-list subsection">
             <div className="d-flex justify-content-between align-items-start">
@@ -103,7 +102,6 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
           </div>
         </div>
 
-        {/* Deuxième liste - 12 colonnes sur mobile, 6 sur desktop */}
         <div className="col-12 col-md-6">
           <div className="checkbox-list subsection">
             <h1>{t('TDNotLikely')}</h1>

@@ -10,7 +10,6 @@ import RandomUtils from '../utils/RandomUtils.jsx';
 import { Loading } from '../components/Templates.jsx';
 import Alert from '@mui/material/Alert';
 import { useTranslation } from 'react-i18next';
-import { useConfig } from './ConfigContext.jsx';
 
 const DataContext = createContext();
 
@@ -20,8 +19,6 @@ const DataContext = createContext();
  * @returns {JSX.Element} Data provider with context
  */
 export const DataProvider = (props) => {
-  const CONFIG = useConfig();
-
   const { t, i18n } = useTranslation();
 
   const [dataAsso, setDataAsso] = useState([]);
@@ -33,8 +30,6 @@ export const DataProvider = (props) => {
   const [colorsAgenda, setColorsAgenda] = useState([]);
   const [colorsFriend, setColorsFriend] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [loadingTds, setLoadingTds] = useState(false);
-  const [shouldUpdate, setUpdate] = useState(true);
   const [errorFlag, raiseErrorFlag] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [icsLink, setIcsLink] = useState(t('LoadError'));
@@ -71,10 +66,6 @@ export const DataProvider = (props) => {
     minWidth < dimensions.width ? firstDay.startOfWeek(dayList) : firstDay
   );
 
-  function forceUpdate() {
-    setUpdate(true);
-  }
-
   function changeTheme(theme) {
     setUserTheme(theme);
   }
@@ -88,25 +79,19 @@ export const DataProvider = (props) => {
   }
 
   const updateUserTDs = (newTds) => {
+    window.scrollTo(0, 0);
     setTds((prev) => ({
       ...prev,
       user_tds: newTds,
     }));
-    forceUpdate();
   };
 
-  const refreshAssociations = async () => {
-    try {
-      const resultAssociations = await RandomUtils.fetchData(
-        API_URL + '/api/metadata/associations'
-      );
-      if (resultAssociations?.data) {
-        setUserAssos(resultAssociations.data.user_associations);
-        setAssoList(resultAssociations.data.all_associations);
-      }
-    } catch (err) {
-      console.error('Failed to refresh associations', err);
-    }
+  const updateUserAssos = (newAssos) => {
+    window.scrollTo(0, 0);
+    setAssoList((prev) => {
+      const combined = [...prev, ...newAssos];
+      return [...new Set(combined)];
+    });
   };
 
   const refreshAssoCalendar = async () => {
@@ -121,6 +106,18 @@ export const DataProvider = (props) => {
     }
   };
 
+  const refreshUserCalendar = async () => {
+    try {
+      const resultAgenda = await RandomUtils.fetchData(PATH_USER_CALENDAR);
+      if (resultAgenda?.data) {
+        setDataAgenda(resultAgenda.data.events);
+        setColorsAgenda(resultAgenda.data.colors);
+      }
+    } catch (err) {
+      console.error('Failed to refresh user calendar', err);
+    }
+  };
+
   useEffect(() => {
     if (userTheme) {
       document.getElementById('root').setAttribute('data-theme', userTheme);
@@ -132,13 +129,10 @@ export const DataProvider = (props) => {
       i18n.changeLanguage(userLanguage);
     }
   }, [userLanguage]);
-
   useEffect(() => {
-    window.scrollTo(0, 0);
     const loadMainData = async () => {
-      if (!shouldUpdate) return;
-      if (!CONFIG) return;
       setLoading(true);
+
       try {
         const [
           resultAsso,
@@ -149,6 +143,7 @@ export const DataProvider = (props) => {
           resultUsers,
           resultFriends,
           resultAssociations,
+          resultTds,
         ] = await Promise.all([
           RandomUtils.fetchData(PATH_ASSO_CALENDAR),
           RandomUtils.fetchData(PATH_USER_CALENDAR),
@@ -158,18 +153,24 @@ export const DataProvider = (props) => {
           RandomUtils.fetchData(API_URL + '/api/metadata/users'),
           RandomUtils.fetchData(API_URL + '/api/user/friends'),
           RandomUtils.fetchData(API_URL + '/api/metadata/associations'),
+          RandomUtils.fetchData(
+            API_URL + '/api/metadata/td_groups/all?format=json'
+          ),
         ]);
 
         if (resultAsso.data) {
           setDataAsso(resultAsso.data.events);
           setColorsAsso(resultAsso.data.colors);
         }
+
         if (resultAgenda.data) {
           setDataAgenda(resultAgenda.data.events);
           setColorsAgenda(resultAgenda.data.colors);
         }
+
         if (resultThemes.data) setAllThemes(resultThemes.data);
         if (resultLanguages.data) setAllLanguages(resultLanguages.data);
+
         if (resultProfile.data) {
           const profileData = resultProfile.data;
           setProfile({
@@ -189,15 +190,20 @@ export const DataProvider = (props) => {
           setAssoList(resultAssociations.data.all_associations);
         }
 
-        if (resultUsers.data) {
-          setUserList(resultUsers.data);
-        }
+        if (resultUsers.data) setUserList(resultUsers.data);
 
         if (resultFriends.data) {
           const friendsData = resultFriends.data;
           setFriendsList(friendsData.friends || []);
           setPendingList(friendsData.sent || []);
           setReceivedList(friendsData.received || []);
+        }
+
+        if (resultTds.data) {
+          setTds({
+            departments: resultTds.data.departments,
+            user_tds: resultTds.data.user_tds,
+          });
         }
       } catch (error) {
         setStatusMessage(t('LoadError') + ' : ' + error);
@@ -207,32 +213,7 @@ export const DataProvider = (props) => {
       }
     };
     loadMainData();
-  }, [shouldUpdate, CONFIG]);
-
-  useEffect(() => {
-    const loadAllTds = async () => {
-      if (!CONFIG || !shouldUpdate) return;
-
-      setLoadingTds(true);
-      try {
-        const url = API_URL + '/api/metadata/td_groups/all?format=json';
-        const result = await RandomUtils.fetchData(url);
-
-        if (result.data)
-          setTds({
-            departments: result.data.departments,
-            user_tds: result.data.user_tds,
-          });
-      } catch (error) {
-        console.error(t('LoadError') + ' : ' + error);
-      } finally {
-        setLoadingTds(false);
-        setUpdate(false);
-      }
-    };
-
-    loadAllTds();
-  }, [shouldUpdate, CONFIG]);
+  }, []);
 
   if (loading && (dataAsso.length == 0 || dataAgenda.length == 0)) {
     return <Loading />;
@@ -248,14 +229,12 @@ export const DataProvider = (props) => {
           dataAgenda,
           day,
           setDay,
-          forceUpdate,
           changeTheme,
           changeLanguage,
           tds,
           icsLink,
           allThemes,
           userTheme,
-          loadingTds,
           userProfile,
           allLanguages,
           userLanguage,
@@ -280,11 +259,12 @@ export const DataProvider = (props) => {
           setCurrentFriend,
           userAssos,
           assoList,
-          refreshAssociations,
           refreshAssoCalendar,
+          refreshUserCalendar,
           userAutoSync,
           changeAutoSync,
           updateUserTDs,
+          updateUserAssos,
         }}
       >
         {props.children}

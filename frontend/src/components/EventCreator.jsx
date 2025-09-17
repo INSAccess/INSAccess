@@ -55,7 +55,7 @@ const EvenementForm = ({}) => {
   const [errorFlag, setErrorFlag] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
 
-  const { forceUpdate } = useData();
+  const { refreshAssoCalendar } = useData();
 
   const saveEvenement = async ({ form }) => {
     try {
@@ -73,7 +73,7 @@ const EvenementForm = ({}) => {
       setStatusMessage(t('CreationSuccess'));
       setErrorFlag(true);
       setIsSubmitting(true);
-      forceUpdate();
+      refreshAssoCalendar();
       setTimeout(() => {
         setIsSubmitting(false);
       }, 2000);
@@ -120,8 +120,10 @@ const EvenementForm = ({}) => {
     }
 
     startHour = formData.get('start_hour');
-    endHour = formData.get('end_hour')
-    if (parseInt(startHour.replace(/:/, '')) > parseInt(endHour.replace(/:/, ''))){
+    endHour = formData.get('end_hour');
+    if (
+      parseInt(startHour.replace(/:/, '')) > parseInt(endHour.replace(/:/, ''))
+    ) {
       formData.set('start_hour', endHour);
       formData.set('end_hour', startHour);
     }

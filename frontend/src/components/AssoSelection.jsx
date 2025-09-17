@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import Alert from '@mui/material/Alert';
 
 function AssoSelection() {
-  const { userAssos, assoList, refreshAssociations, refreshAssoCalendar } =
+  const { userAssos, assoList, updateUserAssos, refreshAssoCalendar } =
     useData();
   const { t } = useTranslation();
 
@@ -50,7 +50,7 @@ function AssoSelection() {
 
       setStatusMessage(data?.success ?? t('Saved'));
 
-      await refreshAssociations();
+      updateUserAssos(Array.from(selectedAssos));
       await refreshAssoCalendar();
     } catch (error) {
       raiseErrorFlag(true);

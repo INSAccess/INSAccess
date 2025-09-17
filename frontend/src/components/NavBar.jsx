@@ -4,7 +4,7 @@ import { useState } from 'react';
 import './NavBar.scss';
 import { API_LOGOUT } from '../utils/Constants.jsx';
 import { useData } from '../contexts/DataContext.jsx';
-import { CustomDatePicker } from './DatePicker.jsx'
+import { CustomDatePicker } from './DatePicker.jsx';
 
 export const NavBar = ({ page, setPage }) => {
   const BUNDLE = useData();
@@ -64,7 +64,9 @@ export const NavBar = ({ page, setPage }) => {
           </div>
 
           <div className="navbar-right">
-            <CustomDatePicker isMobile={false}/>
+            <div className="mobile-datepicker-navbar" aria-label="date picker">
+              <CustomDatePicker isMobile={false} />
+            </div>
             <div id="welcome">
               {t('Welcome') + ' ' + displayName}
               <svg
