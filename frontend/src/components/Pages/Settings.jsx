@@ -1,42 +1,38 @@
 import TDSelection from '../TDSelection.jsx';
 import AssoSelection from '../AssoSelection.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
-import { useEffect, useState, useRef } from 'react';
-import { API_URL, minWidth } from '../../utils/Constants.jsx';
 import EventCreator from '../EventCreator.jsx';
 import DropDownCustom from '../DropDownCustom.jsx';
-import './Settings.scss';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useEffect, useState, useRef } from 'react';
+import { API_URL, minWidth } from '../../utils/Constants.jsx';
 import { useConfig } from '../../contexts/ConfigContext.jsx';
 import { useData } from '../../contexts/DataContext.jsx';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
+import './Settings.scss';
+
 /**
  * Settings component, handling the theme, the TD selection, ICS link and event creation
  * @component
  * @returns {JSX.Element}
  */
 const Settings = () => {
+
   const CONFIG = useConfig();
   const departementNames = CONFIG ? CONFIG['departementNames'] : ['STPI'];
   const departementYears = CONFIG ? CONFIG['departementYears'] : { STPI: [1] };
 
-  const BUNDLE = useData();
-  let icsLink = BUNDLE.icsLink;
-  const { isAssos } = useData();
-  let allThemes = BUNDLE.allThemes;
-  let userTheme = BUNDLE.userTheme;
-  let allLanguages = BUNDLE.allLanguages;
-  let userLanguage = BUNDLE.userLanguage;
-  const { tds, userAutoSync, changeAutoSync, updateUserTDs } = useData();
+  const { changeLanguage, changeTheme, icsLink, allThemes, 
+          userTheme, allLanguages, isAssos, userLanguage, 
+          tds, userAutoSync, changeAutoSync, updateUserTDs,
+          departement, setDepartement, year, setYear,
+  } = useData();
 
   const [view, setView] = useState('TDs');
 
   const copyButtonRef = useRef(null);
   const [currentLanguage, setLanguage] = useState(userLanguage);
   const [currentTheme, setTheme] = useState(userTheme);
-  const [departement, setDepartement] = useState(departementNames[0]);
-  const [year, setYear] = useState(departementYears[departement][0]);
   const [syncLoading, setSyncLoading] = useState(false);
   const [syncStatus, setSyncStatus] = useState(null);
   const { t } = useTranslation();
@@ -72,6 +68,7 @@ const Settings = () => {
       console.error('Failed to update autosync', error);
     }
   };
+
   const handleSyncUsingCas = async () => {
     setSyncLoading(true);
     setSyncStatus(null);
@@ -119,7 +116,7 @@ const Settings = () => {
           body: JSON.stringify(e),
         });
         setTheme(e);
-        BUNDLE.changeTheme(e);
+        changeTheme(e);
       } catch (error) {
         console.error(error);
       }
@@ -149,7 +146,7 @@ const Settings = () => {
           credentials: 'include',
           body: JSON.stringify(e),
         });
-        BUNDLE.changeLanguage(e);
+        changeLanguage(e);
         setLanguage(e);
       } catch (error) {
         console.error(error);

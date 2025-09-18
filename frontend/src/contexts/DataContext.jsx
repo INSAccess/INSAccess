@@ -1,15 +1,16 @@
-import { createContext, useContext, useState, useEffect } from 'react';
 import Day from '../utils/Day.jsx';
+import RandomUtils from '../utils/RandomUtils.jsx';
+import Alert from '@mui/material/Alert';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { Loading } from '../components/Templates.jsx';
+import { useTranslation } from 'react-i18next';
+import { useConfig } from './ConfigContext.jsx';
 import {
   minWidth,
   PATH_USER_CALENDAR,
   PATH_ASSO_CALENDAR,
   API_URL,
 } from '../utils/Constants.jsx';
-import RandomUtils from '../utils/RandomUtils.jsx';
-import { Loading } from '../components/Templates.jsx';
-import Alert from '@mui/material/Alert';
-import { useTranslation } from 'react-i18next';
 
 const DataContext = createContext();
 
@@ -20,6 +21,10 @@ const DataContext = createContext();
  */
 export const DataProvider = (props) => {
   const { t, i18n } = useTranslation();
+
+  const CONFIG = useConfig();
+  const departementNames = CONFIG ? CONFIG['departementNames'] : ['STPI'];
+  const departementYears = CONFIG ? CONFIG['departementYears'] : { STPI: [1] };
 
   const [dataAsso, setDataAsso] = useState([]);
   const [dataAgenda, setDataAgenda] = useState([]);
@@ -48,6 +53,9 @@ export const DataProvider = (props) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [currentFriend, setCurrentFriend] = useState('');
   const [userAutoSync, setUserAutoSync] = useState(false);
+  const [departement, setDepartement] = useState(departementNames[0]);
+  const [year, setYear] = useState(departementYears[departement][0]);
+
   const dayList = [
     t('Sunday'),
     t('Monday'),
@@ -263,6 +271,10 @@ export const DataProvider = (props) => {
           changeAutoSync,
           updateUserTDs,
           updateUserAssos,
+          departement, 
+          setDepartement,
+          year, 
+          setYear,
         }}
       >
         {props.children}
