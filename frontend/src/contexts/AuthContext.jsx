@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import RandomUtils from '../utils/RandomUtils.jsx';
 import { API_AUTH } from '../utils/Constants.jsx';
+import RandomUtils from '../utils/RandomUtils.jsx';
 
 const AuthContext = createContext();
 

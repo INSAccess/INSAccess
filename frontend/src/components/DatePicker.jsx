@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { useData } from '../contexts/DataContext.jsx';
+import DatePicker from 'react-datepicker';
 import Day from '../utils/Day.jsx';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export const CustomDatePicker = ({ isMobile = false }) => {
   const { day, setDay } = useData();

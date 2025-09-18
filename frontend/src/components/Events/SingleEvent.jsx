@@ -1,16 +1,16 @@
 import { NavLink } from 'react-router-dom';
-import Day from '../../utils/Day';
-import EventUtils from '../../utils/EventUtils';
-import RandomUtils, { parseJsonSafe } from '../../utils/RandomUtils';
 import { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import './SingleEvent.scss';
 import { API_URL } from '../../utils/Constants.jsx';
 import { CompactPicker } from 'react-color';
 import { useData } from '../../contexts/DataContext.jsx';
-import Alert from '@mui/material/Alert';
 import { useTranslation } from 'react-i18next';
+import Day from '../../utils/Day';
+import EventUtils from '../../utils/EventUtils';
+import RandomUtils, { parseJsonSafe } from '../../utils/RandomUtils';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Alert from '@mui/material/Alert';
+import './SingleEvent.scss';
 
 /**
  * React component that only returns a button redirecting to a link if this is an association
@@ -23,7 +23,7 @@ const FollowLink = ({ asso, link }) => {
   if (asso) {
     return (
       <NavLink to={link} target="_blank" rel="noopener noreferrer">
-        <Button>{t('More')}</Button>
+        <Button>{t('events.more')}</Button>
       </NavLink>
     );
   } else {
@@ -42,7 +42,7 @@ const Description = ({ asso, desc }) => {
   if (asso) {
     return (
       <div>
-        <strong>{t('Description')}</strong>
+        <strong>{t('events.description')}</strong>
         <br />
         {desc}
       </div>
@@ -84,12 +84,12 @@ const DeleteButton = ({
       const data = await parseJsonSafe(response);
 
       if (!response.ok) {
-        setStatusMessage(t('DeleteError') + ' : ' + data.error);
+        setStatusMessage(t('messages.deleteError') + ' : ' + data.error);
         raiseErrorFlag(true);
         handleClose();
       } else {
         // raiseSuccessFlag(true);
-        // setSuccessMessage(t('DeleteSuccess'));
+        // setSuccessMessage(t('messages.deleteSuccess'));
         refreshAssoCalendar();
         handleCLose();
       }
@@ -102,7 +102,7 @@ const DeleteButton = ({
     return (
       <div style={{ marginTop: '2%' }}>
         <button className="btn btn-primary" onClick={handleDeleteEvent}>
-          {t('Delete')}
+          {t('events.delete')}
         </button>
       </div>
     );
@@ -136,21 +136,20 @@ const DeleteButton = ({
 const SingleEvent = (props) => {
   const { t } = useTranslation();
 
-  const BUNDLE = useData();
-  const { assoName } = useData();
+  const { assoName, colorsAsso, setColorsAsso, colorsAgenda, setColorsAgenda, colorsFriend, setColorsFriend } = useData();
 
   let colors = [];
   let setColorsList = () => {};
 
   if (props.dataOrigin == 'asso') {
-    colors = BUNDLE.colorsAsso;
-    setColorsList = BUNDLE.setColorsAsso;
+    colors = colorsAsso;
+    setColorsList = setColorsAsso;
   } else if (props.dataOrigin == 'user') {
-    colors = BUNDLE.colorsAgenda;
-    setColorsList = BUNDLE.setColorsAgenda;
+    colors = colorsAgenda;
+    setColorsList = setColorsAgenda;
   } else {
-    colors = BUNDLE.colorsFriend;
-    setColorsList = BUNDLE.setColorsFriend;
+    colors = colorsFriend;
+    setColorsList = setColorsFriend;
   }
 
   const hoursEvents = Day.createHours();
@@ -187,6 +186,7 @@ const SingleEvent = (props) => {
   const [successFlag, raiseSuccessFlag] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  
   useEffect(() => {
     if (props.dataOrigin === 'asso') {
       if (props.teacher?.[0] && colors[props.teacher[0]]) {
@@ -227,7 +227,7 @@ const SingleEvent = (props) => {
     });
 
     if (!response.ok) {
-      setStatusMessage(`${t('SaveError')} : ${response.statusText}`);
+      setStatusMessage(`${t('messages.saveError')} : ${response.statusText}`);
       raiseErrorFlag(true);
     } else {
       handleColorChange(colorObject);
@@ -269,17 +269,17 @@ const SingleEvent = (props) => {
         </Modal.Header>
         <Modal.Body>
           <div>
-            <strong>{t('StartHour')}</strong>
+            <strong>{t('events.startHour')}</strong>
             {Day.presentableHour(props.startTime)}
           </div>
           <div>
-            <strong>{t('EndHour')}</strong>
+            <strong>{t('events.endHour')}</strong>
             {Day.presentableHour(props.endTime)}
           </div>
           {props.teacher.length > 0 && (
             <div>
               <strong>
-                {props.dataOrigin == 'asso' ? t('Associations') : t('Teachers')}{' '}
+                {props.dataOrigin == 'asso' ? t('events.associations') : t('events.teachers')}{' '}
                 :{' '}
               </strong>
               {RandomUtils.Join(props.teacher)}
@@ -318,7 +318,7 @@ const SingleEvent = (props) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleClose}>
-            {t('Close')}
+            {t('events.close')}
           </Button>
         </Modal.Footer>
       </Modal>

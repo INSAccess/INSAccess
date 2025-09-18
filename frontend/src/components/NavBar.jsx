@@ -1,21 +1,21 @@
 import { useTranslation } from 'react-i18next';
-import '../utils/Dictionnary.jsx';
 import { useState } from 'react';
-import './NavBar.scss';
 import { API_LOGOUT } from '../utils/Constants.jsx';
 import { useData } from '../contexts/DataContext.jsx';
 import { CustomDatePicker } from './DatePicker.jsx';
+import '../utils/Dictionnary.jsx';
+import './NavBar.scss';
 
 export const NavBar = ({ page, setPage }) => {
   const BUNDLE = useData();
 
   const { t } = useTranslation();
   const items = [
-    { name: t('Calendar'), href: 'home' },
-    { name: t('Events'), href: 'associations' },
-    { name: t('Friends'), href: 'friends' },
-    { name: t('Settings'), href: 'settings' },
-    { name: t('Help'), href: 'help' },
+    { name: t('nav.calendar'), href: 'home' },
+    { name: t('nav.events'), href: 'associations' },
+    { name: t('nav.friends'), href: 'friends' },
+    { name: t('nav.settings'), href: 'settings' },
+    { name: t('nav.help'), href: 'help' },
   ];
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -68,7 +68,7 @@ export const NavBar = ({ page, setPage }) => {
               <CustomDatePicker isMobile={false} />
             </div>
             <div id="welcome">
-              {t('Welcome') + ' ' + displayName}
+              {t('settings.welcome') + ' ' + displayName}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -121,7 +121,7 @@ export const NavBar = ({ page, setPage }) => {
           <ul className="navbar-nav">
             <li className="nav-item welcome-mobile">
               <div id="welcome-mobile">
-                {t('Welcome') + ' ' + displayName}
+                {t('settings.welcome') + ' ' + displayName}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -171,7 +171,7 @@ export const NavBar = ({ page, setPage }) => {
                     d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"
                   ></path>
                 </svg>
-                {t('Logout')}
+                {t('settings.logout')}
               </button>
             </li>
           </ul>

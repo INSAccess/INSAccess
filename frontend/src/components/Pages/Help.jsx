@@ -1,8 +1,8 @@
-import duck from '../../images/duck.png';
 import { useTranslation } from 'react-i18next';
-import RandomUtils from '../../utils/RandomUtils';
 import { minWidth } from '../../utils/Constants';
+import RandomUtils from '../../utils/RandomUtils';
 import SupportForm from '../SupportForm.jsx';
+import duck from '../../images/duck.png';
 import './Help.scss';
 
 const About = () => {
@@ -22,15 +22,15 @@ const About = () => {
                 className="img-fluid rounded"
                 loading="lazy"
                 src={duck}
-                alt={t('ImageLoadingError')}
+                alt={t('messages.imageLoadingError')}
               />
             </div>
           )}
           <div className="col-12 col-lg-6 col-xl-7">
             <div className="row justify-content-xl-center">
               <div className="col-12 col-xl-11 about-content">
-                <h2 className="mb-3">{t('AboutTitle')}</h2>
-                <p className="mb-5">{t('AboutContent')}</p>
+                <h2 className="mb-3">{t('about.title')}</h2>
+                <p className="mb-5">{t('about.content')}</p>
               </div>
             </div>
           </div>
@@ -51,28 +51,28 @@ const FAQ = () => {
   const faqItems = [
     {
       id: 'faq1',
-      question: t('FAQ_TdNotFound_Question'),
-      answer: t('FAQ_TdNotFound_Answer')
+      question: t('faq.tdNotFoundQuestion'),
+      answer: t('faq.tdNotFoundAnswer')
     },
     {
       id: 'faq2',
-      question: t('FAQ_AssoPublisher_Question'),
-      answer: t('FAQ_AssoPublisherAnswer')
+      question: t('faq.assoPublisherQuestion'),
+      answer: t('faq.assoPublisherAnswer')
     },
     {
       id: 'faq3',
-      question: t('FAQ_Webview_Question'),
-      answer: t('FAQ_Webview_Answer')
+      question: t('faq.webviewQuestion'),
+      answer: t('faq.webviewAnswer')
     },
     {
       id: 'faq4',
-      question: t('FAQ_FriendNotFound_Question'),
-      answer: t('FAQ_FriendNotFound_Answer')
+      question: t('faq.friendNotFoundQuestion'),
+      answer: t('faq.friendNotFoundAnswer')
     },
     {
       id: 'faq5',
-      question: t('FAQ_WhyDuck_Question'),
-      answer: t('FAQ_WhyDuck_Answer')
+      question: t('faq.whyDuckQuestion'),
+      answer: t('faq.whyDuckAnswer')
     }
   ];
 
@@ -81,7 +81,7 @@ const FAQ = () => {
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <h2 className="mb-4 text-center">{t('FAQ_Title')}</h2>
+            <h2 className="mb-4 text-center">{t('faq.title')}</h2>
             <div className="accordion custom-accordion" id="faqAccordion">
               {faqItems.map((item, index) => (
                 <div className="accordion-item custom-accordion-item" key={item.id}>
@@ -126,23 +126,23 @@ const Manual = () => {
   const manualSections = [
     {
       id: 'choose-classes',
-      title: t('Manual_ChooseClasses'),
-      content: t('Manual_ChooseClassesContent'),
+      title: t('manual.chooseClasses'),
+      content: t('manual.chooseClassesContent'),
     },
     {
       id: 'ics',
-      title: t('Manual_ICS'),
-      content: t('Manual_ICSContent'),
+      title: t('manual.ics'),
+      content: t('manual.icsContent'),
     },
     {
       id: 'friends',
-      title: t('Manual_Friends'),
-      content: t('Manual_FriendsContent'),
+      title: t('manual.friends'),
+      content: t('manual.friendsContent'),
     },
     {
       id: 'personnalize',
-      title: t('Manual_Personnalize'),
-      content: t('Manual_PersonnalizeContent'),
+      title: t('manual.personalize'),
+      content: t('manual.personalizeContent'),
     }
   ];
 
@@ -151,7 +151,7 @@ const Manual = () => {
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <h2 className="mb-4 text-center">{t('Manual_Title')}</h2>
+            <h2 className="mb-4 text-center">{t('manual.title')}</h2>
           </div>
         </div>
         <div className="row g-4">

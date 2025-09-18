@@ -1,7 +1,7 @@
-import duck from '../images/duck.png';
-import './Templates.scss';
 import { useTranslation } from 'react-i18next';
 import { Alert, Button } from 'react-bootstrap';
+import duck from '../images/duck.png';
+import './Templates.scss';
 
 /**
  * Custom Error handling component
@@ -14,7 +14,7 @@ const ErrorTemplate = ({ message, onRetry }) => {
   const errorText =
     typeof message === 'string' && message.trim().length > 0
       ? message
-      : t('UnexpectedError');
+      : t('messages.unexpectedError');
 
   console.error('ErrorTemplate:', message);
 
@@ -30,15 +30,15 @@ const ErrorTemplate = ({ message, onRetry }) => {
         style={{ maxWidth: 600 }}
       >
         <h4 className="alert-heading">
-          {t('ErrorTemplateTitle') || t('Error')}
+          {t('messages.errorTemplateTitle') || t('messages.error')}
         </h4>
         <p className="mb-3">
-          {t('ErrorTemplate')}: {errorText}
+          {t('messages.errorTemplate')}: {errorText}
         </p>
         {onRetry && (
           <div className="d-flex justify-content-end">
             <Button variant="outline-light" onClick={onRetry}>
-              {t('Retry')}
+              {t('messages.retry')}
             </Button>
           </div>
         )}
@@ -57,7 +57,7 @@ const Loading = () => {
 
   return (
     <div className="loadingBackground">
-      <img id="rotating-logo" src={duck} alt={t('ImageLoadingError')}></img>
+      <img id="rotating-logo" src={duck} alt={t('messages.imageLoadingError')}></img>
     </div>
   );
 };
@@ -72,7 +72,7 @@ const WorkInProgressTemplate = () => {
 
   return (
     <div className="WIP">
-      <h1>{t('WIP')}</h1>
+      <h1>{t('messages.wip')}</h1>
     </div>
   );
 };

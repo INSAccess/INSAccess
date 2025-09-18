@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { API_LOGIN } from '../utils/Constants.jsx';
-import { ErrorTemplate, Loading } from './Templates.jsx';
+import { ErrorTemplate } from './Templates.jsx';
 
 const ProtectedRoute = ({ children }) => {
   const { token, loading, error } = useAuth();

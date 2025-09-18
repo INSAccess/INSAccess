@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useData } from '../../contexts/DataContext.jsx';
-import RandomUtils from '../../utils/RandomUtils.jsx';
 import { API_URL } from '../../utils/Constants.jsx';
-import AllEvents from '../Events/AllEvents.jsx';
 import { useTranslation } from 'react-i18next';
+import RandomUtils from '../../utils/RandomUtils.jsx';
+import AllEvents from '../Events/AllEvents.jsx';
 import './Friends.scss';
 
 const Friends = () => {
@@ -11,7 +11,6 @@ const Friends = () => {
 
   const {
     userProfile,
-    userTheme,
     userList,
     friendsList,
     setFriendsList,
@@ -61,7 +60,7 @@ const Friends = () => {
       let user = users.filter(e => e.username == username)[0].displayName
       return user
     } catch (e){
-      return t('NameError');
+      return t('messages.nameError');
     }
   }
 
@@ -73,12 +72,12 @@ const Friends = () => {
         { other_user: username }
       );
       if (result.error) {
-        console.error(t('CancelError'), result.error);
+        console.error(t('messages.cancelError'), result.error);
         return;
       }
       setPendingList(pendingList.filter((e) => e !== username));
     } catch (error) {
-      console.error(t('CancelError'), error);
+      console.error(t('messages.cancelError'), error);
     }
   };
 
@@ -90,7 +89,7 @@ const Friends = () => {
         { other_user: username }
       );
       if (result.error) {
-        console.error(t('SendError'), result.error);
+        console.error(t('messages.sendError'), result.error);
         return;
       }
       setPendingList((prev) => {
@@ -102,7 +101,7 @@ const Friends = () => {
       setSearchTerm('');
       setShowSuggestions(false);
     } catch (error) {
-      console.error(t('SendError'), error);
+      console.error(t('messages.sendError'), error);
     }
   };
 
@@ -114,7 +113,7 @@ const Friends = () => {
         { other_user: username }
       );
       if (result.error) {
-        console.error(t('AcceptError'), result.error);
+        console.error(t('messages.acceptError'), result.error);
         return;
       }
       setReceivedList(receivedList.filter((e) => e !== username));
@@ -125,7 +124,7 @@ const Friends = () => {
         return prev;
       });
     } catch (error) {
-      console.error(t('AcceptError'), error);
+      console.error(t('messages.acceptError'), error);
     }
   };
 
@@ -137,12 +136,12 @@ const Friends = () => {
         { other_user: username }
       );
       if (result.error) {
-        console.error(t('DeleteError'), result.error);
+        console.error(t('messages.deleteError'), result.error);
         return;
       }
       setFriendsList(friendsList.filter((e) => e !== username));
     } catch (error) {
-      console.error(t('DeleteError'), error);
+      console.error(t('messages.deleteError'), error);
     }
   };
 
@@ -154,12 +153,12 @@ const Friends = () => {
         { other_user: username }
       );
       if (result.error) {
-        console.error(t('DeleteError'), result.error);
+        console.error(t('messages.deleteError'), result.error);
         return;
       }
       setReceivedList(receivedList.filter((e) => e !== username));
     } catch (error) {
-      console.error(t('DeleteError'), error);
+      console.error(t('messages.deleteError'), error);
     }
   };
 
@@ -199,7 +198,7 @@ const Friends = () => {
             className="btn btn-outline-success me-2"
             onClick={() => handleSeeCalendar(friendsList[i])}
           >
-            <span className="d-none d-md-inline me-2">{t('Calendar')}</span>
+            <span className="d-none d-md-inline me-2">{t('nav.alendar')}</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-calendar-fill" viewBox="0 0 16 16">
               <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5"/>
             </svg>
@@ -209,7 +208,7 @@ const Friends = () => {
             className="btn btn-outline-danger"
             onClick={() => handleDeleteFriend(friendsList[i])}
           >
-            <span className="d-none d-md-inline me-2">{t('Remove')}</span>
+            <span className="d-none d-md-inline me-2">{t('friends.remove')}</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-x-fill" viewBox="0 0 16 16">
               <path fillRule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m6.146-2.854a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708"/>
             </svg>
@@ -232,7 +231,7 @@ const Friends = () => {
           className="btn btn-outline-danger"
           onClick={() => handleCancel(pendingList[i])}
         >
-          <span className="d-none d-md-inline me-2">{t('Cancel')}</span>
+          <span className="d-none d-md-inline me-2">{t('friends.cancel')}</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
           </svg>
@@ -255,7 +254,7 @@ const Friends = () => {
             className="btn btn-outline-success me-2"
             onClick={() => handleAccept(receivedList[i])}
           >
-            <span className="d-none d-md-inline me-2">{t('Accept')}</span>
+            <span className="d-none d-md-inline me-2">{t('friends.accept')}</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-add" viewBox="0 0 16 16">
               <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
               <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
@@ -266,7 +265,7 @@ const Friends = () => {
             className="btn btn-outline-danger"
             onClick={() => handleRefuse(receivedList[i])}
           >
-            <span className="d-none d-md-inline me-2">{t('Refuse')}</span>
+            <span className="d-none d-md-inline me-2">{t('friends.refuse')}</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
               <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
             </svg>
@@ -312,7 +311,7 @@ const Friends = () => {
                     handleSendInvitation(user.username);
                   }}
                 >
-                  {t('Invite')}
+                  {t('friends.invite')}
                 </button>
               </div>
             ))}
@@ -324,7 +323,7 @@ const Friends = () => {
           filteredSuggestions.length === 0 && (
             <div className="suggestions-dropdown">
               <div className="suggestion-item no-results">
-                {t('NoUserFound')}
+                {t('friends.noUserFound')}
               </div>
             </div>
           )}
@@ -332,7 +331,7 @@ const Friends = () => {
 
       <div className="col-md-6">
         <h2 className="themed-title">
-          {t('Friends')} <span className="badge rounded-pill text-bg-secondary">{friendsList.length}</span>
+          {t('nav.friends')} <span className="badge rounded-pill text-bg-secondary">{friendsList.length}</span>
         </h2>
         <ul className="list-group themed-list">{friendsItems}</ul>
         <hr className="themed-hr" />
@@ -340,12 +339,12 @@ const Friends = () => {
 
       <div className="col-md-6">
         <h2 className="themed-title">
-          {t('InviteSent')} <span className="badge rounded-pill text-bg-secondary">{pendingList.length}</span>
+          {t('friends.inviteSent')} <span className="badge rounded-pill text-bg-secondary">{pendingList.length}</span>
         </h2>
         <ul className="list-group themed-list">{pendingItems}</ul>
         <hr className="themed-hr" />
         <h2 className="themed-title">
-          {t('InviteReceived')} <span className="badge rounded-pill text-bg-secondary">{receivedList.length}</span>
+          {t('friends.inviteReceived')} <span className="badge rounded-pill text-bg-secondary">{receivedList.length}</span>
         </h2>
         <ul className="list-group themed-list">{receivedItems}</ul>
       </div>

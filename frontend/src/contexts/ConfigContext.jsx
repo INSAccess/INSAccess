@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import RandomUtils from '../utils/RandomUtils.jsx';
 import { API_URL } from '../utils/Constants.jsx';
-import Alert from '@mui/material/Alert';
 import { useTranslation } from 'react-i18next';
+import Alert from '@mui/material/Alert';
+import RandomUtils from '../utils/RandomUtils.jsx';
 
 const ConfigContext = createContext();
 
@@ -33,7 +33,7 @@ export const ConfigProvider = ({ children }) => {
       }
 
       if (result.error) {
-        setStatusMessage(t('ConfigError'));
+        setStatusMessage(t('messages.configError')); // Updated translation key
         setError(true);
         raiseErrorFlag(true);
         setData({});

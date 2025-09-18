@@ -126,7 +126,7 @@ const Settings = () => {
       <DropDownCustom
         items={allThemes}
         id="themes"
-        title={t('ThemeDD')}
+        title={t('settings.themeDD')}
         current={currentTheme}
         handle={handleThemeChange}
       />
@@ -157,7 +157,7 @@ const Settings = () => {
       <DropDownCustom
         items={allLanguages}
         id="languages"
-        title={t('LanguageDD')}
+        title={t('settings.languageDD')}
         current={currentLanguage}
         handle={handleLanguageChange}
       />
@@ -201,7 +201,7 @@ const Settings = () => {
         items={departementYears[departement]}
         current={year}
         id="dropdown-year"
-        title={t('YearDD')}
+        title={t('settings.yearDD')}
         handle={setYear}
       />
     );
@@ -213,7 +213,7 @@ const Settings = () => {
         items={departementNames}
         current={departement}
         id="dropdown-depart"
-        title={t('DepartmentDD')}
+        title={t('settings.departmentDD')}
         handle={handleSetDepartement}
       />
     );
@@ -224,7 +224,7 @@ const Settings = () => {
       <div className="settings container-fluid">
         {/* Preferences Section */}
         <section className="settings-section subsection">
-          <h3 className="section-title">{t('Preferences')}</h3>
+          <h3 className="section-title">{t('support.preferences')}</h3>
           <div className="d-flex flex-wrap gap-3">
             <div className="setting-item">
               <ThemeSwitch id="theme" />
@@ -237,8 +237,8 @@ const Settings = () => {
 
         {/* ICS Feed Section */}
         <section className="settings-section subsection">
-          <h3 className="section-title">{t('ICSLink')}</h3>
-          <p>{t('ICSText')}</p>
+          <h3 className="section-title">{t('settings.icsLink')}</h3>
+          <p>{t('settings.icsText')}</p>
 
           <div className="copy-container">
             <input
@@ -254,9 +254,9 @@ const Settings = () => {
               onClick={handleCopy}
               data-bs-toggle="tooltip"
               data-bs-placement="top"
-              title={t('CopyToClipboard')}
+              title={t('settings.icsCopy')}
             >
-              {t('ICSCopy')}
+              {t('settings.icsCopy')}
             </button>
           </div>
         </section>
@@ -286,7 +286,7 @@ const Settings = () => {
                         handleCasAutoSyncChange(e.target.checked)
                       }
                     />
-                    <span>{t('CasAutoSync')}</span>
+                    <span>{t('settings.casAutoSync')}</span>
                   </label>
 
                   <button
@@ -297,12 +297,12 @@ const Settings = () => {
                     disabled={syncLoading}
                   >
                     {syncLoading
-                      ? t('Syncing')
+                      ? t('events.syncing')
                       : syncStatus === 'success'
-                      ? t('Synced')
+                      ? t('events.synced')
                       : syncStatus === 'error'
-                      ? t('Failed')
-                      : t('SyncNow')}
+                      ? t('events.failed')
+                      : t('settings.syncNow')}
                   </button>
                 </div>
               </div>
@@ -337,13 +337,13 @@ const Settings = () => {
           className={`btn-view ${view == 'TDs' ? 'active' : ''}`}
           onClick={() => setView('TDs')}
         >
-          {dimensions.width > minWidth ? t('TDList') : t('TDListShort')}
+          {dimensions.width > minWidth ? t('settings.tdList') : t('settings.tdListShort')}
         </Button>
         <Button
           className={`btn-view ${view == 'assos' ? 'active' : ''}`}
           onClick={() => setView('assos')}
         >
-          {dimensions.width > minWidth ? t('AssoList') : t('AssoListShort')}
+          {dimensions.width > minWidth ? t('settings.assoList') : t('settings.assoListShort')}
         </Button>
         {isAssos && (
           <Button
@@ -351,15 +351,15 @@ const Settings = () => {
             onClick={() => setView('create')}
           >
             {dimensions.width > minWidth
-              ? t('CreateEvent')
-              : t('CreateEventShort')}
+              ? t('settings.createEvent')
+              : t('settings.createEventShort')}
           </Button>
         )}
         <Button
           className={`btn-view ${view == 'other' ? 'active' : ''}`}
           onClick={() => setView('other')}
         >
-          {t('OtherSettings')}
+          {t('settings.otherSettings')}
         </Button>
       </div>
       <>{displayView(view)}</>

@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { API_URL } from '../utils/Constants';
-import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils';
 import { useData } from '../contexts/DataContext';
 import { useTranslation } from 'react-i18next';
+import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils';
 import Alert from '@mui/material/Alert';
 
 function AssoSelection() {
-  const { userAssos, assoList, updateUserAssos, refreshAssoCalendar } =
-    useData();
+  const { userAssos, assoList, updateUserAssos, refreshAssoCalendar } = useData();
   const { t } = useTranslation();
 
   const [selectedAssos, setSelectedAssos] = useState(new Set());
@@ -48,13 +47,13 @@ function AssoSelection() {
       });
       const data = await parseJsonSafe(response);
 
-      setStatusMessage(data?.success ?? t('Saved'));
+      setStatusMessage(data?.success ?? t('messages.saveSuccess'));
 
       updateUserAssos(Array.from(selectedAssos));
       await refreshAssoCalendar();
     } catch (error) {
       raiseErrorFlag(true);
-      setStatusMessage(t('ErrorSavingAsso'));
+      setStatusMessage(t('messages.errorSavingAsso'));
     }
   };
 
@@ -63,7 +62,7 @@ function AssoSelection() {
       <div className="row">
         <div className="col-12">
           <div className="checkbox-list subsection">
-            <h1>{t('AssoSelect')}</h1>
+            <h1>{t('settings.assoSelect')}</h1>
             {(assoList || []).map((assoItem) => {
               const label = normalizeAsso(assoItem);
               return (
@@ -87,7 +86,7 @@ function AssoSelection() {
             className="button-validate btn btn-primary"
             onClick={saveSelection}
           >
-            {t('Save')}
+            {t('settings.save')}
           </button>
           <p>{statusMessage}</p>
         </div>

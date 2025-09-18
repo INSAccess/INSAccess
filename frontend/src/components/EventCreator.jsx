@@ -1,12 +1,12 @@
 import { API_URL } from '../utils/Constants.jsx';
-import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils.jsx';
 import { useState } from 'react';
-import './EventCreator.scss';
-import Alert from 'react-bootstrap/Alert';
 import { useData } from '../contexts/DataContext.jsx';
 import { useTranslation } from 'react-i18next';
+import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils.jsx';
+import Alert from 'react-bootstrap/Alert';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import './EventCreator.scss';
 
 const EvenementForm = () => {
   const { t } = useTranslation();
@@ -31,7 +31,7 @@ const EvenementForm = () => {
 
   const validateForm = (formJson) => {
     if (!formJson.title || formJson.title.trim() === '') {
-      setStatusMessage(t('FormTitleRequired'));
+      setStatusMessage(t('forms.titleRequired'));
       setErrorFlag(true);
       setMessageType('error');
       return false;
@@ -41,7 +41,7 @@ const EvenementForm = () => {
       try {
         new URL(formJson.associated_link);
       } catch {
-        setStatusMessage(t('FormInvalidLink'));
+        setStatusMessage(t('forms.invalidLink'));
         setErrorFlag(true);
         setMessageType('error');
         return false;
@@ -68,18 +68,18 @@ const EvenementForm = () => {
       const data = await parseJsonSafe(response);
 
       if (!response.ok) {
-        setStatusMessage(t('CreationError') + ' : ' + data?.error || '');
+        setStatusMessage(t('messages.creationError') + ' : ' + data?.error || '');
         setErrorFlag(true);
         setMessageType('error');
       } else {
-        setStatusMessage(t('CreationSuccess'));
+        setStatusMessage(t('messages.creationSuccess'));
         setErrorFlag(true);
         setMessageType('success');
         refreshAssoCalendar();
       }
     } catch (err) {
       console.error(err);
-      setStatusMessage(t('CreationError'));
+      setStatusMessage(t('messages.creationError'));
       setMessageType('error');
       setErrorFlag(true);
     } finally {
@@ -124,20 +124,20 @@ const EvenementForm = () => {
             {/* Title */}
             <div className="col-md-6">
               <label htmlFor="title" className="form-label">
-                {t('FormTitle')}
+                {t('forms.title')}
               </label>
               <input
                 className="form-control"
                 id="title"
                 name="title"
-                placeholder={t('FormTitleDefault')}
+                placeholder={t('forms.titleDefault')}
               />
             </div>
 
             {/* Date */}
             <div className="col-md-6">
               <label htmlFor="date" className="form-label">
-                {t('FormDate')}
+                {t('forms.date')}
               </label>
               <DatePicker
                 selected={eventDate}
@@ -150,7 +150,7 @@ const EvenementForm = () => {
             {/* Start Time */}
             <div className="col-md-6">
               <label htmlFor="start_hour" className="form-label">
-                {t('FormStartHour')}
+                {t('forms.startHour')}
               </label>
               <DatePicker
                 selected={startHour}
@@ -167,7 +167,7 @@ const EvenementForm = () => {
             {/* End Time */}
             <div className="col-md-6">
               <label htmlFor="end_hour" className="form-label">
-                {t('FormEndHour')}
+                {t('forms.endHour')}
               </label>
               <DatePicker
                 selected={endHour}
@@ -184,13 +184,13 @@ const EvenementForm = () => {
             {/* Description */}
             <div className="col-md-6">
               <label htmlFor="info" className="form-label">
-                {t('FormDescription')}
+                {t('forms.description')}
               </label>
               <input
                 className="form-control"
                 id="info"
                 name="info"
-                placeholder={t('FormDescriptionDefault')}
+                placeholder={t('forms.descriptionDefault')}
               />
             </div>
 
@@ -203,20 +203,20 @@ const EvenementForm = () => {
                 className="form-control"
                 id="associated_link"
                 name="associated_link"
-                placeholder={t('FormLinkDefault')}
+                placeholder={t('forms.linkDefault')}
               />
             </div>
 
             {/* Location */}
             <div className="col-md-12">
               <label htmlFor="location" className="form-label">
-                {t('FormRoom')}
+                {t('forms.room')}
               </label>
               <input
                 className="form-control"
                 id="location"
                 name="location"
-                placeholder={t('FormRoomDefault')}
+                placeholder={t('forms.roomDefault')}
               />
             </div>
           </div>
@@ -228,10 +228,10 @@ const EvenementForm = () => {
               type="submit"
               disabled={isSubmitting}
             >
-              {isSubmitting ? t('FormIsSubmitting') : t('FormCreate')}
+              {isSubmitting ? t('forms.isSubmitting') : t('forms.create')}
             </button>
             <button className="btn btn-secondary" type="reset">
-              {t('FormReset')}
+              {t('forms.reset')}
             </button>
           </div>
         </form>

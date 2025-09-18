@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { API_URL } from '../utils/Constants';
-import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils';
 import { useData } from '../contexts/DataContext';
 import { useTranslation } from 'react-i18next';
 import Alert from '@mui/material/Alert';
+import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils';
 import './TDSelection.scss';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 /**
  * Component listing the different TDs the user can "subscribe" to.
@@ -18,9 +17,7 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
   const [errorFlag, raiseErrorFlag] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
 
-  const BUNDLE = useData();
-  const refreshUserCalendar = BUNDLE.refreshUserCalendar;
-  const updateUserTDs = BUNDLE.updateUserTDs;
+  const { refreshUserCalendar, updateUserTDs } = useData();
 
   const { t } = useTranslation();
 
@@ -56,7 +53,7 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
       refreshUserCalendar();
     } catch (error) {
       raiseErrorFlag(true);
-      setStatusMessage(t('ErrorSavingTD'));
+      setStatusMessage(t('messages.errorSavingTD'));
     }
   };
 
@@ -66,7 +63,7 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
         <div className="col-12 col-md-6">
           <div className="checkbox-list subsection">
             <div className="d-flex justify-content-between align-items-start">
-              <h1>{t('TDLikely')}</h1>
+              <h1>{t('settings.tdLikely')}</h1>
               <div className="info-section position-relative">
                 <button
                   type="button"
@@ -80,8 +77,8 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
 
                 {infoOpen && (
                   <div className="info-popup">
-                    <strong>{t('ToastInfoTitle')}</strong>
-                    <p className="mb-0">{t('ToastInfoContent')}</p>
+                    <strong>{t('messages.toastInfoTitle')}</strong>
+                    <p className="mb-0">{t('messages.toastInfoContent')}</p>
                   </div>
                 )}
               </div>
@@ -104,7 +101,7 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
 
         <div className="col-12 col-md-6">
           <div className="checkbox-list subsection">
-            <h1>{t('TDNotLikely')}</h1>
+            <h1>{t('settings.tdNotLikely')}</h1>
             {otherTDs.map((td) => (
               <li key={td}>
                 <label>
@@ -125,7 +122,7 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
             className="button-validate btn btn-primary"
             onClick={saveSelection}
           >
-            {t('Save')}
+            {t('settings.save')}
           </button>
           <p>{statusMessage}</p>
         </div>

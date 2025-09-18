@@ -37,7 +37,7 @@ export const DataProvider = (props) => {
   const [loading, setLoading] = useState(false);
   const [errorFlag, raiseErrorFlag] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
-  const [icsLink, setIcsLink] = useState(t('LoadError'));
+  const [icsLink, setIcsLink] = useState(t('messages.loadError')); // Updated translation key
   const [allLanguages, setAllLanguages] = useState(null);
   const [userLanguage, setUserLanguage] = useState(null);
   const [allThemes, setAllThemes] = useState(null);
@@ -56,15 +56,17 @@ export const DataProvider = (props) => {
   const [departement, setDepartement] = useState(departementNames[0]);
   const [year, setYear] = useState(departementYears[departement][0]);
 
+  // Updated day list with new translation keys
   const dayList = [
-    t('Sunday'),
-    t('Monday'),
-    t('Tuesday'),
-    t('Wednesday'),
-    t('Thursday'),
-    t('Friday'),
-    t('Saturday'),
+    t('date.days.sunday'),
+    t('date.days.monday'),
+    t('date.days.tuesday'),
+    t('date.days.wednesday'),
+    t('date.days.thursday'),
+    t('date.days.friday'),
+    t('date.days.saturday'),
   ];
+  
   let dimensions = RandomUtils.useWindowDimensions();
   const currentDate = new Date();
   let firstDay = new Day(currentDate);
@@ -135,6 +137,7 @@ export const DataProvider = (props) => {
       i18n.changeLanguage(userLanguage);
     }
   }, [userLanguage]);
+  
   useEffect(() => {
     const loadMainData = async () => {
       setLoading(true);
@@ -212,7 +215,7 @@ export const DataProvider = (props) => {
           });
         }
       } catch (error) {
-        setStatusMessage(t('LoadError') + ' : ' + error);
+        setStatusMessage(t('messages.loadError') + ' : ' + error); // Updated translation key
         raiseErrorFlag(true);
       } finally {
         setLoading(false);

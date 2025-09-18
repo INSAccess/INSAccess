@@ -1,10 +1,10 @@
-import EventsInDay from './EventsInDay';
-import RandomUtils from '../../utils/RandomUtils';
 import { useState, useEffect, useRef } from 'react';
 import { hoursTimeline, minWidth } from '../../utils/Constants';
-import './AllEvents.scss';
 import { useData } from '../../contexts/DataContext.jsx';
 import { useTranslation } from 'react-i18next';
+import EventsInDay from './EventsInDay';
+import RandomUtils from '../../utils/RandomUtils';
+import './AllEvents.scss';
 
 /**
  * React component for the timestamps on the left of the calendar
@@ -38,13 +38,13 @@ const TimeBar = () => {
 const AllEvents = ({ dataOrigin }) => {
   const { t } = useTranslation();
   const dayList = [
-    t('Sunday'),
-    t('Monday'),
-    t('Tuesday'),
-    t('Wednesday'),
-    t('Thursday'),
-    t('Friday'),
-    t('Saturday'),
+    t('date.days.sunday'),
+    t('date.days.monday'),
+    t('date.days.tuesday'),
+    t('date.days.wednesday'),
+    t('date.days.thursday'),
+    t('date.days.friday'),
+    t('date.days.saturday'),
   ];
   const BUNDLE = useData();
   let data = [];
@@ -131,14 +131,14 @@ const AllEvents = ({ dataOrigin }) => {
       {dataOrigin == 'friend' && (
         <div className="calendar-close-button-wrapper">
           <span id="friend-name">
-            {t('Seeing')} {BUNDLE.currentFriend}
+            {t('friends.seeing')} {BUNDLE.currentFriend}
           </span>
           <button
             type="button"
             className="btn btn-primary calendar-close-button"
             onClick={() => BUNDLE.setShowCalendar(false)}
           >
-            {t('Return')}
+            {t('friends.return')}
           </button>
         </div>
       )}
