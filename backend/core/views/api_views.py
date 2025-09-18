@@ -535,6 +535,12 @@ class GetUserProfileAPIView(APIView):
             "cas_autosync": safe_get(
                 "get_user_cas_autosync", lambda: request.user.userprofile.cas_auto_sync
             ),
+            "departement_name": safe_get(
+                "get_user_departement_name", lambda: request.user.userprofile.departement_name
+            ),
+            "departement_year": safe_get(
+                "get_user_departement_year", lambda: request.user.userprofile.departement_year
+            ),
         }
 
         def association_info():
@@ -583,6 +589,42 @@ class PostUserThemeAPIView(APIView):
             response = Response({"error": "Internal server error"}, status=500)
             logger.error(
                 f"Internal server error at post_user_theme: {str(e)}",
+                extra={"request": request, "status_code": response.status_code},
+            )
+            return response
+
+
+class PostUserDepartementAPIView(APIView):
+    """change the user associated theme"""
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        """"""
+        try:
+            departement_name = request.data["departement_name"]
+            departement_year = request.data["departement_year"]
+            if departement_name and departement_year:
+                request.user.userprofile.departement_name = departement_name
+                request.user.userprofile.departement_year = departement_year
+                request.user.userprofile.save()
+                response = Response({"success": "Département actualisé !"})
+                logger.info(
+                    "User updated departement",
+                    extra={"request": request, "status_code": response.status_code},
+                )
+                return response
+            else:
+                response = Response({"error": "Département ou année malformée"}, status=400)
+                logger.error(
+                    f"User tried to update with a malformed departement name or year : {sanitize_log_input(departement_name)}, {sanitize_log_input(departement_year)}",
+                    extra={"request": request, "status_code": response.status_code},
+                )
+                return response
+        except Exception as e:
+            response = Response({"error": "Internal server error"}, status=500)
+            logger.error(
+                f"Internal server error at post_user_departement: {str(e)}",
                 extra={"request": request, "status_code": response.status_code},
             )
             return response

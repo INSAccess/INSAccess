@@ -23,6 +23,7 @@ from core.views import (
     PostAssociationAPIView,
     ChangeCasSyncAPIView,
     UpdateUsingCasTDAPIView,
+    PostUserDepartementAPIView,
 )
 
 urlpatterns = [
@@ -68,6 +69,7 @@ urlpatterns = [
         name="is_association",
     ),
     path("user/theme", PostUserThemeAPIView.as_view(), name="post_user_theme"),
+    path("user/departement", PostUserDepartementAPIView.as_view(), name="post_user_departement"),
     path(
         "user/language",
         PostUserLanguageAPIView.as_view(),

@@ -73,12 +73,21 @@ class UserProfile(models.Model):
         on_delete=models.SET_NULL,
         null=True,
     )
-
     ics_uid = models.CharField(
         max_length=64,
         unique=True,
         editable=False,
         default="",
+    )
+    departement_name = models.CharField(
+        max_length=8,
+        editable=True,
+        default="STPI",
+    )
+    departement_year = models.CharField(
+        max_length=1,
+        editable=True,
+        default="1",
     )
     cas_auto_sync = models.BooleanField(default=False)
 

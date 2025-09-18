@@ -188,11 +188,43 @@ const Settings = () => {
     }
   };
 
-  function handleSetDepartement(value) {
-    if (!departementYears[value].includes(parseInt(year))) {
-      setYear(departementYears[value][0]);
+  async function handleSetDepartement(value) {
+    try {
+      const response = await fetch(API_URL + '/api/user/departement', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': RandomUtils.getCSRFToken(),
+        },
+        mode: 'cors',
+        credentials: 'include',
+        body: JSON.stringify({"departement_name": value, "departement_year": departementYears[value].includes(parseInt(year)) ? year : departementYears[value][0]}),
+      });
+      if (!departementYears[value].includes(parseInt(year))) {
+        setYear(departementYears[value][0]);
+      }
+      setDepartement(value);
+    } catch (error) {
+      console.error(error);
     }
-    setDepartement(value);
+  }
+
+  async function handleSetYear(value) {
+    try {
+      const response = await fetch(API_URL + '/api/user/departement', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': RandomUtils.getCSRFToken(),
+        },
+        mode: 'cors',
+        credentials: 'include',
+        body: JSON.stringify({"departement_name": departement, "departement_year": value}),
+      });
+      setYear(value);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   const DropDownYear = () => {
@@ -202,7 +234,7 @@ const Settings = () => {
         current={year}
         id="dropdown-year"
         title={t('settings.yearDD')}
-        handle={setYear}
+        handle={handleSetYear}
       />
     );
   };

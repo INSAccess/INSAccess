@@ -37,7 +37,7 @@ export const DataProvider = (props) => {
   const [loading, setLoading] = useState(false);
   const [errorFlag, raiseErrorFlag] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
-  const [icsLink, setIcsLink] = useState(t('messages.loadError')); // Updated translation key
+  const [icsLink, setIcsLink] = useState(t('messages.loadError'));
   const [allLanguages, setAllLanguages] = useState(null);
   const [userLanguage, setUserLanguage] = useState(null);
   const [allThemes, setAllThemes] = useState(null);
@@ -56,7 +56,6 @@ export const DataProvider = (props) => {
   const [departement, setDepartement] = useState(departementNames[0]);
   const [year, setYear] = useState(departementYears[departement][0]);
 
-  // Updated day list with new translation keys
   const dayList = [
     t('date.days.sunday'),
     t('date.days.monday'),
@@ -186,12 +185,15 @@ export const DataProvider = (props) => {
             username: profileData.username,
             displayName: profileData.displayName,
           });
+
           setUserTheme(profileData.theme);
           setUserLanguage(profileData.language);
           setIcsLink(profileData.ics_url);
           setIsAssos(profileData.is_asso);
           setAssoName(profileData.asso);
           setUserAutoSync(profileData.cas_autosync);
+          setDepartement(profileData.departement_name);
+          setYear(parseInt(profileData.departement_year));
         }
 
         if (resultAssociations.data) {
@@ -215,7 +217,7 @@ export const DataProvider = (props) => {
           });
         }
       } catch (error) {
-        setStatusMessage(t('messages.loadError') + ' : ' + error); // Updated translation key
+        setStatusMessage(t('messages.loadError') + ' : ' + error);
         raiseErrorFlag(true);
       } finally {
         setLoading(false);
