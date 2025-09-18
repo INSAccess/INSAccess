@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { API_URL } from '../utils/Constants';
 import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils';
 import { useData } from '../contexts/DataContext';
 import { useTranslation } from 'react-i18next';
 import Alert from '@mui/material/Alert';
+import './TDSelection.scss';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 /**
  * Component listing the different TDs the user can "subscribe" to.
@@ -14,13 +16,18 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
   const [selectedTDs, setSelectedTDs] = useState(new Set(userTDs));
   const [statusMessage, setStatusMessage] = useState(' ');
   const [errorFlag, raiseErrorFlag] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(false);
 
   const BUNDLE = useData();
-  const updateFunction = BUNDLE.forceUpdate;
+  const refreshUserCalendar = BUNDLE.refreshUserCalendar;
+  const updateUserTDs = BUNDLE.updateUserTDs;
 
   const { t } = useTranslation();
 
-  // Function to toggle selection of a TD
+  useEffect(() => {
+    setSelectedTDs(new Set(userTDs));
+  }, [userTDs]);
+
   const toggleTD = (tdName) => {
     const updatedTDs = new Set(selectedTDs);
     if (updatedTDs.has(tdName)) {
@@ -31,7 +38,6 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
     setSelectedTDs(updatedTDs);
   };
 
-  // Function to save selection to the backend
   const saveSelection = async () => {
     try {
       const response = await fetch(API_URL + '/api/user/td_groups', {
@@ -46,7 +52,8 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
       });
       const data = await parseJsonSafe(response);
       setStatusMessage(data.success);
-      updateFunction();
+      updateUserTDs(selectedTDs);
+      refreshUserCalendar();
     } catch (error) {
       raiseErrorFlag(true);
       setStatusMessage(t('ErrorSavingTD'));
@@ -56,10 +63,30 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
   return (
     <div className="container-fluid">
       <div className="row">
-        {/* Première liste - 12 colonnes sur mobile, 6 sur desktop */}
         <div className="col-12 col-md-6">
-          <div className="checkbox-list">
-            <h1>{t('TDLikely')}</h1>
+          <div className="checkbox-list subsection">
+            <div className="d-flex justify-content-between align-items-start">
+              <h1>{t('TDLikely')}</h1>
+              <div className="info-section position-relative">
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  id="info-btn"
+                  onClick={() => setInfoOpen(!infoOpen)}
+                  aria-expanded={infoOpen}
+                >
+                  !
+                </button>
+
+                {infoOpen && (
+                  <div className="info-popup">
+                    <strong>{t('ToastInfoTitle')}</strong>
+                    <p className="mb-0">{t('ToastInfoContent')}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
             {departementTDs.map((td) => (
               <li key={td}>
                 <label>
@@ -75,9 +102,8 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
           </div>
         </div>
 
-        {/* Deuxième liste - 12 colonnes sur mobile, 6 sur desktop */}
         <div className="col-12 col-md-6">
-          <div className="checkbox-list">
+          <div className="checkbox-list subsection">
             <h1>{t('TDNotLikely')}</h1>
             {otherTDs.map((td) => (
               <li key={td}>
@@ -93,9 +119,10 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
             ))}
           </div>
         </div>
-        <div className="validate">
+
+        <div className="validate subsection">
           <button
-            className="button_validate btn btn-primary"
+            className="button-validate btn btn-primary"
             onClick={saveSelection}
           >
             {t('Save')}
@@ -103,6 +130,7 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
           <p>{statusMessage}</p>
         </div>
       </div>
+
       {errorFlag && (
         <Alert
           severity="error"

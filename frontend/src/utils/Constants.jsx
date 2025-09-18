@@ -19,7 +19,7 @@ const departementYears = {
 const minWidth = 850;
 const baseEventWidth = 93;
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 const PATH_USER_CALENDAR = API_URL + '/api/calendar/';
 const PATH_ASSO_CALENDAR = API_URL + '/api/calendar/events';
 const API_LOGIN = API_URL + '/authentification/login';

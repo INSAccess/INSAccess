@@ -10,20 +10,15 @@ import RandomUtils from '../utils/RandomUtils.jsx';
 import { Loading } from '../components/Templates.jsx';
 import Alert from '@mui/material/Alert';
 import { useTranslation } from 'react-i18next';
-import { useConfig } from './ConfigContext.jsx';
 
 const DataContext = createContext();
 
 /**
  * Data provider component that manages application state and data fetching
  * @param {Object} props - Component props
- * @param {React.ReactNode} props.children - Child components
- * @param {string} props.page - Current page identifier
  * @returns {JSX.Element} Data provider with context
  */
 export const DataProvider = (props) => {
-  const CONFIG = useConfig();
-
   const { t, i18n } = useTranslation();
 
   const [dataAsso, setDataAsso] = useState([]);
@@ -35,8 +30,6 @@ export const DataProvider = (props) => {
   const [colorsAgenda, setColorsAgenda] = useState([]);
   const [colorsFriend, setColorsFriend] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [loadingTds, setLoadingTds] = useState(false);
-  const [shouldUpdate, setUpdate] = useState(true);
   const [errorFlag, raiseErrorFlag] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [icsLink, setIcsLink] = useState(t('LoadError'));
@@ -46,14 +39,15 @@ export const DataProvider = (props) => {
   const [userTheme, setUserTheme] = useState(null);
   const [userProfile, setProfile] = useState(null);
   const [tds, setTds] = useState({});
-  const [updateCounter, setUpdateCounter] = useState(0);
+  const [userAssos, setUserAssos] = useState([]);
   const [userList, setUserList] = useState([]);
+  const [assoList, setAssoList] = useState([]);
   const [friendsList, setFriendsList] = useState([]);
   const [pendingList, setPendingList] = useState([]);
   const [receivedList, setReceivedList] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
   const [currentFriend, setCurrentFriend] = useState('');
-
+  const [userAutoSync, setUserAutoSync] = useState(false);
   const dayList = [
     t('Sunday'),
     t('Monday'),
@@ -70,11 +64,6 @@ export const DataProvider = (props) => {
     minWidth < dimensions.width ? firstDay.startOfWeek(dayList) : firstDay
   );
 
-  function forceUpdate() {
-    setUpdate(true);
-    setUpdateCounter((prev) => prev + 1);
-  }
-
   function changeTheme(theme) {
     setUserTheme(theme);
   }
@@ -82,6 +71,50 @@ export const DataProvider = (props) => {
   function changeLanguage(lang) {
     setUserLanguage(lang);
   }
+
+  function changeAutoSync(enabled) {
+    setUserAutoSync(enabled);
+  }
+
+  const updateUserTDs = (newTds) => {
+    window.scrollTo(0, 0);
+    setTds((prev) => ({
+      ...prev,
+      user_tds: newTds,
+    }));
+  };
+
+  const updateUserAssos = (newAssos) => {
+    window.scrollTo(0, 0);
+    setAssoList((prev) => {
+      const combined = [...prev, ...newAssos];
+      return [...new Set(combined)];
+    });
+  };
+
+  const refreshAssoCalendar = async () => {
+    try {
+      const resultAsso = await RandomUtils.fetchData(PATH_ASSO_CALENDAR);
+      if (resultAsso?.data) {
+        setDataAsso(resultAsso.data.events);
+        setColorsAsso(resultAsso.data.colors);
+      }
+    } catch (err) {
+      console.error('Failed to refresh asso calendar', err);
+    }
+  };
+
+  const refreshUserCalendar = async () => {
+    try {
+      const resultAgenda = await RandomUtils.fetchData(PATH_USER_CALENDAR);
+      if (resultAgenda?.data) {
+        setDataAgenda(resultAgenda.data.events);
+        setColorsAgenda(resultAgenda.data.colors);
+      }
+    } catch (err) {
+      console.error('Failed to refresh user calendar', err);
+    }
+  };
 
   useEffect(() => {
     if (userTheme) {
@@ -94,14 +127,10 @@ export const DataProvider = (props) => {
       i18n.changeLanguage(userLanguage);
     }
   }, [userLanguage]);
-
   useEffect(() => {
-    window.scrollTo(0, 0);
     const loadMainData = async () => {
-      if (!shouldUpdate) return;
-      if (props.page !== 'home') return;
-      if (!CONFIG) return;
       setLoading(true);
+
       try {
         const [
           resultAsso,
@@ -111,6 +140,8 @@ export const DataProvider = (props) => {
           resultLanguages,
           resultUsers,
           resultFriends,
+          resultAssociations,
+          resultTds,
         ] = await Promise.all([
           RandomUtils.fetchData(PATH_ASSO_CALENDAR),
           RandomUtils.fetchData(PATH_USER_CALENDAR),
@@ -119,18 +150,25 @@ export const DataProvider = (props) => {
           RandomUtils.fetchData(API_URL + '/api/metadata/languages'),
           RandomUtils.fetchData(API_URL + '/api/metadata/users'),
           RandomUtils.fetchData(API_URL + '/api/user/friends'),
+          RandomUtils.fetchData(API_URL + '/api/metadata/associations'),
+          RandomUtils.fetchData(
+            API_URL + '/api/metadata/td_groups/all?format=json'
+          ),
         ]);
 
         if (resultAsso.data) {
           setDataAsso(resultAsso.data.events);
           setColorsAsso(resultAsso.data.colors);
         }
+
         if (resultAgenda.data) {
           setDataAgenda(resultAgenda.data.events);
           setColorsAgenda(resultAgenda.data.colors);
         }
+
         if (resultThemes.data) setAllThemes(resultThemes.data);
         if (resultLanguages.data) setAllLanguages(resultLanguages.data);
+
         if (resultProfile.data) {
           const profileData = resultProfile.data;
           setProfile({
@@ -142,17 +180,28 @@ export const DataProvider = (props) => {
           setIcsLink(profileData.ics_url);
           setIsAssos(profileData.is_asso);
           setAssoName(profileData.asso);
+          setUserAutoSync(profileData.cas_autosync);
         }
 
-        if (resultUsers.data) {
-          setUserList(resultUsers.data);
+        if (resultAssociations.data) {
+          setUserAssos(resultAssociations.data.user_associations);
+          setAssoList(resultAssociations.data.all_associations);
         }
+
+        if (resultUsers.data) setUserList(resultUsers.data);
 
         if (resultFriends.data) {
           const friendsData = resultFriends.data;
           setFriendsList(friendsData.friends || []);
           setPendingList(friendsData.sent || []);
           setReceivedList(friendsData.received || []);
+        }
+
+        if (resultTds.data) {
+          setTds({
+            departments: resultTds.data.departments,
+            user_tds: resultTds.data.user_tds,
+          });
         }
       } catch (error) {
         setStatusMessage(t('LoadError') + ' : ' + error);
@@ -162,33 +211,7 @@ export const DataProvider = (props) => {
       }
     };
     loadMainData();
-  }, [shouldUpdate, day, props.page, CONFIG, updateCounter]);
-
-  useEffect(() => {
-    const loadAllTds = async () => {
-      if (!CONFIG || !shouldUpdate) return;
-      if (props.page !== 'home') return;
-
-      setLoadingTds(true);
-      try {
-        const url = API_URL + '/api/metadata/td_groups/all?format=json';
-        const result = await RandomUtils.fetchData(url);
-
-        if (result.data)
-          setTds({
-            departments: result.data.departments,
-            user_tds: result.data.user_tds,
-          });
-      } catch (error) {
-        console.error(t('LoadError') + ' : ' + error);
-      } finally {
-        setLoadingTds(false);
-        setUpdate(false);
-      }
-    };
-
-    loadAllTds();
-  }, [shouldUpdate, props.page, CONFIG, updateCounter]);
+  }, []);
 
   if (loading && (dataAsso.length == 0 || dataAgenda.length == 0)) {
     return <Loading />;
@@ -204,14 +227,12 @@ export const DataProvider = (props) => {
           dataAgenda,
           day,
           setDay,
-          forceUpdate,
           changeTheme,
           changeLanguage,
           tds,
           icsLink,
           allThemes,
           userTheme,
-          loadingTds,
           userProfile,
           allLanguages,
           userLanguage,
@@ -234,6 +255,14 @@ export const DataProvider = (props) => {
           setColorsFriend,
           currentFriend,
           setCurrentFriend,
+          userAssos,
+          assoList,
+          refreshAssoCalendar,
+          refreshUserCalendar,
+          userAutoSync,
+          changeAutoSync,
+          updateUserTDs,
+          updateUserAssos,
         }}
       >
         {props.children}

@@ -25,6 +25,7 @@ from core.models import (
     UserColoredEvent,
     EnumLanguage,
     UserRelationship,
+    UserLinkAssociation,
 )
 from core.utils.fetch_ics import load_config
 from core.permissions import IsAssociationPublisher
@@ -198,6 +199,99 @@ class GetTdsAPIView(APIView):
             return response
 
 
+class GetAssociationAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """
+        Returns the existing associations
+        """
+        try:
+            user_profile = request.user.userprofile
+            user_assos_qs = user_profile.link_assos.all()
+            user_assos = [asso.name for asso in user_assos_qs]
+            all_associations = [asso.name for asso in Association.objects.all()]
+            response = Response(
+                {
+                    "user_associations": user_assos,
+                    "all_associations": all_associations,
+                }
+            )
+            logger.info(
+                "Returned list of available association and user's subscribed associations",
+                extra={"request": request, "status_code": response.status_code},
+            )
+            return response
+        except Exception as e:
+            response = Response({"error": "Internal server error"}, status=500)
+            logger.error(
+                f"Internal server error at get_association: {str(e)}",
+                extra={"request": request, "status_code": response.status_code},
+            )
+            return response
+
+
+class PostAssociationAPIView(APIView):
+    """
+    API route for saving the selected Association of the authenticated user.
+    """
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        """
+        Save the selected Associations for the user.
+        Expects JSON payload: { "selected_assos": [<td_name>, ...] }
+        """
+        user = request.user
+        try:
+            selected_assos = request.data.get("selected_assos")
+
+            if not isinstance(selected_assos, list):
+                response = Response(
+                    {"error": "selected_assos must be a list"}, status=400
+                )
+                logger.error(
+                    "Invalid payload type for selected_assos",
+                    extra={"request": request, "status_code": response.status_code},
+                )
+                return response
+
+            valid_assos = Association.objects.filter(name__in=selected_assos)
+            valid_names = set(td.name for td in valid_assos)
+
+            invalid_assos = set(selected_assos) - valid_names
+            if invalid_assos:
+                logger.error(
+                    f"User submitted invalid TDs: {list(invalid_assos)}",
+                    extra={"request": request, "status_code": 400},
+                )
+
+            UserLinkAssociation.objects.filter(user=user.userprofile).delete()
+
+            user_link_assos = [
+                UserLinkAssociation(user=user.userprofile, name_assos=asso)
+                for asso in valid_assos
+            ]
+            if user_link_assos:
+                UserLinkAssociation.objects.bulk_create(user_link_assos)
+
+            response = Response({"success": "Sélection actualisée !"})
+            logger.info(
+                f"User updated Assos selection: {len(user_link_assos)} valid, {len(invalid_assos)} invalid",
+                extra={"request": request, "status_code": response.status_code},
+            )
+            return response
+
+        except Exception as e:
+            response = Response({"error": "Internal server error"}, status=500)
+            logger.error(
+                f"Internal server error at post_assos: {str(e)}",
+                extra={"request": request, "status_code": response.status_code},
+            )
+            return response
+
+
 class PostTdsAPIView(APIView):
     """
     API route for saving the selected TDs of the authenticated user.
@@ -224,7 +318,7 @@ class PostTdsAPIView(APIView):
                 )
                 return response
 
-            MAX_TDS = 50
+            MAX_TDS = 100
             if len(selected_tds) > MAX_TDS:
                 response = Response(
                     {"error": f"Too many TDs selected (max {MAX_TDS})"}, status=400
@@ -274,7 +368,10 @@ class GetEvenementsAPIView(APIView):
 
     def get(self, request):
         try:
-            evenements = InsaEvenement.objects.all()
+            user_assos_qs = request.user.userprofile.link_assos.all()
+            evenements = InsaEvenement.objects.filter(
+                association__in=user_assos_qs
+            ).distinct()
             serializer = InsaEvenementSerializer(
                 evenements, context={"request": request}, many=True
             )
@@ -410,9 +507,7 @@ class GetUserProfileAPIView(APIView):
         def safe_get(key, func):
             try:
                 value = func()
-                logger.info(
-                    f"Returned {key}", extra={"request": request, "status_code": 200}
-                )
+
                 return value
             except Exception as e:
                 logger.error(
@@ -436,6 +531,9 @@ class GetUserProfileAPIView(APIView):
             "displayName": safe_get(
                 "get_profile_displayName",
                 lambda: request.session.get("attributes", {}).get("first_name", ""),
+            ),
+            "cas_autosync": safe_get(
+                "get_user_cas_autosync", lambda: request.user.userprofile.cas_auto_sync
             ),
         }
 
@@ -990,3 +1088,49 @@ class BugReportAPIView(APIView):
                 extra={"request": request.data},
             )
             return Response({"error": f"Failed to send email: {str(e)}"}, status=500)
+
+
+class ChangeCasSyncAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, enable):
+        try:
+            user_profile = request.user.userprofile
+            enabled = enable == "true"
+            user_profile.cas_auto_sync = enabled
+            user_profile.save()
+            return Response({"success": "Preferences saved successfully"}, status=200)
+        except Exception as e:
+            logger.error(
+                f"Failed to update user cas_autosync: {str(e)}",
+                extra={"request": request.data},
+            )
+            return Response(
+                {"error": f"Failed to update cas preferences: {str(e)}"}, status=500
+            )
+
+
+class UpdateUsingCasTDAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            user_profile = request.user.userprofile
+            subscribed_tds = request.session.get("attributes", {}).get(
+                "supannAffectation", []
+            )
+            tds_in_db = GroupTD.objects.filter(name__in=subscribed_tds)
+            user_profile.link_td.add(*tds_in_db)
+            user_profile.save()
+            return Response(
+                {"synced_tds": [td.name for td in user_profile.link_td.all()]},
+                status=200,
+            )
+        except Exception as e:
+            logger.error(
+                f"Failed to update user cas_autosync: {str(e)}",
+                extra={"request": request.data},
+            )
+            return Response(
+                {"error": f"Failed to update cas preferences: {str(e)}"}, status=500
+            )

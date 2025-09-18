@@ -4,25 +4,18 @@ import Day from '../../utils/Day';
 import SingleEvent from './SingleEvent';
 import { baseEventWidth, minWidth } from '../../utils/Constants';
 import './EventsInDay.scss';
+import { CustomDatePicker } from '../DatePicker.jsx';
 import { useTranslation } from 'react-i18next';
-
 /**
  * React component that displays all the event of a given day
  * @component
  * @returns {JSX.Element}
  */
 const EventsInDay = ({ date, data, dataOrigin }) => {
+  const eventsList = [];
+  const placed = [];
+  let dimensions = RandomUtils.useWindowDimensions();
   const { t } = useTranslation();
-
-  const dayList = [
-    t('Sunday'),
-    t('Monday'),
-    t('Tuesday'),
-    t('Wednesday'),
-    t('Thursday'),
-    t('Friday'),
-    t('Saturday'),
-  ];
   const monthList = [
     t('January'),
     t('February'),
@@ -37,11 +30,15 @@ const EventsInDay = ({ date, data, dataOrigin }) => {
     t('November'),
     t('December'),
   ];
-
-  const eventsList = [];
-  const placed = [];
-  let dimensions = RandomUtils.useWindowDimensions();
-
+  const dayList = [
+    t('Sunday'),
+    t('Monday'),
+    t('Tuesday'),
+    t('Wednesday'),
+    t('Thursday'),
+    t('Friday'),
+    t('Saturday'),
+  ];
   let i = 0;
   let day = new Day(date);
   const infos = day.getDateInfo(dayList, monthList);
@@ -84,15 +81,26 @@ const EventsInDay = ({ date, data, dataOrigin }) => {
   }
 
   // Doesn't display the end of the week if empty
-  if (eventsList.length == 0 && (day.getNumberDayOfWeek() == 6 || day.getNumberDayOfWeek() == 0) && (minWidth < dimensions.width)) {
+  if (
+    eventsList.length == 0 &&
+    (day.getNumberDayOfWeek() == 6 || day.getNumberDayOfWeek() == 0) &&
+    minWidth < dimensions.width
+  ) {
     return <></>;
   }
   return (
     <div className="day">
       <div className="date">
-        <p className="date-day">{infos[0]}</p>
-        <p className="date-num">{infos[1]}</p>
-        <p className="date-month">{infos[2]}</p>
+        <div className="date-content">
+          {minWidth >= dimensions.width && (
+            <div className="mobile-datepicker" aria-label="date picker">
+              <CustomDatePicker isMobile={true} />
+            </div>
+          )}
+          <p className="date-day">{infos[0]}</p>
+          <p className="date-num">{infos[1]}</p>
+          <p className="date-month">{infos[2]}</p>
+        </div>
       </div>
       <div className="events">{eventsList}</div>
     </div>

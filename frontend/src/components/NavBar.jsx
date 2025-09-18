@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import '../utils/Dictionnary';
+import '../utils/Dictionnary.jsx';
 import { useState } from 'react';
 import './NavBar.scss';
 import { API_LOGOUT } from '../utils/Constants.jsx';
 import { useData } from '../contexts/DataContext.jsx';
+import { CustomDatePicker } from './DatePicker.jsx';
 
 export const NavBar = ({ page, setPage }) => {
   const BUNDLE = useData();
@@ -12,8 +13,8 @@ export const NavBar = ({ page, setPage }) => {
   const items = [
     { name: t('Calendar'), href: 'home' },
     { name: t('Events'), href: 'associations' },
-    { name: t('Settings'), href: 'settings' },
     { name: t('Friends'), href: 'friends' },
+    { name: t('Settings'), href: 'settings' },
     { name: t('Help'), href: 'help' },
   ];
 
@@ -63,6 +64,9 @@ export const NavBar = ({ page, setPage }) => {
           </div>
 
           <div className="navbar-right">
+            <div className="mobile-datepicker-navbar" aria-label="date picker">
+              <CustomDatePicker isMobile={false} />
+            </div>
             <div id="welcome">
               {t('Welcome') + ' ' + displayName}
               <svg

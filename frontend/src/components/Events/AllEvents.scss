@@ -2,7 +2,7 @@ $maxWidth: 850px;
 
 .arrow-left,
 .arrow-right {
-  position: relative; // Add this to establish positioning context
+  position: relative;
   grid-column: 1;
   grid-row: 1;
   display: block;
@@ -19,7 +19,6 @@ $maxWidth: 850px;
 }
 
 .arrow-left::before {
-  // Hitbox positioned relative to the button
   content: '';
   position: absolute;
   width: 50px;
@@ -27,7 +26,6 @@ $maxWidth: 850px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  // Remove the media query positioning - use consistent centering
 }
 
 .days {
@@ -78,8 +76,8 @@ $maxWidth: 850px;
 .calendar-close-button-wrapper {
   display: flex;
   justify-content: space-between;
-  align-items: center; 
-  gap: 1rem; 
+  align-items: center;
+  gap: 1rem;
   padding: 0.6rem 1rem;
   margin: 0.4rem 1rem 0.5rem 1rem;
   background-color: var(--subSectionBackgroundColor);
@@ -88,20 +86,20 @@ $maxWidth: 850px;
 
   #friend-name {
     color: var(--contrastTextColor);
-    font-weight: 500; 
+    font-weight: 500;
     flex: 1;
   }
 
   .calendar-close-button {
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
-    border-radius: 6px; 
-    white-space: nowrap; 
-    transition: all 0.2s ease; 
+    border-radius: 6px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
   }
 
   .calendar-close-button:hover {
-    transform: translateY(-1px); 
+    transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
 }

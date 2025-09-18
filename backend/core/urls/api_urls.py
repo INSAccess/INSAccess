@@ -19,6 +19,10 @@ from core.views import (
     FriendCalendarAPIView,
     GetIsAssociationPublisherAPIView,
     BugReportAPIView,
+    GetAssociationAPIView,
+    PostAssociationAPIView,
+    ChangeCasSyncAPIView,
+    UpdateUsingCasTDAPIView,
 )
 
 urlpatterns = [
@@ -35,6 +39,11 @@ urlpatterns = [
         "metadata/td_groups/<str:department>", GetTdsAPIView.as_view(), name="get_tds"
     ),
     path("metadata/themes", GetEnumThemeAPIView.as_view(), name="get_themes"),
+    path(
+        "metadata/associations",
+        GetAssociationAPIView.as_view(),
+        name="get_associations",
+    ),
     path("metadata/languages", GetEnumLanguageAPIView.as_view(), name="get_languages"),
     path("metadata/config", GetConfigFileAPIView.as_view(), name="get_config"),
     path("metadata/users", UsersAPIView.as_view(), name="users"),
@@ -66,5 +75,16 @@ urlpatterns = [
     ),
     path("user/color", PostUserColorAPIView.as_view(), name="post_user_color"),
     path("user/td_groups", PostTdsAPIView.as_view(), name="save_tds"),
+    path(
+        "user/associations", PostAssociationAPIView.as_view(), name="save_associations"
+    ),
     path("user/bug", BugReportAPIView.as_view(), name="bug_report"),
+    path(
+        "user/cas_autosync/<str:enable>",
+        ChangeCasSyncAPIView.as_view(),
+        name="change cas_autosync",
+    ),
+    path(
+        "user/cas_sync", UpdateUsingCasTDAPIView.as_view(), name="update_td_using_cas"
+    ),
 ]

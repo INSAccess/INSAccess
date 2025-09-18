@@ -2,6 +2,7 @@ import duck from '../../images/duck.png';
 import { useTranslation } from 'react-i18next';
 import RandomUtils from '../../utils/RandomUtils';
 import { minWidth } from '../../utils/Constants';
+import SupportForm from '../SupportForm.jsx';
 import './Help.scss';
 
 const About = () => {
@@ -178,7 +179,7 @@ const Manual = () => {
  * @returns {JSX.Element}
  */
 const License = () => {
-  const version = process.env.REACT_APP_GIT_VERSION;
+  const version = import.meta.env.VITE_GIT_VERSION;
 
   return (
     <div className="license-section py-4">
@@ -260,6 +261,7 @@ const License = () => {
 const Help = () => {
   return (
     <div className="maincontainer">
+      <SupportForm />
       <FAQ />
       <Manual />
       <About />

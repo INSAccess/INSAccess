@@ -118,7 +118,7 @@ class ICSFetcherTests(TestCase):
 
     def test_get_academic_year_logic(self):
         # Mocking datetime to control the current date
-        with patch("core.utils.fetch_ics.datetime") as mock_datetime:
+        with patch("core.utils.fetch_ics.datetime.datetime") as mock_datetime:
             # Mock the return value for a date after August (2025)
             mock_datetime.now.return_value = datetime(2025, 9, 1)
             self.assertEqual(get_academic_year(), 2025)

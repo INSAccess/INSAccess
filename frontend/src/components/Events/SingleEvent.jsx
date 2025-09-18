@@ -69,7 +69,7 @@ const DeleteButton = ({
   raiseSuccessFlag,
 }) => {
   const { t } = useTranslation();
-
+  const { refreshAssoCalendar } = useData();
   const handleDeleteEvent = async () => {
     try {
       const response = await fetch(API_URL + '/api/events/' + eventUID, {
@@ -88,8 +88,9 @@ const DeleteButton = ({
         raiseErrorFlag(true);
         handleClose();
       } else {
-        setSuccessMessage(t('DeleteSuccess'));
-        raiseSuccessFlag(true);
+        // raiseSuccessFlag(true);
+        // setSuccessMessage(t('DeleteSuccess'));
+        refreshAssoCalendar();
         handleCLose();
       }
     } catch (error) {

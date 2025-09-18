@@ -1,9 +1,9 @@
 import TDSelection from '../TDSelection.jsx';
+import AssoSelection from '../AssoSelection.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
 import { useEffect, useState, useRef } from 'react';
 import { API_URL, minWidth } from '../../utils/Constants.jsx';
 import EventCreator from '../EventCreator.jsx';
-import SupportModal from '../SupportModal.jsx';
 import DropDownCustom from '../DropDownCustom.jsx';
 import './Settings.scss';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -22,13 +22,13 @@ const Settings = () => {
   const departementYears = CONFIG ? CONFIG['departementYears'] : { STPI: [1] };
 
   const BUNDLE = useData();
-  let tds = BUNDLE.tds;
   let icsLink = BUNDLE.icsLink;
   const { isAssos } = useData();
   let allThemes = BUNDLE.allThemes;
   let userTheme = BUNDLE.userTheme;
   let allLanguages = BUNDLE.allLanguages;
   let userLanguage = BUNDLE.userLanguage;
+  const { tds, userAutoSync, changeAutoSync, updateUserTDs } = useData();
 
   const [view, setView] = useState('TDs');
 
@@ -47,10 +47,57 @@ const Settings = () => {
     }
   }, []);
 
-  // Switch between dark, light or system theme
+  const handleCasAutoSyncChange = async (enabled) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/api/user/cas_autosync/${enabled}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': RandomUtils.getCSRFToken(),
+          },
+          mode: 'cors',
+          credentials: 'include',
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to update autosync: ${response.status}`);
+      }
+
+      changeAutoSync(enabled);
+    } catch (error) {
+      console.error('Failed to update autosync', error);
+    }
+  };
+  const handleSyncUsingCas = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/user/cas_sync`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': RandomUtils.getCSRFToken(),
+        },
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to sync TDs: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.synced_tds && Array.isArray(data.synced_tds)) {
+        updateUserTDs(data.synced_tds);
+      }
+    } catch (error) {
+      console.error('Failed to sync TDs', error);
+    }
+  };
+
   const ThemeSwitch = () => {
     async function handleThemeChange(e) {
-      //post theme on backend
       try {
         const response = await fetch(API_URL + '/api/user/theme', {
           method: 'POST',
@@ -82,7 +129,6 @@ const Settings = () => {
 
   const LanguageSwitch = () => {
     async function handleLanguageChange(e) {
-      //post theme on backend
       try {
         const response = await fetch(API_URL + '/api/user/language', {
           method: 'POST',
@@ -116,17 +162,14 @@ const Settings = () => {
     try {
       await navigator.clipboard.writeText(icsLink);
 
-      // Get the tooltip instance (or create it if needed)
       let tooltip = window.bootstrap.Tooltip.getInstance(copyButtonRef.current);
       if (!tooltip) {
         tooltip = new window.bootstrap.Tooltip(copyButtonRef.current);
       }
 
-      // Update the tooltip text by changing the attribute
       copyButtonRef.current.setAttribute('data-bs-original-title', 'Copied!');
       tooltip.show();
 
-      // Reset the tooltip text after 2 seconds
       setTimeout(() => {
         copyButtonRef.current.setAttribute(
           'data-bs-original-title',
@@ -174,7 +217,7 @@ const Settings = () => {
     return (
       <div className="settings container-fluid">
         {/* Preferences Section */}
-        <section className="settings-section">
+        <section className="settings-section subsection">
           <h3 className="section-title">{t('Preferences')}</h3>
           <div className="d-flex flex-wrap gap-3">
             <div className="setting-item">
@@ -186,14 +229,8 @@ const Settings = () => {
           </div>
         </section>
 
-        {/* Bug Report Section */}
-        <section className="settings-section">
-          <h3 className="section-title">{t('Support')}</h3>
-          <SupportModal />
-        </section>
-
         {/* ICS Feed Section */}
-        <section className="settings-section">
+        <section className="settings-section subsection">
           <h3 className="section-title">{t('ICSLink')}</h3>
           <p>{t('ICSText')}</p>
 
@@ -216,7 +253,7 @@ const Settings = () => {
               {t('ICSCopy')}
             </button>
           </div>
-        </section>
+        </section>        
       </div>
     );
   };
@@ -226,10 +263,36 @@ const Settings = () => {
       case 'TDs':
         return (
           <>
-            <div className="dropdown_container">
-              <DropDownDepart />
-              <DropDownYear />
+            <div className="dropdown-container subsection">
+              <div className="dropdown-item-wrap">
+                <DropDownDepart />
+              </div>
+              <div className="dropdown-item-wrap">
+                <DropDownYear />
+              </div>
+              <div className="dropdown-item-wrap">
+                <div className="cas-autosync-wrapper">
+                  <label className="cas-autosync">
+                    <input
+                      type="checkbox"
+                      checked={userAutoSync}
+                      onChange={(e) =>
+                        handleCasAutoSyncChange(e.target.checked)
+                      }
+                    />
+                    <span>{t('CasAutoSync')}</span>
+                  </label>
+
+                  <button
+                    className="btn btn-primary cas-sync-btn"
+                    onClick={handleSyncUsingCas}
+                  >
+                    {t('SyncNow')}
+                  </button>
+                </div>
+              </div>
             </div>
+
             {tds.departments[departement + year] && (
               <TDSelection
                 departementTDs={
@@ -241,9 +304,11 @@ const Settings = () => {
             )}
           </>
         );
+      case 'assos':
+        return <AssoSelection />;
       case 'create':
         return <EventCreator />;
-      case 'autre':
+      case 'other':
         return <OtherParams />;
     }
   }
@@ -254,18 +319,20 @@ const Settings = () => {
     <div className="settings">
       <div className="view">
         <Button
-          className="btn_view"
-          style={{ flex: view == 'TDs' ? '2' : '1' }}
-          onClick={() => {
-            setView('TDs');
-          }}
+          className={`btn-view ${view == 'TDs' ? 'active' : ''}`}
+          onClick={() => setView('TDs')}
         >
           {dimensions.width > minWidth ? t('TDList') : t('TDListShort')}
         </Button>
+        <Button
+          className={`btn-view ${view == 'assos' ? 'active' : ''}`}
+          onClick={() => setView('assos')}
+        >
+          {dimensions.width > minWidth ? t('AssoList') : t('AssoListShort')}
+        </Button>
         {isAssos && (
           <Button
-            className="btn_view"
-            style={{ flex: view === 'create' ? '2' : '1' }}
+            className={`btn-view ${view == 'create' ? 'active' : ''}`}
             onClick={() => setView('create')}
           >
             {dimensions.width > minWidth
@@ -274,11 +341,8 @@ const Settings = () => {
           </Button>
         )}
         <Button
-          className="btn_view"
-          style={{ flex: view == 'autre' ? '2' : '1' }}
-          onClick={() => {
-            setView('autre');
-          }}
+          className={`btn-view ${view == 'other' ? 'active' : ''}`}
+          onClick={() => setView('other')}
         >
           {t('OtherSettings')}
         </Button>

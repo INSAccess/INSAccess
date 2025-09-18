@@ -44,9 +44,12 @@ const resources = {
       // Settings
       TDList: 'TD list',
       TDListShort: 'TD',
-      CreateEvent: 'Create an event',
-      CreateEventShort: 'Event',
+      AssoList: 'Association list',
+      AssoListShort: 'Assos',
+      CreateEvent: 'Publish an event',
+      CreateEventShort: 'Publish',
       OtherSettings: 'Other',
+      AssoSelect: 'Association selection',
       TDLikely: 'Likely your TDs',
       TDNotLikely: 'Likely not your TDs',
       Save: 'Save',
@@ -75,6 +78,9 @@ const resources = {
       Delete: 'Delete',
       // Other
       WIP: 'Coming soon...',
+      ToastInfoTitle: 'Important',
+      ToastInfoContent:
+        "Some classes were not given a TD group when first created by the administration and consequently don't show up on the list of available TDs. We are currently working on the issue, thank you for your understanding.",
       // Errors and Success
       LoadError: 'Error while loading ',
       SaveError: 'Error while saving ',
@@ -82,9 +88,8 @@ const resources = {
       ConfigError: 'Error while loading config ',
       LoadSuccess: 'Loading successful',
       SaveSuccess: 'Saving successful',
-      DeleteSuccess: 'Delete successful (reload the page to see the update)',
-      CreationSuccess:
-        'Creation successful (reload the page to see the update)',
+      DeleteSuccess: 'Delete successful',
+      CreationSuccess: 'Creation successful ',
       CreationError: 'Error during creation ',
       SendError: 'Error while sending invitation ',
       AcceptError: 'Error while accepting invitation ',
@@ -92,7 +97,7 @@ const resources = {
       NameError: "Error while searching for a user's display name ",
       ImageLoadingError: 'Failed to load image ',
       ErrorSavingTD: 'Failed to save TDs ',
-      ErrorTemplate: 'An error occured ',
+      ErrorSavingAsso: 'Failed to save associations',
       // Form
       FormTitle: 'Event title',
       FormDate: 'Date',
@@ -129,8 +134,11 @@ const resources = {
       Support: 'Support',
       SupportSummary:
         'If you encounter issues, please fill out the form below.',
-      Title: 'Title',
-      Details: 'Details',
+      SupportTitle: 'Title',
+      SupportTitleDefault: 'Type of issue',
+      SupportDetails: 'Details',
+      SupportDetailsDefault:
+        'Quick description of your issue (please include how to reproduce the problem)',
       'Submit Report': 'Submit Report',
       'Submitting...': 'Submitting...',
       ReportSent: 'Your report has been sent successfully.',
@@ -139,6 +147,10 @@ const resources = {
       ReportBug: 'Report a bug',
       Seeing: 'Seeing',
       Search: 'Search for a friend...',
+      CasAutoSync: 'Sync my TDs with CAS at login',
+      SyncNow: 'Sync now',
+      SyncSuccess: 'TDs synced successfully',
+      SyncError: 'Failed to sync TDs',
       // Manual
       Manual_Title: 'User Manual',
       Manual_ChooseClasses: 'Choose your classes',
@@ -214,9 +226,12 @@ const resources = {
       // Settings
       TDList: 'Liste des TDs',
       TDListShort: 'TD',
-      CreateEvent: 'Créer un événement',
-      CreateEventShort: 'Evénement',
+      AssoList: 'Liste des associations',
+      AssoListShort: 'Assos',
+      CreateEvent: 'Publier un événement',
+      CreateEventShort: 'Publier',
       OtherSettings: 'Autre',
+      AssoSelect: 'Selection des associations',
       TDLikely: 'Probablement vos TDs',
       TDNotLikely: 'Probablement pas vos TDs',
       Save: 'Sauvegarder',
@@ -246,6 +261,9 @@ const resources = {
       Delete: 'Supprimer',
       // Other
       WIP: 'Ça arrive bientôt...',
+      ToastInfoTitle: 'Important',
+      ToastInfoContent:
+        "Certains cours n'ont pas de groupes de TD qui leur ont été associés par l'administration, ils n'apparaissent donc pas encore sur l'agenda. On travaille activement dessus, merci pour votre compréhension.",
       // Errors and Success
       LoadError: 'Erreur pendant le chargement',
       SaveError: 'Erreur pendant la sauvegarde',
@@ -253,18 +271,17 @@ const resources = {
       ConfigError: 'Erreur pendant le chargement de la configuration',
       LoadSuccess: 'Chargement réussi',
       SaveSuccess: 'Sauvegarde réussie',
-      DeleteSuccess:
-        'Suppression réussie (rechargez la page pour mettre à jour les événements)',
-      CreationSuccess:
-        'Création réussie (rechargez la page pour mettre à jour les événements)',
+      DeleteSuccess: 'Suppression réussie ',
+      CreationSuccess: 'Création réussie ',
       CreationError: 'Erreur lors de la création',
-      SendError: 'Error while sending invitation ',
-      AcceptError: 'Error while accepting invitation ',
-      CancelError: 'Error while canceling invitation ',
-      NameError: "Error while searching for a user's display name ",
+      SendError: "Erreur lors de l'envoi de l'invitation ",
+      AcceptError: "Erreur lors de l'acceptation de l'invitation ",
+      CancelError: "Erreur lors de l'annulation de l'invitation ",
+      NameError:
+        "Erreur pendant la recherche du nom d'affichage de l'utilisateur ",
       ImageLoadingError: "Echec du chargement de l'image",
       ErrorSavingTD: 'Echec de la sauvegarde des TDs',
-      ErrorTemplate: 'Une erreur est arrivé',
+      ErrorSavingAsso: 'Echec de la sauvegarde des associations',
       // Form
       FormTitle: "Titre de l'événement",
       FormDate: 'Date',
@@ -302,8 +319,11 @@ const resources = {
       Support: 'Support',
       SupportSummary:
         'Si vous rencontrez des problèmes, veuillez remplir le formulaire ci-dessous.',
-      Title: 'Titre',
-      Details: 'Détails',
+      SupportTitle: 'Titre',
+      SupportTitleDefault: 'Type du bug',
+      SupportDetails: 'Détails',
+      SupportDetailsDefault:
+        'Description rapide du bug (avec les étapes pour le reproduire si possible)',
       'Submit Report': 'Envoyer le rapport',
       'Submitting...': 'Envoi...',
       ReportSent: 'Votre rapport a été envoyé avec succès.',
@@ -312,6 +332,10 @@ const resources = {
       ReportBug: 'Signalez un bug',
       Seeing: 'Regarde',
       Search: 'Rechercher un ami...',
+      CasAutoSync: 'Synchroniser mes TDs avec CAS à la connexion',
+      SyncNow: 'Synchroniser',
+      SyncSuccess: 'TDs synchronisés avec succès',
+      SyncError: 'Échec de la synchronisation des TDs',
       // Manual
       Manual_Title: 'Manuel utilisateur',
       Manual_ChooseClasses: 'Choisir ses cours',

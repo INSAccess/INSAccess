@@ -58,6 +58,9 @@ class UserProfile(models.Model):
     link_td = models.ManyToManyField(
         "GroupTD", through="UserLinkTD", related_name="users"
     )
+    link_assos = models.ManyToManyField(
+        "Association", through="UserLinkAssociation", related_name="users"
+    )
     color_theme = models.ForeignKey(
         "EnumColorTheme",
         default=EnumColorTheme.get_default_theme,
@@ -77,6 +80,7 @@ class UserProfile(models.Model):
         editable=False,
         default="",
     )
+    cas_auto_sync = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if not self.ics_uid:
@@ -277,3 +281,13 @@ class UserLinkTD(models.Model):
 
     def __str__(self):
         return f"User: {self.user} - TD: {self.name_td}"
+
+
+class UserLinkAssociation(models.Model):
+    """1 to Many link between User and Association"""
+
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, db_index=True)
+    name_assos = models.ForeignKey(Association, on_delete=models.CASCADE, db_index=True)
+
+    def __str__(self):
+        return f"User: {self.user} - Assos: {self.name_assos}"

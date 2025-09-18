@@ -10,9 +10,24 @@
   height: var(--dateHeight);
   display: flex;
   justify-content: center;
-  align-items: center center;
+  align-items: center;
   margin: 1svh;
   gap: 0.5svw;
+  position: relative;
+}
+
+.date-content {
+  display: flex;
+  gap: 0.5svw;
+  align-items: center;
+  justify-content: center;
+  flex: 3;
+  margin-top: auto;
+}
+
+.mobile-datepicker {
+  transform: translate(-15%, -25%);
+  z-index: 1000;
 }
 
 .date-num,

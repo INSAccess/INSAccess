@@ -1,0 +1,82 @@
+.evenement-form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100svh;
+  padding: 1rem;
+  background-color: var(--backgroundColor);
+}
+
+.evenement-form {
+  max-width: 800px;
+  width: 100%;
+  padding: 2rem;
+  background-color: var(--subSectionBackgroundColor);
+  border: 1px solid var(--borderColor);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px var(--shadowColor);
+  color: var(--textColor);
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .col-md-6,
+  .col-md-12 {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  input,
+  select,
+  textarea {
+    background-color: var(--backgroundColor);
+    color: var(--textColor);
+    border: 1px solid var(--borderColor);
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: var(--contrastBorderColor);
+      box-shadow: 0 0 6px var(--hoverHighlight);
+      outline: none;
+    }
+
+    &::placeholder {
+      color: var(--messageColor);
+      opacity: 0.7;
+    }
+  }
+
+  .mt-4 {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    button {
+      flex: 1;
+      padding: 0.6rem 1.2rem;
+      font-weight: bold;
+      border-radius: 0.5rem;
+      border: 1px solid var(--contrastBorderColor);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+  }
+}
