@@ -1122,7 +1122,10 @@ class UpdateUsingCasTDAPIView(APIView):
             tds_in_db = GroupTD.objects.filter(name__in=subscribed_tds)
             user_profile.link_td.add(*tds_in_db)
             user_profile.save()
-            return Response({"synced_tds": [td.name for td in tds_in_db]}, status=200)
+            return Response(
+                {"synced_tds": [td.name for td in user_profile.link_td.all()]},
+                status=200,
+            )
         except Exception as e:
             logger.error(
                 f"Failed to update user cas_autosync: {str(e)}",

@@ -8,7 +8,12 @@ const users = {
   test: {
     password: 'test',
     mail: 'test@test.com',
-    supannAffectation: ['ITI41-RI-TD-01', 'ITI41-TIM-TD-02', 'ITI41-TI-TD-02'],
+    supannAffectation: [
+      'iti41-RI-TD-01',
+      'ITI41-TIM-TD-02',
+      'ITI41-TI-TD-02',
+      'examen',
+    ],
     displayName: 'Test Test',
   },
   alice: {
@@ -270,6 +275,14 @@ app.get(['/cas/serviceValidate', '/cas/p3/serviceValidate'], (req, res) => {
   tickets.delete(ticket);
 
   const user = users[ticketData.username];
+  // Inside serviceValidate response:
+  const attributes = `
+  <cas:mail>${user.mail}</cas:mail>
+  <cas:displayName>${user.displayName}</cas:displayName>
+  ${user.supannAffectation
+    .map((val) => `<cas:supannAffectation>${val}</cas:supannAffectation>`)
+    .join('\n')}
+`;
 
   // Réponse de succès
   res.set('Content-Type', 'application/xml');
@@ -278,11 +291,7 @@ app.get(['/cas/serviceValidate', '/cas/p3/serviceValidate'], (req, res) => {
       <cas:authenticationSuccess>
         <cas:user>${ticketData.username}</cas:user>
         <cas:attributes>
-          <cas:mail>${user.mail}</cas:mail>
-          <cas:displayName>${user.displayName}</cas:displayName>
-          <cas:supannAffectation>${user.supannAffectation[0]}</cas:supannAffectation>
-          <cas:supannAffectation>${user.supannAffectation[1]}</cas:supannAffectation>
-          <cas:supannAffectation>${user.supannAffectation[2]}</cas:supannAffectation>
+          ${attributes}
         </cas:attributes>
       </cas:authenticationSuccess>
     </cas:serviceResponse>
