@@ -1,5 +1,4 @@
 from django.shortcuts import redirect
-from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from core.models import UserProfile, GroupTD
 from django.conf import settings
@@ -31,14 +30,15 @@ def finalize(request):
     if profile_created or user_profile.cas_auto_sync:
         user_profile.save()
 
-        q_objects = Q()
-        for td in subscribed_tds:
-            q_objects |= Q(name__iexact=td)
+        normalized_cas_tds = [td.strip().lower() for td in subscribed_tds]
 
-        tds_in_db = (
-            GroupTD.objects.filter(q_objects) if q_objects else GroupTD.objects.none()
-        )
+        tds_in_db = [
+            td
+            for td in GroupTD.objects.all()
+            if td.name.strip().lower() in normalized_cas_tds
+        ]
+
         user_profile.link_td.add(*tds_in_db)
 
-    logger.info(f"User logged in with {subscribed_tds} as his td_groups")
+    logger.info(f"User {request.user.id} logged in with TDs: {subscribed_tds}")
     return redirect(get_frontend_url())

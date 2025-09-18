@@ -1099,6 +1099,9 @@ class ChangeCasSyncAPIView(APIView):
             enabled = enable == "true"
             user_profile.cas_auto_sync = enabled
             user_profile.save()
+            logger.info(
+                f"User {request.user.id} cas_auto_sync updated successfully to {enabled}"
+            )
             return Response({"success": "Preferences saved successfully"}, status=200)
         except Exception as e:
             logger.error(
@@ -1116,12 +1119,23 @@ class UpdateUsingCasTDAPIView(APIView):
     def post(self, request):
         try:
             user_profile = request.user.userprofile
-            subscribed_tds = request.session.get("attributes", {}).get(
-                "supannAffectation", []
+            subscribed_tds = (
+                request.session.get("attributes", {}).get("supannAffectation", []) or []
             )
-            tds_in_db = GroupTD.objects.filter(name__in=subscribed_tds)
+
+            normalized_cas_tds = [td.strip().lower() for td in subscribed_tds]
+
+            tds_in_db = [
+                td
+                for td in GroupTD.objects.all()
+                if td.name.strip().lower() in normalized_cas_tds
+            ]
+
             user_profile.link_td.add(*tds_in_db)
             user_profile.save()
+
+            logger.info(f"User {request.user.id} successfully synced TDs: {tds_in_db}")
+
             return Response(
                 {"synced_tds": [td.name for td in user_profile.link_td.all()]},
                 status=200,

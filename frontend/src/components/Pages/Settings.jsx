@@ -37,7 +37,8 @@ const Settings = () => {
   const [currentTheme, setTheme] = useState(userTheme);
   const [departement, setDepartement] = useState(departementNames[0]);
   const [year, setYear] = useState(departementYears[departement][0]);
-
+  const [syncLoading, setSyncLoading] = useState(false);
+  const [syncStatus, setSyncStatus] = useState(null);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -72,6 +73,8 @@ const Settings = () => {
     }
   };
   const handleSyncUsingCas = async () => {
+    setSyncLoading(true);
+    setSyncStatus(null);
     try {
       const response = await fetch(`${API_URL}/api/user/cas_sync`, {
         method: 'POST',
@@ -91,8 +94,14 @@ const Settings = () => {
       if (data.synced_tds && Array.isArray(data.synced_tds)) {
         updateUserTDs(data.synced_tds);
       }
+
+      setSyncStatus('success');
     } catch (error) {
       console.error('Failed to sync TDs', error);
+      setSyncStatus('error');
+    } finally {
+      setSyncLoading(false);
+      setTimeout(() => setSyncStatus(null), 3000); // Reset status after 3s
     }
   };
 
@@ -253,7 +262,7 @@ const Settings = () => {
               {t('ICSCopy')}
             </button>
           </div>
-        </section>        
+        </section>
       </div>
     );
   };
@@ -284,10 +293,19 @@ const Settings = () => {
                   </label>
 
                   <button
-                    className="btn btn-primary cas-sync-btn"
+                    className={`btn btn-primary cas-sync-btn ${
+                      syncStatus === 'success' ? 'btn-success' : ''
+                    } ${syncStatus === 'error' ? 'btn-danger' : ''}`}
                     onClick={handleSyncUsingCas}
+                    disabled={syncLoading}
                   >
-                    {t('SyncNow')}
+                    {syncLoading
+                      ? t('Syncing')
+                      : syncStatus === 'success'
+                      ? t('Synced')
+                      : syncStatus === 'error'
+                      ? t('Failed')
+                      : t('SyncNow')}
                   </button>
                 </div>
               </div>

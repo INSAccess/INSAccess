@@ -76,6 +76,9 @@ const resources = {
       Associations: 'Association(s)',
       Teachers: 'Teacher(s)',
       Delete: 'Delete',
+      Syncing: 'Syncing...',
+      Synced: 'Synced!',
+      Failed: 'Failed',
       // Other
       WIP: 'Coming soon...',
       ToastInfoTitle: 'Important',
@@ -259,6 +262,9 @@ const resources = {
       Associations: 'Association(s)',
       Teachers: 'Professeur(s)',
       Delete: 'Supprimer',
+      Syncing: 'Synchronisation...',
+      Synced: 'Synchronisé !',
+      Failed: 'Échec',
       // Other
       WIP: 'Ça arrive bientôt...',
       ToastInfoTitle: 'Important',

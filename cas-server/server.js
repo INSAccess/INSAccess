@@ -9,7 +9,7 @@ const users = {
     password: 'test',
     mail: 'test@test.com',
     supannAffectation: [
-      'iti41-RI-TD-01',
+      'iti41-ri-td-02',
       'ITI41-TIM-TD-02',
       'ITI41-TI-TD-02',
       'examen',
