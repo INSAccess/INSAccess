@@ -137,7 +137,8 @@ const resources = {
       SupportTitle: 'Title',
       SupportTitleDefault: 'Type of issue',
       SupportDetails: 'Details',
-      SupportDetailsDefault: 'Quick description of your issue (please include how to reproduce the problem)',
+      SupportDetailsDefault:
+        'Quick description of your issue (please include how to reproduce the problem)',
       'Submit Report': 'Submit Report',
       'Submitting...': 'Submitting...',
       ReportSent: 'Your report has been sent successfully.',
@@ -163,7 +164,7 @@ const resources = {
         "1) Go to Friends, search for the user's INSA username (not their first and last name). If you are searching for Bernard Dupont, search for bdupont. \n2) Once invited, the user must accept the request so that both users can see each other's calendars (remember to refresh the page if the invitation does not appear).",
       Manual_Personnalize: 'Personnalization',
       Manual_PersonnalizeContent:
-        'Dans Paramètres / Autre, vous pouvez changer le thème et la langue du site',
+        'In Settings / Other, you can change the theme and the site language',
       //FAQ
       FAQ_Title: 'FAQ',
       FAQ_TdNotFound_Question: "I can't find some of my classes !",
@@ -321,7 +322,8 @@ const resources = {
       SupportTitle: 'Titre',
       SupportTitleDefault: 'Type du bug',
       SupportDetails: 'Détails',
-      SupportDetailsDefault: 'Description rapide du bug (avec les étapes pour le reproduire si possible)',
+      SupportDetailsDefault:
+        'Description rapide du bug (avec les étapes pour le reproduire si possible)',
       'Submit Report': 'Envoyer le rapport',
       'Submitting...': 'Envoi...',
       ReportSent: 'Votre rapport a été envoyé avec succès.',
