@@ -82,12 +82,12 @@ class UserProfile(models.Model):
     departement_name = models.CharField(
         max_length=8,
         editable=True,
-        default="STPI",
+        null=True,
     )
     departement_year = models.CharField(
         max_length=1,
         editable=True,
-        default="1",
+        null=True,
     )
     cas_auto_sync = models.BooleanField(default=False)
 
