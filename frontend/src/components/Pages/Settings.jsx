@@ -3,7 +3,7 @@ import AssoSelection from '../AssoSelection.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
 import EventCreator from '../EventCreator.jsx';
 import DropDownCustom from '../DropDownCustom.jsx';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { API_URL, minWidth } from '../../utils/Constants.jsx';
 import { useConfig } from '../../contexts/ConfigContext.jsx';
 import { useData } from '../../contexts/DataContext.jsx';
@@ -29,12 +29,15 @@ const Settings = () => {
   } = useData();
 
   const [view, setView] = useState('TDs');
-
-  const copyButtonRef = useRef(null);
   const [currentLanguage, setLanguage] = useState(userLanguage);
   const [currentTheme, setTheme] = useState(userTheme);
   const [syncLoading, setSyncLoading] = useState(false);
   const [syncStatus, setSyncStatus] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const debounceTimerRef = useRef(null);
+  const copyButtonRef = useRef(null);
+
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -42,6 +45,47 @@ const Settings = () => {
       //used for the copy to clipboard feature
       new window.bootstrap.Tooltip(copyButtonRef.current);
     }
+  }, []);
+
+  const debouncedSaveDepartement = useCallback((name, year) => {
+    // Clear existing timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    setIsSaving(true);
+
+    // Set new timer
+    debounceTimerRef.current = setTimeout(async () => {
+      try {
+        const response = await fetch(API_URL + '/api/user/departement', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': RandomUtils.getCSRFToken(),
+          },
+          mode: 'cors',
+          credentials: 'include',
+          body: JSON.stringify({"departement_name": name, "departement_year": year}),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to save departement: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('Failed to save departement:', error);
+      } finally {
+        setIsSaving(false);
+      }
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
   }, []);
 
   const handleCasAutoSyncChange = async (enabled) => {
@@ -188,43 +232,24 @@ const Settings = () => {
     }
   };
 
-  async function handleSetDepartement(value) {
-    try {
-      const response = await fetch(API_URL + '/api/user/departement', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': RandomUtils.getCSRFToken(),
-        },
-        mode: 'cors',
-        credentials: 'include',
-        body: JSON.stringify({"departement_name": value, "departement_year": departementYears[value].includes(parseInt(year)) ? year : departementYears[value][0]}),
-      });
-      if (!departementYears[value].includes(parseInt(year))) {
-        setYear(departementYears[value][0]);
-      }
-      setDepartement(value);
-    } catch (error) {
-      console.error(error);
+  function handleSetDepartement(value) {
+    // Update local state immediately for responsive UI
+    if (!departementYears[value].includes(parseInt(year))) {
+      setYear(departementYears[value][0]);
+      // Save with the adjusted year
+      debouncedSaveDepartement(value, departementYears[value][0]);
+    } else {
+      // Save with current year
+      debouncedSaveDepartement(value, year);
     }
+    setDepartement(value);
   }
 
-  async function handleSetYear(value) {
-    try {
-      const response = await fetch(API_URL + '/api/user/departement', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': RandomUtils.getCSRFToken(),
-        },
-        mode: 'cors',
-        credentials: 'include',
-        body: JSON.stringify({"departement_name": departement, "departement_year": value}),
-      });
-      setYear(value);
-    } catch (error) {
-      console.error(error);
-    }
+  function handleSetYear(value) {
+    // Update local state immediately for responsive UI
+    setYear(value);
+    // Trigger debounced save
+    debouncedSaveDepartement(departement, value);
   }
 
   const DropDownYear = () => {
@@ -338,6 +363,13 @@ const Settings = () => {
                   </button>
                 </div>
               </div>
+              
+              {/* Optional: Show saving indicator */}
+              {isSaving && (
+                <div className="saving-indicator">
+                  <small className="text-muted">{t('settings.saving', 'Saving...')}</small>
+                </div>
+              )}
             </div>
 
             {tds.departments[departement + year] && (
