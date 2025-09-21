@@ -192,8 +192,8 @@ export const DataProvider = (props) => {
           setIsAssos(profileData.is_asso);
           setAssoName(profileData.asso);
           setUserAutoSync(profileData.cas_autosync);
-          setDepartement(profileData.departement_name);
-          setYear(parseInt(profileData.departement_year));
+          setDepartement(profileData.departement_name || departementNames[0]);
+          setYear(parseInt(profileData.departement_year || departementYears[departementNames[0]]));
         }
 
         if (resultAssociations.data) {
