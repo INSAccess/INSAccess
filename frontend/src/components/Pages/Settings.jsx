@@ -366,8 +366,8 @@ const Settings = () => {
               
               {/* Optional: Show saving indicator */}
               {isSaving && (
-                <div className="saving-indicator">
-                  <small className="text-muted">{t('settings.saving', 'Saving...')}</small>
+                <div className="spinner-grow spinner-grow-sm m-2" role="status">
+                  <span className="visually-hidden">{t('settings.saving')}</span>
                 </div>
               )}
             </div>
