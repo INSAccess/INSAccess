@@ -35,3 +35,7 @@ def update_next_week():
     insert_list_record(filter_next_week(data))
     elapsed_time = time.time() - start_time
     logger.info(f"update_next_month finished in {elapsed_time:.2f} seconds")
+
+
+def report_stats():
+    pass
