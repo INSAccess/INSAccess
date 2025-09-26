@@ -58,6 +58,35 @@ def chunked(iterable, size):
         yield chunk
 
 
+def write_stats(filename='stats.log', nb_active_users=None, nb_daily_users=None, nb_created=None, nb_updated=None):
+    """
+    Writes statistics in a file for telegraf or another program to read it
+    If you don't want to write a specific line, just keep the related argument as None
+    Ex : write_stats(nb_active_users=2, nb_daily_users=3) will not write the number of created or updated classes
+    """
+    
+    with open(filename, 'r') as f:
+        data = f.readlines()
+
+    values = [nb_updated, nb_created, nb_active_users, nb_daily_users] # args to create stats about
+    modified = [False] * len(values) # list to keep track of created lines (if the line is not created after the first loop and it should have been, the second loop will create it)
+    items = ['classes', 'classes', 'active_users', 'daily_users']
+    statuses = ['modified', 'created', None, None] # put None if you don't want a status in the matching line
+
+    for line in data:
+        for i in range(len(items)):
+            if values[i] != None and f"edt, item={items[i]}{', status=' + str(statuses[i]) if statuses[i] else ''}" in line:
+                line = f"edt, item={items[i]}{', status=' + str(statuses[i]) if statuses[i] else ''} value={values[i]}i\n"
+                modified[i] = True
+    
+    for i in range(len(items)):
+        if values[i] != None and not modified[i]:
+            data.append(f"edt, item={items[i]}{', status=' + str(statuses[i]) if statuses[i] else ''} value={values[i]}i\n")
+
+    with open(filename, 'w+') as f:
+        f.writelines(data)
+
+
 def ensure_name_instances(model, names):
     """
     Ensure rows exist in `model` for every name in `names`.
@@ -151,6 +180,7 @@ def insert_list_record(list_of_records, batch_size=500):
                 classes_to_refresh_uids.append(uid)
             else:
                 existing = existing_map[uid]
+                #logger.info(f'Existing : {existing.sequence} ---- New : {rec.get("sequence")}')
                 if existing.sequence != rec.get("sequence"):
                     existing.time_stamp = rec["time_stamp"]
                     existing.start_hour = rec["time_start"]
@@ -254,6 +284,8 @@ def insert_list_record(list_of_records, batch_size=500):
                 ClassLinkDepart.objects.bulk_create(chunk, batch_size=batch_size)
             for chunk in chunked(td_links, batch_size):
                 ClassLinkTD.objects.bulk_create(chunk, batch_size=batch_size)
+
+    write_stats(nb_created=len(to_create), nb_updated=len(to_update))
 
     logger.info(
         "insert_list_record done: created=%d updated=%d total=%d",
