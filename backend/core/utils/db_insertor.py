@@ -188,7 +188,6 @@ def insert_list_record(list_of_records, batch_size=500):
                 classes_to_refresh_uids.append(uid)
             else:
                 existing = existing_map[uid]
-                #logger.info(f'Existing : {existing.sequence} ---- New : {rec.get("sequence")}')
                 if existing.sequence != rec.get("sequence"):
                     existing.time_stamp = rec["time_stamp"]
                     existing.start_hour = rec["time_start"]
