@@ -64,14 +64,22 @@ def write_stats(filename='stats.log', nb_active_users=None, nb_daily_users=None,
     If you don't want to write a specific line, just keep the related argument as None
     Ex : write_stats(nb_active_users=2, nb_daily_users=3) will not write the number of created or updated classes
     """
-    
+
+    # Try to create the file that will contain the stats. Does nothing if it already exists
+    try:
+        f = open(filename, 'x')
+        f.close()
+        logger.info('Created stats file')
+    except FileExistsError:
+        logger.info('Stats file already exists')
+
     with open(filename, 'r') as f:
         data = f.readlines()
 
     values = [nb_updated, nb_created, nb_active_users, nb_daily_users] # args to create stats about
     modified = [False] * len(values) # list to keep track of created lines (if the line is not created after the first loop and it should have been, the second loop will create it)
-    items = ['classes', 'classes', 'active_users', 'daily_users']
-    statuses = ['modified', 'created', None, None] # put None if you don't want a status in the matching line
+    items = ['cours', 'cours', 'actifs', 'quotidiens']
+    statuses = ['modifié', 'créé', None, None] # put None if you don't want a status in the matching line
 
     for line in data:
         for i in range(len(items)):
@@ -83,7 +91,7 @@ def write_stats(filename='stats.log', nb_active_users=None, nb_daily_users=None,
         if values[i] != None and not modified[i]:
             data.append(f"edt, item={items[i]}{', status=' + str(statuses[i]) if statuses[i] else ''} value={values[i]}i\n")
 
-    with open(filename, 'w+') as f:
+    with open(filename, 'w') as f:
         f.writelines(data)
 
 
