@@ -179,6 +179,16 @@ class Association(models.Model):
     type = models.ForeignKey("EnumType", on_delete=models.SET_NULL, null=True)
     sector = models.ForeignKey("EnumSector", on_delete=models.SET_NULL, null=True)
 
+    def save(self, *args, **kwargs):
+        users = UserProfile.objects.all()
+
+        user_link_assos = [
+            UserLinkAssociation(user=user, name_assos=self)
+            for user in users
+        ]
+        UserLinkAssociation.objects.bulk_create(user_link_assos)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 

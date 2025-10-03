@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from core.models import UserProfile, GroupTD
+from core.models import UserProfile, GroupTD, Association
 from django.conf import settings
 
 import logging
@@ -39,6 +39,11 @@ def finalize(request):
         ]
 
         user_profile.link_td.add(*tds_in_db)
+    
+    if profile_created:
+        user_profile.save()
+        assos = Association.objects.all()
+        user_profile.link_assos.add(*assos)
 
     logger.info(f"User {request.user.id} logged in with TDs: {subscribed_tds}")
     return redirect(get_frontend_url())
