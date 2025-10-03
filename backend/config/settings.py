@@ -1,6 +1,7 @@
 import environ
 import os
 import sys
+import logging
 from pathlib import Path
 from corsheaders.defaults import default_headers
 
@@ -8,6 +9,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
 environ.Env.read_env()
+
+logging.getLogger("django.security.DisallowedHost").setLevel(
+    logging.CRITICAL
+)  # prevent email error for origin forgery
 
 HOST_IP = env("HOST_IP", default="localhost")
 
