@@ -18,5 +18,6 @@ venv/
 .env
 
 !backend/core/logs/.keep
-
 local_settings.py
+
+cas-server/node_modules/
