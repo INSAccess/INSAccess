@@ -83,6 +83,7 @@ export const NavBar = ({ page, setPage }) => {
             <button
               id="logout"
               className="btn btn-primary"
+              aria-label="Logout"
               onClick={handleLogout}
             >
               <svg

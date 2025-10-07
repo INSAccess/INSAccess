@@ -21,3 +21,4 @@ venv/
 local_settings.py
 
 cas-server/node_modules/
+cas-server/node_modules.*
