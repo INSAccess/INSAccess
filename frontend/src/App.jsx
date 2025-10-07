@@ -9,7 +9,7 @@ import Associations from './components/Pages/Associations.jsx';
 import Help from './components/Pages/Help.jsx';
 import Friends from './components/Pages/Friends.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
-import './App.scss';
+import './assets/App.scss';
 
 function App() {
   const [page, setPage] = useState('home');

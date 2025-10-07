@@ -5,7 +5,7 @@ import EventUtils from '../../utils/EventUtils';
 import RandomUtils from '../../utils/RandomUtils';
 import Day from '../../utils/Day';
 import SingleEvent from './SingleEvent';
-import './EventsInDay.scss';
+import '../../assets/EventsInDay.scss';
 
 /**
  * React component that displays all the event of a given day

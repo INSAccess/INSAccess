@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Alert, Button } from 'react-bootstrap';
 import duck from '../images/duck.png';
-import './Templates.scss';
+import '../assets/Templates.scss';
 
 /**
  * Custom Error handling component

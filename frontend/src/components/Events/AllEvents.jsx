@@ -4,7 +4,7 @@ import { useData } from '../../contexts/DataContext.jsx';
 import { useTranslation } from 'react-i18next';
 import EventsInDay from './EventsInDay';
 import RandomUtils from '../../utils/RandomUtils';
-import './AllEvents.scss';
+import '../../assets/AllEvents.scss';
 
 /**
  * React component for the timestamps on the left of the calendar

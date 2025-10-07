@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { API_URL } from '../utils/Constants';
-import { useData } from '../contexts/DataContext';
+import { API_URL } from '../utils/Constants.jsx';
+import { useData } from '../contexts/DataContext.jsx';
 import { useTranslation } from 'react-i18next';
-import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils';
+import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils.jsx';
 import Alert from '@mui/material/Alert';
 
 function AssoSelection() {

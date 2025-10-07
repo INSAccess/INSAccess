@@ -4,7 +4,7 @@ import { API_URL } from '../../utils/Constants.jsx';
 import { useTranslation } from 'react-i18next';
 import RandomUtils from '../../utils/RandomUtils.jsx';
 import AllEvents from '../Events/AllEvents.jsx';
-import './Friends.scss';
+import '../../assets/Friends.scss';
 
 const Friends = () => {
   const { t } = useTranslation();

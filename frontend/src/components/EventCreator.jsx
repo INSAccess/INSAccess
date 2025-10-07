@@ -6,7 +6,7 @@ import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils.jsx';
 import Alert from 'react-bootstrap/Alert';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import './EventCreator.scss';
+import '../assets/EventCreator.scss';
 
 const EvenementForm = () => {
   const { t } = useTranslation();

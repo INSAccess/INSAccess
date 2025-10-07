@@ -4,7 +4,7 @@ import { useData } from '../contexts/DataContext';
 import { useTranslation } from 'react-i18next';
 import Alert from '@mui/material/Alert';
 import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils';
-import './TDSelection.scss';
+import '../assets/TDSelection.scss';
 
 /**
  * Component listing the different TDs the user can "subscribe" to.

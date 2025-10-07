@@ -9,7 +9,7 @@ import { useConfig } from '../../contexts/ConfigContext.jsx';
 import { useData } from '../../contexts/DataContext.jsx';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
-import './Settings.scss';
+import '../../assets/Settings.scss';
 
 /**
  * Settings component, handling the theme, the TD selection, ICS link and event creation

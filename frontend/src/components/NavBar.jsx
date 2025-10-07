@@ -4,7 +4,7 @@ import { API_LOGOUT } from '../utils/Constants.jsx';
 import { useData } from '../contexts/DataContext.jsx';
 import { CustomDatePicker } from './DatePicker.jsx';
 import '../utils/Dictionnary.jsx';
-import './NavBar.scss';
+import '../assets/NavBar.scss';
 
 export const NavBar = ({ page, setPage }) => {
   const BUNDLE = useData();

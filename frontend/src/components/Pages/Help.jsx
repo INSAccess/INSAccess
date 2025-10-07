@@ -3,7 +3,7 @@ import { minWidth } from '../../utils/Constants';
 import RandomUtils from '../../utils/RandomUtils';
 import SupportForm from '../SupportForm.jsx';
 import duck from '../../images/duck.png';
-import './Help.scss';
+import '../../assets/Help.scss';
 
 const About = () => {
   const { t } = useTranslation();

@@ -3,7 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { API_URL } from '../utils/Constants.jsx';
 import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils.jsx';
-import './SupportForm.scss';
+import '../assets/SupportForm.scss';
 
 const SupportForm = () => {
   const { t } = useTranslation();

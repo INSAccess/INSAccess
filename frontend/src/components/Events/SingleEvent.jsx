@@ -4,13 +4,13 @@ import { API_URL } from '../../utils/Constants.jsx';
 import { CompactPicker } from 'react-color';
 import { useData } from '../../contexts/DataContext.jsx';
 import { useTranslation } from 'react-i18next';
-import Day from '../../utils/Day';
-import EventUtils from '../../utils/EventUtils';
-import RandomUtils, { parseJsonSafe } from '../../utils/RandomUtils';
+import Day from '../../utils/Day.jsx';
+import EventUtils from '../../utils/EventUtils.jsx';
+import RandomUtils, { parseJsonSafe } from '../../utils/RandomUtils.jsx';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Alert from '@mui/material/Alert';
-import './SingleEvent.scss';
+import '../../assets/SingleEvent.scss';
 
 /**
  * React component that only returns a button redirecting to a link if this is an association
