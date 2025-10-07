@@ -58,7 +58,7 @@ def chunked(iterable, size):
         yield chunk
 
 
-def write_stats(filename='stats.log', nb_active_users=None, nb_daily_users=None, nb_created=None, nb_updated=None):
+def write_stats(filename='stats.txt', nb_active_users=None, nb_daily_users=None, nb_created=None, nb_updated=None):
     """
     Writes statistics in a file for telegraf or another program to read it
     If you don't want to write a specific line, just keep the related argument as None
