@@ -1,2 +1,0 @@
-edt, item=cours, status=modifié value=14571i
-edt, item=cours, status=créé value=1000i

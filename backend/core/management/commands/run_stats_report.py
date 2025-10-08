@@ -1,9 +1,11 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.conf import settings
 import logging
 import sys
 import traceback
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -16,18 +18,13 @@ class Command(BaseCommand):
         try:
             nb_daily_users = User.objects.filter(last_login__startswith=timezone.now().date()).count()
 
-            try:
-                f = open("tds_telegraf.txt", 'x')
-                f.close()
-            except FileExistsError:
-                logger.info('users_telegraf.txt already exists')
-
             # Writing stats for telegraf
+
             data = [
                 f"edt,item=daily value={nb_daily_users}i\n",
             ]
 
-            with open('users_telegraf.txt', 'w') as f:
+            with open(os.path.join(settings.BASE_DIR, 'users_telegraf.txt'), 'w') as f:
                 f.writelines(data)
             logger.info("run_stats_report: stats report finished successfully")
         except Exception as exc:

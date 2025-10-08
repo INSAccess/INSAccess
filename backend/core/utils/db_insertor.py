@@ -58,43 +58,6 @@ def chunked(iterable, size):
         yield chunk
 
 
-def write_stats(filename='stats.txt', nb_daily_users=None, nb_created=None, nb_updated=None):
-    """
-    Writes statistics in a file for telegraf or another program to read it
-    If you don't want to write a specific line, just keep the related argument as None
-    Ex : write_stats(nb_active_users=2, nb_daily_users=3) will not write the number of created or updated classes
-    """
-
-    # Try to create the file that will contain the stats. Does nothing if it already exists
-    try:
-        f = open(filename, "x")
-        f.close()
-        logger.info("Created stats file")
-    except FileExistsError:
-        logger.info("Stats file already exists")
-
-    with open(filename, "r") as f:
-        data = f.readlines()
-
-    values = [nb_updated, nb_created, nb_daily_users] # args to create stats about
-    modified = [False] * len(values) # list to keep track of created lines (if the line is not created after the first loop and it should have been, the second loop will create it)
-    items = ['cours', 'cours', 'quotidiens']
-    statuses = ['modifié', 'créé', None] # put None if you don't want a status in the matching line
-
-    for line in data:
-        for i in range(len(items)):
-            if values[i] != None and f"edt, item={items[i]}{', status=' + str(statuses[i]) if statuses[i] else ''}" in line:
-                line = f"edt,item={items[i]}{',status=' + str(statuses[i]) if statuses[i] else ''} value={values[i]}i\n"
-                modified[i] = True
-
-    for i in range(len(items)):
-        if values[i] != None and not modified[i]:
-            data.append(f"edt,item={items[i]}{',status=' + str(statuses[i]) if statuses[i] else ''} value={values[i]}i\n")
-
-    with open(filename, "w") as f:
-        f.writelines(data)
-
-
 def ensure_name_instances(model, names):
     """
     Ensure rows exist in `model` for every name in `names`.
@@ -156,7 +119,9 @@ def insert_list_record(list_of_records, batch_size=500):
     all_td_names = {name for rec in list_of_records for name in rec.get("td_tags", [])}
 
     with transaction.atomic():
-        InsaClass.objects.exclude(uid__in=new_uids).delete()
+        to_delete = InsaClass.objects.exclude(uid__in=new_uids)
+        nb_deleted = len(to_delete)
+        to_delete.delete()
 
         existing_qs = InsaClass.objects.filter(uid__in=new_uids).select_related("desc")
         existing_map = {obj.uid: obj for obj in existing_qs}
@@ -293,25 +258,19 @@ def insert_list_record(list_of_records, batch_size=500):
                 ClassLinkTD.objects.bulk_create(chunk, batch_size=batch_size)
 
     # Writing stats for telegraf
-    try:
-        f = open("tds_telegraf.txt", 'x')
-        f.close()
-    except FileExistsError:
-        logger.info('tds_telegraf.txt already exists')
-
     data = [
         f"edt,item=cours,status=modifie value={len(to_update)}i\n",
-        f"edt,item=cours,status=cree value={len(to_create)}i\n"
+        f"edt,item=cours,status=cree value={len(to_create)}i\n",
+        f"edt,item=cours,status=supprime value={nb_deleted}i\n",
     ]
 
-    with open("tds_telegraf.txt", 'w') as f:
+    with open("td_telegraf.txt", 'w') as f:
         f.writelines(data)
 
-    logger.info("TD stats done")
-
     logger.info(
-        "insert_list_record done: created=%d updated=%d total=%d",
+        "insert_list_record done: created=%d updated=%d deleted=%s total=%d",
         len(to_create),
         len(to_update),
-        len(list_of_records),
+        nb_deleted,
+        len(new_uids),
     )
