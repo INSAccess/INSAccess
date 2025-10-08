@@ -31,7 +31,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "core.utils.middleware_ignore_disallowed_hosts.IgnoreDisallowedHostMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -191,6 +190,10 @@ LOGGING = {
         "": {
             "handlers": ["console_stdout", "console_stderr"],
             "level": "INFO",
+        },
+        "django.security.DisallowedHost": {
+            "handlers": ["null"],
+            "propagate": False,
         },
     },
 }
