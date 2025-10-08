@@ -185,6 +185,9 @@ LOGGING = {
             "filters": ["request_filter"],
             "stream": sys.stderr,
         },
+        "null": {
+            "class": "logging.NullHandler",
+        },
     },
     "loggers": {
         "": {
