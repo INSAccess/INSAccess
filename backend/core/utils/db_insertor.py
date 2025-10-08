@@ -67,13 +67,13 @@ def write_stats(filename='stats.txt', nb_daily_users=None, nb_created=None, nb_u
 
     # Try to create the file that will contain the stats. Does nothing if it already exists
     try:
-        f = open(filename, 'x')
+        f = open(filename, "x")
         f.close()
-        logger.info('Created stats file')
+        logger.info("Created stats file")
     except FileExistsError:
-        logger.info('Stats file already exists')
+        logger.info("Stats file already exists")
 
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         data = f.readlines()
 
     values = [nb_updated, nb_created, nb_daily_users] # args to create stats about
@@ -86,12 +86,12 @@ def write_stats(filename='stats.txt', nb_daily_users=None, nb_created=None, nb_u
             if values[i] != None and f"edt, item={items[i]}{', status=' + str(statuses[i]) if statuses[i] else ''}" in line:
                 line = f"edt,item={items[i]}{',status=' + str(statuses[i]) if statuses[i] else ''} value={values[i]}i\n"
                 modified[i] = True
-    
+
     for i in range(len(items)):
         if values[i] != None and not modified[i]:
             data.append(f"edt,item={items[i]}{',status=' + str(statuses[i]) if statuses[i] else ''} value={values[i]}i\n")
 
-    with open(filename, 'w') as f:
+    with open(filename, "w") as f:
         f.writelines(data)
 
 

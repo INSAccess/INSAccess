@@ -1,5 +1,3 @@
-import os
-import json
 import itertools
 from datetime import datetime
 from unittest.mock import patch
@@ -12,17 +10,12 @@ from core.utils.fetch_ics import (
     get_academic_year,
 )
 
-# Load the CONFIG file from the specified path
-CONFIG_PATH = os.path.join(
-    os.path.dirname((os.path.dirname(os.path.dirname(__file__)))),
-    "config/insa_config.json",
-)
+from django.conf import settings
 
 
 def load_config():
-    """Loads the configuration file from the project config folder."""
-    with open(CONFIG_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
+    """Returns the INSAccess configuration from Django settings."""
+    return getattr(settings, "CONFIG", {})
 
 
 CONFIG = load_config()

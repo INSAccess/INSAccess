@@ -1,23 +1,17 @@
 import requests
 import sys
-import os
-import json
 import itertools
 import logging
 import datetime
 from icalendar import Calendar
 
 
-CONFIG_PATH = os.path.join(
-    os.path.dirname((os.path.dirname(os.path.dirname(__file__)))),
-    "config/insa_config.json",
-)
+from django.conf import settings
 
 
 def load_config():
-    """Loads the configuration file from the project config folder."""
-    with open(CONFIG_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
+    """Returns the INSAccess configuration from Django settings."""
+    return getattr(settings, "CONFIG")
 
 
 CONFIG = load_config()
@@ -61,11 +55,14 @@ def ics_to_list(url: str) -> list:
             return []
 
         list_of_events = []
+        no_tds_events = set()
         for event in ical.walk("VEVENT"):
             try:
                 teachers, departments, td_tags = description_parsing(
                     str(event.get("DESCRIPTION"))
                 )
+                if len(td_tags) == 0:
+                    no_tds_events.add(str(event.get("SUMMARY")))
                 list_of_events.append(
                     {
                         "time_stamp": event.get("DTSTAMP").dt,
@@ -91,7 +88,7 @@ def ics_to_list(url: str) -> list:
                 logger.error(f"Error parsing event {event.get('UID')}: {e}")
                 continue  # Skip this event but continue with the rest
 
-        return list_of_events
+        return list_of_events, no_tds_events
 
     except requests.RequestException as e:
         logger.error(f"Request error fetching ICS from {url}: {e}")
