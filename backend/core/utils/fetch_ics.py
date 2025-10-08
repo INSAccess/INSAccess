@@ -1,23 +1,17 @@
 import requests
 import sys
-import os
-import json
 import itertools
 import logging
 import datetime
 from icalendar import Calendar
 
 
-CONFIG_PATH = os.path.join(
-    os.path.dirname((os.path.dirname(os.path.dirname(__file__)))),
-    "config/insa_config.json",
-)
+from django.conf import settings
 
 
 def load_config():
-    """Loads the configuration file from the project config folder."""
-    with open(CONFIG_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
+    """Returns the INSAccess configuration from Django settings."""
+    return getattr(settings, "CONFIG")
 
 
 CONFIG = load_config()
