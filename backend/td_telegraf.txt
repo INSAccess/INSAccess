@@ -1,0 +1,3 @@
+edt,item=cours,status=modifie value=1291i
+edt,item=cours,status=cree value=0i
+edt,item=cours,status=supprime value=0i

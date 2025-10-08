@@ -4,7 +4,7 @@ set -e
 FRONTEND_DIR="frontend"
 BACKEND_DIR="backend"
 VITE_API_URL="https://edt.insa-rouen.fr"
-VITE_GIT_VERSION="0.4.4"
+VITE_GIT_VERSION="0.4.5"
 #"https://edt.insa-rouen.fr"
 
 echo "[1] Cleaning previous build..."

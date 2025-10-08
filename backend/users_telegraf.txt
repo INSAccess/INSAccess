@@ -1,0 +1,1 @@
+edt,item=daily value=1i

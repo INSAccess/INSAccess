@@ -1,8 +1,5 @@
 from core.utils.fetch_ics import CONFIG, fetch_department, filter_next_week
-from core.utils.db_insertor import insert_list_record, write_stats
-from django.contrib.sessions.models import Session
-from django.utils import timezone
-from django.contrib.auth.models import User
+from core.utils.db_insertor import insert_list_record
 import time
 import logging
 
@@ -59,12 +56,3 @@ def update_next_week():
     insert_list_record(next_week)
     elapsed_time = time.time() - start_time
     logger.info(f"update_next_week finished in {elapsed_time:.2f} seconds")
-
-
-def report_stats():
-    nb_active_users = get_current_active_users()
-    nb_daily_users = User.objects.filter(
-        last_login__startswith=timezone.now().date()
-    ).count()
-
-    write_stats(nb_active_users=nb_active_users, nb_daily_users=nb_daily_users)
