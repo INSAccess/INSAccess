@@ -58,7 +58,13 @@ def chunked(iterable, size):
         yield chunk
 
 
-def write_stats(filename='stats.txt', nb_active_users=None, nb_daily_users=None, nb_created=None, nb_updated=None):
+def write_stats(
+    filename="stats.txt",
+    nb_active_users=None,
+    nb_daily_users=None,
+    nb_created=None,
+    nb_updated=None,
+):
     """
     Writes statistics in a file for telegraf or another program to read it
     If you don't want to write a specific line, just keep the related argument as None
@@ -67,31 +73,49 @@ def write_stats(filename='stats.txt', nb_active_users=None, nb_daily_users=None,
 
     # Try to create the file that will contain the stats. Does nothing if it already exists
     try:
-        f = open(filename, 'x')
+        f = open(filename, "x")
         f.close()
-        logger.info('Created stats file')
+        logger.info("Created stats file")
     except FileExistsError:
-        logger.info('Stats file already exists')
+        logger.info("Stats file already exists")
 
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         data = f.readlines()
 
-    values = [nb_updated, nb_created, nb_active_users, nb_daily_users] # args to create stats about
-    modified = [False] * len(values) # list to keep track of created lines (if the line is not created after the first loop and it should have been, the second loop will create it)
-    items = ['cours', 'cours', 'actifs', 'quotidiens']
-    statuses = ['modifié', 'créé', None, None] # put None if you don't want a status in the matching line
+    values = [
+        nb_updated,
+        nb_created,
+        nb_active_users,
+        nb_daily_users,
+    ]  # args to create stats about
+    modified = (
+        [False] * len(values)
+    )  # list to keep track of created lines (if the line is not created after the first loop and it should have been, the second loop will create it)
+    items = ["cours", "cours", "actifs", "quotidiens"]
+    statuses = [
+        "modifié",
+        "créé",
+        None,
+        None,
+    ]  # put None if you don't want a status in the matching line
 
     for line in data:
         for i in range(len(items)):
-            if values[i] != None and f"edt, item={items[i]}{', status=' + str(statuses[i]) if statuses[i] else ''}" in line:
+            if (
+                values[i] is not None
+                and f"edt, item={items[i]}{', status=' + str(statuses[i]) if statuses[i] else ''}"
+                in line
+            ):
                 line = f"edt, item={items[i]}{', status=' + str(statuses[i]) if statuses[i] else ''} value={values[i]}i\n"
                 modified[i] = True
-    
-    for i in range(len(items)):
-        if values[i] != None and not modified[i]:
-            data.append(f"edt, item={items[i]}{', status=' + str(statuses[i]) if statuses[i] else ''} value={values[i]}i\n")
 
-    with open(filename, 'w') as f:
+    for i in range(len(items)):
+        if values[i] is not None and not modified[i]:
+            data.append(
+                f"edt, item={items[i]}{', status=' + str(statuses[i]) if statuses[i] else ''} value={values[i]}i\n"
+            )
+
+    with open(filename, "w") as f:
         f.writelines(data)
 
 

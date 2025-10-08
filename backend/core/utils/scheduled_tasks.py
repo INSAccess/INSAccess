@@ -15,24 +15,33 @@ def get_current_active_users():
     nb_users = 0
     for session in active_sessions:
         data = session.get_decoded()
-        user_id = data.get('_auth_user_id', None)
+        user_id = data.get("_auth_user_id", None)
         if user_id:
             nb_users += 1
     return nb_users
 
 
 def fetch_all_years() -> list:
-    return [
-        item
-        for department in CONFIG["department_list"]
-        for year in CONFIG["years_for_department"]
-        for item in fetch_department(department, year)
-    ] + [
-        item
-        for prepa in CONFIG["prepa_name"]
-        for year in CONFIG["years_for_prepa"]
-        for item in fetch_department(prepa, year)
-    ]
+    all_events = []
+    merged_no_tds = set()
+
+    for department in CONFIG["department_list"]:
+        for year in CONFIG["years_for_department"]:
+            events, no_tds_events = fetch_department(department, year)
+            all_events.extend(events)
+            merged_no_tds.update(no_tds_events)
+
+    for prepa in CONFIG["prepa_name"]:
+        for year in CONFIG["years_for_prepa"]:
+            events, no_tds_events = fetch_department(prepa, year)
+            all_events.extend(events)
+            merged_no_tds.update(no_tds_events)
+
+    # Log once at the end
+    if merged_no_tds:
+        logger.info(f"No TDs found for the following events: {sorted(merged_no_tds)}")
+
+    return all_events
 
 
 def update_all_years():
@@ -54,6 +63,8 @@ def update_next_week():
 
 def report_stats():
     nb_active_users = get_current_active_users()
-    nb_daily_users = User.objects.filter(last_login__startswith=timezone.now().date()).count()
+    nb_daily_users = User.objects.filter(
+        last_login__startswith=timezone.now().date()
+    ).count()
 
     write_stats(nb_active_users=nb_active_users, nb_daily_users=nb_daily_users)

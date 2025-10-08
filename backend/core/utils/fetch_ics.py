@@ -61,11 +61,14 @@ def ics_to_list(url: str) -> list:
             return []
 
         list_of_events = []
+        no_tds_events = set()
         for event in ical.walk("VEVENT"):
             try:
                 teachers, departments, td_tags = description_parsing(
                     str(event.get("DESCRIPTION"))
                 )
+                if len(td_tags) == 0:
+                    no_tds_events.add(str(event.get("SUMMARY")))
                 list_of_events.append(
                     {
                         "time_stamp": event.get("DTSTAMP").dt,
@@ -91,7 +94,7 @@ def ics_to_list(url: str) -> list:
                 logger.error(f"Error parsing event {event.get('UID')}: {e}")
                 continue  # Skip this event but continue with the rest
 
-        return list_of_events
+        return list_of_events, no_tds_events
 
     except requests.RequestException as e:
         logger.error(f"Request error fetching ICS from {url}: {e}")

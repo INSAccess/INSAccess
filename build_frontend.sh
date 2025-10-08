@@ -3,7 +3,7 @@ set -e
 
 FRONTEND_DIR="frontend"
 BACKEND_DIR="backend"
-VITE_API_URL="https://edt.insa-rouen.fr"
+VITE_API_URL="http://172.18.26.13:8000"
 VITE_GIT_VERSION="0.4.3"
 #"https://edt.insa-rouen.fr"
 

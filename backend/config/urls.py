@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.urls import path, include, re_path
-from core.admin import custom_admin_site
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.views.static import serve
@@ -10,8 +9,7 @@ ROOT_STATIC = os.path.join(settings.BASE_DIR, "staticfiles", "static")
 
 urlpatterns = [
     # Admin routes
-    path("admin/default", admin.site.urls),
-    path("admin/custom", custom_admin_site.urls),
+    path("admin", admin.site.urls),
     # API / auth / ICS routes
     path("api/", include("core.urls.api_urls")),
     path("authentification/", include("core.urls.auth_urls")),
@@ -24,7 +22,7 @@ urlpatterns = [
     ),
     # Catch-all for React routes
     re_path(
-        r"^(?!api/|admin/|authentification/|ics/|static/|media/).*$",
+        r"^(?!api/|admin|authentification/|ics/|static/|media/).*$",
         TemplateView.as_view(template_name="index.html"),
     ),
 ]
