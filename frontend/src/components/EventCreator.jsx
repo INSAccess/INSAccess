@@ -197,7 +197,7 @@ const EvenementForm = () => {
             {/* Link */}
             <div className="col-md-6">
               <label htmlFor="associated_link" className="form-label">
-                {t('FormLink')}
+                {t('forms.link')}
               </label>
               <input
                 className="form-control"
