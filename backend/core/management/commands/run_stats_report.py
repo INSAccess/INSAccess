@@ -21,7 +21,7 @@ class Command(BaseCommand):
             # Writing stats for telegraf
 
             data = [
-                f"edt,item=daily value={nb_daily_users}i\n",
+                f"edt,item=users daily={nb_daily_users}i\n",
             ]
 
             with open(os.path.join(settings.BASE_DIR, 'users_telegraf.txt'), 'w') as f:
