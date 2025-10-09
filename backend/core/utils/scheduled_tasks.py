@@ -1,21 +1,11 @@
 from core.utils.fetch_ics import CONFIG, fetch_department, filter_next_week
 from core.utils.db_insertor import insert_list_record
+
 import time
 import logging
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
-
-
-def get_current_active_users():
-    active_sessions = Session.objects.filter(expire_date__gte=timezone.now())
-    nb_users = 0
-    for session in active_sessions:
-        data = session.get_decoded()
-        user_id = data.get("_auth_user_id", None)
-        if user_id:
-            nb_users += 1
-    return nb_users
 
 
 def fetch_all_years() -> list:

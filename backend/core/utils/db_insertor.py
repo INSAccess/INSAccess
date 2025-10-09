@@ -259,9 +259,9 @@ def insert_list_record(list_of_records, batch_size=500):
 
     # Writing stats for telegraf
     data = [
-        f"edt,item=cours,status=modifie value={len(to_update)}i\n",
-        f"edt,item=cours,status=cree value={len(to_create)}i\n",
-        f"edt,item=cours,status=supprime value={nb_deleted}i\n",
+        f"edt,item=cours modifie={len(to_update)}i\n",
+        f"edt,item=cours cree={len(to_create)}i\n",
+        f"edt,item=cours supprime={nb_deleted}i\n",
     ]
 
     with open("td_telegraf.txt", 'w') as f:
