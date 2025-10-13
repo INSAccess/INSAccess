@@ -33,7 +33,7 @@ services:
     volumes:
       - ./frontend:/app
     env_file:
-      - .env
+      - ./frontend/.env
     depends_on:
       - django
     restart: unless-stopped

@@ -1,11 +1,10 @@
 #!/bin/bash
 set -e
+source .env
 
 FRONTEND_DIR="frontend"
 BACKEND_DIR="backend"
-VITE_API_URL="https://edt.insa-rouen.fr"
-VITE_GIT_VERSION="0.4.6"
-#"https://edt.insa-rouen.fr"
+VITE_GIT_VERSION="0.4.7"
 
 echo "[1] Cleaning previous build..."
 rm -rf $FRONTEND_DIR/build
@@ -17,8 +16,8 @@ npm install --legacy-peer-deps
 echo "[3] Building frontend"
 export NODE_OPTIONS="--max_old_space_size=4096"
 export GENERATE_SOURCEMAP=false
-export VITE_API_URL="$VITE_API_URL"
-export VITE_GIT_VERSION="$VITE_GIT_VERSION"
+export VITE_API_URL=$ADDRESS
+export VITE_GIT_VERSION=$VITE_GIT_VERSION
 npm run build
 
 cd ..

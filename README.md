@@ -17,7 +17,7 @@
 
 ## Overview
 
-InsAccess is a web application designed specifically for INSA Rouen Normandie, providing a clean and intuitive class agenda similar to [Agendas INSA Rouen](https://agendas.insa-rouen.fr). What sets InsAccess apart is its focus on empowering student associations and clubs to add custom events, along with providing essential student utilities.
+InsAccess is a web application designed specifically for INSA Rouen Normandie, providing a clean and intuitive class agenda similar to zimbra's agenda. What sets InsAccess apart is its focus on empowering student associations and clubs to add custom events, along with providing essential student utilities.
 
 This project serves as both a practical alternative for students and an exciting exploration into modern web development.
 

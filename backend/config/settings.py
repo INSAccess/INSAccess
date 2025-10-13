@@ -10,6 +10,7 @@ env = environ.Env()
 environ.Env.read_env()
 
 HOST_IP = env("HOST_IP", default="localhost")
+UID_SUFFIX = env("UID_SUFFIX", default="localhost")
 
 SECRET_KEY = "django-insecure-n%of#5dk!t(((--f9-48qqi!u6ooo6(zv&hvu_c&3hk4lbo*1&"
 

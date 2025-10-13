@@ -1,6 +1,7 @@
 from icalendar import Calendar, Event, vText
 from django.http import HttpResponse, JsonResponse
 from core.models import UserProfile, InsaClass, InsaEvenement
+from config.settings import UID_SUFFIX
 import logging
 
 logger = logging.getLogger(__name__)
@@ -35,7 +36,7 @@ def ics_feed(request, ics_uid):
 
     for event in classes:
         e = Event()
-        e.add("uid", f"{event.uid}@insa-rouen.fr")
+        e.add("uid", f"{event.uid}@{UID_SUFFIX}")
         e.add("dtstamp", event.time_stamp)
         e.add("dtstart", event.start_hour)
         e.add("dtend", event.end_hour)
@@ -61,7 +62,7 @@ def ics_feed(request, ics_uid):
     
     for event in asso_events:
         e = Event()
-        e.add("uid", f"{event.uid}@insa-rouen.fr")
+        e.add("uid", f"{event.uid}@{UID_SUFFIX}")
         e.add("dtstamp", event.time_stamp)
         e.add("dtstart", event.start_hour)
         e.add("dtend", event.end_hour)

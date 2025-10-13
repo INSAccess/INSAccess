@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Pages/Help.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Pages/Help.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useTranslation } from 'react-i18next';
+import { minWidth } from '../../utils/Constants';
+import RandomUtils from '../../utils/RandomUtils';
+import SupportForm from '../SupportForm.jsx';
+import duck from '../../images/duck.png';
+import '../../assets/Help.scss';
+
+const About = () => {
+  const { t } = useTranslation();
+
+  let dimensions = RandomUtils.useWindowDimensions();
+
+  return (
+    &lt;section className="about-section py-3 py-md-5">
+      &lt;div className="container">
+        &lt;div className="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
+          {minWidth >= dimensions.width ? (
+            &lt;>&lt;/>
+          ) : (
+            &lt;div className="col-12 col-lg-6 col-xl-5 about-image">
+              &lt;img
+                className="img-fluid rounded"
+                loading="lazy"
+                src={duck}
+                alt={t('messages.imageLoadingError')}
+              />
+            &lt;/div>
+          )}
+          &lt;div className="col-12 col-lg-6 col-xl-7">
+            &lt;div className="row justify-content-xl-center">
+              &lt;div className="col-12 col-xl-11 about-content">
+                &lt;h2 className="mb-3">{t('about.title')}&lt;/h2>
+                &lt;p className="mb-5">{t('about.content')}&lt;/p>
+              &lt;/div>
+            &lt;/div>
+          &lt;/div>
+        &lt;/div>
+      &lt;/div>
+    &lt;/section>
+  );
+};
+
+/**
+ * FAQ Component with Bootstrap Accordion
+ * @component
+ * @returns {JSX.Element}
+ */
+const FAQ = () => {
+  const { t } = useTranslation();
+
+  const faqItems = [
+    {
+      id: 'faq1',
+      question: t('faq.tdNotFoundQuestion'),
+      answer: t('faq.tdNotFoundAnswer')
+    },
+    {
+      id: 'faq2',
+      question: t('faq.assoPublisherQuestion'),
+      answer: t('faq.assoPublisherAnswer')
+    },
+    {
+      id: 'faq3',
+      question: t('faq.webviewQuestion'),
+      answer: t('faq.webviewAnswer')
+    },
+    {
+      id: 'faq4',
+      question: t('faq.friendNotFoundQuestion'),
+      answer: t('faq.friendNotFoundAnswer')
+    },
+    {
+      id: 'faq5',
+      question: t('faq.whyDuckQuestion'),
+      answer: t('faq.whyDuckAnswer')
+    }
+  ];
+
+  return (
+    &lt;section className="py-3 py-md-5 faq-section">
+      &lt;div className="container">
+        &lt;div className="row">
+          &lt;div className="col-12">
+            &lt;h2 className="mb-4 text-center">{t('faq.title')}&lt;/h2>
+            &lt;div className="accordion custom-accordion" id="faqAccordion">
+              {faqItems.map((item, index) => (
+                &lt;div className="accordion-item custom-accordion-item" key={item.id}>
+                  &lt;h3 className="accordion-header">
+                    &lt;button
+                      className={`accordion-button custom-accordion-button ${index !== 0 ? 'collapsed' : ''}`}
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target={`#${item.id}`}
+                      aria-expanded={index === 0 ? 'true' : 'false'}
+                      aria-controls={item.id}
+                    >
+                      {item.question}
+                    &lt;/button>
+                  &lt;/h3>
+                  &lt;div
+                    id={item.id}
+                    className={`accordion-collapse collapse ${index === 0 ? 'show' : ''}`}
+                    data-bs-parent="#faqAccordion"
+                  >
+                    &lt;div className="accordion-body custom-accordion-body">
+                      {item.answer}
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+              ))}
+            &lt;/div>
+          &lt;/div>
+        &lt;/div>
+      &lt;/div>
+    &lt;/section>
+  );
+};
+
+/**
+ * Manual/Guide Component with Bootstrap Cards
+ * @component
+ * @returns {JSX.Element}
+ */
+const Manual = () => {
+  const { t } = useTranslation();
+  const manualSections = [
+    {
+      id: 'choose-classes',
+      title: t('manual.chooseClasses'),
+      content: t('manual.chooseClassesContent'),
+    },
+    {
+      id: 'ics',
+      title: t('manual.ics'),
+      content: t('manual.icsContent'),
+    },
+    {
+      id: 'friends',
+      title: t('manual.friends'),
+      content: t('manual.friendsContent'),
+    },
+    {
+      id: 'personnalize',
+      title: t('manual.personalize'),
+      content: t('manual.personalizeContent'),
+    }
+  ];
+
+  return (
+    &lt;section className="py-3 py-md-5 manual-section">
+      &lt;div className="container">
+        &lt;div className="row">
+          &lt;div className="col-12">
+            &lt;h2 className="mb-4 text-center">{t('manual.title')}&lt;/h2>
+          &lt;/div>
+        &lt;/div>
+        &lt;div className="row g-4">
+          {manualSections.map((section) => (
+            &lt;div className="col-12 col-md-6 col-lg-4" key={section.id}>
+              &lt;div className="card h-100 custom-card">
+                &lt;div className="card-body">
+                  &lt;div className="d-flex align-items-center mb-3">
+                    &lt;h5 className="card-title mb-0">{section.title}&lt;/h5>
+                  &lt;/div>
+                  &lt;p className="card-text manual-card-text mb-3" style={{whiteSpace: "pre-wrap"}}>{section.content}&lt;/p>
+                &lt;/div>
+              &lt;/div>
+            &lt;/div>
+          ))}
+        &lt;/div>
+      &lt;/div>
+    &lt;/section>
+  );
+};
+
+/**
+ * License component
+ * @component
+ * @returns {JSX.Element}
+ */
+const License = () => {
+  const version = import.meta.env.VITE_GIT_VERSION;
+
+  return (
+    &lt;div className="license-section py-4">
+      &lt;div className="container">
+        &lt;div className="row">
+          &lt;div className="col-12">
+            &lt;p id="license" className="text-center mb-0 license-text">
+              &lt;a
+                href="https://github.com/INSAccess/INSAccess"
+                property="dct:title"
+                rel="cc:attributionURL"
+                className="license-link"
+              >
+                INSAccess
+              &lt;/a>{version != undefined &amp;&amp; ` v${version}`}{' '}
+              by
+              &lt;span property="cc:attributionName">
+                &amp;nbsp;Raphaël Senellart and Jules Galhardo&amp;nbsp;
+              &lt;/span>
+              is licensed under&amp;nbsp;
+              &lt;a
+                href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1"
+                target="_blank"
+                rel="license noopener noreferrer"
+                style={{ display: 'inline-block' }}
+                className="license-link"
+              >
+                CC BY-NC-SA 4.0
+                &lt;img
+                  style={{
+                    height: '22px',
+                    marginLeft: '3px',
+                    verticalAlign: 'text-bottom',
+                  }}
+                  src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"
+                  alt=""
+                />
+                &lt;img
+                  style={{
+                    height: '22px',
+                    marginLeft: '3px',
+                    verticalAlign: 'text-bottom',
+                  }}
+                  src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"
+                  alt=""
+                />
+                &lt;img
+                  style={{
+                    height: '22px',
+                    marginLeft: '3px',
+                    verticalAlign: 'text-bottom',
+                  }}
+                  src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"
+                  alt=""
+                />
+                &lt;img
+                  style={{
+                    height: '22px',
+                    marginLeft: '3px',
+                    verticalAlign: 'text-bottom',
+                  }}
+                  src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"
+                  alt=""
+                />
+              &lt;/a>
+            &lt;/p>
+          &lt;/div>
+        &lt;/div>
+      &lt;/div>
+    &lt;/div>
+  );
+};
+
+/**
+ * Component to display the about page, FAQ, manual, and the licence of the website
+ * @component
+ * @returns {JSX.Element}
+ */
+const Help = () => {
+  return (
+    &lt;div className="maincontainer">
+      &lt;SupportForm />
+      &lt;FAQ />
+      &lt;Manual />
+      &lt;About />
+      &lt;License />
+    &lt;/div>
+  );
+};
+
+export default Help;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FAQ">FAQ</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#Help">Help</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#Manual">Manual</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#fetchWithRetry">fetchWithRetry</a></li><li><a href="global.html#parseJsonSafe">parseJsonSafe</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Oct 13 2025 15:19:41 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { LINK_AGENDA, LINK_SUPPORT } from './Constants.jsx'
 
 const resources = {
   en: {
@@ -178,7 +179,7 @@ const resources = {
       manual: {
         title: 'User Manual',
         chooseClasses: 'Choose your classes',
-        chooseClassesContent: '1) Got to Settings / TD List \n2) Select your department and year (ex: ITI 4) \n3) Select your TD groups (if you are in doubt, or to simplify the task, look for the TD groups by clicking on the class on agendas.insa-rouen.fr) \n4) IMPORTANT : Save your selection by clicking on the button at the bottom of the page',
+        chooseClassesContent: '1) Got to Settings / TD List \n2) Select your department and year (ex: ITI 4) \n3) Select your TD groups (if you are in doubt, or to simplify the task, look for the TD groups by clicking on the class on '+LINK_AGENDA+') \n4) IMPORTANT : Save your selection by clicking on the button at the bottom of the page',
         ics: 'See your calendar on your personnal app',
         icsContent: 'Our site is ICS enabled, which means that by clicking on the link in Settings / Other / ICS, you can import your INSA calendar into applications such as Google Calendar, etc. (the calendar will update automatically at regular intervals).',
         friends: 'Add friends',
@@ -193,7 +194,7 @@ const resources = {
         tdNotFoundQuestion: "I can't find some of my classes !",
         tdNotFoundAnswer: "For each class, there is a TD group associated. We use this to enable you to 'subscribe' to these classes. But sometimes, as these groups are written by hand, there can be some errors and we can't do anything on our side. We are actively working on a solution (temporary or permanent).",
         assoPublisherQuestion: 'How can I publish events ?',
-        assoPublisherAnswer: "If you are eligible (an association, a club, or an INSA Service for exemple) you can contact the DSI (via https://support.insa-rouen.fr/, in the category \'Service en ligne > Emploi du temps\') to be flagged as a publisher. You must have beforehand visited the website at least once (for your account to be created via CAS) and there must be someone legally responsible for the CAS account you'll be using. When all this is done, there will be an extra tab in the Settings page for you to create and publish an event.",
+        assoPublisherAnswer: "If you are eligible (an association, a club, or an INSA Service for exemple) you can contact the DSI (via "+LINK_SUPPORT+", in the category \'Service en ligne > Emploi du temps\') to be flagged as a publisher. You must have beforehand visited the website at least once (for your account to be created via CAS) and there must be someone legally responsible for the CAS account you'll be using. When all this is done, there will be an extra tab in the Settings page for you to create and publish an event.",
         webviewQuestion: 'Is the calendar available to download ?',
         webviewAnswer: "The app is not available on Google Play or App Store but you can create a webview for yourself, as most navigators allow you to add a page to your homescreen. The way to do this can vary depending on your phone's model and the version of your navigator.",
         friendNotFoundQuestion: "I can't find my friends in the research bar",
@@ -379,7 +380,7 @@ const resources = {
       manual: {
         title: 'Manuel utilisateur',
         chooseClasses: 'Choisir ses cours',
-        chooseClassesContent: '1) Allez dans Paramètres / Liste des TDs \n2) Selectionnez votre département et année (ex: ITI 4) \n3) Selectionnez les groupes de TD qui vous appartient (si vous avez un doute, ou tout simplement pour vous facilitez la tache, regardez quel sont les groupes de TD pour chaque cours en cliquant dessus sur agendas.insa-rouen.fr ) \n4) IMPORTANT : appuyez sur le bouton de sauvegarde en rouge en bas de la page ',
+        chooseClassesContent: '1) Allez dans Paramètres / Liste des TDs \n2) Selectionnez votre département et année (ex: ITI 4) \n3) Selectionnez les groupes de TD qui vous appartient (si vous avez un doute, ou tout simplement pour vous facilitez la tache, regardez quel sont les groupes de TD pour chaque cours en cliquant dessus sur '+LINK_AGENDA+') \n4) IMPORTANT : appuyez sur le bouton de sauvegarde en rouge en bas de la page ',
         ics: 'Consultez votre agenda sur votre application personnelle',
         icsContent: "Notre site est ICS enabled, c'est à dire que grâce au lien dans Paramètres / Autre / ICS, vous pouvez importer votre agenda de l'INSA sur des application comme Google Calendar etc (l'agenda se mettra a jour automatiquement périodiquement)",
         friends: 'Ajouter des amis',
@@ -394,7 +395,7 @@ const resources = {
         tdNotFoundQuestion: "Je n'arrive pas à trouver mes cours !",
         tdNotFoundAnswer: "À chaque cours correspond un groupe TD. Nous utilisons ce système pour vous permettre de vous « inscrire » à ces cours. Cependant, ces groupes étant créés manuellement, des erreurs peuvent parfois se produire et nous ne pouvons rien y faire de notre côté. Nous travaillons activement à la mise en place d'une solution (temporaire ou permanente).",
         assoPublisherQuestion: 'Comment est-ce que je peux publier des événements ?',
-        assoPublisherAnswer: "Si vous êtes éligible (une association, un club ou un service INSA par exemple), vous pouvez contacter le DSI (via https://support.insa-rouen.fr/, catégorie \'Service en ligne > Emploi du temps\') pour être référencé en tant qu'éditeur. Vous devez avoir préalablement visité le site web au moins une fois (pour que votre compte soit créé via CAS) et il doit y avoir une personne légalement responsable du compte CAS que vous utiliserez. Une fois toutes ces étapes effectuées, un onglet supplémentaire apparaîtra dans la page Paramètres pour vous permettre de créer et de publier un événement.",
+        assoPublisherAnswer: "Si vous êtes éligible (une association, un club ou un service INSA par exemple), vous pouvez contacter le DSI (via "+LINK_SUPPORT+", catégorie \'Service en ligne > Emploi du temps\') pour être référencé en tant qu'éditeur. Vous devez avoir préalablement visité le site web au moins une fois (pour que votre compte soit créé via CAS) et il doit y avoir une personne légalement responsable du compte CAS que vous utiliserez. Une fois toutes ces étapes effectuées, un onglet supplémentaire apparaîtra dans la page Paramètres pour vous permettre de créer et de publier un événement.",
         webviewQuestion: "Est-ce que je peux télécharger l'application ?",
         webviewAnswer: "L'application n'est pas disponible sur Google Play ou l'App Store, mais vous pouvez créer une vue Web pour vous-même, car la plupart des navigateurs vous permettent d'ajouter une page à votre écran d'accueil. La manière de procéder peut varier en fonction du modèle de votre téléphone et de la version de votre navigateur.",
         friendNotFoundQuestion: "Je n'arrive pas à trouver mes amis dans la barre de recherche",

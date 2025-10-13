@@ -16,6 +16,7 @@ build/
 *.egg-info/
 venv/
 .env
+frontend/.env
 
 !backend/core/logs/.keep
 local_settings.py

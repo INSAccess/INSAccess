@@ -26,13 +26,14 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import EventUtils from '../../utils/EventUtils';
+            <pre class="prettyprint source linenums"><code>import { baseEventWidth, minWidth } from '../../utils/Constants';
+import { CustomDatePicker } from '../DatePicker.jsx';
+import { useTranslation } from 'react-i18next';
+import EventUtils from '../../utils/EventUtils';
 import RandomUtils from '../../utils/RandomUtils';
 import Day from '../../utils/Day';
 import SingleEvent from './SingleEvent';
-import { baseEventWidth, minWidth } from '../../utils/Constants';
-import './EventsInDay.scss';
-import { useTranslation } from 'react-i18next';
+import '../../assets/EventsInDay.scss';
 
 /**
  * React component that displays all the event of a given day
@@ -40,36 +41,33 @@ import { useTranslation } from 'react-i18next';
  * @returns {JSX.Element}
  */
 const EventsInDay = ({ date, data, dataOrigin }) => {
-  const { t } = useTranslation();
-
-  const dayList = [
-    t('Sunday'),
-    t('Monday'),
-    t('Tuesday'),
-    t('Wednesday'),
-    t('Thursday'),
-    t('Friday'),
-    t('Saturday'),
-  ];
-  const monthList = [
-    t('January'),
-    t('February'),
-    t('March'),
-    t('April'),
-    t('May'),
-    t('June'),
-    t('July'),
-    t('August'),
-    t('September'),
-    t('October'),
-    t('November'),
-    t('December'),
-  ];
-
   const eventsList = [];
   const placed = [];
   let dimensions = RandomUtils.useWindowDimensions();
-
+  const { t } = useTranslation();
+  const monthList = [
+    t('date.months.january'),
+    t('date.months.february'),
+    t('date.months.march'),
+    t('date.months.april'),
+    t('date.months.may'),
+    t('date.months.june'),
+    t('date.months.july'),
+    t('date.months.august'),
+    t('date.months.september'),
+    t('date.months.october'),
+    t('date.months.november'),
+    t('date.months.december'),
+  ];
+  const dayList = [
+    t('date.days.sunday'),
+    t('date.days.monday'),
+    t('date.days.tuesday'),
+    t('date.days.wednesday'),
+    t('date.days.thursday'),
+    t('date.days.friday'),
+    t('date.days.saturday'),
+  ];
   let i = 0;
   let day = new Day(date);
   const infos = day.getDateInfo(dayList, monthList);
@@ -114,7 +112,7 @@ const EventsInDay = ({ date, data, dataOrigin }) => {
   // Doesn't display the end of the week if empty
   if (
     eventsList.length == 0 &amp;&amp;
-    (day.getNumberDayOfWeek() == 6 || day.getNumberDayOfWeek() == 7) &amp;&amp;
+    (day.getNumberDayOfWeek() == 6 || day.getNumberDayOfWeek() == 0) &amp;&amp;
     minWidth &lt; dimensions.width
   ) {
     return &lt;>&lt;/>;
@@ -122,17 +120,23 @@ const EventsInDay = ({ date, data, dataOrigin }) => {
   return (
     &lt;div className="day">
       &lt;div className="date">
-        &lt;p className="date-day">{infos[0]}&lt;/p>
-        &lt;p className="date-num">{infos[1]}&lt;/p>
-        &lt;p className="date-month">{infos[2]}&lt;/p>
+        &lt;div className="date-content">
+          {minWidth >= dimensions.width &amp;&amp; (
+            &lt;div className="mobile-datepicker" aria-label="date picker">
+              &lt;CustomDatePicker isMobile={true} />
+            &lt;/div>
+          )}
+          &lt;p className="date-day">{infos[0]}&lt;/p>
+          &lt;p className="date-num">{infos[1]}&lt;/p>
+          &lt;p className="date-month">{infos[2]}&lt;/p>
+        &lt;/div>
       &lt;/div>
       &lt;div className="events">{eventsList}&lt;/div>
     &lt;/div>
   );
 };
 
-export default EventsInDay;
-</code></pre>
+export default EventsInDay;</code></pre>
         </article>
     </section>
 
@@ -142,13 +146,13 @@ export default EventsInDay;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EvenementForm">EvenementForm</a></li><li><a href="global.html#EventCreator">EventCreator</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#handleSubmit">handleSubmit</a></li><li><a href="global.html#saveEvenement">saveEvenement</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FAQ">FAQ</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#Help">Help</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#Manual">Manual</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#fetchWithRetry">fetchWithRetry</a></li><li><a href="global.html#parseJsonSafe">parseJsonSafe</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Sep 07 2025 13:04:42 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Oct 13 2025 15:19:41 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

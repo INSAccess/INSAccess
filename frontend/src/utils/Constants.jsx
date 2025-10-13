@@ -25,6 +25,8 @@ const PATH_ASSO_CALENDAR = API_URL + '/api/calendar/events';
 const API_LOGIN = API_URL + '/authentification/login';
 const API_LOGOUT = API_URL + '/authentification/logout';
 const API_AUTH = API_URL + '/api/user/is_connected?format=json';
+const LINK_SUPPORT = import.meta.env.VITE_LINK_SUPPORT;
+const LINK_AGENDA = import.meta.env.VITE_LINK_AGENDA;
 
 export {
   hoursTimeline,
@@ -37,6 +39,8 @@ export {
   API_LOGIN,
   API_LOGOUT,
   API_AUTH,
+  LINK_SUPPORT,
+  LINK_AGENDA,
   departementNames,
   departementYears,
 };

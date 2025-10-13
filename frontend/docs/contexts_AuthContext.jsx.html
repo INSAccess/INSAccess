@@ -27,53 +27,66 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import { createContext, useContext, useState, useEffect } from 'react';
+import { API_AUTH } from '../utils/Constants.jsx';
 import RandomUtils from '../utils/RandomUtils.jsx';
-import { API_AUTH, API_URL } from '../utils/Constants.jsx';
 
 const AuthContext = createContext();
 
 /**
- * Authentication provider component that manages user authentication and association status
+ * Helper function: retry with exponential backoff
+ * @param {string} path - API endpoint to fetch
+ * @param {number} retries - Number of attempts
+ * @param {number} delay - Initial delay in ms
+ * @returns {Promise&lt;{data: any, error: string|null}>}
+ */
+async function fetchWithRetry(path, retries = 3, delay = 1000) {
+  for (let i = 0; i &lt; retries; i++) {
+    const result = await RandomUtils.fetchData(path);
+    if (!result.error) return result;
+
+    // wait with exponential backoff before retrying
+    await new Promise((res) => setTimeout(res, delay * Math.pow(2, i)));
+  }
+  return { data: null, error: 'Backend unavailable' };
+}
+
+/**
+ * Authentication provider component
  * @param {Object} props - Component props
  * @param {React.ReactNode} props.children - Child components
  * @returns {JSX.Element} Authentication provider with context
  */
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
-  const [isAssos, setIsAssos] = useState(false);
-  const [assoName, setAssoName] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+
     const loadData = async () => {
       try {
-        const [authResult, assoResult] = await Promise.all([
-          RandomUtils.fetchData(API_AUTH),
-          RandomUtils.fetchData(API_URL + '/api/is_association'),
-        ]);
+        const authResult = await fetchWithRetry(API_AUTH);
 
-        if (authResult.data) {
-          setToken(authResult.data);
+        if (!cancelled) {
+          if (authResult.data) setToken(authResult.data);
+          setError(authResult.error || null);
         }
-        if (assoResult.data) {
-          setIsAssos(assoResult.data.is_asso);
-          setAssoName(assoResult.data.assoName);
-        }
-
-        setError(authResult.error || assoResult.error);
       } catch (err) {
-        setError(err);
+        if (!cancelled) setError(err.message || 'Unknown error');
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
 
     loadData();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (
-    &lt;AuthContext.Provider value={{ token, loading, error, isAssos, assoName }}>
+    &lt;AuthContext.Provider value={{ token, loading, error }}>
       {children}
     &lt;/AuthContext.Provider>
   );
@@ -81,9 +94,10 @@ export const AuthProvider = ({ children }) => {
 
 /**
  * Custom hook to access authentication context
- * @returns {Object} Authentication context value containing token, loading, error, isAssos, and assoName
+ * @returns {Object} Authentication context value containing token, loading, and error
  */
-export const useAuth = () => useContext(AuthContext);</code></pre>
+export const useAuth = () => useContext(AuthContext);
+</code></pre>
         </article>
     </section>
 
@@ -93,13 +107,13 @@ export const useAuth = () => useContext(AuthContext);</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EvenementForm">EvenementForm</a></li><li><a href="global.html#EventCreator">EventCreator</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#handleSubmit">handleSubmit</a></li><li><a href="global.html#saveEvenement">saveEvenement</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FAQ">FAQ</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#Help">Help</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#Manual">Manual</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#fetchWithRetry">fetchWithRetry</a></li><li><a href="global.html#parseJsonSafe">parseJsonSafe</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Sep 07 2025 13:04:42 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Oct 13 2025 15:19:41 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -27,19 +27,18 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import { NavLink } from 'react-router-dom';
-import Day from '../../utils/Day';
-import EventUtils from '../../utils/EventUtils';
-import RandomUtils from '../../utils/RandomUtils';
 import { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import './SingleEvent.scss';
 import { API_URL } from '../../utils/Constants.jsx';
 import { CompactPicker } from 'react-color';
 import { useData } from '../../contexts/DataContext.jsx';
-import Alert from '@mui/material/Alert';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import Day from '../../utils/Day.jsx';
+import EventUtils from '../../utils/EventUtils.jsx';
+import RandomUtils, { parseJsonSafe } from '../../utils/RandomUtils.jsx';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Alert from '@mui/material/Alert';
+import '../../assets/SingleEvent.scss';
 
 /**
  * React component that only returns a button redirecting to a link if this is an association
@@ -52,7 +51,7 @@ const FollowLink = ({ asso, link }) => {
   if (asso) {
     return (
       &lt;NavLink to={link} target="_blank" rel="noopener noreferrer">
-        &lt;Button>{t('More')}&lt;/Button>
+        &lt;Button>{t('events.more')}&lt;/Button>
       &lt;/NavLink>
     );
   } else {
@@ -71,7 +70,7 @@ const Description = ({ asso, desc }) => {
   if (asso) {
     return (
       &lt;div>
-        &lt;strong>{t('Description')}&lt;/strong>
+        &lt;strong>{t('events.description')}&lt;/strong>
         &lt;br />
         {desc}
       &lt;/div>
@@ -98,30 +97,28 @@ const DeleteButton = ({
   raiseSuccessFlag,
 }) => {
   const { t } = useTranslation();
-
+  const { refreshAssoCalendar } = useData();
   const handleDeleteEvent = async () => {
     try {
-      const response = await fetch(
-        API_URL + '/api/delete_evenement/' + eventUID,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': RandomUtils.getCSRFToken(),
-          },
-          mode: 'cors',
-          credentials: 'include',
-        }
-      );
-      const data = await response.json();
+      const response = await fetch(API_URL + '/api/events/' + eventUID, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': RandomUtils.getCSRFToken(),
+        },
+        mode: 'cors',
+        credentials: 'include',
+      });
+      const data = await parseJsonSafe(response);
 
       if (!response.ok) {
-        setStatusMessage(t('DeleteError') + ' : ' + data.error);
+        setStatusMessage(t('messages.deleteError') + ' : ' + data.error);
         raiseErrorFlag(true);
         handleClose();
       } else {
-        setSuccessMessage(t('DeleteSuccess'));
-        raiseSuccessFlag(true);
+        // raiseSuccessFlag(true);
+        // setSuccessMessage(t('messages.deleteSuccess'));
+        refreshAssoCalendar();
         handleCLose();
       }
     } catch (error) {
@@ -129,11 +126,11 @@ const DeleteButton = ({
     }
   };
 
-  if (asso &amp;&amp; teacher === assoName) {
+  if (asso &amp;&amp; teacher == assoName) {
     return (
       &lt;div style={{ marginTop: '2%' }}>
         &lt;button className="btn btn-primary" onClick={handleDeleteEvent}>
-          {t('Delete')}
+          {t('events.delete')}
         &lt;/button>
       &lt;/div>
     );
@@ -153,7 +150,7 @@ const DeleteButton = ({
  *  desc : "",
  *  link_teacher : "Random Name",
  *  link_room : "Ma-H-R1-03",
- *  link : "agendas.insa-rouen.fr"
+ *  link : "https://google.com"
  * }
  * const width = "93%"
  * const left = "0%"
@@ -167,13 +164,21 @@ const DeleteButton = ({
 const SingleEvent = (props) => {
   const { t } = useTranslation();
 
-  const BUNDLE = useData();
-  const { assoName } = useAuth();
+  const { assoName, colorsAsso, setColorsAsso, colorsAgenda, setColorsAgenda, colorsFriend, setColorsFriend } = useData();
 
-  let colors =
-    props.dataOrigin == 'asso' ? BUNDLE.colorsAsso : BUNDLE.colorsAgenda;
-  let setColorsList =
-    props.dataOrigin == 'asso' ? BUNDLE.setColorsAsso : BUNDLE.setColorsAgenda;
+  let colors = [];
+  let setColorsList = () => {};
+
+  if (props.dataOrigin == 'asso') {
+    colors = colorsAsso;
+    setColorsList = setColorsAsso;
+  } else if (props.dataOrigin == 'user') {
+    colors = colorsAgenda;
+    setColorsList = setColorsAgenda;
+  } else {
+    colors = colorsFriend;
+    setColorsList = setColorsFriend;
+  }
 
   const hoursEvents = Day.createHours();
   let startIndex =
@@ -184,6 +189,18 @@ const SingleEvent = (props) => {
     parseInt(props.endTime) &lt;= parseInt(hoursEvents[hoursEvents.length - 1])
       ? hoursEvents.indexOf(props.endTime)
       : hoursEvents.length - 1;
+
+  // Funky cases
+  if (startIndex == 0 &amp;&amp; endIndex == 0) {
+    endIndex = 1;
+  }
+  if (
+    startIndex == hoursEvents.length - 1 &amp;&amp;
+    endIndex == hoursEvents.length - 1
+  ) {
+    startIndex = hoursEvents.length - 22;
+  }
+
   let eventHeight = EventUtils.getEventHeight(
     startIndex,
     endIndex,
@@ -192,18 +209,23 @@ const SingleEvent = (props) => {
   let eventPosY = EventUtils.getEventPos(startIndex, hoursEvents.length);
 
   const [show, setShow] = useState(false);
-  const [color, setColor] = useState(colors[props.label]);
+  const [color, setColor] = useState(null);
   const [errorFlag, raiseErrorFlag] = useState(false);
   const [successFlag, raiseSuccessFlag] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-
+  
   useEffect(() => {
-    if (props.dataOrigin == 'asso') {
-      //put the custom color of the users
-      setColor(colors[props.teacher[0]]); //Take the color of the first association of the event
+    if (props.dataOrigin === 'asso') {
+      if (props.teacher?.[0] &amp;&amp; colors[props.teacher[0]]) {
+        setColor(colors[props.teacher[0]]);
+      }
     } else {
-      setColor(colors[props.label] || '#d44d44');
+      if (props.label &amp;&amp; colors[props.label]) {
+        setColor(colors[props.label]);
+      } else {
+        setColor(null);
+      }
     }
   }, [
     colors,
@@ -217,12 +239,11 @@ const SingleEvent = (props) => {
   function handleColorChange(colorObject) {
     const newColors = { ...colors };
     newColors[props.label] = colorObject['hex'];
-
     setColorsList(newColors);
   }
 
   async function saveColor(colorObject) {
-    const response = await fetch(API_URL + '/api/post_user_color', {
+    const response = await fetch(API_URL + '/api/user/color', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -234,7 +255,7 @@ const SingleEvent = (props) => {
     });
 
     if (!response.ok) {
-      setStatusMessage(`${t('SaveError')} : ${response.statusText}`);
+      setStatusMessage(`${t('messages.saveError')} : ${response.statusText}`);
       raiseErrorFlag(true);
     } else {
       handleColorChange(colorObject);
@@ -255,7 +276,8 @@ const SingleEvent = (props) => {
           width: `${props.width}%`,
           top: `${eventPosY}%`,
           left: `${props.left}%`,
-          backgroundColor: color,
+          background: color || 'var(--eventColor)',
+          color: 'var(--contrastTextColor)',
         }}
         onClick={handleShow}
       >
@@ -265,28 +287,45 @@ const SingleEvent = (props) => {
         &lt;/p>
       &lt;/button>
 
-      &lt;Modal show={show} onHide={handleClose}>
+      &lt;Modal
+        show={show}
+        onHide={handleClose}
+        container={document.getElementById('root')}
+      >
         &lt;Modal.Header>
           &lt;Modal.Title>{props.label}&lt;/Modal.Title>
         &lt;/Modal.Header>
         &lt;Modal.Body>
           &lt;div>
-            &lt;strong>{t('StartHour')}&lt;/strong>
+            &lt;strong>{t('events.startHour')}&lt;/strong>
             {Day.presentableHour(props.startTime)}
           &lt;/div>
           &lt;div>
-            &lt;strong>{t('EndHour')}&lt;/strong>
+            &lt;strong>{t('events.endHour')}&lt;/strong>
             {Day.presentableHour(props.endTime)}
           &lt;/div>
-          &lt;div>
-            &lt;strong>
-              {props.dataOrigin == 'asso' ? t('Associations') : t('Teachers')} :{' '}
-            &lt;/strong>
-            {RandomUtils.Join(props.teacher)}
-          &lt;/div>
+          {props.teacher.length > 0 &amp;&amp; (
+            &lt;div>
+              &lt;strong>
+                {props.dataOrigin == 'asso' ? t('events.associations') : t('events.teachers')}{' '}
+                :{' '}
+              &lt;/strong>
+              {RandomUtils.Join(props.teacher)}
+            &lt;/div>
+          )}
           {props.dataOrigin == 'user' &amp;&amp; (
             &lt;div id="event-color-picker">
-              &lt;CompactPicker color={color} onChangeComplete={saveColor} />
+              &lt;div
+                style={{
+                  padding: '10px',
+                  borderRadius: '8px',
+                }}
+              >
+                &lt;CompactPicker
+                  color={color || '#F44E3B'}
+                  onChangeComplete={saveColor}
+                />
+              &lt;/div>
             &lt;/div>
           )}
           &lt;Description asso={props.dataOrigin == 'asso'} desc={props.desc} />
@@ -307,7 +346,7 @@ const SingleEvent = (props) => {
         &lt;/Modal.Body>
         &lt;Modal.Footer>
           &lt;Button variant="primary" onClick={handleClose}>
-            {t('Close')}
+            {t('events.close')}
           &lt;/Button>
         &lt;/Modal.Footer>
       &lt;/Modal>
@@ -336,8 +375,7 @@ const SingleEvent = (props) => {
   );
 };
 
-export default SingleEvent;
-</code></pre>
+export default SingleEvent;</code></pre>
         </article>
     </section>
 
@@ -347,13 +385,13 @@ export default SingleEvent;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EvenementForm">EvenementForm</a></li><li><a href="global.html#EventCreator">EventCreator</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#handleSubmit">handleSubmit</a></li><li><a href="global.html#saveEvenement">saveEvenement</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FAQ">FAQ</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#Help">Help</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#Manual">Manual</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#fetchWithRetry">fetchWithRetry</a></li><li><a href="global.html#parseJsonSafe">parseJsonSafe</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Sep 07 2025 13:04:42 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Oct 13 2025 15:19:41 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

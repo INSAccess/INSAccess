@@ -21,7 +21,7 @@ Dependencies:
 
 
 Notes:
-    This tool is specialized for the agenda.insa-rouen.fr
+    This tool is specialized for the zimbra agenda
     website, but some methods are generic and can be implemented
     else where.
 
