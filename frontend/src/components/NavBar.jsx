@@ -120,6 +120,9 @@ export const NavBar = ({ page, setPage }) => {
         <div className="mobile-backdrop" onClick={closeMenu}></div>
         <div className="sidebar-content">
           <ul className="navbar-nav">
+            <li id="logo-container" className="nav-item">
+              <div className="logo-insa logo-insa-mobile"></div>
+            </li>
             <li className="nav-item welcome-mobile">
               <div id="welcome-mobile">
                 {t('settings.welcome') + ' ' + displayName}

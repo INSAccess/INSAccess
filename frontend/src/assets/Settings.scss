@@ -286,6 +286,16 @@
     font-size: 0.7rem;
     white-space: normal;
   }
+
+  .toast-info {
+    display: flex;
+    margin: 1.5%;
+    flex-wrap: wrap;
+  }
+}
+
+.toast-info {
+  margin: 1.5%;
 }
 
 .cas-autosync-wrapper {

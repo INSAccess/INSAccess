@@ -7,6 +7,15 @@
   background: var(--insaLogo) no-repeat left;
   background-size: contain;
 }
+
+#logo-container {
+  padding: auto;
+}
+
+.logo-insa-mobile {
+  margin: auto;
+}
+
 .custom-navbar {
   border-bottom: 1px solid var(--borderColor);
   background-color: var(--backgroundColor) !important;

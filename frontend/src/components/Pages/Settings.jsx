@@ -372,6 +372,11 @@ const Settings = () => {
               )}
             </div>
 
+            <div className=" toast-info subsection">
+              <h2>{t('messages.toastInfoTitle')}</h2>
+              <p>{t('messages.toastInfoContent')}</p>
+            </div>
+
             {tds.departments[departement + year] && (
               <TDSelection
                 departementTDs={
