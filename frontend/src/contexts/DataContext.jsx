@@ -65,7 +65,7 @@ export const DataProvider = (props) => {
     t('date.days.friday'),
     t('date.days.saturday'),
   ];
-  
+
   let dimensions = RandomUtils.useWindowDimensions();
   const currentDate = new Date();
   let firstDay = new Day(currentDate);
@@ -83,6 +83,10 @@ export const DataProvider = (props) => {
 
   function changeAutoSync(enabled) {
     setUserAutoSync(enabled);
+  }
+
+  function changeIcsUrl(ics_uid) {
+    setIcsLink(ics_uid);
   }
 
   const updateUserTDs = (newTds) => {
@@ -136,7 +140,7 @@ export const DataProvider = (props) => {
       i18n.changeLanguage(userLanguage);
     }
   }, [userLanguage]);
-  
+
   useEffect(() => {
     const loadMainData = async () => {
       setLoading(true);
@@ -193,7 +197,12 @@ export const DataProvider = (props) => {
           setAssoName(profileData.asso);
           setUserAutoSync(profileData.cas_autosync);
           setDepartement(profileData.departement_name || departementNames[0]);
-          setYear(parseInt(profileData.departement_year || departementYears[departementNames[0]]));
+          setYear(
+            parseInt(
+              profileData.departement_year ||
+                departementYears[departementNames[0]]
+            )
+          );
         }
 
         if (resultAssociations.data) {
@@ -276,10 +285,11 @@ export const DataProvider = (props) => {
           changeAutoSync,
           updateUserTDs,
           updateUserAssos,
-          departement, 
+          departement,
           setDepartement,
-          year, 
+          year,
           setYear,
+          changeIcsUrl,
         }}
       >
         {props.children}

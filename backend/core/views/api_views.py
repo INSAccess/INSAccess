@@ -30,6 +30,7 @@ from core.models import (
 from core.utils.fetch_ics import load_config
 from core.permissions import IsAssociationPublisher
 from django.db.models import Q
+from django.http import HttpResponse
 from django.contrib.auth.models import User
 from config.settings import HOST_IP
 import re
@@ -1202,7 +1203,7 @@ class ChangeICSLinkAPIView(APIView):
             user_profile = request.user.userprofile
             user_profile.regenerate_ics_uid()
             logger.info("ICS feed uid regenerated successfully")
-            return Response(str(user_profile.ics_uid), status=200)
+            return HttpResponse(f"https://{HOST_IP}/ics/{user_profile.ics_uid}")
         except Exception as e:
             logger.error(
                 f"Failed to regenerate ICS UID: {str(e)}",

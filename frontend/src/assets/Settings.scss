@@ -179,6 +179,10 @@
   margin-right: 0.2rem;
 }
 
+.change-button {
+  margin-top: 10px;
+}
+
 .settings {
   color: var(--textColor);
   background-color: var(--backgroundColor);
@@ -253,19 +257,18 @@
   .dropdown-item-wrap {
     min-width: 0;
     box-sizing: border-box;
-    
-    &:nth-child(1){
+
+    &:nth-child(1) {
       flex: 0 0 calc(50% - 0.25rem);
       max-width: calc(50% - 0.25rem);
       margin-right: 1rem;
     }
 
-
     &:nth-child(2) {
       flex: 0 0 calc(30% - 0.25rem);
       max-width: calc(30% - 0.25rem);
     }
-    
+
     &:nth-child(3) {
       flex: 0 0 100%;
       max-width: 100%;
