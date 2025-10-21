@@ -39,6 +39,7 @@
 
     --arrowImg: url('../images/fleche.png');
     --insaLogo: url('../images/Logo_INSA_noir.png');
+    --insaLogoMobile: url('../images/Logo_INSA_blanc.png');
   }
 
   @media (prefers-color-scheme: dark) {
@@ -69,6 +70,7 @@
 
     --arrowImg: url('../images/fleche_w.png');
     --insaLogo: url('../images/Logo_INSA_blanc.png');
+    --insaLogoMobile: url('../images/Logo_INSA_blanc.png');
   }
   ///// CUSTOM COLOR //////
   [data-theme='light'] {
@@ -99,6 +101,7 @@
 
     --arrowImg: url('../images/fleche.png');
     --insaLogo: url('../images/Logo_INSA_noir.png');
+    --insaLogoMobile: url('../images/Logo_INSA_blanc.png');
   }
 
   [data-theme='dark'] {
@@ -129,6 +132,7 @@
 
     --arrowImg: url('../images/fleche_w.png');
     --insaLogo: url('../images/Logo_INSA_blanc.png');
+    --insaLogoMobile: url('../images/Logo_INSA_blanc.png');
   }
   [data-theme='dark-violet'] {
     --backgroundColor: #202020;
@@ -157,6 +161,7 @@
 
     --arrowImg: url('../images/fleche_w.png');
     --insaLogo: url('../images/Logo_INSA_blanc.png');
+    --insaLogoMobile: url('../images/Logo_INSA_blanc.png');
   }
   [data-theme='dark-blue'] {
     --backgroundColor: #202020;
@@ -186,6 +191,7 @@
 
     --arrowImg: url('../images/fleche_w.png');
     --insaLogo: url('../images/Logo_INSA_blanc.png');
+    --insaLogoMobile: url('../images/Logo_INSA_blanc.png');
   }
   [data-theme='dark-sunset'] {
     --backgroundColor: #2b1a0f;
@@ -214,6 +220,7 @@
 
     --arrowImg: url('../images/fleche_w.png');
     --insaLogo: url('../images/Logo_INSA_blanc.png');
+    --insaLogoMobile: url('../images/Logo_INSA_blanc.png');
   }
 
   [data-theme='dark-ocean'] {
@@ -243,6 +250,7 @@
 
     --arrowImg: url('../images/fleche_w.png');
     --insaLogo: url('../images/Logo_INSA_blanc.png');
+    --insaLogoMobile: url('../images/Logo_INSA_blanc.png');
   }
   [data-theme='dark-forest'] {
     --backgroundColor: #0f1f12;
@@ -271,6 +279,7 @@
 
     --arrowImg: url('../images/fleche_w.png');
     --insaLogo: url('../images/Logo_INSA_blanc.png');
+    --insaLogoMobile: url('../images/Logo_INSA_blanc.png');
   }
 
   [data-theme='light-blue'] {
@@ -300,6 +309,7 @@
 
     --arrowImg: url('../images/fleche.png');
     --insaLogo: url('../images/Logo_INSA_noir.png');
+    --insaLogoMobile: url('../images/Logo_INSA_blanc.png');
   }
 
   [data-theme='light-violet'] {
@@ -329,6 +339,7 @@
 
     --arrowImg: url('../images/fleche.png');
     --insaLogo: url('../images/Logo_INSA_noir.png');
+    --insaLogoMobile: url('../images/Logo_INSA_blanc.png');
   }
   [data-theme='ocean'] {
     --backgroundColor: #e0f7fa;
@@ -357,6 +368,7 @@
 
     --arrowImg: url('../images/fleche.png');
     --insaLogo: url('../images/Logo_INSA_noir.png');
+    --insaLogoMobile: url('../images/Logo_INSA_blanc.png');
   }
   [data-theme='sunset'] {
     --backgroundColor: #fff3e0;
@@ -385,6 +397,7 @@
 
     --arrowImg: url('../images/fleche.png');
     --insaLogo: url('../images/Logo_INSA_noir.png');
+    --insaLogoMobile: url('../images/Logo_INSA_blanc.png');
   }
   [data-theme='forest'] {
     --backgroundColor: #f1f8e9;
@@ -413,6 +426,7 @@
 
     --arrowImg: url('../images/fleche.png');
     --insaLogo: url('../images/Logo_INSA_noir.png');
+    --insaLogoMobile: url('../images/Logo_INSA_blanc.png');
   }
   [data-theme='matrix'] {
     --backgroundColor: #000000;
@@ -441,6 +455,7 @@
 
     --arrowImg: url('../images/fleche_w.png');
     --insaLogo: url('../images/Logo_INSA_blanc.png');
+    --insaLogoMobile: url('../images/Logo_INSA_blanc.png');
   }
 }
 

@@ -6,6 +6,12 @@
   height: 50px;
   background: var(--insaLogo) no-repeat left;
   background-size: contain;
+  @media (max-width: 992px) {
+    width: 80px;
+    height: 50px;
+    background: var(--insaLogoMobile) no-repeat left;
+    background-size: contain;
+  }
 }
 
 #logo-container {
@@ -231,7 +237,7 @@
   }
 }
 
-@media (max-width: 991.98px) {
+@media (max-width: 992px) {
   .custom-navbar {
     display: none !important;
   }
