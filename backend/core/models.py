@@ -91,6 +91,11 @@ class UserProfile(models.Model):
     )
     cas_auto_sync = models.BooleanField(default=False)
 
+    def regenerate_ics_uid(self):
+        raw_value = f"{uuid.uuid4()}-{self.user_id}".encode("utf-8")
+        self.ics_uid = hashlib.sha256(raw_value).hexdigest()
+        self.save()
+
     def save(self, *args, **kwargs):
         if not self.ics_uid:
             raw_value = f"{uuid.uuid4()}-{self.user_id}".encode("utf-8")
@@ -183,8 +188,7 @@ class Association(models.Model):
         users = UserProfile.objects.all()
 
         user_link_assos = [
-            UserLinkAssociation(user=user, name_assos=self)
-            for user in users
+            UserLinkAssociation(user=user, name_assos=self) for user in users
         ]
         UserLinkAssociation.objects.bulk_create(user_link_assos)
         super().save(*args, **kwargs)

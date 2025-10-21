@@ -24,6 +24,7 @@ from core.views import (
     ChangeCasSyncAPIView,
     UpdateUsingCasTDAPIView,
     PostUserDepartementAPIView,
+    ChangeICSLinkAPIView,
 )
 
 urlpatterns = [
@@ -69,7 +70,11 @@ urlpatterns = [
         name="is_association",
     ),
     path("user/theme", PostUserThemeAPIView.as_view(), name="post_user_theme"),
-    path("user/departement", PostUserDepartementAPIView.as_view(), name="post_user_departement"),
+    path(
+        "user/departement",
+        PostUserDepartementAPIView.as_view(),
+        name="post_user_departement",
+    ),
     path(
         "user/language",
         PostUserLanguageAPIView.as_view(),
@@ -89,4 +94,5 @@ urlpatterns = [
     path(
         "user/cas_sync", UpdateUsingCasTDAPIView.as_view(), name="update_td_using_cas"
     ),
+    path("user/change_ics", ChangeICSLinkAPIView.as_view(), name="change_ics"),
 ]

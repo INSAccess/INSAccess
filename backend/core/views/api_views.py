@@ -536,10 +536,12 @@ class GetUserProfileAPIView(APIView):
                 "get_user_cas_autosync", lambda: request.user.userprofile.cas_auto_sync
             ),
             "departement_name": safe_get(
-                "get_user_departement_name", lambda: request.user.userprofile.departement_name
+                "get_user_departement_name",
+                lambda: request.user.userprofile.departement_name,
             ),
             "departement_year": safe_get(
-                "get_user_departement_year", lambda: request.user.userprofile.departement_year
+                "get_user_departement_year",
+                lambda: request.user.userprofile.departement_year,
             ),
         }
 
@@ -615,7 +617,9 @@ class PostUserDepartementAPIView(APIView):
                 )
                 return response
             else:
-                response = Response({"error": "Département ou année malformée"}, status=400)
+                response = Response(
+                    {"error": "Département ou année malformée"}, status=400
+                )
                 logger.error(
                     f"User tried to update with a malformed departement name or year : {sanitize_log_input(departement_name)}, {sanitize_log_input(departement_year)}",
                     extra={"request": request, "status_code": response.status_code},
@@ -1189,4 +1193,21 @@ class UpdateUsingCasTDAPIView(APIView):
             )
             return Response(
                 {"error": f"Failed to update cas preferences: {str(e)}"}, status=500
+            )
+
+
+class ChangeICSLinkAPIView(APIView):
+    def post(self, request):
+        try:
+            user_profile = request.user.userprofile
+            user_profile.regenerate_ics_uid()
+            logger.info("ICS feed uid regenerated successfully")
+            return Response(str(user_profile.ics_uid), status=200)
+        except Exception as e:
+            logger.error(
+                f"Failed to regenerate ICS UID: {str(e)}",
+                extra={"request": request.data},
+            )
+            return Response(
+                {"error": f"Failed to regenerate ICS UID: {str(e)}"}, status=500
             )
