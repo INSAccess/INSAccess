@@ -1,10 +1,71 @@
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { API_LOGOUT } from '../utils/Constants.jsx';
-import { useData } from '../contexts/DataContext.jsx';
 import { CustomDatePicker } from './DatePicker.jsx';
+import { useData } from '../contexts/DataContext.jsx';
 import '../utils/Dictionnary.jsx';
 import '../assets/NavBar.scss';
+
+function Welcome({ t, displayName, mobile = false }) {
+  const [show, setShow] = useState(false);
+  const { tds } = useData();
+  const wrapperRef = useRef(null);
+
+  const wrapperClass = mobile
+    ? 'position-relative'
+    : 'position-relative d-none d-lg-block';
+  const welcomeId = mobile ? 'welcome-mobile' : 'welcome';
+
+  // Close popup when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setShow(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [wrapperRef]);
+
+  return (
+    <div
+      className={wrapperClass}
+      style={{ zIndex: mobile ? 1051 : 'auto' }}
+      ref={wrapperRef}
+    >
+      <div
+        id={welcomeId}
+        onClick={() => setShow(!show)}
+        style={{ cursor: 'pointer' }}
+      >
+        {t('settings.welcome') + ' ' + displayName}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="currentColor"
+          className="bi bi-person-fill ms-1"
+          viewBox="0 0 16 16"
+        >
+          <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+        </svg>
+      </div>
+
+      {show && (
+        <div className="welcome-dropdown">
+          {tds.user_tds.map((td, index) => (
+            <div key={index} className="welcome-item">
+              {td}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export const NavBar = ({ page, setPage }) => {
   const BUNDLE = useData();
@@ -67,19 +128,7 @@ export const NavBar = ({ page, setPage }) => {
             <div className="mobile-datepicker-navbar" aria-label="date picker">
               <CustomDatePicker isMobile={false} />
             </div>
-            <div id="welcome">
-              {t('settings.welcome') + ' ' + displayName}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                className="bi bi-person-fill"
-                viewBox="0 0 16 16"
-              >
-                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-              </svg>
-            </div>
+            <Welcome t={t} displayName={displayName} />
             <button
               id="logout"
               className="btn btn-primary"
@@ -124,19 +173,7 @@ export const NavBar = ({ page, setPage }) => {
               <div className="logo-insa logo-insa-mobile"></div>
             </li>
             <li className="nav-item welcome-mobile">
-              <div id="welcome-mobile">
-                {t('settings.welcome') + ' ' + displayName}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="currentColor"
-                  className="bi bi-person-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-                </svg>
-              </div>
+              <Welcome t={t} displayName={displayName} mobile={true} />
             </li>
             {items.map((item) => (
               <li key={item.href} className="nav-item">

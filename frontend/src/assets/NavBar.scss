@@ -236,3 +236,32 @@
     display: none !important;
   }
 }
+
+/* Welcome dropdown menu */
+.welcome-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 200px;
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid var(--contrastBorderColor);
+  border-radius: 0.25rem;
+  background-color: var(--backgroundColor);
+  box-shadow: 0 4px 12px var(--shadowColorBold);
+  z-index: 1052;
+  text-align: center;
+  padding: 0.5rem 0;
+
+  .welcome-item {
+    padding: 0.25rem 0;
+    color: var(--textColor);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: var(--hoverHighlight);
+    }
+  }
+}
