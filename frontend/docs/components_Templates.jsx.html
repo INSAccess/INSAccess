@@ -26,25 +26,51 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import duck from '../images/duck.png';
-import './Templates.scss';
-import { useTranslation } from 'react-i18next';
+            <pre class="prettyprint source linenums"><code>import { useTranslation } from 'react-i18next';
+import { Alert, Button } from 'react-bootstrap';
+import duck from '../images/duck.png';
+import '../assets/Templates.scss';
 
 /**
  * Custom Error handling component
  * @component
  * @returns {JSX.Element}
  */
-const ErrorTemplate = ({ message }) => {
+const ErrorTemplate = ({ message, onRetry }) => {
   const { t } = useTranslation();
 
-  console.error(message);
+  const errorText =
+    typeof message === 'string' &amp;&amp; message.trim().length > 0
+      ? message
+      : t('messages.unexpectedError');
+
+  console.error('ErrorTemplate:', message);
 
   return (
-    &lt;div>
-      &lt;p>
-        {t('ErrorTemplate')}: {message}
-      &lt;/p>
+    &lt;div
+      className="d-flex justify-content-center align-items-center"
+      style={{ minHeight: '60vh' }}
+    >
+      &lt;Alert
+        variant="danger"
+        role="alert"
+        className="p-4 shadow-lg rounded-3 w-100"
+        style={{ maxWidth: 600 }}
+      >
+        &lt;h4 className="alert-heading">
+          {t('messages.errorTemplateTitle') || t('messages.error')}
+        &lt;/h4>
+        &lt;p className="mb-3">
+          {t('messages.errorTemplate')}: {errorText}
+        &lt;/p>
+        {onRetry &amp;&amp; (
+          &lt;div className="d-flex justify-content-end">
+            &lt;Button variant="outline-light" onClick={onRetry}>
+              {t('messages.retry')}
+            &lt;/Button>
+          &lt;/div>
+        )}
+      &lt;/Alert>
     &lt;/div>
   );
 };
@@ -59,7 +85,7 @@ const Loading = () => {
 
   return (
     &lt;div className="loadingBackground">
-      &lt;img id="rotating-logo" src={duck} alt={t('ImageLoadingError')}>&lt;/img>
+      &lt;img id="rotating-logo" src={duck} alt={t('messages.imageLoadingError')}>&lt;/img>
     &lt;/div>
   );
 };
@@ -74,7 +100,7 @@ const WorkInProgressTemplate = () => {
 
   return (
     &lt;div className="WIP">
-      &lt;h1>{t('WIP')}&lt;/h1>
+      &lt;h1>{t('messages.wip')}&lt;/h1>
     &lt;/div>
   );
 };
@@ -90,13 +116,13 @@ export { ErrorTemplate, Loading, WorkInProgressTemplate };
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EvenementForm">EvenementForm</a></li><li><a href="global.html#EventCreator">EventCreator</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#handleSubmit">handleSubmit</a></li><li><a href="global.html#saveEvenement">saveEvenement</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FAQ">FAQ</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#Help">Help</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#Manual">Manual</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#fetchWithRetry">fetchWithRetry</a></li><li><a href="global.html#parseJsonSafe">parseJsonSafe</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Sep 07 2025 13:04:42 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Oct 13 2025 15:19:41 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

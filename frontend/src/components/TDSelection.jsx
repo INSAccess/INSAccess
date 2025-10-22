@@ -15,7 +15,6 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
   const [selectedTDs, setSelectedTDs] = useState(new Set(userTDs));
   const [statusMessage, setStatusMessage] = useState(' ');
   const [errorFlag, raiseErrorFlag] = useState(false);
-  const [infoOpen, setInfoOpen] = useState(false);
 
   const { refreshUserCalendar, updateUserTDs } = useData();
 
@@ -64,24 +63,6 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
           <div className="checkbox-list subsection">
             <div className="d-flex justify-content-between align-items-start">
               <h1>{t('settings.tdLikely')}</h1>
-              <div className="info-section position-relative">
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  id="info-btn"
-                  onClick={() => setInfoOpen(!infoOpen)}
-                  aria-expanded={infoOpen}
-                >
-                  !
-                </button>
-
-                {infoOpen && (
-                  <div className="info-popup">
-                    <strong>{t('messages.toastInfoTitle')}</strong>
-                    <p className="mb-0">{t('messages.toastInfoContent')}</p>
-                  </div>
-                )}
-              </div>
             </div>
 
             {departementTDs.map((td) => (

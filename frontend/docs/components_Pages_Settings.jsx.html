@@ -27,18 +27,17 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import TDSelection from '../TDSelection.jsx';
+import AssoSelection from '../AssoSelection.jsx';
 import RandomUtils from '../../utils/RandomUtils.jsx';
-import { useEffect, useState, useRef } from 'react';
-import { API_URL, minWidth, REPORT_FORM } from '../../utils/Constants.jsx';
 import EventCreator from '../EventCreator.jsx';
-import Button from 'react-bootstrap/Button';
 import DropDownCustom from '../DropDownCustom.jsx';
-import './Settings.scss';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { API_URL, minWidth } from '../../utils/Constants.jsx';
 import { useConfig } from '../../contexts/ConfigContext.jsx';
 import { useData } from '../../contexts/DataContext.jsx';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import { Button } from 'react-bootstrap';
+import '../../assets/Settings.scss';
 
 /**
  * Settings component, handling the theme, the TD selection, ICS link and event creation
@@ -46,26 +45,26 @@ import { useAuth } from '../../contexts/AuthContext.jsx';
  * @returns {JSX.Element}
  */
 const Settings = () => {
+
   const CONFIG = useConfig();
   const departementNames = CONFIG ? CONFIG['departementNames'] : ['STPI'];
   const departementYears = CONFIG ? CONFIG['departementYears'] : { STPI: [1] };
 
-  const BUNDLE = useData();
-  let tds = BUNDLE.tds;
-  let icsLink = BUNDLE.icsLink;
-  const { isAssos } = useAuth();
-  let allThemes = BUNDLE.allThemes;
-  let userTheme = BUNDLE.userTheme;
-  let allLanguages = BUNDLE.allLanguages;
-  let userLanguage = BUNDLE.userLanguage;
+  const { changeLanguage, changeTheme, icsLink, allThemes, 
+          userTheme, allLanguages, isAssos, userLanguage, 
+          tds, userAutoSync, changeAutoSync, updateUserTDs,
+          departement, setDepartement, year, setYear,
+  } = useData();
 
   const [view, setView] = useState('TDs');
-
-  const copyButtonRef = useRef(null);
   const [currentLanguage, setLanguage] = useState(userLanguage);
   const [currentTheme, setTheme] = useState(userTheme);
-  const [departement, setDepartement] = useState(departementNames[0]);
-  const [year, setYear] = useState(departementYears[departement][0]);
+  const [syncLoading, setSyncLoading] = useState(false);
+  const [syncStatus, setSyncStatus] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const debounceTimerRef = useRef(null);
+  const copyButtonRef = useRef(null);
 
   const { t } = useTranslation();
 
@@ -76,12 +75,109 @@ const Settings = () => {
     }
   }, []);
 
-  // Switch between dark, light or system theme
+  const debouncedSaveDepartement = useCallback((name, year) => {
+    // Clear existing timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    setIsSaving(true);
+
+    // Set new timer
+    debounceTimerRef.current = setTimeout(async () => {
+      try {
+        const response = await fetch(API_URL + '/api/user/departement', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': RandomUtils.getCSRFToken(),
+          },
+          mode: 'cors',
+          credentials: 'include',
+          body: JSON.stringify({"departement_name": name, "departement_year": year}),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to save departement: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('Failed to save departement:', error);
+      } finally {
+        setIsSaving(false);
+      }
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
+
+  const handleCasAutoSyncChange = async (enabled) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/api/user/cas_autosync/${enabled}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': RandomUtils.getCSRFToken(),
+          },
+          mode: 'cors',
+          credentials: 'include',
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to update autosync: ${response.status}`);
+      }
+
+      changeAutoSync(enabled);
+    } catch (error) {
+      console.error('Failed to update autosync', error);
+    }
+  };
+
+  const handleSyncUsingCas = async () => {
+    setSyncLoading(true);
+    setSyncStatus(null);
+    try {
+      const response = await fetch(`${API_URL}/api/user/cas_sync`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': RandomUtils.getCSRFToken(),
+        },
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to sync TDs: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.synced_tds &amp;&amp; Array.isArray(data.synced_tds)) {
+        updateUserTDs(data.synced_tds);
+      }
+
+      setSyncStatus('success');
+    } catch (error) {
+      console.error('Failed to sync TDs', error);
+      setSyncStatus('error');
+    } finally {
+      setSyncLoading(false);
+      setTimeout(() => setSyncStatus(null), 3000); // Reset status after 3s
+    }
+  };
+
   const ThemeSwitch = () => {
     async function handleThemeChange(e) {
-      //post theme on backend
       try {
-        const response = await fetch(API_URL + '/api/post_user_theme', {
+        const response = await fetch(API_URL + '/api/user/theme', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -92,8 +188,7 @@ const Settings = () => {
           body: JSON.stringify(e),
         });
         setTheme(e);
-        document.getElementById('root').setAttribute('data-theme', e);
-        BUNDLE.changeTheme(e);
+        changeTheme(e);
       } catch (error) {
         console.error(error);
       }
@@ -103,7 +198,7 @@ const Settings = () => {
       &lt;DropDownCustom
         items={allThemes}
         id="themes"
-        title={t('ThemeDD')}
+        title={t('settings.themeDD')}
         current={currentTheme}
         handle={handleThemeChange}
       />
@@ -112,9 +207,8 @@ const Settings = () => {
 
   const LanguageSwitch = () => {
     async function handleLanguageChange(e) {
-      //post theme on backend
       try {
-        const response = await fetch(API_URL + '/api/post_user_language', {
+        const response = await fetch(API_URL + '/api/user/language', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -124,7 +218,7 @@ const Settings = () => {
           credentials: 'include',
           body: JSON.stringify(e),
         });
-        BUNDLE.changeLanguage(e);
+        changeLanguage(e);
         setLanguage(e);
       } catch (error) {
         console.error(error);
@@ -135,32 +229,25 @@ const Settings = () => {
       &lt;DropDownCustom
         items={allLanguages}
         id="languages"
-        title={t('LanguageDD')}
+        title={t('settings.languageDD')}
         current={currentLanguage}
         handle={handleLanguageChange}
       />
     );
   };
 
-  const handleLogout = () => {
-    window.location.replace(API_LOGOUT);
-  };
-
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(icsLink);
 
-      // Get the tooltip instance (or create it if needed)
       let tooltip = window.bootstrap.Tooltip.getInstance(copyButtonRef.current);
       if (!tooltip) {
         tooltip = new window.bootstrap.Tooltip(copyButtonRef.current);
       }
 
-      // Update the tooltip text by changing the attribute
       copyButtonRef.current.setAttribute('data-bs-original-title', 'Copied!');
       tooltip.show();
 
-      // Reset the tooltip text after 2 seconds
       setTimeout(() => {
         copyButtonRef.current.setAttribute(
           'data-bs-original-title',
@@ -174,10 +261,23 @@ const Settings = () => {
   };
 
   function handleSetDepartement(value) {
+    // Update local state immediately for responsive UI
     if (!departementYears[value].includes(parseInt(year))) {
       setYear(departementYears[value][0]);
+      // Save with the adjusted year
+      debouncedSaveDepartement(value, departementYears[value][0]);
+    } else {
+      // Save with current year
+      debouncedSaveDepartement(value, year);
     }
     setDepartement(value);
+  }
+
+  function handleSetYear(value) {
+    // Update local state immediately for responsive UI
+    setYear(value);
+    // Trigger debounced save
+    debouncedSaveDepartement(departement, value);
   }
 
   const DropDownYear = () => {
@@ -186,8 +286,8 @@ const Settings = () => {
         items={departementYears[departement]}
         current={year}
         id="dropdown-year"
-        title={t('YearDD')}
-        handle={setYear}
+        title={t('settings.yearDD')}
+        handle={handleSetYear}
       />
     );
   };
@@ -198,7 +298,7 @@ const Settings = () => {
         items={departementNames}
         current={departement}
         id="dropdown-depart"
-        title={t('DepartmentDD')}
+        title={t('settings.departmentDD')}
         handle={handleSetDepartement}
       />
     );
@@ -206,54 +306,46 @@ const Settings = () => {
 
   const OtherParams = () => {
     return (
-      &lt;>
-        &lt;div className="row">
-          &lt;div className="col-6">
-            &lt;div className="margin2">
+      &lt;div className="settings container-fluid">
+        {/* Preferences Section */}
+        &lt;section className="settings-section subsection">
+          &lt;h3 className="section-title">{t('support.preferences')}&lt;/h3>
+          &lt;div className="d-flex flex-wrap gap-3">
+            &lt;div className="setting-item">
               &lt;ThemeSwitch id="theme" />
             &lt;/div>
-            &lt;div className="margin2">
+            &lt;div className="setting-item">
               &lt;LanguageSwitch id="lng" />
             &lt;/div>
           &lt;/div>
-          &lt;div className="col-6 mx-auto">
-            &lt;a
-              href={REPORT_FORM}
-              target="_blank"
-              rel="noopener noreferrer"
-              type="button"
-              className="btn btn-primary margin2"
+        &lt;/section>
+
+        {/* ICS Feed Section */}
+        &lt;section className="settings-section subsection">
+          &lt;h3 className="section-title">{t('settings.icsLink')}&lt;/h3>
+          &lt;p>{t('settings.icsText')}&lt;/p>
+
+          &lt;div className="copy-container">
+            &lt;input
+              type="text"
+              id="copyInput"
+              className="copy-input"
+              value={icsLink}
+              readOnly
+            />
+            &lt;button
+              ref={copyButtonRef}
+              className="btn btn-primary copy-button"
+              onClick={handleCopy}
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title={t('settings.icsCopy')}
             >
-              {t('Report')}
-            &lt;/a>
+              {t('settings.icsCopy')}
+            &lt;/button>
           &lt;/div>
-        &lt;/div>
-        &lt;div className="margin2">
-          &lt;hr />
-          &lt;h4>{t('ICSLink')}&lt;/h4>
-          &lt;p>{t('ICSText')}&lt;/p>
-        &lt;/div>
-        &lt;div className="copy-container">
-          &lt;input
-            type="text"
-            id="copyInput"
-            className="copy-input"
-            value={icsLink}
-            readOnly
-          >&lt;/input>
-          &lt;button
-            ref={copyButtonRef}
-            className="btn btn-primary copy-button"
-            style={{ margin: '4px' }}
-            onClick={handleCopy}
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="Copy to clipboard"
-          >
-            {t('ICSCopy')}
-          &lt;/button>
-        &lt;/div>
-      &lt;/>
+        &lt;/section>
+      &lt;/div>
     );
   };
 
@@ -262,10 +354,57 @@ const Settings = () => {
       case 'TDs':
         return (
           &lt;>
-            &lt;div className="dropdown_container">
-              &lt;DropDownDepart />
-              &lt;DropDownYear />
+            &lt;div className="dropdown-container subsection">
+              &lt;div className="dropdown-item-wrap">
+                &lt;DropDownDepart />
+              &lt;/div>
+              &lt;div className="dropdown-item-wrap">
+                &lt;DropDownYear />
+              &lt;/div>
+              &lt;div className="dropdown-item-wrap">
+                &lt;div className="cas-autosync-wrapper">
+                  &lt;label className="cas-autosync">
+                    &lt;input
+                      type="checkbox"
+                      checked={userAutoSync}
+                      onChange={(e) =>
+                        handleCasAutoSyncChange(e.target.checked)
+                      }
+                    />
+                    &lt;span>{t('settings.casAutoSync')}&lt;/span>
+                  &lt;/label>
+
+                  &lt;button
+                    className={`btn btn-primary cas-sync-btn ${
+                      syncStatus === 'success' ? 'btn-success' : ''
+                    } ${syncStatus === 'error' ? 'btn-danger' : ''}`}
+                    onClick={handleSyncUsingCas}
+                    disabled={syncLoading}
+                  >
+                    {syncLoading
+                      ? t('events.syncing')
+                      : syncStatus === 'success'
+                      ? t('events.synced')
+                      : syncStatus === 'error'
+                      ? t('events.failed')
+                      : t('settings.syncNow')}
+                  &lt;/button>
+                &lt;/div>
+              &lt;/div>
+              
+              {/* Optional: Show saving indicator */}
+              {isSaving &amp;&amp; (
+                &lt;div className="spinner-grow spinner-grow-sm m-2" role="status">
+                  &lt;span className="visually-hidden">{t('settings.saving')}&lt;/span>
+                &lt;/div>
+              )}
             &lt;/div>
+
+            &lt;div className=" toast-info subsection">
+              &lt;h2>{t('messages.toastInfoTitle')}&lt;/h2>
+              &lt;p>{t('messages.toastInfoContent')}&lt;/p>
+            &lt;/div>
+
             {tds.departments[departement + year] &amp;&amp; (
               &lt;TDSelection
                 departementTDs={
@@ -277,9 +416,11 @@ const Settings = () => {
             )}
           &lt;/>
         );
+      case 'assos':
+        return &lt;AssoSelection />;
       case 'create':
         return &lt;EventCreator />;
-      case 'autre':
+      case 'other':
         return &lt;OtherParams />;
     }
   }
@@ -290,33 +431,32 @@ const Settings = () => {
     &lt;div className="settings">
       &lt;div className="view">
         &lt;Button
-          className="btn_view"
-          style={{ flex: view == 'TDs' ? '2' : '1' }}
-          onClick={() => {
-            setView('TDs');
-          }}
+          className={`btn-view ${view == 'TDs' ? 'active' : ''}`}
+          onClick={() => setView('TDs')}
         >
-          {dimensions.width > minWidth ? t('TDList') : t('TDListShort')}
+          {dimensions.width > minWidth ? t('settings.tdList') : t('settings.tdListShort')}
+        &lt;/Button>
+        &lt;Button
+          className={`btn-view ${view == 'assos' ? 'active' : ''}`}
+          onClick={() => setView('assos')}
+        >
+          {dimensions.width > minWidth ? t('settings.assoList') : t('settings.assoListShort')}
         &lt;/Button>
         {isAssos &amp;&amp; (
           &lt;Button
-            className="btn_view"
-            style={{ flex: view === 'create' ? '2' : '1' }}
+            className={`btn-view ${view == 'create' ? 'active' : ''}`}
             onClick={() => setView('create')}
           >
             {dimensions.width > minWidth
-              ? t('CreateEvent')
-              : t('CreateEventShort')}
+              ? t('settings.createEvent')
+              : t('settings.createEventShort')}
           &lt;/Button>
         )}
         &lt;Button
-          className="btn_view"
-          style={{ flex: view == 'autre' ? '2' : '1' }}
-          onClick={() => {
-            setView('autre');
-          }}
+          className={`btn-view ${view == 'other' ? 'active' : ''}`}
+          onClick={() => setView('other')}
         >
-          {t('OtherSettings')}
+          {t('settings.otherSettings')}
         &lt;/Button>
       &lt;/div>
       &lt;>{displayView(view)}&lt;/>
@@ -324,8 +464,7 @@ const Settings = () => {
   );
 };
 
-export default Settings;
-</code></pre>
+export default Settings;</code></pre>
         </article>
     </section>
 
@@ -335,13 +474,13 @@ export default Settings;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EvenementForm">EvenementForm</a></li><li><a href="global.html#EventCreator">EventCreator</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#handleSubmit">handleSubmit</a></li><li><a href="global.html#saveEvenement">saveEvenement</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FAQ">FAQ</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#Help">Help</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#Manual">Manual</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#fetchWithRetry">fetchWithRetry</a></li><li><a href="global.html#parseJsonSafe">parseJsonSafe</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Sep 07 2025 13:04:42 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Oct 13 2025 15:19:41 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

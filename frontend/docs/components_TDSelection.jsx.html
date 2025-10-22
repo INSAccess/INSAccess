@@ -26,12 +26,13 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { useState } from 'react';
+            <pre class="prettyprint source linenums"><code>import { useState, useEffect } from 'react';
 import { API_URL } from '../utils/Constants';
-import RandomUtils from '../utils/RandomUtils';
 import { useData } from '../contexts/DataContext';
 import { useTranslation } from 'react-i18next';
 import Alert from '@mui/material/Alert';
+import RandomUtils, { parseJsonSafe } from '../utils/RandomUtils';
+import '../assets/TDSelection.scss';
 
 /**
  * Component listing the different TDs the user can "subscribe" to.
@@ -43,12 +44,14 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
   const [statusMessage, setStatusMessage] = useState(' ');
   const [errorFlag, raiseErrorFlag] = useState(false);
 
-  const BUNDLE = useData();
-  const updateFunction = BUNDLE.forceUpdate;
+  const { refreshUserCalendar, updateUserTDs } = useData();
 
   const { t } = useTranslation();
 
-  // Function to toggle selection of a TD
+  useEffect(() => {
+    setSelectedTDs(new Set(userTDs));
+  }, [userTDs]);
+
   const toggleTD = (tdName) => {
     const updatedTDs = new Set(selectedTDs);
     if (updatedTDs.has(tdName)) {
@@ -59,10 +62,9 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
     setSelectedTDs(updatedTDs);
   };
 
-  // Function to save selection to the backend
   const saveSelection = async () => {
     try {
-      const response = await fetch(API_URL + '/api/save_tds', {
+      const response = await fetch(API_URL + '/api/user/td_groups', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,22 +74,25 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
         credentials: 'include',
         body: JSON.stringify({ selected_tds: Array.from(selectedTDs) }),
       });
-      const data = await response.json();
+      const data = await parseJsonSafe(response);
       setStatusMessage(data.success);
-      updateFunction();
+      updateUserTDs(selectedTDs);
+      refreshUserCalendar();
     } catch (error) {
       raiseErrorFlag(true);
-      setStatusMessage(t('ErrorSavingTD'));
+      setStatusMessage(t('messages.errorSavingTD'));
     }
   };
 
   return (
     &lt;div className="container-fluid">
       &lt;div className="row">
-        {/* Première liste - 12 colonnes sur mobile, 6 sur desktop */}
         &lt;div className="col-12 col-md-6">
-          &lt;div className="checkbox-list">
-            &lt;h1>{t('TDLikely')}&lt;/h1>
+          &lt;div className="checkbox-list subsection">
+            &lt;div className="d-flex justify-content-between align-items-start">
+              &lt;h1>{t('settings.tdLikely')}&lt;/h1>
+            &lt;/div>
+
             {departementTDs.map((td) => (
               &lt;li key={td}>
                 &lt;label>
@@ -103,10 +108,9 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
           &lt;/div>
         &lt;/div>
 
-        {/* Deuxième liste - 12 colonnes sur mobile, 6 sur desktop */}
         &lt;div className="col-12 col-md-6">
-          &lt;div className="checkbox-list">
-            &lt;h1>{t('TDNotLikely')}&lt;/h1>
+          &lt;div className="checkbox-list subsection">
+            &lt;h1>{t('settings.tdNotLikely')}&lt;/h1>
             {otherTDs.map((td) => (
               &lt;li key={td}>
                 &lt;label>
@@ -121,16 +125,18 @@ function TDSelection({ departementTDs, otherTDs, userTDs }) {
             ))}
           &lt;/div>
         &lt;/div>
-        &lt;div className="validate">
+
+        &lt;div className="validate subsection">
           &lt;button
-            className="button_validate btn btn-primary"
+            className="button-validate btn btn-primary"
             onClick={saveSelection}
           >
-            {t('Save')}
+            {t('settings.save')}
           &lt;/button>
           &lt;p>{statusMessage}&lt;/p>
         &lt;/div>
       &lt;/div>
+
       {errorFlag &amp;&amp; (
         &lt;Alert
           severity="error"
@@ -157,13 +163,13 @@ export default TDSelection;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EvenementForm">EvenementForm</a></li><li><a href="global.html#EventCreator">EventCreator</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#handleSubmit">handleSubmit</a></li><li><a href="global.html#saveEvenement">saveEvenement</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FAQ">FAQ</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#Help">Help</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#Manual">Manual</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#fetchWithRetry">fetchWithRetry</a></li><li><a href="global.html#parseJsonSafe">parseJsonSafe</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Sep 07 2025 13:04:42 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Oct 13 2025 15:19:41 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

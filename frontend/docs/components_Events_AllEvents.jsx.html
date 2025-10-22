@@ -26,14 +26,13 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import EventsInDay from './EventsInDay';
-import RandomUtils from '../../utils/RandomUtils';
-import { useState, useEffect, useRef } from 'react';
+            <pre class="prettyprint source linenums"><code>import { useState, useEffect, useRef } from 'react';
 import { hoursTimeline, minWidth } from '../../utils/Constants';
-import Day from '../../utils/Day';
-import './AllEvents.scss';
 import { useData } from '../../contexts/DataContext.jsx';
 import { useTranslation } from 'react-i18next';
+import EventsInDay from './EventsInDay';
+import RandomUtils from '../../utils/RandomUtils';
+import '../../assets/AllEvents.scss';
 
 /**
  * React component for the timestamps on the left of the calendar
@@ -59,8 +58,6 @@ const TimeBar = () => {
 /**
  * React component for all the events currently displayed
  * @param {Object} props
- * @param {Day} props.start
- * @param {Array} props.data
  * @param {boolean} props.asso
  *
  * @component
@@ -68,17 +65,15 @@ const TimeBar = () => {
  */
 const AllEvents = ({ dataOrigin }) => {
   const { t } = useTranslation();
-
   const dayList = [
-    t('Sunday'),
-    t('Monday'),
-    t('Tuesday'),
-    t('Wednesday'),
-    t('Thursday'),
-    t('Friday'),
-    t('Saturday'),
+    t('date.days.sunday'),
+    t('date.days.monday'),
+    t('date.days.tuesday'),
+    t('date.days.wednesday'),
+    t('date.days.thursday'),
+    t('date.days.friday'),
+    t('date.days.saturday'),
   ];
-
   const BUNDLE = useData();
   let data = [];
   if (dataOrigin == 'asso') {
@@ -88,27 +83,24 @@ const AllEvents = ({ dataOrigin }) => {
   } else {
     data = BUNDLE.dataAgenda;
   }
-  const start = BUNDLE.day;
 
   let dimensions = RandomUtils.useWindowDimensions();
-  let day = new Day(start);
 
-  const [firstDay, setDay] = useState(day);
   const [renderKey, setRenderKey] = useState(0);
 
   let nbDays = minWidth &lt; dimensions.width ? 7 : 1;
-  let currentDay = nbDays == 7 ? firstDay.copy().startOfWeek(dayList) : firstDay.copy();
+  let currentDay =
+    nbDays == 7 ? BUNDLE.day.copy().startOfWeek(dayList) : BUNDLE.day.copy();
 
   function handleDay(direction, value) {
     if (direction === 'prev') {
-      setDay((firstDay) => firstDay.prev(value));
+      BUNDLE.setDay((firstDay) => firstDay.prev(value));
     } else if (direction === 'next') {
-      setDay((firstDay) => firstDay.next(value));
+      BUNDLE.setDay((firstDay) => firstDay.next(value));
     }
   }
 
   const calendarRef = useRef(null);
-  let skipDays = nbDays == 1 ? 1 : 7;
 
   useEffect(() => {
     setRenderKey((prev) => prev + 1);
@@ -129,10 +121,10 @@ const AllEvents = ({ dataOrigin }) => {
 
       if (swipeDistance > minDist) {
         // Swiped left
-        handleDay('next', skipDays);
+        handleDay('next', nbDays);
       } else if (swipeDistance &lt; -minDist) {
         // Swiped right
-        handleDay('prev', skipDays);
+        handleDay('prev', nbDays);
       }
     };
 
@@ -166,12 +158,15 @@ const AllEvents = ({ dataOrigin }) => {
     &lt;>
       {dataOrigin == 'friend' &amp;&amp; (
         &lt;div className="calendar-close-button-wrapper">
+          &lt;span id="friend-name">
+            {t('friends.seeing')} {BUNDLE.currentFriend}
+          &lt;/span>
           &lt;button
             type="button"
             className="btn btn-primary calendar-close-button"
             onClick={() => BUNDLE.setShowCalendar(false)}
           >
-            {t('Return')}
+            {t('friends.return')}
           &lt;/button>
         &lt;/div>
       )}
@@ -180,8 +175,9 @@ const AllEvents = ({ dataOrigin }) => {
         &lt;button
           type="button"
           className="arrow-left"
+          aria-label="arrow-left"
           onClick={() => {
-            handleDay('prev', skipDays);
+            handleDay('prev', nbDays);
           }}
         >&lt;/button>
         &lt;TimeBar />
@@ -189,8 +185,9 @@ const AllEvents = ({ dataOrigin }) => {
         &lt;button
           type="button"
           className="arrow-right turned"
+          aria-label="arrow-right"
           onClick={() => {
-            handleDay('next', skipDays);
+            handleDay('next', nbDays);
           }}
         >&lt;/button>
       &lt;/div>
@@ -198,8 +195,7 @@ const AllEvents = ({ dataOrigin }) => {
   );
 };
 
-export default AllEvents;
-</code></pre>
+export default AllEvents;</code></pre>
         </article>
     </section>
 
@@ -209,13 +205,13 @@ export default AllEvents;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#About">About</a></li><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EvenementForm">EvenementForm</a></li><li><a href="global.html#EventCreator">EventCreator</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#ProtectedRoute">ProtectedRoute</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#handleSubmit">handleSubmit</a></li><li><a href="global.html#saveEvenement">saveEvenement</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Day.html">Day</a></li><li><a href="EventUtils.html">EventUtils</a></li><li><a href="RandomUtils.html">RandomUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AllEvents">AllEvents</a></li><li><a href="global.html#Associations">Associations</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Calendar">Calendar</a></li><li><a href="global.html#ConfigProvider">ConfigProvider</a></li><li><a href="global.html#DataProvider">DataProvider</a></li><li><a href="global.html#DeleteButton">DeleteButton</a></li><li><a href="global.html#Description">Description</a></li><li><a href="global.html#DropDownCustom">DropDownCustom</a></li><li><a href="global.html#ErrorTemplate">ErrorTemplate</a></li><li><a href="global.html#EventsInDay">EventsInDay</a></li><li><a href="global.html#FAQ">FAQ</a></li><li><a href="global.html#FollowLink">FollowLink</a></li><li><a href="global.html#Help">Help</a></li><li><a href="global.html#License">License</a></li><li><a href="global.html#Loading">Loading</a></li><li><a href="global.html#Manual">Manual</a></li><li><a href="global.html#Settings">Settings</a></li><li><a href="global.html#SingleEvent">SingleEvent</a></li><li><a href="global.html#TDSelection">TDSelection</a></li><li><a href="global.html#TimeBar">TimeBar</a></li><li><a href="global.html#WorkInProgressTemplate">WorkInProgressTemplate</a></li><li><a href="global.html#fetchWithRetry">fetchWithRetry</a></li><li><a href="global.html#parseJsonSafe">parseJsonSafe</a></li><li><a href="global.html#useAuth">useAuth</a></li><li><a href="global.html#useConfig">useConfig</a></li><li><a href="global.html#useData">useData</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Sep 07 2025 13:04:42 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Oct 13 2025 15:19:41 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

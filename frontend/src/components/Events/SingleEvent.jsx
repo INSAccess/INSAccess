@@ -122,7 +122,7 @@ const DeleteButton = ({
  *  desc : "",
  *  link_teacher : "Random Name",
  *  link_room : "Ma-H-R1-03",
- *  link : "agendas.insa-rouen.fr"
+ *  link : "https://google.com"
  * }
  * const width = "93%"
  * const left = "0%"

@@ -17,15 +17,28 @@ import '../../assets/Settings.scss';
  * @returns {JSX.Element}
  */
 const Settings = () => {
-
   const CONFIG = useConfig();
   const departementNames = CONFIG ? CONFIG['departementNames'] : ['STPI'];
   const departementYears = CONFIG ? CONFIG['departementYears'] : { STPI: [1] };
 
-  const { changeLanguage, changeTheme, icsLink, allThemes, 
-          userTheme, allLanguages, isAssos, userLanguage, 
-          tds, userAutoSync, changeAutoSync, updateUserTDs,
-          departement, setDepartement, year, setYear,
+  const {
+    changeLanguage,
+    changeTheme,
+    icsLink,
+    allThemes,
+    userTheme,
+    allLanguages,
+    isAssos,
+    userLanguage,
+    tds,
+    userAutoSync,
+    changeAutoSync,
+    updateUserTDs,
+    departement,
+    setDepartement,
+    year,
+    setYear,
+    changeIcsUrl,
   } = useData();
 
   const [view, setView] = useState('TDs');
@@ -37,6 +50,7 @@ const Settings = () => {
 
   const debounceTimerRef = useRef(null);
   const copyButtonRef = useRef(null);
+  const changeButtonRef = useRef(null);
 
   const { t } = useTranslation();
 
@@ -66,7 +80,10 @@ const Settings = () => {
           },
           mode: 'cors',
           credentials: 'include',
-          body: JSON.stringify({"departement_name": name, "departement_year": year}),
+          body: JSON.stringify({
+            departement_name: name,
+            departement_year: year,
+          }),
         });
 
         if (!response.ok) {
@@ -143,6 +160,28 @@ const Settings = () => {
     } finally {
       setSyncLoading(false);
       setTimeout(() => setSyncStatus(null), 3000); // Reset status after 3s
+    }
+  };
+
+  const handleChangeICS = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/user/change_ics`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': RandomUtils.getCSRFToken(),
+        },
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to regenerate ICS UID: ${response.status}`);
+      }
+
+      const newIcsUrl = await response.text();
+      changeIcsUrl(newIcsUrl);
+    } catch (error) {
+      console.error('Failed to change ICS UID', error);
     }
   };
 
@@ -316,6 +355,16 @@ const Settings = () => {
               {t('settings.icsCopy')}
             </button>
           </div>
+          <button
+            ref={changeButtonRef}
+            className="btn btn-secondary change-button"
+            onClick={handleChangeICS}
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title={t('settings.icsChange')}
+          >
+            {t('settings.icsChange')}
+          </button>
         </section>
       </div>
     );
@@ -363,13 +412,20 @@ const Settings = () => {
                   </button>
                 </div>
               </div>
-              
+
               {/* Optional: Show saving indicator */}
               {isSaving && (
                 <div className="spinner-grow spinner-grow-sm m-2" role="status">
-                  <span className="visually-hidden">{t('settings.saving')}</span>
+                  <span className="visually-hidden">
+                    {t('settings.saving')}
+                  </span>
                 </div>
               )}
+            </div>
+
+            <div className=" toast-info subsection">
+              <h2>{t('messages.toastInfoTitle')}</h2>
+              <p>{t('messages.toastInfoContent')}</p>
             </div>
 
             {tds.departments[departement + year] && (
@@ -401,13 +457,17 @@ const Settings = () => {
           className={`btn-view ${view == 'TDs' ? 'active' : ''}`}
           onClick={() => setView('TDs')}
         >
-          {dimensions.width > minWidth ? t('settings.tdList') : t('settings.tdListShort')}
+          {dimensions.width > minWidth
+            ? t('settings.tdList')
+            : t('settings.tdListShort')}
         </Button>
         <Button
           className={`btn-view ${view == 'assos' ? 'active' : ''}`}
           onClick={() => setView('assos')}
         >
-          {dimensions.width > minWidth ? t('settings.assoList') : t('settings.assoListShort')}
+          {dimensions.width > minWidth
+            ? t('settings.assoList')
+            : t('settings.assoListShort')}
         </Button>
         {isAssos && (
           <Button
