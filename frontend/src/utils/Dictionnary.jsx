@@ -67,7 +67,7 @@ const resources = {
         icsText:
           'You can paste this link in Google Agenda to see your classes and personal events alltogether',
         icsCopy: 'Copy',
-        icsChange: 'Change ICS link',
+        icsChange: 'Regenerate ICS link',
         themeChange: 'Change theme',
         themeDD: 'Theme : ',
         languageChange: 'Language',
@@ -289,7 +289,7 @@ const resources = {
         icsText:
           'Vous pouvez copier ce lien dans Google Agenda pour visualiser vos cours et vos événements personnels dans le même agenda',
         icsCopy: 'Copier',
-        icsChange: 'Modifier le lien ICS',
+        icsChange: 'Régénérer le lien ICS',
         themeChange: 'Changer le thème',
         themeDD: 'Thème : ',
         languageChange: 'Langue',
