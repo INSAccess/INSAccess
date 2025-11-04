@@ -139,7 +139,7 @@ const resources = {
         wip: 'Coming soon...',
         toastInfoTitle: 'Important',
         toastInfoContent:
-          "Some classes were not given a TD group when first created by the administration and consequently don't show up on the list of available TDs. We are currently working on the issue, thank you for your understanding.",
+          "Some classes were not given a TD group when first created by the administration and are temporarily available by selecting the group of the corresponding department. We are currently working on the issue, thank you for your understanding.",
         loadError: 'Error while loading ',
         saveError: 'Error while saving ',
         deleteError: 'Error while deleting ',
@@ -361,7 +361,7 @@ const resources = {
         wip: 'Ça arrive bientôt...',
         toastInfoTitle: 'Important',
         toastInfoContent:
-          "Certains cours n'ont pas de groupes de TD qui leur ont été associés par l'administration, ils n'apparaissent donc pas encore sur l'agenda. On travaille activement dessus, merci pour votre compréhension.",
+          "Certains cours n'ont pas de groupes de TD qui leur ont été associés par l'administration, ils sont temporairement regroupés dans un groupe au nom du département. On travaille activement dessus, merci pour votre compréhension.",
         loadError: 'Erreur pendant le chargement',
         saveError: 'Erreur pendant la sauvegarde',
         deleteError: 'Erreur pendant la suppression',
