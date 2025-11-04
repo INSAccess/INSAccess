@@ -26,7 +26,7 @@ def fetch_all_years() -> list:
 
     # Log once at the end
     if merged_no_tds:
-        logger.info(f"No TDs found for the following events: {sorted(merged_no_tds)}")
+        logger.info(f"No TD group found for the following events (a tag was automatically attributed): {sorted(merged_no_tds)}")
 
     return all_events
 

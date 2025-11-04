@@ -61,29 +61,28 @@ def ics_to_list(url: str) -> list:
                 teachers, departments, td_tags = description_parsing(
                     str(event.get("DESCRIPTION"))
                 )
+                event_dict = {
+                    "time_stamp": event.get("DTSTAMP").dt,
+                    "time_start": event.get("DTSTART").dt,
+                    "time_end": event.get("DTEND").dt,
+                    "desc": event.get("SUMMARY"),
+                    "locations": list(
+                        filter(
+                            lambda e: e != "", str(event.get("LOCATION")).split(",")
+                        )
+                    ),
+                    "teachers": teachers,
+                    "departments": departments,
+                    "td_tags": td_tags if len(td_tags) > 0 else departments,
+                    "uid": event.get("UID"),
+                    "date": event.get("DTSTART").dt.date(),
+                    "time_created": event.get("CREATED").dt,
+                    "time_last_modified": event.get("LAST-MODIFIED").dt,
+                    "sequence": event.get("SEQUENCE"),
+                }
                 if len(td_tags) == 0:
                     no_tds_events.add(str(event.get("SUMMARY")))
-                list_of_events.append(
-                    {
-                        "time_stamp": event.get("DTSTAMP").dt,
-                        "time_start": event.get("DTSTART").dt,
-                        "time_end": event.get("DTEND").dt,
-                        "desc": event.get("SUMMARY"),
-                        "locations": list(
-                            filter(
-                                lambda e: e != "", str(event.get("LOCATION")).split(",")
-                            )
-                        ),
-                        "teachers": teachers,
-                        "departments": departments,
-                        "td_tags": td_tags,
-                        "uid": event.get("UID"),
-                        "date": event.get("DTSTART").dt.date(),
-                        "time_created": event.get("CREATED").dt,
-                        "time_last_modified": event.get("LAST-MODIFIED").dt,
-                        "sequence": event.get("SEQUENCE"),
-                    }
-                )
+                list_of_events.append(event_dict)
             except Exception as e:
                 logger.error(f"Error parsing event {event.get('UID')}: {e}")
                 continue  # Skip this event but continue with the rest
