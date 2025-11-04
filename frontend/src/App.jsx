@@ -8,6 +8,7 @@ import Calendar from './components/Pages/Calendar.jsx';
 import Associations from './components/Pages/Associations.jsx';
 import Help from './components/Pages/Help.jsx';
 import Friends from './components/Pages/Friends.jsx';
+import Rooms from './components/Pages/Rooms.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import './assets/App.scss';
 
@@ -26,6 +27,8 @@ function App() {
         return <Friends />;
       case 'associations':
         return <Associations />;
+      case 'rooms':
+        return <Rooms />;
     }
   }
 

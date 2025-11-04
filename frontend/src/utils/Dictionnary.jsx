@@ -19,6 +19,7 @@ const resources = {
         settings: 'Settings',
         friends: 'Friends',
         help: 'Help',
+        room: 'Rooms',
       },
 
       // Date & Time
@@ -134,6 +135,10 @@ const resources = {
         search: 'Search for a friend...',
       },
 
+      rooms: {
+        select: 'Select',
+      },
+
       // Messages & Notifications
       messages: {
         wip: 'Coming soon...',
@@ -241,6 +246,7 @@ const resources = {
         settings: 'Parametres',
         friends: 'Amis',
         help: 'Aide',
+        room: 'Salles',
       },
 
       // Date & Time
@@ -354,6 +360,10 @@ const resources = {
         return: 'Retour',
         seeing: 'Regarde',
         search: 'Rechercher un ami...',
+      },
+
+      rooms: {
+        select: 'Selectionner',
       },
 
       // Messages & Notifications

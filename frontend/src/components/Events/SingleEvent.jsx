@@ -136,7 +136,7 @@ const DeleteButton = ({
 const SingleEvent = (props) => {
   const { t } = useTranslation();
 
-  const { assoName, colorsAsso, setColorsAsso, colorsAgenda, setColorsAgenda, colorsFriend, setColorsFriend } = useData();
+  const { assoName, colorsAsso, setColorsAsso, colorsAgenda, setColorsAgenda, colorsFriend, setColorsFriend, colorsRoom } = useData();
 
   let colors = [];
   let setColorsList = () => {};
@@ -147,6 +147,9 @@ const SingleEvent = (props) => {
   } else if (props.dataOrigin == 'user') {
     colors = colorsAgenda;
     setColorsList = setColorsAgenda;
+  } else if (props.dataOrigin == 'room'){
+    colors = colorsRoom;
+    setColorsList = () => null;
   } else {
     colors = colorsFriend;
     setColorsList = setColorsFriend;

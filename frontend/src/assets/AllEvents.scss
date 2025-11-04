@@ -103,3 +103,113 @@ $maxWidth: 850px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
 }
+
+.search-container {
+  position: relative;
+  margin: 1.5rem;
+  margin-bottom: 0rem;
+}
+
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1075;
+  background: var(--backgroundColor);
+  border: 1px solid var(--borderColor);
+  border-top: none;
+  border-radius: 0 0 0.375rem 0.375rem;
+  box-shadow: 0 0.5rem 1rem var(--shadowColorBold);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-bottom: 1px solid var(--subSectionBackgroundColor);
+  color: var(--textColor);
+
+  &:hover {
+    background-color: var(--subSectionBackgroundColor);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.no-results {
+    cursor: default;
+    color: var(--messageColor);
+    font-style: italic;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  .btn {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .btn-outline-primary {
+    border-color: var(--buttonColor);
+    color: var(--buttonColor);
+    background-color: transparent;
+
+    &:hover {
+      background-color: var(--buttonColor);
+      color: var(--contrastTextColor);
+    }
+  }
+}
+
+.suggestion-username {
+  flex-grow: 1;
+  margin-right: 1rem;
+}
+
+.themed-title {
+  color: var(--textColor);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.themed-list-item {
+  background-color: var(--backgroundColor);
+  color: var(--textColor);
+  border-color: var(--borderColor);
+
+  &:hover {
+    background-color: var(--hoverHighlight);
+  }
+}
+
+.themed-input {
+  background-color: var(--backgroundColor);
+  color: var(--textColor);
+  border-color: var(--borderColor);
+  margin-bottom: 0.8rem;
+
+  &:focus {
+    background-color: var(--backgroundColor);
+    border-color: var(--buttonColor);
+    box-shadow: 0 0 0 0.25rem
+      color-mix(in srgb, var(--buttonColor) 25%, transparent);
+    color: var(--textColor);
+  }
+
+  &::placeholder {
+    color: var(--messageColor);
+  }
+}
+
+.themed-hr {
+  border-color: var(--borderColor);
+  opacity: 1;
+}

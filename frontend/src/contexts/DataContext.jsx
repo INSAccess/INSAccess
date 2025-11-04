@@ -9,6 +9,7 @@ import {
   minWidth,
   PATH_USER_CALENDAR,
   PATH_ASSO_CALENDAR,
+  PATH_ROOM_CALENDAR,
   API_URL,
 } from '../utils/Constants.jsx';
 
@@ -29,11 +30,14 @@ export const DataProvider = (props) => {
   const [dataAsso, setDataAsso] = useState([]);
   const [dataAgenda, setDataAgenda] = useState([]);
   const [dataFriend, setDataFriend] = useState([]);
+  const [dataRoom, setDataRoom] = useState([]);
+  const [currentRoom, setRoom] = useState("MA-H-R1-01");
   const [isAssos, setIsAssos] = useState(false);
   const [assoName, setAssoName] = useState(null);
   const [colorsAsso, setColorsAsso] = useState([]);
   const [colorsAgenda, setColorsAgenda] = useState([]);
   const [colorsFriend, setColorsFriend] = useState([]);
+  const [colorsRoom, setColorsRoom] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorFlag, raiseErrorFlag] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
@@ -55,6 +59,7 @@ export const DataProvider = (props) => {
   const [userAutoSync, setUserAutoSync] = useState(false);
   const [departement, setDepartement] = useState(departementNames[0]);
   const [year, setYear] = useState(departementYears[departement][0]);
+  const [rooms, setRooms] = useState([]);
 
   const dayList = [
     t('date.days.sunday'),
@@ -117,6 +122,18 @@ export const DataProvider = (props) => {
     }
   };
 
+  const refreshRoomCalendar = async () => {
+    try {
+      const resultRoom = await RandomUtils.fetchData(PATH_ROOM_CALENDAR+currentRoom);
+      if (resultRoom?.data) {
+        setDataRoom(resultRoom.data.events);
+        setColorsRoom(resultRoom.data.colors);
+      }
+    } catch (err) {
+      console.error('Failed to refresh room calendar', err);
+    }
+  };
+
   const refreshUserCalendar = async () => {
     try {
       const resultAgenda = await RandomUtils.fetchData(PATH_USER_CALENDAR);
@@ -149,6 +166,7 @@ export const DataProvider = (props) => {
         const [
           resultAsso,
           resultAgenda,
+          resultRoom,
           resultThemes,
           resultProfile,
           resultLanguages,
@@ -156,9 +174,11 @@ export const DataProvider = (props) => {
           resultFriends,
           resultAssociations,
           resultTds,
+          resultRooms,
         ] = await Promise.all([
           RandomUtils.fetchData(PATH_ASSO_CALENDAR),
           RandomUtils.fetchData(PATH_USER_CALENDAR),
+          RandomUtils.fetchData(PATH_ROOM_CALENDAR+currentRoom),
           RandomUtils.fetchData(API_URL + '/api/metadata/themes'),
           RandomUtils.fetchData(API_URL + '/api/user/profile'),
           RandomUtils.fetchData(API_URL + '/api/metadata/languages'),
@@ -167,6 +187,9 @@ export const DataProvider = (props) => {
           RandomUtils.fetchData(API_URL + '/api/metadata/associations'),
           RandomUtils.fetchData(
             API_URL + '/api/metadata/td_groups/all?format=json'
+          ),
+          RandomUtils.fetchData(
+            API_URL + '/api/metadata/rooms'
           ),
         ]);
 
@@ -180,8 +203,14 @@ export const DataProvider = (props) => {
           setColorsAgenda(resultAgenda.data.colors);
         }
 
+        if (resultRoom.data) {
+          setDataRoom(resultRoom.data.events);
+          setColorsRoom(resultRoom.data.colors);
+        }
+
         if (resultThemes.data) setAllThemes(resultThemes.data);
         if (resultLanguages.data) setAllLanguages(resultLanguages.data);
+        if (resultRooms.data) setRooms(resultRooms.data);
 
         if (resultProfile.data) {
           const profileData = resultProfile.data;
@@ -247,6 +276,7 @@ export const DataProvider = (props) => {
           assoName,
           dataAsso,
           dataAgenda,
+          dataRoom,
           day,
           setDay,
           changeTheme,
@@ -281,6 +311,7 @@ export const DataProvider = (props) => {
           assoList,
           refreshAssoCalendar,
           refreshUserCalendar,
+          refreshRoomCalendar,
           userAutoSync,
           changeAutoSync,
           updateUserTDs,
@@ -290,6 +321,10 @@ export const DataProvider = (props) => {
           year,
           setYear,
           changeIcsUrl,
+          setRoom,
+          colorsRoom,
+          currentRoom,
+          rooms,
         }}
       >
         {props.children}
