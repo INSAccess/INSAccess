@@ -26,6 +26,7 @@ from core.models import (
     EnumLanguage,
     UserRelationship,
     UserLinkAssociation,
+    Room,
 )
 from core.utils.fetch_ics import load_config
 from core.permissions import IsAssociationPublisher
@@ -854,6 +855,30 @@ class UsersAPIView(APIView):
             return response
 
 
+class RoomsAPIView(APIView):
+    """return the rooms"""
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """"""
+        try:
+            rooms = [room.name for room in Room.objects.all()]
+            response = Response(rooms)
+            logger.info(
+                "Returned list of the rooms",
+                extra={"request": request, "status_code": response.status_code},
+            )
+            return response
+        except Exception as e:
+            response = Response({"error": "Internal server error"}, status=500)
+            logger.error(
+                f"Internal server error at get rooms: {str(e)}",
+                extra={"request": request, "status_code": response.status_code},
+            )
+            return response
+
+
 class FriendsAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -1007,6 +1032,56 @@ class FriendsAPIView(APIView):
             response = Response({"error": "Internal server error"}, status=500)
             logger.error(
                 f"Internal server error in POST /friends: {str(e)}",
+                extra={"request": request, "status_code": response.status_code},
+            )
+            return response
+
+
+class RoomCalendarAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, roomname):
+        try:
+            start_date = (datetime.date.today() - relativedelta(months=1)).replace(
+                day=1
+            )
+            end_date = (
+                (datetime.date.today() + relativedelta(months=5)).replace(day=1)
+                + relativedelta(months=1)
+                - datetime.timedelta(days=1)
+            )
+
+            room = Room.objects.filter(name__iexact=roomname).first()
+
+            if not room:
+                return Response({"error": "Room not found"}, status=404)
+
+            classes_qs = (
+                InsaClass.objects.filter(
+                    classlinkroom__room=room,
+                    date__range=[start_date, end_date],
+                )
+                .distinct()
+                .prefetch_related(
+                    "link_room", "link_td", "link_teacher", "link_depart", "desc"
+                )
+            )
+
+            serializer = InsaClassSerializer(
+                classes_qs, context={"request": request}, many=True
+            )
+
+            response = Response({"events": serializer.data, "colors": []})
+            logger.info(
+                "User fetched room events",
+                extra={"request": request, "status_code": response.status_code},
+            )
+            return response
+
+        except Exception as e:
+            response = Response({"error": "Internal server error"}, status=500)
+            logger.error(
+                f"Internal server error at get_room_calendar: {str(e)}",
                 extra={"request": request, "status_code": response.status_code},
             )
             return response

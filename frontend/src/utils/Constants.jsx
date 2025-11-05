@@ -22,6 +22,7 @@ const baseEventWidth = 93;
 const API_URL = import.meta.env.VITE_API_URL;
 const PATH_USER_CALENDAR = API_URL + '/api/calendar/';
 const PATH_ASSO_CALENDAR = API_URL + '/api/calendar/events';
+const PATH_ROOM_CALENDAR = API_URL + '/api/calendar/room/';
 const API_LOGIN = API_URL + '/authentification/login';
 const API_LOGOUT = API_URL + '/authentification/logout';
 const API_AUTH = API_URL + '/api/user/is_connected?format=json';
@@ -36,6 +37,7 @@ export {
   API_URL,
   PATH_ASSO_CALENDAR,
   PATH_USER_CALENDAR,
+  PATH_ROOM_CALENDAR,
   API_LOGIN,
   API_LOGOUT,
   API_AUTH,

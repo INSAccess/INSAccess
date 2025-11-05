@@ -25,6 +25,8 @@ from core.views import (
     UpdateUsingCasTDAPIView,
     PostUserDepartementAPIView,
     ChangeICSLinkAPIView,
+    RoomCalendarAPIView,
+    RoomsAPIView,
 )
 
 urlpatterns = [
@@ -35,12 +37,18 @@ urlpatterns = [
         FriendCalendarAPIView.as_view(),
         name="friend_calendar",
     ),
+    path(
+        "calendar/room/<str:roomname>",
+        RoomCalendarAPIView.as_view(),
+        name="room_calendar",
+    ),
     path("calendar/events", GetEvenementsAPIView.as_view(), name="get_evenements"),
     # metadata urls
     path(
         "metadata/td_groups/<str:department>", GetTdsAPIView.as_view(), name="get_tds"
     ),
     path("metadata/themes", GetEnumThemeAPIView.as_view(), name="get_themes"),
+    path("metadata/rooms", RoomsAPIView.as_view(), name="get_rooms"),
     path(
         "metadata/associations",
         GetAssociationAPIView.as_view(),

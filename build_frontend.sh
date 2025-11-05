@@ -4,7 +4,7 @@ source .env
 
 FRONTEND_DIR="frontend"
 BACKEND_DIR="backend"
-VITE_GIT_VERSION="0.4.7"
+VITE_GIT_VERSION="0.5.0"
 
 echo "[1] Cleaning previous build..."
 rm -rf $FRONTEND_DIR/build

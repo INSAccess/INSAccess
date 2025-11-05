@@ -39,7 +39,7 @@ def finalize(request):
         ]
 
         user_profile.link_td.add(*tds_in_db)
-    
+
     if profile_created:
         user_profile.save()
         assos = Association.objects.all()

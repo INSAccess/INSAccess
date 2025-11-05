@@ -76,6 +76,7 @@ export const NavBar = ({ page, setPage }) => {
     { name: t('nav.events'), href: 'associations' },
     { name: t('nav.friends'), href: 'friends' },
     { name: t('nav.settings'), href: 'settings' },
+    { name: t('nav.room'), href: 'rooms' },
     { name: t('nav.help'), href: 'help' },
   ];
 
