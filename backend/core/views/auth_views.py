@@ -33,13 +33,11 @@ def finalize(request):
         normalized_cas_tds = [td.strip().lower() for td in subscribed_tds]
 
         tds_in_db = [
-            td
-            for td in GroupTD.objects.all()
-            if td.name.strip().lower() in normalized_cas_tds
+            td for td in GroupTD.objects.all() if td.name in normalized_cas_tds
         ]
 
         user_profile.link_td.add(*tds_in_db)
-    
+
     if profile_created:
         user_profile.save()
         assos = Association.objects.all()
