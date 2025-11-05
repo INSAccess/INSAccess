@@ -26,7 +26,6 @@ from core.models import (
     EnumLanguage,
     UserRelationship,
     UserLinkAssociation,
-    ClassLinkRoom,
     Room,
 )
 from core.utils.fetch_ics import load_config
@@ -864,10 +863,7 @@ class RoomsAPIView(APIView):
     def get(self, request):
         """"""
         try:
-            rooms = [
-                room.name
-                for room in Room.objects.all()
-            ]
+            rooms = [room.name for room in Room.objects.all()]
             response = Response(rooms)
             logger.info(
                 "Returned list of the rooms",
@@ -1045,7 +1041,6 @@ class RoomCalendarAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, roomname):
-
         try:
             start_date = (datetime.date.today() - relativedelta(months=1)).replace(
                 day=1
@@ -1057,7 +1052,7 @@ class RoomCalendarAPIView(APIView):
             )
 
             room = Room.objects.filter(name__iexact=roomname).first()
-            
+
             if not room:
                 return Response({"error": "Room not found"}, status=404)
 
@@ -1068,11 +1063,7 @@ class RoomCalendarAPIView(APIView):
                 )
                 .distinct()
                 .prefetch_related(
-                    'link_room',
-                    'link_td',
-                    'link_teacher',
-                    'link_depart',
-                    'desc'
+                    "link_room", "link_td", "link_teacher", "link_depart", "desc"
                 )
             )
 
@@ -1080,9 +1071,7 @@ class RoomCalendarAPIView(APIView):
                 classes_qs, context={"request": request}, many=True
             )
 
-            response = Response(
-                {"events": serializer.data, "colors": []}
-            )
+            response = Response({"events": serializer.data, "colors": []})
             logger.info(
                 "User fetched room events",
                 extra={"request": request, "status_code": response.status_code},
