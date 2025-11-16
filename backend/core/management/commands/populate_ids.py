@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
-from django.db import transaction, connection
+from django.db import transaction
+from django.db.models import Max
 from core.models import (
     EnumType, EnumSector, EnumLanguage, EnumColorTheme,
     Association, GroupTD, Department, Teacher, Room, Title
@@ -29,21 +30,8 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS("All missing IDs populated successfully."))
 
-    def get_next_id(self, table_name):
-        """
-        Safely fetch the next auto-increment value from PostgreSQL.
-        This avoids any collisions.
-        """
-        with connection.cursor() as cursor:
-            cursor.execute(
-                f"SELECT nextval(pg_get_serial_sequence('{table_name}', 'id'));"
-            )
-            return cursor.fetchone()[0]
-
     @transaction.atomic
     def populate_model_ids(self, model):
-        table = model._meta.db_table
-
         objects = model.objects.filter(id__isnull=True)
         count = objects.count()
 
@@ -51,11 +39,13 @@ class Command(BaseCommand):
             self.stdout.write(f"{model.__name__}: OK (no missing IDs)")
             return
 
+        # find current max id in table
+        max_id = model.objects.aggregate(max_id=Max('id'))['max_id'] or 0
         self.stdout.write(f"{model.__name__}: Populating {count} missing IDs…")
 
         for obj in objects:
-            next_id = self.get_next_id(table)
-            obj.id = next_id
-            obj.save(update_fields=["id"])
+            max_id += 1
+            obj.id = max_id
+            obj.save(update_fields=['id'])
 
         self.stdout.write(self.style.SUCCESS(f"{model.__name__}: Done"))
