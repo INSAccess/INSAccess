@@ -7,8 +7,8 @@ from django.utils import timezone
 
 class EnumType(models.Model):
     """Possible values for the type in association"""
-    id = models.BigIntegerField(null=True, blank=True)
-    name = models.CharField(max_length=255, primary_key=True)
+    id = models.BigAutoField(primary_key=True, serialize=False)
+    name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.name
@@ -16,8 +16,8 @@ class EnumType(models.Model):
 
 class EnumSector(models.Model):
     """Possible values for the sector (e.g., sport, music, etc.)"""
-    id = models.BigIntegerField(null=True, blank=True)
-    name = models.CharField(max_length=255, primary_key=True)
+    id = models.BigAutoField(primary_key=True, serialize=False)
+    name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.name
@@ -25,8 +25,8 @@ class EnumSector(models.Model):
 
 class EnumLanguage(models.Model):
     """Possible values for the sector (e.g., sport, music, etc.)"""
-    id = models.BigIntegerField(null=True, blank=True)
-    name = models.CharField(max_length=255, primary_key=True)
+    id = models.BigAutoField(primary_key=True, serialize=False)
+    name = models.CharField(max_length=255, unique=True)
 
     @classmethod
     def get_default_language(cls):
@@ -39,8 +39,8 @@ class EnumLanguage(models.Model):
 
 class EnumColorTheme(models.Model):
     """Possible values for the color theme of the website"""
-    id = models.BigIntegerField(null=True, blank=True)
-    name = models.CharField(max_length=100, primary_key=True)
+    id = models.BigAutoField(primary_key=True, serialize=False)
+    name = models.CharField(max_length=100, unique=True)
 
     @classmethod
     def get_default_theme(cls):
@@ -178,8 +178,8 @@ class InsaEvenement(Event):
 
 class Association(models.Model):
     """Association profile for the club and association of INSA Rouen"""
-    id = models.BigIntegerField(null=True, blank=True)
-    name = models.CharField(max_length=255, primary_key=True)
+    id = models.BigAutoField(primary_key=True, serialize=False)
+    name = models.CharField(max_length=255, unique=True)
     color = models.CharField(max_length=7, default="#123456")
     type = models.ForeignKey("EnumType", on_delete=models.SET_NULL, null=True)
     sector = models.ForeignKey("EnumSector", on_delete=models.SET_NULL, null=True)
@@ -190,7 +190,9 @@ class Association(models.Model):
         user_link_assos = [
             UserLinkAssociation(user=user, name_assos=self) for user in users
         ]
-        UserLinkAssociation.objects.bulk_create(user_link_assos)
+        # Only bulk_create if the instance is new (otherwise it duplicates links)
+        if self._state.adding:
+            UserLinkAssociation.objects.bulk_create(user_link_assos)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -206,7 +208,7 @@ class AssociationPublisher(models.Model):
 class UserColoredEvent(models.Model):
     """The many to many relation table for custom colors on events"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.ForeignKey("Title", to_field="name", on_delete=models.CASCADE)
+    title = models.ForeignKey("Title", on_delete=models.CASCADE)
     color = models.CharField(max_length=7)
 
     def __str__(self):
@@ -215,8 +217,8 @@ class UserColoredEvent(models.Model):
 
 class GroupTD(models.Model):
     """GroupTD definition"""
-    id = models.BigIntegerField(null=True, blank=True)
-    name = models.CharField(max_length=100, primary_key=True)
+    id = models.BigAutoField(primary_key=True, serialize=False)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
@@ -224,16 +226,16 @@ class GroupTD(models.Model):
 
 class Department(models.Model):
     """Department definition"""
-    id = models.BigIntegerField(null=True, blank=True)
-    name = models.CharField(max_length=100, primary_key=True)
+    id = models.BigAutoField(primary_key=True, serialize=False)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
 
 
 class Teacher(models.Model):
-    id = models.BigIntegerField(null=True, blank=True)
-    name = models.CharField(max_length=255, primary_key=True)
+    id = models.BigAutoField(primary_key=True, serialize=False)
+    name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.name
@@ -241,16 +243,16 @@ class Teacher(models.Model):
 
 class Room(models.Model):
     """Room definition"""
-    id = models.BigIntegerField(null=True, blank=True)
-    name = models.CharField(max_length=100, primary_key=True)
+    id = models.BigAutoField(primary_key=True, serialize=False)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
 
 
 class Title(models.Model):
-    id = models.BigIntegerField(null=True, blank=True)
-    name = models.CharField(max_length=255, primary_key=True)
+    id = models.BigAutoField(primary_key=True, serialize=False)
+    name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.name
@@ -258,8 +260,8 @@ class Title(models.Model):
 
 class ClassLinkTD(models.Model):
     """1 to Many link between InsaClass and GroupTD tables"""
-    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE, db_index=True)
-    td = models.ForeignKey(GroupTD, on_delete=models.CASCADE, db_index=True)
+    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE)
+    td = models.ForeignKey(GroupTD, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Class: {self.insa_class} - TD: {self.td}"
@@ -267,8 +269,8 @@ class ClassLinkTD(models.Model):
 
 class ClassLinkRoom(models.Model):
     """1 to Many link between InsaClass and Room tables"""
-    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE, db_index=True)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE, db_index=True)
+    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Class: {self.insa_class} - Room: {self.room}"
@@ -276,8 +278,8 @@ class ClassLinkRoom(models.Model):
 
 class ClassLinkTeacher(models.Model):
     """1 to Many link between InsaClass and Teacher tables"""
-    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE, db_index=True)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, db_index=True)
+    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Class: {self.insa_class} - Teacher: {self.teacher}"
@@ -285,8 +287,8 @@ class ClassLinkTeacher(models.Model):
 
 class ClassLinkDepart(models.Model):
     """1 to Many link between InsaClass and Department tables"""
-    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE, db_index=True)
-    depart = models.ForeignKey(Department, on_delete=models.CASCADE, db_index=True)
+    insa_class = models.ForeignKey(InsaClass, on_delete=models.CASCADE)
+    depart = models.ForeignKey(Department, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Class: {self.insa_class} - Department: {self.depart}"
@@ -294,8 +296,8 @@ class ClassLinkDepart(models.Model):
 
 class UserLinkTD(models.Model):
     """1 to Many link between User and GroupTD"""
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, db_index=True)
-    name_td = models.ForeignKey(GroupTD, on_delete=models.CASCADE, db_index=True)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    name_td = models.ForeignKey(GroupTD, on_delete=models.CASCADE) 
 
     def __str__(self):
         return f"User: {self.user} - TD: {self.name_td}"
@@ -303,8 +305,8 @@ class UserLinkTD(models.Model):
 
 class UserLinkAssociation(models.Model):
     """1 to Many link between User and Association"""
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, db_index=True)
-    name_assos = models.ForeignKey(Association, on_delete=models.CASCADE, db_index=True)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    name_assos = models.ForeignKey(Association, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"User: {self.user} - Assos: {self.name_assos}"
