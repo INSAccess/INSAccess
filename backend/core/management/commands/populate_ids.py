@@ -32,20 +32,19 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def populate_model_ids(self, model):
-        objects = model.objects.filter(id__isnull=True)
+        objects = model.objects.filter(id__isnull=True) 
         count = objects.count()
 
         if count == 0:
             self.stdout.write(f"{model.__name__}: OK (no missing IDs)")
             return
 
-        # find current max id in table
         max_id = model.objects.aggregate(max_id=Max('id'))['max_id'] or 0
         self.stdout.write(f"{model.__name__}: Populating {count} missing IDs…")
 
         for obj in objects:
             max_id += 1
             obj.id = max_id
-            obj.save(update_fields=['id'])
+            obj.save() 
 
         self.stdout.write(self.style.SUCCESS(f"{model.__name__}: Done"))
