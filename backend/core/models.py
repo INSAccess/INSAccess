@@ -89,7 +89,7 @@ class UserProfile(models.Model):
         editable=True,
         null=True,
     )
-    cas_auto_sync = models.BooleanField(default=False)
+    cas_auto_sync = models.BooleanField(default=True)
 
     def regenerate_ics_uid(self):
         raw_value = f"{uuid.uuid4()}-{self.user_id}".encode("utf-8")
