@@ -3,6 +3,14 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  test: {
+    // Use jsdom so `document` and `window` are available to tests
+    environment: 'jsdom',
+    // enable vitest globals like "describe/test/expect" if you prefer
+    globals: true,
+    // run this file before tests to register matchers like jest-dom
+    setupFiles: 'src/setupTests.js'
+  },
   css: {
     preprocessorOptions: {
       scss: {
