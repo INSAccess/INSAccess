@@ -80,11 +80,24 @@ const AllEvents = ({ dataOrigin }) => {
         setFilteredSuggestions([]);
         return;
       }
+
+      const normalize = (s) =>
+        s
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, ' ')
+          .trim()
+          .replace(/\s+/g, ' ');
+
+      const termNorm = normalize(searchTerm);
+
       setFilteredSuggestions(
         BUNDLE.rooms
-          .filter((room) =>
-            room.toLowerCase().includes(searchTerm.toLowerCase())
-          )
+          .filter((room) => {
+            const roomLower = room.toLowerCase();
+            if (roomLower.includes(searchTerm.toLowerCase())) return true;
+            const roomNorm = normalize(room);
+            return roomNorm.includes(termNorm);
+          })
           .slice(0, 6)
       );
     }, [searchTerm]);
