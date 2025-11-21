@@ -14,8 +14,8 @@ const resources = {
 
       // Navigation
       nav: {
-        calendar: 'Calendar',
-        events: 'Events',
+        calendar: 'Agenda',
+        events: 'Calendar',
         settings: 'Settings',
         friends: 'Friends',
         help: 'Help',
@@ -241,8 +241,8 @@ const resources = {
 
       // Navigation
       nav: {
-        calendar: 'Calendrier',
-        events: 'Evenements',
+        calendar: 'Agenda',
+        events: 'Calendrier',
         settings: 'Parametres',
         friends: 'Amis',
         help: 'Aide',
