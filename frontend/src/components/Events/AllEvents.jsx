@@ -47,16 +47,14 @@ const AllEvents = ({ dataOrigin }) => {
     t('date.days.saturday'),
   ];
   const BUNDLE = useData();
-  let data = [];
-  if (dataOrigin == 'asso') {
-    data = BUNDLE.dataAsso;
-  } else if (dataOrigin == 'friend') {
-    data = BUNDLE.dataFriend;
-  } else if (dataOrigin == 'room') {
-    data = BUNDLE.dataRoom;
-  } else {
-    data = BUNDLE.dataAgenda;
-  }
+  const selectDataForOrigin = (bundle, origin) => {
+    if (origin == 'asso') return bundle.dataAsso;
+    if (origin == 'friend') return bundle.dataFriend;
+    if (origin == 'room') return bundle.dataRoom;
+    return bundle.dataAgenda;
+  };
+
+  const data = selectDataForOrigin(BUNDLE, dataOrigin);
 
   let dimensions = RandomUtils.useWindowDimensions();
 
@@ -103,8 +101,75 @@ const AllEvents = ({ dataOrigin }) => {
   };
 
   const handleSearchBlur = () => {
-    // Délai pour permettre le clic sur une suggestion
     setTimeout(() => setShowSuggestions(false), 200);
+  };
+
+  const renderFriendHeader = () => {
+    return (
+      <div className="calendar-close-button-wrapper">
+        <span id="friend-name">
+          {t('friends.seeing')} {BUNDLE.currentFriend}
+        </span>
+        <button
+          type="button"
+          className="btn btn-primary calendar-close-button"
+          onClick={() => BUNDLE.setShowCalendar(false)}
+        >
+          {t('friends.return')}
+        </button>
+      </div>
+    );
+  };
+
+  const renderRoomSearch = () => {
+    return (
+      <div className="search-container">
+        <input
+          className="form-control me-2 themed-input"
+          type="search"
+          placeholder={t("Search")}
+          aria-label="Search"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          onFocus={() => setShowSuggestions(searchTerm.length > 0)}
+          onBlur={handleSearchBlur}
+        />
+
+        {showSuggestions && filteredSuggestions.length > 0 && (
+          <div className="suggestions-dropdown">
+            {filteredSuggestions.map((room, index) => (
+              <div
+                key={index}
+                className="suggestion-item"
+                onClick={() => handleRoomChange(room)}
+              >
+                <span className="suggestion-username">{room}</span>
+                <button
+                  type="button"
+                  className="btn btn-outline-primary btn-sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRoomChange(room);
+                  }}
+                >
+                  {t('rooms.select')}
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {showSuggestions &&
+          searchTerm.length > 0 &&
+          filteredSuggestions.length === 0 && (
+            <div className="suggestions-dropdown">
+              <div className="suggestion-item no-results">
+                {t('friends.noUserFound')}
+              </div>
+            </div>
+          )}
+      </div>
+    );
   };
 
   const calendarRef = useRef(null);
@@ -133,10 +198,8 @@ const AllEvents = ({ dataOrigin }) => {
       let swipeDistance = touchStartX - touchEndX;
 
       if (swipeDistance > minDist) {
-        // Swiped left
         handleDay('next', nbDays);
       } else if (swipeDistance < -minDist) {
-        // Swiped right
         handleDay('prev', nbDays);
       }
     };
@@ -169,69 +232,8 @@ const AllEvents = ({ dataOrigin }) => {
 
   return (
     <>
-      {dataOrigin == 'friend' && (
-        <div className="calendar-close-button-wrapper">
-          <span id="friend-name">
-            {t('friends.seeing')} {BUNDLE.currentFriend}
-          </span>
-          <button
-            type="button"
-            className="btn btn-primary calendar-close-button"
-            onClick={() => BUNDLE.setShowCalendar(false)}
-          >
-            {t('friends.return')}
-          </button>
-        </div>
-      )}
-
-      {dataOrigin == 'room' && (
-        <div className="search-container">
-          <input
-            className="form-control me-2 themed-input"
-            type="search"
-            placeholder={t("Search")}
-            aria-label="Search"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            onFocus={() => setShowSuggestions(searchTerm.length > 0)}
-            onBlur={handleSearchBlur}
-          />
-
-          {showSuggestions && filteredSuggestions.length > 0 && (
-            <div className="suggestions-dropdown">
-              {filteredSuggestions.map((room, index) => (
-                <div
-                  key={index}
-                  className="suggestion-item"
-                  onClick={() => handleRoomChange(room)}
-                >
-                  <span className="suggestion-username">{room}</span>
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary btn-sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleRoomChange(room);
-                    }}
-                  >
-                    {t('rooms.select')}
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {showSuggestions &&
-            searchTerm.length > 0 &&
-            filteredSuggestions.length === 0 && (
-              <div className="suggestions-dropdown">
-                <div className="suggestion-item no-results">
-                  {t('friends.noUserFound')}
-                </div>
-              </div>
-            )}
-        </div>
-      )}
+      {dataOrigin == 'friend' && renderFriendHeader()}
+      {dataOrigin == 'room' && renderRoomSearch()}
 
       <div className="calendar" ref={calendarRef}>
         <button
